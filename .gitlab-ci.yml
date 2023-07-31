@@ -1,0 +1,105 @@
+.template_repo: &repo
+  project: &ci_tmpl 'devops/ci/templates'
+  ref: &ci_tmpl_vers 'v3.6.1'
+
+variables:
+  # Mandatory vars. Do not change this
+  CI_TMPL_PROJECT: *ci_tmpl
+  CI_TMPL_PROJECT_VERSION: *ci_tmpl_vers
+
+  #
+  # Language specific vars. Most likly need to specify
+  # 
+  GO_MAIN_PATH: ./app
+  GO_VER: "1.20"
+  ALPINE_VER: "3.17"
+  GO_TEST_FLAGS: "-mod=readonly"
+
+
+  CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0,common-job"
+  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.1
+  CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
+  # List of clusters for deploy
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
+  CI_TMPL_KUBE_CLUSTERS_STAGE: ""
+  CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
+  
+
+  # Harbor project name
+  REGISTRY_PROJECT: "swarm"
+
+  # Change deploy jobs appearance in pipeline
+  CI_TMPL_DEPLOY_GROUPING: per-service
+
+
+include:
+  - <<: *repo
+    file: /pipelines/go.yml
+
+generate build:
+  variables:
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft"
+
+
+generate deploy:
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "postgres,sgroups"
+
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "postgres,sgroups"
+
+    - if: $CI_COMMIT_BRANCH =~ /^master$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups"
+
+deploy:
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+      when: always
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+      when: always
+
+
+test-newman:
+  before_script:
+    - export HBF_HOST="swarm-ingress-controller.swarm.svc.k8s.dldevel"
+  image:
+    name: '$DEFAULT_REGISTRY/swarm/swarm/testops/hbf_api_tests/sgroups-postman:dev-766c6abd'
+  stage: deploy
+  tags:
+    - linux-docker-executor
+  needs:
+    - deploy
+  script:
+    - node /usr/src/hbf_api_tests/index.js
+  rules:
+  - if: "$CI_COMMIT_BRANCH =~ /^dev$/"
+  - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+
+
+".helm_destroy":
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+  when: always
+  needs:
+    - test-newman
+
+".helm_destroy_dev":
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+  when: always
+  needs:
+    - test-newman
+
+".helm_destroy_feature":
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+  when: always
+  needs:
+    - test-newman

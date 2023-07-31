@@ -1,0 +1,23 @@
+imagePullSecrets:
+  - name: harbor-swarm-registry-secret
+  - name: harbor-registry-secret
+
+image:
+  repository: harbor.wildberries.ru/swarm/swarm/testops/hbf_api_tests/sgroups-postman
+  tag: dev-766c6abd
+  pullPolicy: IfNotPresent
+
+env:
+  HBF_HOST: sgroups{{ (split "sgroups-postman" .Helm.Release.Name)._1  }}
+  
+
+job:
+  backoffLimit: 0
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi

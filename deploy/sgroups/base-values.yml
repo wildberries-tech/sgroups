@@ -1,0 +1,65 @@
+imagePullSecrets:
+  - name: harbor-swarm-registry-secret
+  - name: harbor-registry-secret
+
+image:
+  repository: {{.Helm.Release.Image}}
+  tag: {{.Helm.Release.Tag}}
+  pullPolicy: IfNotPresent
+
+command:
+  - /app/bin/sgroups
+
+args:
+  - --config
+  - /config/config.yaml
+
+env:
+  SG_STORAGE_POSTGRES_URL: postgres://nkiver:nkiver@postgres{{ (split "sgroups" .Helm.Release.Name)._1  }}:5432/postgres?sslmode=disable
+  SG_STORAGE_TYPE: postgres
+
+ports:
+  - name: grpc
+    containerPort: 9006
+    protocol: TCP
+
+service:
+  ports:
+    - port: 80
+      name: grpc
+      targetPort: 9006
+
+
+ingress:
+  enabled: true
+  objects:
+    - servicePort: 80
+      annotations:
+        # nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+      - name: {{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}
+        path: /
+
+config:
+  files:
+    config.yaml:
+      data: |-
+        ---
+        logger:
+            # log level
+            level: INFO
+
+        metrics:
+            # enable api metrics
+            enable: true
+
+        healthcheck:
+            # enables|disables health check handler
+            enable: true
+
+        server:
+            # server endpoint
+            endpoint: tcp://0.0.0.0:9006
+            # graceful shutdown period
+            graceful-shutdown: 30s
