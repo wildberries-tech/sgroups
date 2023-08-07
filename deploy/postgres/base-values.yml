@@ -8,9 +8,9 @@ image:
   pullPolicy: IfNotPresent
 
 env:
-  POSTGRES_USER: nkiver
-  POSTGRES_PASSWORD: nkiver
-  POSTGRES_DB: postgres
+  POSTGRES_USER: user_admin
+  POSTGRES_PASSWORD: swarm
+  POSTGRES_DB: swarm
 
 ports:
   - name: postgres

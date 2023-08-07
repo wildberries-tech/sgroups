@@ -38,7 +38,7 @@ include:
 
 generate build:
   variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft"
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft,sgroups-migration"
 
 
 generate deploy:
@@ -61,11 +61,13 @@ deploy:
       when: always
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       when: always
-
+    - if: $CI_COMMIT_BRANCH =~ /^master$/
+      when: always
 
 test-newman:
   before_script:
     - export HBF_HOST="swarm-ingress-controller.swarm.svc.k8s.dldevel"
+    - env
   image:
     name: '$DEFAULT_REGISTRY/swarm/swarm/testops/hbf_api_tests/sgroups-postman:dev-766c6abd'
   stage: deploy
@@ -77,29 +79,5 @@ test-newman:
     - node /usr/src/hbf_api_tests/index.js
   rules:
   - if: "$CI_COMMIT_BRANCH =~ /^dev$/"
-  - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
 
 
-".helm_destroy":
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-  when: always
-  needs:
-    - test-newman
-
-".helm_destroy_dev":
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-  when: always
-  needs:
-    - test-newman
-
-".helm_destroy_feature":
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-  when: always
-  needs:
-    - test-newman

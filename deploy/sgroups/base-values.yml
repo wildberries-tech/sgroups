@@ -7,15 +7,9 @@ image:
   tag: {{.Helm.Release.Tag}}
   pullPolicy: IfNotPresent
 
-command:
-  - /app/bin/sgroups
-
-args:
-  - --config
-  - /config/config.yaml
-
 env:
-  SG_STORAGE_POSTGRES_URL: postgres://nkiver:nkiver@postgres{{ (split "sgroups" .Helm.Release.Name)._1  }}:5432/postgres?sslmode=disable
+  SG_DB_USER: user_admin
+  SG_DB_NAME: swarm
   SG_STORAGE_TYPE: postgres
 
 ports:
@@ -41,14 +35,38 @@ ingress:
       - name: {{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}
         path: /
 
+initContainers:
+  migration:
+    command:
+      - "/bin/sh"
+    args:
+      - "/app/migration.sh"
+    env:
+      - name: SG_DB_NAME
+        value: swarm
+      - name: SG_DB_USER
+        value: user_admin
+    image: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups-migration:{{.Helm.Release.Tag}}
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 50m
+        memory: 50Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+
 config:
+  path: /app
   files:
     config.yaml:
       data: |-
         ---
         logger:
             # log level
-            level: INFO
+            level: DEBUG
 
         metrics:
             # enable api metrics
@@ -63,3 +81,33 @@ config:
             endpoint: tcp://0.0.0.0:9006
             # graceful shutdown period
             graceful-shutdown: 30s
+
+    entrypoint.sh:
+      data: |-
+        #!/bin/bash
+
+        SG_DB_USER=$SG_DB_USER
+        SG_DB_PASSWORD=$SG_DB_PASSWORD
+        SG_DB_URL=$SG_DB_URL
+        SG_DB_NAME=$SG_DB_NAME
+
+        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+
+        exec /app/bin/sgroups --config /app/config.yaml
+
+    migration.sh:
+      data: |-
+        #!/bin/bash
+
+        SG_DB_USER=$SG_DB_USER
+        SG_DB_PASSWORD=$SG_DB_PASSWORD
+        SG_DB_URL=$SG_DB_URL
+        SG_DB_NAME=$SG_DB_NAME
+
+        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+
+        exec /app/bin/goose -table=sgroups_db_ver postgres $SG_STORAGE_POSTGRES_URL up

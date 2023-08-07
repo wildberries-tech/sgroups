@@ -1,0 +1,17 @@
+vault:
+  enabled: true
+  env:
+    - services/swarm/prd/swarm-pgsql-cl1/user_admin:
+        SG_DB_PASSWORD: password
+    - services/swarm/prd/swarm-pgsql-cl1/pgsql_endpoints:
+        SG_DB_URL: haproxy_pgsql_allsync_0
+
+  entrypoint: "sh /app/entrypoint.sh"
+
+initContainers:
+  migration:
+    command:
+      - "/bin/sh"
+    args:
+      - -c
+      - . /vault/secrets/env && sh /app/migration.sh
