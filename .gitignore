@@ -2,4 +2,3 @@ vendor
 .idea
 .vscode
 bin
-deploy/rpm/artifacts

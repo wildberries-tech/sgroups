@@ -15,8 +15,8 @@ ARG WB_MIRROR
 
 # install updates and build executable
 RUN apk upgrade --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main && \
-    apk add make && \
-    make sg-service
+    apk add make git && \
+    make .install-goose
 
 # second release stage
 FROM alpine:${ALPINE_VER}
@@ -34,8 +34,9 @@ RUN addgroup -g 101 app && \
 WORKDIR /app/
 RUN mkdir -p /app/bin
 COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+COPY --from=builder --chown=app:app /src/internal/registry/sgroups/pg/migrations/ /app/
 
 # run container as new non-root user
 USER app
 
-CMD ["/app/bin/sgroups"]
+CMD ["/app/bin/goose"]
