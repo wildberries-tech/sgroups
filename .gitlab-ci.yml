@@ -79,5 +79,3 @@ test-newman:
     - node /usr/src/hbf_api_tests/index.js
   rules:
   - if: "$CI_COMMIT_BRANCH =~ /^dev$/"
-
-
