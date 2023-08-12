@@ -1,6 +1,6 @@
 .template_repo: &repo
   project: &ci_tmpl 'devops/ci/templates'
-  ref: &ci_tmpl_vers 'v3.6.1'
+  ref: &ci_tmpl_vers 'v3.7.0'
 
 variables:
   # Mandatory vars. Do not change this
@@ -15,15 +15,23 @@ variables:
   ALPINE_VER: "3.17"
   GO_TEST_FLAGS: "-mod=readonly"
 
+  JOB_ID: "$CI_JOB_ID"
 
   CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0,common-job"
-  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.1
+  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.2
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
-  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
+  # CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
   CI_TMPL_KUBE_CLUSTERS_STAGE: ""
   CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
   
+  CI_TMPL_HELM_CUSTOM_TG_TOKEN: "$TG_TOKEN"
+  CI_TMPL_HELM_CUSTOM_TG_GROUP_ID: "$TG_GROUP_ID"
+  CI_TMPL_HELM_CUSTOM_CI_PIPELINE_ID: "$CI_PIPELINE_ID"
+  CI_TMPL_HELM_CUSTOM_CI_JOB_ID: "$JOB_ID"
+  CI_TMPL_HELM_CUSTOM_CI_SOURCE_BRANCH_NAME: "$CI_COMMIT_BRANCH"
+  CI_TMPL_HELM_CUSTOM_COMMIT: "$CI_COMMIT_SHORT_SHA"
 
   # Harbor project name
   REGISTRY_PROJECT: "swarm"
@@ -31,51 +39,46 @@ variables:
   # Change deploy jobs appearance in pipeline
   CI_TMPL_DEPLOY_GROUPING: per-service
 
-
 include:
   - <<: *repo
     file: /pipelines/go.yml
 
 generate build:
+  tags:
+    - swarm
   variables:
     CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft,sgroups-migration"
 
 
 generate deploy:
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "postgres,sgroups"
-
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "postgres,sgroups"
-
-    - if: $CI_COMMIT_BRANCH =~ /^master$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "sgroups"
-
-deploy:
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-      when: always
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-      when: always
-    - if: $CI_COMMIT_BRANCH =~ /^master$/
-      when: always
-
-test-newman:
-  before_script:
-    - export HBF_HOST="swarm-ingress-controller.swarm.svc.k8s.dldevel"
-    - env
-  image:
-    name: '$DEFAULT_REGISTRY/swarm/swarm/testops/hbf_api_tests/sgroups-postman:dev-766c6abd'
-  stage: deploy
   tags:
-    - linux-docker-executor
-  needs:
-    - deploy
-  script:
-    - node /usr/src/hbf_api_tests/index.js
+    - swarm
   rules:
-  - if: "$CI_COMMIT_BRANCH =~ /^dev$/"
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+
+
+# workflow:
+#   rules:
+#   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH =~ /^feature-.*$/
+#     variables:
+#       CI_TMPL_ENVIRONMENT_NAME: feature
+#       CI_TMPL_ENV_RUNNER_TAG: swarm
+#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH == "dev"
+#     variables:
+#       CI_TMPL_ENVIRONMENT_NAME: dev
+#       CI_TMPL_ENV_RUNNER_TAG: dev
+#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH =~ /^release-.*$/
+#     variables:
+#       CI_TMPL_ENVIRONMENT_NAME: stage
+#       CI_TMPL_ENV_RUNNER_TAG: stage
+#   - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
+#     variables:
+#       CI_TMPL_ENVIRONMENT_NAME: prod
+#       CI_TMPL_ENV_RUNNER_TAG: prod
