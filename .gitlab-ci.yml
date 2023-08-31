@@ -61,24 +61,3 @@ generate deploy:
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
-
-
-# workflow:
-#   rules:
-#   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH =~ /^feature-.*$/
-#     variables:
-#       CI_TMPL_ENVIRONMENT_NAME: feature
-#       CI_TMPL_ENV_RUNNER_TAG: swarm
-#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH == "dev"
-#     variables:
-#       CI_TMPL_ENVIRONMENT_NAME: dev
-#       CI_TMPL_ENV_RUNNER_TAG: dev
-#   - if: $CI_TMPL_DEVELOPMENT_FLOW == "Git" && $CI_COMMIT_BRANCH =~ /^release-.*$/
-#     variables:
-#       CI_TMPL_ENVIRONMENT_NAME: stage
-#       CI_TMPL_ENV_RUNNER_TAG: stage
-#   - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
-#     variables:
-#       CI_TMPL_ENVIRONMENT_NAME: prod
-#       CI_TMPL_ENV_RUNNER_TAG: prod

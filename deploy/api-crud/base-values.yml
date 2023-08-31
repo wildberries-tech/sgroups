@@ -1,0 +1,67 @@
+imagePullSecrets:
+  - name: harbor-swarm-registry-secret
+  - name: harbor-registry-secret
+
+image:
+  repository: harbor.wildberries.ru/swarm/swarm/testops/api-reporter-crud/api-reporter-crud
+  tag: v0-0-5-4b4daf34
+  pullPolicy: IfNotPresent
+
+vault:
+  enabled: true
+  env:
+    - services/swarm/dev/swarm-pgsql-cl1-dev/user_admin:
+        DB_PASSWORD: password
+    # - services/swarm/dev/swarm-pgsql-cl1-dev/pgsql_endpoints:
+    #     DB_URL: haproxy_pgsql_allsync_0
+
+  entrypoint: "sh /app/entrypoint.sh"
+
+
+ports:
+  - name: http
+    containerPort: 9001
+    protocol: TCP
+
+service:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 9001
+
+ingress:
+  enabled: true
+  objects:
+    - servicePort: 80
+      annotations:
+        # nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+      - name: "{{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}"
+        path: /api
+
+env:
+  APP_PORT: "9001"
+  LOG_LVL: "DEBUG"
+  LOG_TYPE: "pretty"
+  STAGE: dev
+  INGRESS_NAME: "{{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}"
+  INGRESS_PORT: "80"
+  DB_USER: user_admin
+  DB_NAME: swarm
+ 
+config:
+  path: /app
+  files:
+    entrypoint.sh:
+      data: |-
+        #!/bin/bash
+        DB_URL=swarm-pgsql-cl1-dev-haproxy.swarm.svc.k8s.dldevel:5005
+        DB_USER=$DB_USER
+        DB_PASSWORD=$DB_PASSWORD
+        DB_URL=$DB_URL
+        DB_NAME=$DB_NAME
+
+        DATABASE_URL="postgres://${DB_USER}:${DB_PASSWORD}@${DB_URL}/${DB_NAME}?schema=api_report"
+        export DATABASE_URL=$DATABASE_URL
+        exec node index.js
