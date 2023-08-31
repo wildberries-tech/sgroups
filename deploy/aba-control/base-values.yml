@@ -1,0 +1,36 @@
+imagePullSecrets:
+  - name: harbor-swarm-registry-secret
+  - name: harbor-registry-secret
+
+image:
+  repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
+  tag: v1-0-3-fa0733fd
+  pullPolicy: IfNotPresent
+
+vault:
+  enabled: true
+  entrypoint: "sh /app/entrypoint.sh"
+
+env:
+  HBF_SERVER_REPOSITORY: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
+  HBF_SERVER_TAG: {{.Helm.Release.Tag}}
+  HBF_CLIENT_REPOSITORY: harbor.wildberries.ru/swarm/swarm/swarm/sgroups/to-nft
+  HBF_CLIENT_TAG: {{.Helm.Release.Tag}}
+  ABA_CLIENT_REPOSITORY: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
+  ABA_CLIENT_TAG: v1-0-3-fa0733fd
+  ABA_SERVER_REPOSITORY: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
+  ABA_SERVER_TAG: v1-0-3-fa0733fd
+  PIPELINE_ID: "{{.Helm.Custom.CiPipelineId}}"
+  JOB_ID: "{{.Helm.Custom.CiJobId}}"
+  REPORTER_PROTOCOL: http
+  REPORTER_HOST: 10.36.45.98
+  REPORTER_PORT: "80"
+  NAMESPACE: {{.Helm.Release.Namespace}}
+
+config:
+  path: /app
+  files:
+    entrypoint.sh:
+      data: |-
+        #!/bin/bash
+        exec npm run abathur
