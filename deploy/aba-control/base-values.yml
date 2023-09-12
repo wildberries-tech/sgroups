@@ -55,7 +55,7 @@ config:
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
         REPORTER_PROTOCOL=http
-        REPORTER_HOST=10.36.38.132
+        REPORTER_HOST=10.36.46.222
         REPORTER_PORT=80
         NAMESPACE={{.Helm.Release.Namespace}}
         HBF_TAG={{.Helm.Release.Tag}}
