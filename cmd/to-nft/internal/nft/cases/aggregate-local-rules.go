@@ -35,8 +35,8 @@ type (
 		}
 	}
 
-	// LocalRules -
-	LocalRules struct {
+	// SG2SGRules -
+	SG2SGRules struct {
 		SGs
 		In       []model.SGRule
 		Out      []model.SGRule
@@ -53,7 +53,7 @@ type (
 )
 
 // Load ...
-func (rules *LocalRules) Load(ctx context.Context, client SGClient, locals SGs) (err error) {
+func (rules *SG2SGRules) Load(ctx context.Context, client SGClient, locals SGs) (err error) {
 	const api = "LocalRules/Load"
 
 	defer func() {
@@ -93,7 +93,7 @@ func (rules *LocalRules) Load(ctx context.Context, client SGClient, locals SGs) 
 }
 
 // AllRules -
-func (rules LocalRules) AllRules() []model.SGRule {
+func (rules SG2SGRules) AllRules() []model.SGRule {
 	src := append(rules.In, rules.Out...)
 	ret := src[:0]
 	linq.From(src).DistinctBy(func(i any) any {
@@ -103,16 +103,16 @@ func (rules LocalRules) AllRules() []model.SGRule {
 		}
 		v := i.(model.SGRule)
 		return ri{
-			SgFrom: v.SgFrom.Name,
-			SgTo:   v.SgTo.Name,
-			Proto:  v.Transport,
+			SgFrom: v.ID.SgFrom,
+			SgTo:   v.ID.SgTo,
+			Proto:  v.ID.Transport,
 		}
 	}).ToSlice(&ret)
 	return ret
 }
 
 // IterateNetworks ...
-func (rules LocalRules) IterateNetworks(f func(sgName string, nets []net.IPNet, isV6 bool) error) error {
+func (rules SG2SGRules) IterateNetworks(f func(sgName string, nets []net.IPNet, isV6 bool) error) error {
 	var err error
 	type item = struct {
 		sg string
@@ -122,8 +122,8 @@ func (rules LocalRules) IterateNetworks(f func(sgName string, nets []net.IPNet, 
 		SelectMany(func(i any) linq.Query {
 			r := i.(model.SGRule)
 			return linq.From([...]item{
-				{sg: r.SgFrom.Name, nw: rules.Networks[r.SgFrom.Name]},
-				{sg: r.SgTo.Name, nw: rules.Networks[r.SgTo.Name]},
+				{sg: r.ID.SgFrom, nw: rules.Networks[r.ID.SgFrom]},
+				{sg: r.ID.SgTo, nw: rules.Networks[r.ID.SgTo]},
 			})
 		}).
 		Where(func(i any) bool {
@@ -147,7 +147,7 @@ func (rules LocalRules) IterateNetworks(f func(sgName string, nets []net.IPNet, 
 }
 
 // TemplatesOutRules -
-func (rules LocalRules) TemplatesOutRules() []RulesOutTemplate { //nolint:dupl
+func (rules SG2SGRules) TemplatesOutRules() []RulesOutTemplate { //nolint:dupl
 	type groupped = struct {
 		Sg    string
 		Proto model.NetworkTransport
@@ -156,11 +156,11 @@ func (rules LocalRules) TemplatesOutRules() []RulesOutTemplate { //nolint:dupl
 	linq.From(rules.Out).
 		GroupBy(
 			func(i any) any {
-				return i.(model.SGRule).SgFrom.Name
+				return i.(model.SGRule).ID.SgFrom
 			},
 			func(i any) any {
 				r := i.(model.SGRule)
-				return groupped{Sg: r.SgTo.Name, Proto: r.Transport}
+				return groupped{Sg: r.ID.SgTo, Proto: r.ID.Transport}
 			},
 		).
 		Where(func(i any) bool {
@@ -181,7 +181,7 @@ func (rules LocalRules) TemplatesOutRules() []RulesOutTemplate { //nolint:dupl
 }
 
 // TemplatesInRules -
-func (rules LocalRules) TemplatesInRules() []RulesInTemplate { //nolint:dupl
+func (rules SG2SGRules) TemplatesInRules() []RulesInTemplate { //nolint:dupl
 	type groupped = struct {
 		Sg    string
 		Proto model.NetworkTransport
@@ -190,11 +190,11 @@ func (rules LocalRules) TemplatesInRules() []RulesInTemplate { //nolint:dupl
 	linq.From(rules.In).
 		GroupBy(
 			func(i any) any {
-				return i.(model.SGRule).SgTo.Name
+				return i.(model.SGRule).ID.SgTo
 			},
 			func(i any) any {
 				r := i.(model.SGRule)
-				return groupped{Sg: r.SgFrom.Name, Proto: r.Transport}
+				return groupped{Sg: r.ID.SgFrom, Proto: r.ID.Transport}
 			},
 		).
 		Where(func(i any) bool {

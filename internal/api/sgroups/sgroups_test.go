@@ -21,9 +21,10 @@ func Test_SGroupsService_MemDB(t *testing.T) {
 		regMaker: func() registry.Registry {
 			m, e := registry.NewMemDB(registry.TblSecGroups,
 				registry.TblSecRules, registry.TblNetworks,
-				registry.TblSyncStatus,
+				registry.TblSyncStatus, registry.TblFqdnRules,
 				registry.IntegrityChecker4SG(),
-				registry.IntegrityChecker4Rules(),
+				registry.IntegrityChecker4SGRules(),
+				registry.IntegrityChecker4FqdnRules(),
 				registry.IntegrityChecker4Networks())
 			require.NoError(t, e)
 			return registry.NewRegistryFromMemDB(m)
@@ -143,8 +144,8 @@ func (sui *sGroupServiceTests) newSG(name string, nws ...string) *api.SecGroup {
 	}
 }
 
-func (sui *sGroupServiceTests) newPorts(s, d string) *api.Rule_Ports {
-	return &api.Rule_Ports{S: s, D: d}
+func (sui *sGroupServiceTests) newPorts(s, d string) *api.AccPorts {
+	return &api.AccPorts{S: s, D: d}
 }
 
 func (sui *sGroupServiceTests) Test_Sync_SecGroups() {
@@ -179,7 +180,7 @@ func (sui *sGroupServiceTests) Test_Sync_SecGroups() {
 	sui.Require().Equal(0, cn)
 }
 
-func (sui *sGroupServiceTests) newRule(from, to *api.SecGroup, tr common.Networks_NetIP_Transport, ports ...*api.Rule_Ports) *api.Rule {
+func (sui *sGroupServiceTests) newRule(from, to *api.SecGroup, tr common.Networks_NetIP_Transport, ports ...*api.AccPorts) *api.Rule {
 	return &api.Rule{
 		SgFrom:    from.Name,
 		SgTo:      to.Name,
@@ -205,8 +206,8 @@ func (sui *sGroupServiceTests) rule2Id(rules ...*api.Rule) []model.SGRuleIdentit
 	var ret []model.SGRuleIdentity
 	for _, r := range rules {
 		var id model.SGRuleIdentity
-		id.SgFrom.Name = r.SgFrom
-		id.SgTo.Name = r.SgTo
+		id.SgFrom = r.SgFrom
+		id.SgTo = r.SgTo
 		err := (networkTransport{&id.Transport}).
 			from(r.GetTransport())
 		sui.Require().NoError(err)
@@ -227,7 +228,7 @@ func (sui *sGroupServiceTests) Test_Sync_Rules() {
 	r := sui.reader()
 	m := make(map[string]bool)
 	err := r.ListSGRules(sui.ctx, func(rule model.SGRule) error {
-		m[rule.IdentityHash()] = true
+		m[rule.ID.IdentityHash()] = true
 		return nil
 	}, registry.NoScope)
 	sui.Require().NoError(err)
