@@ -15,9 +15,10 @@ variables:
   ALPINE_VER: "3.17"
   GO_TEST_FLAGS: "-mod=readonly"
 
+  JOB_ID: "$CI_JOB_ID"
 
   CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0,common-job"
-  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.1
+  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.2
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
   # CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
@@ -28,16 +29,15 @@ variables:
   CI_TMPL_HELM_CUSTOM_TG_TOKEN: "$TG_TOKEN"
   CI_TMPL_HELM_CUSTOM_TG_GROUP_ID: "$TG_GROUP_ID"
   CI_TMPL_HELM_CUSTOM_CI_PIPELINE_ID: "$CI_PIPELINE_ID"
-  JOB_ID: "$CI_JOB_ID"
   CI_TMPL_HELM_CUSTOM_CI_JOB_ID: "$JOB_ID"
-  CI_TMPL_HELM_CUSTOM_CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
-  CI_TMPL_HELM_CUSTOM_CI_MERGE_REQUEST_TARGET_BRANCH_NAME: "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
+  CI_TMPL_HELM_CUSTOM_CI_SOURCE_BRANCH_NAME: "$CI_COMMIT_BRANCH"
+  CI_TMPL_HELM_CUSTOM_COMMIT: "$CI_COMMIT_SHORT_SHA"
+
   # Harbor project name
   REGISTRY_PROJECT: "swarm"
 
   # Change deploy jobs appearance in pipeline
   CI_TMPL_DEPLOY_GROUPING: per-service
-
 
 include:
   - <<: *repo
@@ -54,18 +54,10 @@ generate deploy:
   tags:
     - swarm
   rules:
-    # - if: $CI_COMMIT_BRANCH =~ /^dev$/
-    #   variables:
-    #     CI_TMPL_HELM_RELEASE_NAMES: "api-crud,hbf-crud,aba-control"
-
-    # - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
-    #   variables:
-    #     CI_TMPL_HELM_RELEASE_NAMES: "api-crud,hbf-crud,aba-control"
-
     - if: $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
 
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
