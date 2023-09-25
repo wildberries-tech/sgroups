@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: feature-delete-job-554eaa78
+  tag: dev-0c8843e9
   pullPolicy: IfNotPresent
 
 vault:
@@ -46,22 +46,59 @@ config:
       data: |
         HBF_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
         HBF_SERVER_TAG={{.Helm.Release.Tag}}
+
         HBF_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/to-nft
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
+
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=feature-delete-job-554eaa78
+        ABA_CLIENT_TAG=dev-0c8843e9
+
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=feature-delete-job-554eaa78
+        ABA_SERVER_TAG=dev-0c8843e9
+
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
-        REPORTER_PROTOCOL=http
-        REPORTER_HOST=10.36.46.222
-        REPORTER_PORT=80
         NAMESPACE={{.Helm.Release.Namespace}}
         HBF_TAG={{.Helm.Release.Tag}}
         CI_SOURCE_BRANCH_NAME={{.Helm.Custom.CiSourceBranchName}}
         CI_TARGET_BRANCH_NAME=main
         COMMIT={{.Helm.Custom.Commit}}
-        ABA_CONTROL_IP=29.64.0.231
+        
         IS_DESTROY_AFTER=true
 
+        F_HBF_SERVER_IP=29.64.0.232
+        F_HBF_SERVER_PORT=9006
+
+        A_HBF_SERVER_IP=29.64.0.233
+        A_HBF_SERVER_PORT=9006
+
+        HBF_REPORTER_PROTOCOL=http
+        HBF_REPORTER_HOST=10.36.46.22
+        HBF_REPORTER_PORT=80
+
+        API_REPORTER_PROTOCOL=http
+        API_REPORTER_HOST=10.36.46.22
+        API_REPORTER_PORT=80
+
+        ABA_CONTROL_IP=29.64.0.231
+        ABA_CONTROL_PORT=9091
+
+        # 1-func 2-api 99-all
+        SCENARIO=99
+        TG_TOKEN=5996680756:AAGHDMu5WnkaVioGJbesVJMv8irooQvfL7g
+        TG_GROUP_ID=-1001959123261
+
+        API_TEST_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/hbf_api_tests/sgroups-postman
+        API_TEST_TAG=dev-b50c5ed6
+        API_TEST_IP=29.64.0.255
+
+        ABA_SERVER_CPU=100m
+        ABA_SERVER_MEM=500Mi
+        ABA_CLIENT_CPU=100m
+        ABA_CLIENT_MEM=500Mi
+        HBF_SERVER_CPU=100m
+        HBF_SERVER_MEM=100Mi
+        HBF_CLIENT_CPU=100m
+        HBF_CLIENT_MEM=100Mi
+        API_TEST_CPU=300m
+        API_TEST_MEM=300Mi
