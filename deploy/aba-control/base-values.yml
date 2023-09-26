@@ -64,7 +64,7 @@ config:
         CI_TARGET_BRANCH_NAME=main
         COMMIT={{.Helm.Custom.Commit}}
         
-        IS_DESTROY_AFTER=false
+        IS_DESTROY_AFTER=true
 
         F_HBF_SERVER_IP=29.64.0.232
         F_HBF_SERVER_PORT=9006
