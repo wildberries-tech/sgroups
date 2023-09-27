@@ -1,6 +1,6 @@
 .template_repo: &repo
   project: &ci_tmpl 'devops/ci/templates'
-  ref: &ci_tmpl_vers 'v3.7.0'
+  ref: &ci_tmpl_vers 'v3.7.1'
 
 variables:
   # Mandatory vars. Do not change this
