@@ -41,7 +41,23 @@ variables:
 
 include:
   - <<: *repo
-    file: /pipelines/go.yml
+    file: /global.yml
+  - <<: *repo
+    file: /checks.yml
+  - <<: *repo
+    file: /go/global.yml
+  - <<: *repo
+    file: /docker/build.yml
+  - <<: *repo
+    file: /helm/deploy.yml
+
+stages:
+  - checks
+  - generate dynamic pipeline
+  - build
+  - deploy
+  - check approve
+
 
 generate build:
   tags:
