@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: dev-b31b0ae3
+  tag: dev-aa20665a
   pullPolicy: IfNotPresent
 
 vault:
@@ -51,10 +51,10 @@ config:
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=dev-b31b0ae3
+        ABA_CLIENT_TAG=dev-aa20665a
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=dev-b31b0ae3
+        ABA_SERVER_TAG=dev-aa20665a
 
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
