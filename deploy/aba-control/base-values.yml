@@ -90,7 +90,7 @@ config:
         TG_GROUP_ID=-1001959123261
 
         API_TEST_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/hbf_api_tests/sgroups-postman
-        API_TEST_TAG=dev-b50c5ed6
+        API_TEST_TAG=dev-e86aeae4
         API_TEST_IP=29.64.0.255
 
         ABA_SERVER_CPU=100m
