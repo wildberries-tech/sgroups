@@ -83,6 +83,8 @@ config:
 
         ABA_CONTROL_IP=29.64.0.231
         ABA_CONTROL_PORT=9091
+        ABA_PROXY_PROTOCOL=http
+        ABA_PROXY_PORT=9092
 
         # 1-func 2-api 99-all
         SCENARIO=99
