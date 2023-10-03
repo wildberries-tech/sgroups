@@ -4,7 +4,7 @@ vault:
     - services/swarm/prd/swarm-pgsql-cl1/user_admin:
         SG_DB_PASSWORD: password
     - services/swarm/prd/swarm-pgsql-cl1/pgsql_endpoints:
-        SG_DB_URL: haproxy_pgsql_allsync_1
+        SG_DB_URL: k8s_haproxy_pgsql_master
 
   entrypoint: "sh /app/entrypoint.sh"
 
