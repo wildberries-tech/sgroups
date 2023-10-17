@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: dev-f6d57694
+  tag: v1-1-0-8662ba6e
   pullPolicy: IfNotPresent
 
 vault:
@@ -32,6 +32,11 @@ labels:
 extendedLabels:
   instance: p{{.Helm.Custom.CiPipelineId}}-abathur-control
 
+env:
+  #log types: pretty, json
+  LOG_TYPE: pretty
+  LOG_LVL: debug
+
 config:
   version: v2
   files:
@@ -51,10 +56,10 @@ config:
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=dev-f6d57694
+        ABA_CLIENT_TAG=v1-1-0-8662ba6e
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=dev-f6d57694
+        ABA_SERVER_TAG=v1-1-0-8662ba6e
 
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
