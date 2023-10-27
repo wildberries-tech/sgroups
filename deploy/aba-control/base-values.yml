@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v1-1-0-8662ba6e
+  tag: v2-0-1-c89ec820
   pullPolicy: IfNotPresent
 
 vault:
@@ -36,6 +36,10 @@ env:
   #log types: pretty, json
   LOG_TYPE: pretty
   LOG_LVL: debug
+  #1-func 2-api 99-all
+  SCENARIO: 99
+  #simple-s2s,simple-s2f,advanced-changeip
+  FUNC_SCENARIO: simple-s2s,simple-s2f,advanced-changeip
 
 config:
   version: v2
@@ -44,11 +48,14 @@ config:
       path: /app
       data: |
         #!/bin/bash
+
         exec node index.js
 
     config.properties:
       path: /usr/src/control/props
       data: |
+        IMAGE_PULL_SECRETS=harbor-swarm-registry-secret,harbor-registry-secret
+
         HBF_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups
         HBF_SERVER_TAG={{.Helm.Release.Tag}}
 
@@ -56,11 +63,10 @@ config:
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v1-1-0-8662ba6e
+        ABA_CLIENT_TAG=v2-0-1-c89ec820
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v1-1-0-8662ba6e
-
+        ABA_SERVER_TAG=v2-0-1-c89ec820
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
@@ -72,18 +78,24 @@ config:
         
         IS_DESTROY_AFTER=true
 
-        F_HBF_SERVER_IP=29.64.0.232
-        F_HBF_SERVER_PORT=9006
+        S2S_HBF_SERVER_IP=29.64.0.232
+        S2S_HBF_SERVER_PORT=9006
+
+        S2F_HBF_SERVER_IP=29.64.1.232
+        S2F_HBF_SERVER_PORT=9006
+
+        CANGE_IP_HBF_SERVER_IP=29.64.2.232
+        CANGE_IP_HBF_SERVER_PORT=9006
 
         A_HBF_SERVER_IP=29.64.0.233
         A_HBF_SERVER_PORT=9006
 
         HBF_REPORTER_PROTOCOL=http
-        HBF_REPORTER_HOST=testops-ingress-controller.testops.svc.k8s.dldevel
+        HBF_REPORTER_HOST=testops-ingress-controller.testops.svc.k8s.prod-dl
         HBF_REPORTER_PORT=80
 
         API_REPORTER_PROTOCOL=http
-        API_REPORTER_HOST=testops-ingress-controller.testops.svc.k8s.dldevel
+        API_REPORTER_HOST=testops-ingress-controller.testops.svc.k8s.prod-dl
         API_REPORTER_PORT=80
 
         ABA_CONTROL_IP=29.64.0.231
@@ -91,13 +103,11 @@ config:
         ABA_PROXY_PROTOCOL=http
         ABA_PROXY_PORT=9092
 
-        # 1-func 2-api 99-all
-        SCENARIO=99
         TG_TOKEN=5996680756:AAGHDMu5WnkaVioGJbesVJMv8irooQvfL7g
         TG_GROUP_ID=-1001959123261
 
         API_TEST_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/hbf_api_tests/sgroups-postman
-        API_TEST_TAG=dev-e86aeae4
+        API_TEST_TAG=v1-1-1-cdbc7490
         API_TEST_IP=29.64.0.255
 
         ABA_SERVER_CPU=100m
