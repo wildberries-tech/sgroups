@@ -55,7 +55,7 @@ values = {[
 
 <TabItem value="terraform">
 
-```json title="terraform"
+```hcl title="terraform"
 resource "sgroups_network" "network-1" {
     name    = network-1
     cidr    = 10.1.0.0/24
@@ -72,7 +72,7 @@ resource "sgroups_network" "network-2" {
 </Tabs>
 
 ## Группа безопасности
-<span class="text-justify">
+<span className="text-justify">
 Группа безопасности - абстрактный объект системы, объединяющий наборы подсетей на основе логической связи.
  Она используется для управления доступом к ресурсам в системе и упрощения описания правил доступа. 
  Это позволяет обеспечить эффективное управление доступом и достичь высокой производительности системы в целом.  
@@ -121,7 +121,7 @@ curl -X 'POST' \
 </TabItem>
 <TabItem value="terraform">
 
-``` terraform title="terraform"
+```hcl title="terraform"
 resource "sgroups_group" "group-1" {
     depends_on = [
         sgroups_network.network-1
@@ -200,7 +200,7 @@ curl -X 'POST' \
 </TabItem>
 <TabItem value="terraform">
 
-``` terraform title="terraform"
+```hcl title="terraform"
 resource "sgroups_rule" "rules" {
     depends_on = [
     sgroups_group.group-1,

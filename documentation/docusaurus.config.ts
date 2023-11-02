@@ -68,12 +68,12 @@ const config: Config = {
           position: 'left',
           label: 'Настройки'
         },
-        {
-          type: 'doc',
-          label: 'Swagger',
-          position: 'left',
-          docId: 'swagger'
-        }
+        // {
+        //   type: 'doc',
+        //   label: 'Swagger',
+        //   position: 'left',
+        //   docId: 'swagger'
+        // }
       ],
     },
     footer: {
@@ -83,7 +83,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash']
+      additionalLanguages: ['bash', 'hcl']
     },
   } satisfies Preset.ThemeConfig,
 };
