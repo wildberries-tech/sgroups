@@ -1,0 +1,11 @@
+---
+id: swagger
+---
+import { MDXProvider } from '@mdx-js/react';
+import Swagger from '../src/components/swagger';
+
+<MDXProvider components={Swagger}>
+  # API Documentation
+
+  <Swagger url="./swagger.json" />
+</MDXProvider>
