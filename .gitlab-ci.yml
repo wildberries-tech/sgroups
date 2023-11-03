@@ -50,15 +50,39 @@ include:
     file: /docker/build.yml
   - <<: *repo
     file: /helm/deploy.yml
-  - local: 'documentation/doc.yml'
 
 stages:
-  - test
+  - testDoc
+  - deployDoc
   - checks
   - generate dynamic pipeline
   - build
   - deploy
   - check approve
+
+testDoc:
+  stage: testDoc
+  image: node:18
+  script:
+    - npm ci
+    - npm run build
+  tags:
+    - dev
+  only:
+    - swarm-156
+
+deployDoc:
+  stage: deployDoc
+  image: node:18
+  script:
+    - cd documentation 
+    - npm ci
+    - npm run build
+    - mv ./build ../public
+  tags:
+    - dev
+  only:
+    - swarm-156
 
 generate build:
   tags:
