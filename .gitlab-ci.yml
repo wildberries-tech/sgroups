@@ -53,6 +53,7 @@ include:
   - local: 'documentation/doc.yml'
 
 stages:
+  - test
   - checks
   - generate dynamic pipeline
   - build
