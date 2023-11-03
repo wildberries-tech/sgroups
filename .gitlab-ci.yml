@@ -52,43 +52,17 @@ include:
     file: /helm/deploy.yml
 
 stages:
-  - testDoc
-  - deployDoc
   - checks
   - generate dynamic pipeline
   - build
   - deploy
   - check approve
 
-testDoc:
-  stage: testDoc
-  image: node:18
-  script:
-    - npm ci
-    - npm run build
-  tags:
-    - dev
-  only:
-    - swarm-156
-
-deployDoc:
-  stage: deployDoc
-  image: node:18
-  script:
-    - cd documentation 
-    - npm ci
-    - npm run build
-    - mv ./build ../public
-  tags:
-    - dev
-  only:
-    - swarm-156
-
 generate build:
   tags:
     - swarm
   variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft,sgroups-migration,terraform-provider-sgroups"
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
 
 
 generate deploy:
@@ -97,11 +71,11 @@ generate deploy:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job,documentation@common-job"
 
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job,documentation@common-job"
 
     - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
       variables:
