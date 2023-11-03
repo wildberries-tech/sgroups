@@ -50,6 +50,7 @@ include:
     file: /docker/build.yml
   - <<: *repo
     file: /helm/deploy.yml
+  - local: 'documentation/doc.yml'
 
 stages:
   - checks
@@ -57,7 +58,6 @@ stages:
   - build
   - deploy
   - check approve
-
 
 generate build:
   tags:

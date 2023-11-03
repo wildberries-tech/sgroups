@@ -1,0 +1,30 @@
+image: node:18
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - npm ci --force
+    - npm run build
+  tags:
+    - dev
+  only:
+    - swarm-156
+
+pages:
+  stage: deploy
+  script:
+    - cd documentation 
+    - npm ci --force
+    - npm run build
+    - mv ./build ../public
+  tags:
+    - dev
+  artifacts:
+    paths:
+      - public
+  only: 
+    - swarm-156
