@@ -7,6 +7,10 @@ image:
   tag: {{.Helm.Release.Tag}}
   pullPolicy: IfNotPresent
 
+ports:
+  - name: http
+    containerPort: 3000
+
 service:
   ports:
     - port: 80
