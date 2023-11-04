@@ -1,5 +1,5 @@
 FROM node:18
 WORKDIR /usr/src/app
 COPY ./documentation/ .
-RUN npm install
+RUN npm ci
 CMD ["npm", "run", "start"]
