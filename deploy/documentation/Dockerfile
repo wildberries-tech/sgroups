@@ -1,12 +1,5 @@
-FROM node:18 as builder
+FROM node:18
 WORKDIR /usr/src/app
 COPY ./documentation/ .
 RUN npm install
 CMD ["npm", "run", "start"]
-
-# RUN npm run build
-
-# FROM node:18
-# WORKDIR /usr/src/swarm_doc
-# COPY --from=builder /usr/src/app/build .
-# CMD ["sleep", "infinity"]
