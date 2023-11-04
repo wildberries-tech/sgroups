@@ -1,7 +1,7 @@
 FROM node:18 as builder
 WORKDIR /usr/src/app
 COPY ./documentation/ .
-RUN npm ci
+RUN npm install
 CMD ["npm", "run", "start"]
 
 # RUN npm run build
