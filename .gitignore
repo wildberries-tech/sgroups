@@ -8,7 +8,7 @@ bin
 documentation/node_modules
 
 # Production
-documentation//build
+documentation/build
 
 # Generated files
 documentation/.docusaurus

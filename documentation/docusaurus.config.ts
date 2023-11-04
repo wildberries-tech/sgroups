@@ -67,13 +67,7 @@ const config: Config = {
           sidebarId: 'settingsSidebar',
           position: 'left',
           label: 'Настройки'
-        },
-        // {
-        //   type: 'doc',
-        //   label: 'Swagger',
-        //   position: 'left',
-        //   docId: 'swagger'
-        // }
+        }
       ],
     },
     footer: {
