@@ -7,3 +7,4 @@ RUN npm run build
 FROM node:18
 WORKDIR /usr/src/swarm_doc
 COPY --from=builder /usr/src/app/build .
+CMD ["sleep", "infinity"]
