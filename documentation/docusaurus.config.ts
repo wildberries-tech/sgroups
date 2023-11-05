@@ -7,7 +7,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'http://swarm-ingress-controller.swarm.svc.k8s.dldevel',
+  url: 'http://swarm-ingress-controller.swarm.svc.k8s.prod-dl',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/swarm_doc/',

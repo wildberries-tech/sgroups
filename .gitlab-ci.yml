@@ -22,7 +22,7 @@ variables:
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
   # CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
-  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm,k8s.dldevel"
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
   CI_TMPL_KUBE_CLUSTERS_STAGE: ""
   CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
   
