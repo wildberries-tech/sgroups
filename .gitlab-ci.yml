@@ -62,8 +62,7 @@ generate build:
   tags:
     - swarm
   variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
-
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
 
 generate deploy:
   tags:
