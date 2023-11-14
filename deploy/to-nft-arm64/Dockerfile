@@ -2,7 +2,7 @@
 # by default uses alpine-based image
 # golang 1.20
 # alpine 3.17
-# arch linux/amd64
+# arch linux/arm64/v8
 FROM golang:${GO_VER}-alpine${ALPINE_VER} as builder
 
 # copy all source code for build
@@ -16,12 +16,12 @@ ARG WB_MIRROR
 # install updates and build executable
 RUN apk upgrade --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main && \
     apk add make && \
-    make sg-service platform=linux/amd64
+    make to-nft platform=linux/arm64
 
+# second release stage
 # alpine 3.17
-# arch linux/amd64
+# arch linux/arm64/v8
 FROM alpine:${ALPINE_VER}
-
 
 ARG ALPINE_VER
 ARG WB_MIRROR
@@ -34,10 +34,9 @@ RUN addgroup -g 101 app && \
 
 # place all necessary executables and other files into /app directory
 WORKDIR /app/
-RUN mkdir -p /app/bin
-COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+COPY --from=builder --chown=app:app /src/ .
 
 # run container as new non-root user
 USER app
 
-CMD ["/app/bin/sgroups"]
+CMD ["/app/bin/to-nft"]

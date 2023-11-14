@@ -1,8 +1,8 @@
-ARG GO_VER
-ARG ALPINE_VER
-
 # first build stage
 # by default uses alpine-based image
+# golang 1.20
+# alpine 3.17
+# arch linux/amd64
 FROM golang:${GO_VER}-alpine${ALPINE_VER} as builder
 
 # copy all source code for build
@@ -16,9 +16,11 @@ ARG WB_MIRROR
 # install updates and build executable
 RUN apk upgrade --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main && \
     apk add make && \
-    make to-nft
+    make to-nft platform=linux/amd64
 
 # second release stage
+# alpine 3.17
+# arch linux/amd64
 FROM alpine:${ALPINE_VER}
 
 ARG ALPINE_VER
