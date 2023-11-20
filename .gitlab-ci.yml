@@ -17,8 +17,6 @@
     - cp bin/${PACKAGE} ${PACKAGE}_${STRIPPED_VERSION}_amd64/usr/local/bin/${PACKAGE}
     - cp deploy/${PACKAGE}/control ${PACKAGE}_${STRIPPED_VERSION}_amd64/DEBIAN/control
     - dpkg-deb --root-owner-group --build ./${PACKAGE}_${STRIPPED_VERSION}_amd64
-    - ls -lah | grep deb
-    - echo 
     - 'curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}_${STRIPPED_VERSION}_amd64.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
   tags:
     - dev
@@ -121,7 +119,7 @@ to-nft-deb:
 
 generate build:
   variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,terraform-provider-sgroups-v2,documentation"
 
 generate deploy:
   rules:
