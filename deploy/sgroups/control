@@ -1,0 +1,5 @@
+Package: sgroups
+Version: version
+Architecture: amd64
+Maintainer: wildberries/swarm
+Description: HBF-server.

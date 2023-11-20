@@ -2,6 +2,26 @@
   project: &ci_tmpl 'devops/ci/templates'
   ref: &ci_tmpl_vers 'v3.7.1'
 
+.template_deb_build:
+  image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:feature-golang-deb-image-15393609
+  after_script:
+    - mkdir -p ./${PACKAGE}_${VERSION}_amd64/usr/local/bin
+    - cp bin/${PACKAGE} ${PACKAGE}_${VERSION}_amd64/usr/local/bin/${PACKAGE}
+    - mkdir -p ./${PACKAGE}_${VERSION}_amd64/DEBIAN
+    - sed -i deploy/${PACKAGE}/control -e "s/version/$VERSION/"
+    - cp deploy/${PACKAGE}/control ${PACKAGE}_${VERSION}_amd64/DEBIAN/control
+    - dpkg-deb --root-owner-group --build ./${PACKAGE}_${VERSION}_amd64
+    - ls -lah | grep deb
+    - 'curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}_${VERSION}_amd64.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+  tags:
+    - dev
+    - docker
+    - linux
+
+default:
+  tags:
+    - swarm
+
 variables:
   # Mandatory vars. Do not change this
   CI_TMPL_PROJECT: *ci_tmpl
@@ -39,6 +59,10 @@ variables:
   # Change deploy jobs appearance in pipeline
   CI_TMPL_DEPLOY_GROUPING: per-service
 
+  MAJOR_VERSION: 1
+  NEXUS_URL: http://swarm-nexus-ingress-controller.swarm-nexus.svc.k8s.prod-dl/repository
+  NEXUS_REPO: swarm-apt-hosted
+
 include:
   - <<: *repo
     file: /global.yml
@@ -58,15 +82,41 @@ stages:
   - deploy
   - check approve
 
+sgroups-deb:
+  stage: build
+  extends: .template_deb_build
+  script:
+    - make sg-service platform=linux/amd64
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        VERSION: $MAJOR_VERSION-$CI_COMMIT_BRANCH
+    - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
+      variables:
+        VERSION: $CI_COMMIT_TAG{1:}
+  variables:
+    PACKAGE: sgroups
+
+to-nft-deb:
+  stage: build
+  extends: .template_deb_build
+  script:
+    - make to-nft platform=linux/amd64
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        VERSION: $MAJOR_VERSION-$CI_COMMIT_BRANCH
+    - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
+      variables:
+        VERSION: CI_COMMIT_TAG
+  variables:
+    PACKAGE: to-nft
+
 generate build:
-  tags:
-    - swarm
   variables:
     CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
 
 generate deploy:
-  tags:
-    - swarm
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
