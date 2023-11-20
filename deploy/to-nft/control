@@ -1,0 +1,5 @@
+Package: to-nft
+Version: version
+Architecture: amd64
+Maintainer: wildberries/swarm
+Description: HBF-agent.
