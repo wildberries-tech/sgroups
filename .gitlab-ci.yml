@@ -59,22 +59,22 @@ stages:
   - check approve
 
 generate build:
-  tags:
-    - swarm
   variables:
     CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,documentation"
 
 generate deploy:
-  tags:
-    - swarm
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job,documentation"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
 
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job,documentation"
+        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+
+    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "documentation"
 
     - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
       variables:
