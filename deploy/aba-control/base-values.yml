@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v2-0-2-a7b90b27
+  tag: v2-0-5-df3db2d0
   pullPolicy: IfNotPresent
 
 vault:
@@ -38,8 +38,8 @@ env:
   LOG_LVL: debug
   #1-func 2-api 99-all
   SCENARIO: 99
-  #simple-s2s,simple-s2f,advanced-changeip
-  FUNC_SCENARIO: simple-s2s,simple-s2f,advanced-changeip
+  #simple-s2s,simple-s2f,advanced-changeip,advanced-icmp
+  FUNC_SCENARIO: simple-s2s,simple-s2f,advanced-changeip,advanced-icmp
 
 config:
   version: v2
@@ -63,10 +63,10 @@ config:
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v2-0-2-a7b90b27
+        ABA_CLIENT_TAG=v2-0-5-df3db2d0
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v2-0-2-a7b90b27
+        ABA_SERVER_TAG=v2-0-5-df3db2d0
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
@@ -86,6 +86,9 @@ config:
 
         CANGE_IP_HBF_SERVER_IP=29.64.2.232
         CANGE_IP_HBF_SERVER_PORT=9006
+
+        ICMP_HBF_SERVER_IP=29.64.3.232
+        ICMP_HBF_SERVER_PORT=9006
 
         A_HBF_SERVER_IP=29.64.0.233
         A_HBF_SERVER_PORT=9006
