@@ -19,22 +19,16 @@ RUN apk upgrade --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main && \
     make sgroups-tf-v2
 
 # second release stage
-FROM alpine:${ALPINE_VER}
+ARG APP_VER \
+    HOME=/root \
+    TERRAFORM_VER=1.6.3
 
-ARG ALPINE_VER
-ARG WB_MIRROR
+FROM $REGISTRY/$WB_DOCKER_PROXY/hashicorp/terraform:$TERRAFORM_VER
 
-# create user other than root and install updated
-RUN addgroup -g 101 app && \
-    adduser -H -u 101 -G app -s /bin/sh -D app && \
-    apk update --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main && \
-    apk upgrade --no-cache -X $WB_MIRROR/alpine/v${ALPINE_VER}/main
+RUN apk add --no-cache vault libcap && \
+    setcap cap_ipc_lock= /usr/sbin/vault
 
-# place all necessary executables and other files into /app directory
-WORKDIR /app/
-COPY --from=builder --chown=app:app /src .
-
-# run container as new non-root user
-USER app
-
-CMD ["/app/bin/terraform-provider-sgroups"]
+ARG PLUGIN_PATH=$HOME/.terraform.d/plugins/registry.terraform.io/wb/sgroups/$APP_VER/linux_amd64
+COPY --from=builder /app/bin/terraform-provider-sgroups $PLUGIN_PATH/terraform-provider-sgroups_v2$APP_VER
+WORKDIR $HOME
+COPY deploy/terraform-provider-sgroups-v2/.terraformrc .
