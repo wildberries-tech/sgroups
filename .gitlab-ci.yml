@@ -31,10 +31,11 @@ variables:
   # Mandatory vars. Do not change this
   CI_TMPL_PROJECT: *ci_tmpl
   CI_TMPL_PROJECT_VERSION: *ci_tmpl_vers
-
   #
   # Language specific vars. Most likly need to specify
-  # 
+  #
+  APP_VER: "1.0.4"
+  BUILD_CUSTOM_ARGS: "APP_VER=${APP_VER},TERRAFORM_VER=1.6.3"
   GO_MAIN_PATH: ./app
   GO_VER: "1.20"
   ALPINE_VER: "3.17"
@@ -119,7 +120,7 @@ to-nft-deb:
 
 generate build:
   variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups,terraform-provider-sgroups-v2,documentation"
+    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2,documentation"
 
 generate deploy:
   rules:
