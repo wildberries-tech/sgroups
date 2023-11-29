@@ -3,7 +3,7 @@
   ref: &ci_tmpl_vers 'v3.7.1'
 
 .template_deb_build:
-  image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:feature-golang-deb-image-15393609
+  image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:v0-0-8-0ff308cb
 
   after_script:
     - |
