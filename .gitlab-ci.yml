@@ -17,7 +17,7 @@
       --version "${VERSION}" \
       bin/${PACKAGE}=/usr/bin/${PACKAGE}
     - ls -lah | grep .deb
-    - 'curl -I -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}${PREFIX}_${VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+    - 'curl -i -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}${PREFIX}_${VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
