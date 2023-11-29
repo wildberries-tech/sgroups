@@ -4,28 +4,34 @@
 
 .template_deb_build:
   image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:v0-0-8-0ff308cb
-
   after_script:
     - |
-      STRIPPED_VERSION="${CI_COMMIT_TAG#v}"
-        if [ -z "$STRIPPED_VERSION" ]; then
-        STRIPPED_VERSION="${VERSION}"
-        fi
-    - mkdir -p ./${PACKAGE}_${STRIPPED_VERSION}_amd64/usr/local/bin
-    - mkdir -p ./${PACKAGE}_${STRIPPED_VERSION}_amd64/DEBIAN
-    - sed -i deploy/${PACKAGE}/control -e "s/version/${STRIPPED_VERSION}/"
-    - cp bin/${PACKAGE} ${PACKAGE}_${STRIPPED_VERSION}_amd64/usr/local/bin/${PACKAGE}
-    - cp deploy/${PACKAGE}/control ${PACKAGE}_${STRIPPED_VERSION}_amd64/DEBIAN/control
-    - dpkg-deb --root-owner-group --build ./${PACKAGE}_${STRIPPED_VERSION}_amd64
-    - 'curl -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}_${STRIPPED_VERSION}_amd64.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+      fpm \
+      -n "${PACKAGE}${PREFIX}" \
+      -s dir \
+      -t deb \
+      -a "${ARCH}" \
+      --license "Apache Software License 2.0" \
+      --maintainer "${MAINTAINER}" \
+      --description "${DESCRIPTION}" \
+      --version "${VERSION}" \
+      bin/${PACKAGE}=/usr/bin/${PACKAGE}
+    - ls -lah | grep .deb
+    - 'curl -vvv -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}${PREFIX}_${VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        VERSION: $APP_VER
+        PREFIX: -${CI_COMMIT_BRANCH}
+    - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
+      variables:
+        VERSION: ${CI_COMMIT_TAG:1}
+
+default:
   tags:
     - dev
     - docker
     - linux
-
-default:
-  tags:
-    - swarm
 
 variables:
   # Mandatory vars. Do not change this
@@ -64,9 +70,11 @@ variables:
   # Change deploy jobs appearance in pipeline
   CI_TMPL_DEPLOY_GROUPING: per-service
 
-  MAJOR_VERSION: 1
   NEXUS_URL: http://swarm-nexus-ingress-controller.swarm-nexus.svc.k8s.prod-dl/repository
   NEXUS_REPO: swarm-apt-hosted
+
+  MAINTAINER: "Putilin Dmitry <putilin.dmitriy3@wb.ru>"
+  ARCH: amd64
 
 include:
   - <<: *repo
@@ -92,31 +100,18 @@ sgroups-deb:
   extends: .template_deb_build
   script:
     - make sg-service platform=linux/amd64
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
-      variables:
-        VERSION: $MAJOR_VERSION-$CI_COMMIT_BRANCH
-    - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
-      variables:
-        VERSION: $CI_COMMIT_TAG
-
   variables:
     PACKAGE: sgroups
+    DESCRIPTION: HBF-server.
 
 to-nft-deb:
   stage: build
   extends: .template_deb_build
   script:
     - make to-nft platform=linux/amd64
-  rules:
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
-      variables:
-        VERSION: $MAJOR_VERSION-$CI_COMMIT_BRANCH
-    - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
-      variables:
-        VERSION: $CI_COMMIT_TAG
   variables:
     PACKAGE: to-nft
+    DESCRIPTION: HBF-agent.
 
 generate build:
   variables:

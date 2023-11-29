@@ -168,11 +168,4 @@ ifneq ($(PG_URI),)
 	$(GOOSE) -table=sgroups_db_ver postgres $(PG_URI) up
 else
 	$(error need define PG_URI environment variable)
-endif	
-
-
-
-
-	
-	
-
+endif
