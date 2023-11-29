@@ -6,6 +6,15 @@
   image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:v0-0-8-0ff308cb
   after_script:
     - |
+      STRIPPED_VERSION="${CI_COMMIT_TAG#v}"
+      if [ -z "$STRIPPED_VERSION" ]; then
+      STRIPPED_VERSION="${VERSION}"
+      fi
+
+      if [ -z "$PREFIX" ]; then
+      PREFIX=""
+      fi
+    - |
       fpm \
       -n "${PACKAGE}${PREFIX}" \
       -s dir \
