@@ -1,40 +1,32 @@
 .template_repo: &repo
   project: &ci_tmpl 'devops/ci/templates'
   ref: &ci_tmpl_vers 'v3.7.1'
-
+  
 .template_deb_build:
   image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:v0-0-8-0ff308cb
   after_script:
-    - |
-      STRIPPED_VERSION="${VERSION#v}"
-      if [ -z "$STRIPPED_VERSION" ]; then
-      STRIPPED_VERSION="${VERSION}"
-      fi
-
-      if [ -z "$PREFIX" ]; then
-      PREFIX=""
-      fi
+    - source deploy/terraform-provider-sgroups-v2/version_setup.sh
     - |
       fpm \
-      -n "${PACKAGE}${PREFIX}" \
+      -n "${PACKAGE}" \
       -s dir \
       -t deb \
       -a "${ARCH}" \
       --license "Apache Software License 2.0" \
       --maintainer "${MAINTAINER}" \
       --description "${DESCRIPTION}" \
-      --version "${STRIPPED_VERSION}" \
+      --version "${CUSTOM_VERSION}" \
       bin/${PACKAGE}=/usr/bin/${PACKAGE}
     - ls -lah | grep .deb
-    - 'curl -i -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}${PREFIX}_${STRIPPED_VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+    - 'curl -i -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}_${CUSTOM_VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
+  
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
-      variables:
-        VERSION: $APP_VER
-        PREFIX: -${CI_COMMIT_BRANCH}
     - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
-      variables:
-        VERSION: ${CI_COMMIT_TAG}
+  variables:
+    CI_BRANCH: $CI_COMMIT_BRANCH
+    CI_SHORT_SHA: $CI_COMMIT_SHORT_SHA
+    CI_TAG: $CI_COMMIT_TAG
 
 default:
   tags:
@@ -49,8 +41,7 @@ variables:
   #
   # Language specific vars. Most likly need to specify
   #
-  APP_VER: "1.0.4"
-  BUILD_CUSTOM_ARGS: "APP_VER=${APP_VER},TERRAFORM_VER=1.6.3"
+  BUILD_CUSTOM_ARGS: "CI_TAG=${CI_COMMIT_TAG},CI_BRANCH=${CI_COMMIT_BRANCH},CI_SHORT_SHA=${CI_COMMIT_SHORT_SHA},TERRAFORM_VER=1.6.3"
   GO_MAIN_PATH: ./app
   GO_VER: "1.20"
   ALPINE_VER: "3.17"
