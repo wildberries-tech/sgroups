@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v2-0-8-d7d08187
+  tag: dev-9fdb66f2
   pullPolicy: IfNotPresent
 
 vault:
@@ -49,7 +49,7 @@ config:
       data: |
         #!/bin/bash
 
-        exec node index.js
+        exec node ./build/index.js
 
     config.properties:
       path: /usr/src/control/props
@@ -63,10 +63,10 @@ config:
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v2-0-8-d7d08187
+        ABA_CLIENT_TAG=dev-9fdb66f2
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v2-0-8-d7d08187
+        ABA_SERVER_TAG=dev-9fdb66f2
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
@@ -110,7 +110,7 @@ config:
         TG_GROUP_ID=-1001959123261
 
         API_TEST_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/hbf_api_tests/sgroups-postman
-        API_TEST_TAG=v1-1-1-cdbc7490
+        API_TEST_TAG=v1-1-2-cab66543
         API_TEST_IP=29.64.0.255
 
         ABA_SERVER_CPU=100m
