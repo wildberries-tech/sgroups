@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v2-0-12-162d8ec2
+  tag: v1-0-13-136f72e6
   pullPolicy: IfNotPresent
 
 vault:
@@ -62,11 +62,19 @@ config:
         HBF_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/to-nft
         HBF_CLIENT_TAG={{.Helm.Release.Tag}}
 
+        HBF_MIGRATION_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups-migration
+        HBF_MIGRATION_TAG={{.Helm.Release.Tag}}
+
+        HBF_SERVER_DB_LOGIN=nkiver
+        HBF_SERVER_DB_PWD=nkiver
+        HBF_SERVER_DB_PORT=5431
+        HBF_SERVER_DB_NAME=postgres
+
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v2-0-12-162d8ec2
+        ABA_CLIENT_TAG=v1-0-13-136f72e6
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v2-0-12-162d8ec2
+        ABA_SERVER_TAG=v1-0-13-136f72e6
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
@@ -115,6 +123,8 @@ config:
 
         ABA_SERVER_CPU=100m
         ABA_SERVER_MEM=500Mi
+        HBF_MIGRATION_CPU=100m
+        HBF_MIGRATION_MEM=100Mi
         ABA_CLIENT_CPU=100m
         ABA_CLIENT_MEM=500Mi
         HBF_SERVER_CPU=100m
@@ -127,5 +137,3 @@ config:
         DNS_IP=169.254.25.10
         DNS_PROTOCOL=udp
         DNS_PORT=53
-        
-        
