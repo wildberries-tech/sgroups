@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v1-0-13-136f72e6
+  tag: v1-0-14-0050a108
   pullPolicy: IfNotPresent
 
 vault:
@@ -39,7 +39,7 @@ env:
   #1-func 2-api 99-all
   SCENARIO: 99
   #simple-s2s,simple-s2f,advanced-changeip,advanced-icmp
-  FUNC_SCENARIO: simple-s2s,simple-s2f,advanced-changeip,advanced-icmp
+  FUNC_SCENARIO: simple-s2s,simple-s2f,simple-s2c-ie,advanced-changeip,advanced-icmp
 
 config:
   version: v2
@@ -64,17 +64,17 @@ config:
 
         HBF_MIGRATION_REPOSITORY=harbor.wildberries.ru/swarm/swarm/swarm/sgroups/sgroups-migration
         HBF_MIGRATION_TAG={{.Helm.Release.Tag}}
-
+        
         HBF_SERVER_DB_LOGIN=nkiver
         HBF_SERVER_DB_PWD=nkiver
         HBF_SERVER_DB_PORT=5431
         HBF_SERVER_DB_NAME=postgres
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v1-0-13-136f72e6
+        ABA_CLIENT_TAG=v1-0-14-0050a108
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v1-0-13-136f72e6
+        ABA_SERVER_TAG=v1-0-14-0050a108
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
@@ -100,6 +100,9 @@ config:
 
         A_HBF_SERVER_IP=29.64.0.233
         A_HBF_SERVER_PORT=9006
+
+        S2C_IE_HBF_SERVER_IP=29.64.4.232
+        S2C_IE_HBF_SERVER_PORT=9006
 
         HBF_REPORTER_PROTOCOL=http
         HBF_REPORTER_HOST=testops-ingress-controller.testops.svc.k8s.prod-dl
@@ -137,3 +140,4 @@ config:
         DNS_IP=169.254.25.10
         DNS_PROTOCOL=udp
         DNS_PORT=53
+
