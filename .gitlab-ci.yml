@@ -3,23 +3,12 @@
   ref: &ci_tmpl_vers 'v3.7.1'
   
 .template_deb_build:
-  image: harbor.wildberries.ru/swarm/swarm/swarmops/docker-factory/deb-builder:v0-0-8-0ff308cb
-  after_script:
+  image: $IMAGE:$TAG
+  before_script:
     - source deploy/terraform-provider-sgroups-v2/version_setup.sh
-    - |
-      fpm \
-      -n "${PACKAGE}" \
-      -s dir \
-      -t deb \
-      -a "${ARCH}" \
-      --license "Apache Software License 2.0" \
-      --maintainer "${MAINTAINER}" \
-      --description "${DESCRIPTION}" \
-      --version "${CUSTOM_VERSION}" \
-      bin/${PACKAGE}=/opt/hbf/bin/${PACKAGE}
+  after_script:
     - ls -lah | grep .deb
-    - 'curl -i -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "@./${PACKAGE}_${CUSTOM_VERSION}_${ARCH}.deb" "${NEXUS_URL}/${NEXUS_REPO}/"'
-
+    - 'curl -i -u "${NEXUS_USER}:${NEXUS_PASSWORD}" -H "Content-Type: multipart/form-data" --data-binary "$(echo @$(ls | grep .deb))" "${NEXUS_URL}/${NEXUS_REPO}/"'
   rules:
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
     - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
@@ -27,8 +16,6 @@
     CI_BRANCH: $CI_COMMIT_BRANCH
     CI_SHORT_SHA: $CI_COMMIT_SHORT_SHA
     CI_TAG: $CI_COMMIT_TAG
-
-default:
   tags:
     - dev
     - docker
@@ -100,6 +87,18 @@ sgroups-deb:
   extends: .template_deb_build
   script:
     - make sg-service platform=linux/amd64
+    - |
+      fpm \
+      -n "${PACKAGE}" \
+      -s dir \
+      -t deb \
+      -a "${ARCH}" \
+      --license "Apache Software License 2.0" \
+      --maintainer "${MAINTAINER}" \
+      --description "${DESCRIPTION}" \
+      --version "${CUSTOM_VERSION}" \
+      bin/${PACKAGE}=/opt/swarm/sbin/${PACKAGE} \
+      deploy/${PACKAGE}/config/config.yaml=/opt/swarm/etc/${PACKAGE}/config.yaml
   variables:
     PACKAGE: sgroups
     DESCRIPTION: HBF-server.
@@ -109,6 +108,20 @@ to-nft-deb:
   extends: .template_deb_build
   script:
     - make to-nft platform=linux/amd64
+    - |
+      fpm \
+      -n "${PACKAGE}" \
+      -s dir \
+      -t deb \
+      -a "${ARCH}" \
+      --license "Apache Software License 2.0" \
+      --maintainer "${MAINTAINER}" \
+      --description "${DESCRIPTION}" \
+      --version "${CUSTOM_VERSION}" \
+      bin/${PACKAGE}=/opt/swarm/sbin/${PACKAGE} \
+      deploy/${PACKAGE}/config/flush.sh=/opt/swarm/etc/${PACKAGE}/flush.sh \
+      deploy/${PACKAGE}/config/hbf-agent-log-rotate=/etc/logrotate.d/hbf-agent-log \
+      deploy/${PACKAGE}/config/hbf-agent.service=/etc/systemd/system/hbf-agent.service
   variables:
     PACKAGE: to-nft
     DESCRIPTION: HBF-agent.

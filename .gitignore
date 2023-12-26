@@ -24,3 +24,5 @@ documentation/.env.production.local
 documentation/npm-debug.log*
 documentation/yarn-debug.log*
 documentation/yarn-error.log*
+
+.DS_Store
