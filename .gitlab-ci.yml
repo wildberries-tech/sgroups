@@ -1,6 +1,6 @@
 .template_repo: &repo
   project: &ci_tmpl 'devops/ci/templates'
-  ref: &ci_tmpl_vers 'v3.7.1'
+  ref: &ci_tmpl_vers 'v3.9.0'
   
 .template_deb_build:
   image: $IMAGE:$TAG
@@ -26,7 +26,7 @@ variables:
   CI_TMPL_PROJECT: *ci_tmpl
   CI_TMPL_PROJECT_VERSION: *ci_tmpl_vers
   #
-  # Language specific vars. Most likly need to specify
+  # Language specific vars. Most likely need to specify
   #
   BUILD_CUSTOM_ARGS: "CI_TAG=${CI_COMMIT_TAG},CI_BRANCH=${CI_COMMIT_BRANCH},CI_SHORT_SHA=${CI_COMMIT_SHORT_SHA},TERRAFORM_VER=1.6.3"
   GO_MAIN_PATH: ./app
@@ -40,8 +40,7 @@ variables:
   CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.2
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
-  # CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.dldevel"
-  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm,k8s.dev-el"
   CI_TMPL_KUBE_CLUSTERS_STAGE: ""
   CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
   
@@ -73,7 +72,7 @@ include:
   - <<: *repo
     file: /docker/build.yml
   - <<: *repo
-    file: /helm/deploy.yml
+    file: /helm/deploy-generate.yml
 
 stages:
   - checks
@@ -117,14 +116,17 @@ to-nft-deb:
       --license "Apache Software License 2.0" \
       --maintainer "${MAINTAINER}" \
       --description "${DESCRIPTION}" \
+      --after-install ${CONFIG_PATH}/after-install.sh \
+      --after-remove ${CONFIG_PATH}/after-remove.sh \
       --version "${CUSTOM_VERSION}" \
       bin/${PACKAGE}=/opt/swarm/sbin/${PACKAGE} \
-      deploy/${PACKAGE}/config/flush.sh=/opt/swarm/etc/${PACKAGE}/flush.sh \
-      deploy/${PACKAGE}/config/hbf-agent-log-rotate=/etc/logrotate.d/hbf-agent-log \
-      deploy/${PACKAGE}/config/hbf-agent.service=/etc/systemd/system/hbf-agent.service
+      ${CONFIG_PATH}/flush.sh=/opt/swarm/etc/${PACKAGE}/flush.sh \
+      ${CONFIG_PATH}/hbf-agent-log-rotate=/opt/swarm/etc/${PACKAGE}/hbf-agent-log \
+      ${CONFIG_PATH}/hbf-agent.service=/opt/swarm/etc/${PACKAGE}/hbf-agent.service
   variables:
     PACKAGE: to-nft
     DESCRIPTION: HBF-agent.
+    CONFIG_PATH: deploy/${PACKAGE}/config
 
 generate build:
   variables:

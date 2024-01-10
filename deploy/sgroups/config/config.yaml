@@ -12,6 +12,6 @@ healthcheck:
 
 server:
     # server endpoint
-    endpoint: tcp://0.0.0.0:9006
+    endpoint: tcp://0.0.0.0:9650
     # graceful shutdown period
     graceful-shutdown: 30s

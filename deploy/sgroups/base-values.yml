@@ -12,16 +12,21 @@ env:
   SG_DB_NAME: swarm
   SG_STORAGE_TYPE: postgres
 
+annotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "9650"
+  prometheus.io/path: "/metrics"
+
 ports:
   - name: grpc
-    containerPort: 9006
+    containerPort: 9650
     protocol: TCP
 
 service:
   ports:
     - port: 80
       name: grpc
-      targetPort: 9006
+      targetPort: 9650
 
 resources:
   limits:
@@ -30,17 +35,6 @@ resources:
   requests:
     cpu: 2000m
     memory: 2Gi
-
-ingress:
-  enabled: true
-  objects:
-    - servicePort: 80
-      annotations:
-        # nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-        nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      hosts:
-      - name: "{{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}"
-        path: /
 
 initContainers:
   migration:
@@ -85,7 +79,7 @@ config:
 
         server:
             # server endpoint
-            endpoint: tcp://0.0.0.0:9006
+            endpoint: tcp://0.0.0.0:9650
             # graceful shutdown period
             graceful-shutdown: 30s
 

@@ -15,3 +15,14 @@ initContainers:
     args:
       - -c
       - . /vault/secrets/env && sh /app/migration.sh
+
+ingress:
+  enabled: true
+  objects:
+    - servicePort: 80
+      annotations:
+        # nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+      - name: "{{ .Helm.Release.Namespace }}-ingress-controller.{{ .Helm.Release.Namespace }}.svc.{{ .Helm.Release.Cluster }}"
+        path: /
