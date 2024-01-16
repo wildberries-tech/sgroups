@@ -40,8 +40,8 @@ variables:
   CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.2
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
-  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm,k8s.dev-el"
-  CI_TMPL_KUBE_CLUSTERS_STAGE: ""
+  CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
+  CI_TMPL_KUBE_CLUSTERS_STAGE: "k8s.stage-dp"
   CI_TMPL_KUBE_CLUSTERS_PROD: "k8s.prod-dl,k8s.prod-dp"
   
   CI_TMPL_HELM_CUSTOM_TG_TOKEN: "$TG_TOKEN"
@@ -141,6 +141,10 @@ generate deploy:
     - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
+
+    - if: $CI_COMMIT_BRANCH =~ /^release-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups"
 
     - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
       variables:
