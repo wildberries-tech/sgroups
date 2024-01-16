@@ -10,6 +10,9 @@ initContainers:
     image: harbor.wildberries.ru/docker-hub-proxy/library/alpine:3.16
     imagePullPolicy: IfNotPresent
 
+env:
+  WORKDIR: /app
+
 config:
   path: /app
   files:
