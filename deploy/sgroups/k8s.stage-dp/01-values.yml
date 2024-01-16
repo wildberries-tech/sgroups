@@ -35,7 +35,10 @@ config:
             graceful-shutdown: 30s
 
         storage:
-          type: internal 
+          type: internal
+          postgres:
+            url: postgres://un:psw@host/db
+
     entrypoint.sh:
       data: |-
         #!/bin/bash
