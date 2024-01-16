@@ -1,0 +1,11 @@
+command: [ "/bin/sh", "/app/entrypoint.sh"]
+
+initContainers:
+  migration:
+    command:
+      - "/bin/sh"
+    args:
+      - -c
+      - exit 0
+    image: harbor.wildberries.ru/docker-hub-proxy/library/alpine:3.16
+    imagePullPolicy: IfNotPresent
