@@ -9,3 +9,11 @@ initContainers:
       - exit 0
     image: harbor.wildberries.ru/docker-hub-proxy/library/alpine:3.16
     imagePullPolicy: IfNotPresent
+
+config:
+  path: /app
+  files:
+    entrypoint.sh:
+      data: |-
+        #!/bin/bash
+        exec /app/bin/sgroups --config /app/config.yaml
