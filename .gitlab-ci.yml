@@ -142,13 +142,6 @@ generate deploy:
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
 
-    - if: $CI_COMMIT_BRANCH =~ /^fix-.*$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
-        CI_TMPL_DEVELOPMENT_FLOW: ""
-        CI_TMPL_ENVIRONMENT_NAME: dev
-        CI_TMPL_ENV_RUNNER_TAG: dev
-
     - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "documentation"
