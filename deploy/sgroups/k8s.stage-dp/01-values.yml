@@ -9,3 +9,35 @@ initContainers:
       - exit 0
     image: harbor.wildberries.ru/docker-hub-proxy/library/alpine:3.16
     imagePullPolicy: IfNotPresent
+
+config:
+  path: /app
+  files:
+    config.yaml:
+      data: |-
+        ---
+        logger:
+            # log level
+            level: DEBUG
+
+        metrics:
+            # enable api metrics
+            enable: true
+
+        healthcheck:
+            # enables|disables health check handler
+            enable: true
+
+        server:
+            # server endpoint
+            endpoint: tcp://0.0.0.0:9650
+            # graceful shutdown period
+            graceful-shutdown: 30s
+
+        storage:
+          type: internal
+
+    entrypoint.sh:
+      data: |-
+        #!/bin/bash
+        exec /app/bin/sgroups --config /app/config.yaml

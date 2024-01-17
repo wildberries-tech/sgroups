@@ -7,3 +7,8 @@ vault:
         SG_DB_URL: k8s_haproxy_pgsql_master
 
   entrypoint: "sh /app/entrypoint.sh"
+
+env:
+  SG_DB_USER: user_admin
+  SG_DB_NAME: swarm
+  SG_STORAGE_TYPE: postgres
