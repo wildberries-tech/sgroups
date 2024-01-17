@@ -7,11 +7,6 @@ image:
   tag: {{.Helm.Release.Tag}}
   pullPolicy: IfNotPresent
 
-env:
-  SG_DB_USER: user_admin
-  SG_DB_NAME: swarm
-  SG_STORAGE_TYPE: postgres
-
 annotations:
   prometheus.io/scrape: "true"
   prometheus.io/port: "9650"
