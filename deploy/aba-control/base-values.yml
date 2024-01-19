@@ -4,7 +4,7 @@ imagePullSecrets:
 
 image:
   repository: harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-control
-  tag: v1-0-15-6202568b
+  tag: v1-0-15-fba7cfc6
   pullPolicy: IfNotPresent
 
 vault:
@@ -71,17 +71,16 @@ config:
         HBF_SERVER_DB_NAME=postgres
 
         ABA_CLIENT_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-client
-        ABA_CLIENT_TAG=v1-0-15-6202568b
+        ABA_CLIENT_TAG=v1-0-15-fba7cfc6
 
         ABA_SERVER_REPOSITORY=harbor.wildberries.ru/swarm/swarm/testops/abathur/aba-server
-        ABA_SERVER_TAG=v1-0-15-6202568b
+        ABA_SERVER_TAG=v1-0-15-fba7cfc6
 
         PIPELINE_ID={{.Helm.Custom.CiPipelineId}}
         JOB_ID={{.Helm.Custom.CiJobId}}
         NAMESPACE={{.Helm.Release.Namespace}}
         HBF_TAG={{.Helm.Release.Tag}}
         CI_SOURCE_BRANCH_NAME={{.Helm.Custom.CiSourceBranchName}}
-        CI_TARGET_BRANCH_NAME=main
         COMMIT={{.Helm.Custom.Commit}}
         
         IS_DESTROY_AFTER=true
