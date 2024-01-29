@@ -129,16 +129,22 @@ to-nft-deb:
     CONFIG_PATH: deploy/${PACKAGE}/config
 
 generate build:
-  variables:
-    CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2,documentation"
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^(feature|fix)-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2"
+
+    - if: $CI_COMMIT_BRANCH =~ /^release-.*$/ || $CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2,documentation" 
+
+    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "documentation"         
 
 generate deploy:
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^dev$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
-
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^dev$/ || $CI_COMMIT_BRANCH =~ /^(feature|fix)-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
 
