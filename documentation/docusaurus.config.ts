@@ -7,10 +7,10 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'http://swarm-ingress-controller.swarm.svc.k8s.prod-dl',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/swarm_doc/',
+  // url: 'http://swarm-ingress-controller.swarm.svc.k8s.prod-dl',
+  // baseUrl: '/swarm_doc/',
+  url: 'http://localhost',
+  baseUrl: '/',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -50,6 +50,9 @@ const config: Config = {
 
   themeConfig: {
     navbar: {
+      logo: {
+        src: 'img/logo.jpg'
+      },
       items: [
         {
           type: 'docSidebar',
@@ -62,8 +65,30 @@ const config: Config = {
           sidebarId: 'settingsSidebar',
           position: 'left',
           label: 'Настройки'
-        }
-      ],
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'docsForUsers',
+          position: 'left',
+          label: 'Документация для пользователей' 
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'toNft',
+          position: 'left',
+          label: 'to-nft'
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'sgroups',
+          position: 'left',
+          label: 'sgroups'
+        },
+        {
+          type: 'doc',
+          label: 'Терминология',
+          docId: 'terminology'
+        }],
     },
     footer: {
       style: 'dark',
