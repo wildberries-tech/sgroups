@@ -49,3 +49,8 @@
 .green {
   color: green;
 }
+
+table {
+  display: table;
+  width: 100%;
+}

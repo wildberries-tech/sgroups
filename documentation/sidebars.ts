@@ -76,7 +76,7 @@ const sidebars: SidebarsConfig = {
 
   docsForUsers: [{
     type: 'doc',
-    label: 'Собственные Security Group',
+    label: 'Terraform module',
     id: 'user/swarm-spec'
   },
   {
