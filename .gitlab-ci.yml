@@ -133,8 +133,6 @@ generate build:
     - if: $CI_COMMIT_BRANCH =~ /^release-docs-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "documentation"
-        DOCS_URL: "http://swarm-ingress-controller.swarm.svc.k8s.stage-dp"
-        DOCS_BASE_URL: "/swarm_doc/"
         
     - if: $CI_COMMIT_BRANCH =~ /^(feature|fix)-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
