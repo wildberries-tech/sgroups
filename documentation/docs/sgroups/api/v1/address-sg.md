@@ -24,27 +24,98 @@ id: address-sg
 
 ## **Входные параметры**
 
-| № | Параметр | Тип данных | Обязательность | Описание | Варианты значений |
-| --- | --- | --- | --- | --- | --- |
-| 1 | \{address\} | string | да | IP или CIDR | 10\.150.0.224/32 |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Обязательность</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>\{address\}</td>
+            <td>string</td>
+            <td>да</td>
+            <td>IP или CIDR</td>
+            <td>10.150.0.224/32</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Проверки**
 
-| Параметр | Условие |
-| --- | --- |
-| \{address\} | \- необходимо указать значение в формате IP (10.150.0.224) |
+<table>
+    <thead>
+        <tr>
+            <th>Параметр</th>
+            <th>Условие</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>\{address\}</td>
+            <td>- необходимо указать значение в формате IP (10.150.0.224)</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Выходные параметры**
 
 ### **Положительный ответ**
 
-| № | Параметр | Тип данных | Описание | Варианты значений |
-| --- | --- | --- | --- | --- |
-| 1 | logs | bool | включено или выключено логирование (по умолчанию выключено) | true/false |
-| 1\.1 | name | string | уникальное имя security group | sg-0 |
-| 1\.2 | trace | bool | включена или выключена трассировка(по умолчанию выключена) | true/false |
-| 1\.3 | networks | array of strings | массив уникальных имен сети | "nw-0", "nw-1" |
-| 1\.4 | defaultAction | string |  | "DROP"/"ACCEPT" |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>logs</td>
+            <td>bool</td>
+            <td>включено или выключено логирование (по умолчанию выключено)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>1.1</td>
+            <td>name</td>
+            <td>string</td>
+            <td>уникальное имя security group</td>
+            <td>sg-0</td>
+        </tr>
+        <tr>
+            <td>1.2</td>
+            <td>trace</td>
+            <td>bool</td>
+            <td>включена или выключена трассировка(по умолчанию выключена)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>1.3</td>
+            <td>networks</td>
+            <td>array of strings</td>
+            <td>массив уникальных имен сети</td>
+            <td>&quot;nw-0&quot;, &quot;nw-1&quot;</td>
+        </tr>
+        <tr>
+            <td>1.4</td>
+            <td>defaultAction</td>
+            <td>string</td>
+            <td></td>
+            <td>&quot;DROP&quot;/&quot;ACCEPT&quot;</td>
+        </tr>
+    </tbody>
+</table>
 
 ### **Ответ с ошибками**
 

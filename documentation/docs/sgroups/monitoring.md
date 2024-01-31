@@ -25,43 +25,204 @@ id: monitoring
 
 Зеленым цветом выделены<span class="green"> ключевые метрики</span>.
 
-| Metric Name | Metric Type | Description |
-| --- | --- | --- |
-| go_gc_duration_seconds | summary | Сводка длительности пауз циклов сборки мусора |
-| go_gc_duration_seconds_count | counter | Сводка длительности пауз циклов сборки мусора |
-| go_goroutines | gauge | Количество текущих горутин |
-| go_info | gauge | Информация о среде выполнения |
-| go_memstats_alloc_bytes | gauge | Количество выделенных и все еще используемых байтов |
-| go_memstats_alloc_bytes_total | counter | Общее количество выделенных байтов, даже если они были освобождены |
-| go_memstats_buck_hash_sys_bytes | gauge | Количество байтов, используемых хэш-таблицей профилирования |
-| go_memstats_frees_total | counter | Общее количество "освобожденных" объектов кучи |
-| go_memstats_gc_sys_bytes | gauge | Количество байтов, используемых для метаданных системы сборки мусора |
-| go_memstats_heap_alloc_bytes | gauge | Количество выделенных и все еще используемых байтов кучи |
-| go_memstats_heap_idle_bytes | gauge | Количество байтов кучи в ожидании использования |
-| go_memstats_heap_inuse_bytes | gauge | Количество байтов кучи, используемых в данный момент |
-| go_memstats_heap_objects | gauge | Количество выделенных объектов |
-| go_memstats_heap_released_bytes | gauge | Количество байтов кучи, освобожденных в ОС |
-| go_memstats_heap_sys_bytes | gauge | Количество байтов кучи, полученных от системы |
-| go_memstats_last_gc_time_seconds | gauge | Количество секунд с 1970 года последней сборки мусора |
-| go_memstats_lookups_total | counter | Общее количество поисков указателей |
-| go_memstats_mallocs_total | counter | Общее количество выделений памяти |
-| go_memstats_mcache_inuse_bytes | gauge | Количество байтов, используемых структурами mcache |
-| go_memstats_mcache_sys_bytes | gauge | Количество байтов, используемых структурами mcache, полученных из системы |
-| go_memstats_mspan_inuse_bytes | gauge | Количество байтов, используемых структурами mspan |
-| go_memstats_mspan_sys_bytes | gauge | Количество байтов, используемых структурами mspan, полученных из системы |
-| go_memstats_next_gc_bytes | gauge | Количество байтов кучи при следующей сборке мусора |
-| go_memstats_other_sys_bytes | gauge | Количество байтов, используемых для других системных выделений |
-| go_memstats_stack_inuse_bytes | gauge | Количество байтов, используемых выделителем стека |
-| go_memstats_stack_sys_bytes | gauge | Количество байтов, полученных от системы для выделителя стека |
-| go_memstats_sys_bytes | gauge | Количество байтов, полученных от системы |
-| go_threads | gauge | Количество созданных ОС потоков |
-| <span class="green">healthcheck</span> | gauge | Индикатор проверки состояния процесса (0 или 1) |
-| <span class="green">process_cpu_seconds_total</span> | counter | Общее количество времени CPU пользователя и системы в секундах |
-| process_max_fds | gauge | Максимальное количество открытых дескрипторов файлов |
-| process_open_fds | gauge | Количество открытых дескрипторов файлов |
-| <span class="green">process_resident_memory_bytes</span> | gauge | Размер резидентной памяти в байтах |
-| process_start_time_seconds | gauge | Время запуска процесса с начала эпохи Unix в секундах |
-| process_virtual_memory_bytes | gauge | Размер виртуальной памяти в байтах |
-| process_virtual_memory_max_bytes | gauge | Максимальный объем доступной виртуальной памяти в байтах |
-| <span class="green">promhttp_metric_handler_requests_in_flight</span> | counter | Общее количество выявленных запросов по коду состояния HTTP |
-| <span class="green">server_grpc_connections</span> | gauge | Количество подключенных на данный момент агентов |
+<table>
+    <thead>
+        <tr>
+            <th>Metric Name</th>
+            <th>Metric Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>go_gc_duration_seconds</td>
+            <td>summary</td>
+            <td>Сводка длительности пауз циклов сборки мусора</td>
+        </tr>
+        <tr>
+            <td>go_gc_duration_seconds_count</td>
+            <td>counter</td>
+            <td>Сводка длительности пауз циклов сборки мусора</td>
+        </tr>
+        <tr>
+            <td>go_goroutines</td>
+            <td>gauge</td>
+            <td>Количество текущих горутин</td>
+        </tr>
+        <tr>
+            <td>go_info</td>
+            <td>gauge</td>
+            <td>Информация о среде выполнения</td>
+        </tr>
+        <tr>
+            <td>go_memstats_alloc_bytes</td>
+            <td>gauge</td>
+            <td>Количество выделенных и все еще используемых байтов</td>
+        </tr>
+        <tr>
+            <td>go_memstats_alloc_bytes_total</td>
+            <td>counter</td>
+            <td>Общее количество выделенных байтов, даже если они были освобождены</td>
+        </tr>
+        <tr>
+            <td>go_memstats_buck_hash_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых хэш-таблицей профилирования</td>
+        </tr>
+        <tr>
+            <td>go_memstats_frees_total</td>
+            <td>counter</td>
+            <td>Общее количество &quot;освобожденных&quot; объектов кучи</td>
+        </tr>
+        <tr>
+            <td>go_memstats_gc_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых для метаданных системы сборки мусора</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_alloc_bytes</td>
+            <td>gauge</td>
+            <td>Количество выделенных и все еще используемых байтов кучи</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_idle_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов кучи в ожидании использования</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_inuse_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов кучи, используемых в данный момент</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_objects</td>
+            <td>gauge</td>
+            <td>Количество выделенных объектов</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_released_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов кучи, освобожденных в ОС</td>
+        </tr>
+        <tr>
+            <td>go_memstats_heap_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов кучи, полученных от системы</td>
+        </tr>
+        <tr>
+            <td>go_memstats_last_gc_time_seconds</td>
+            <td>gauge</td>
+            <td>Количество секунд с 1970 года последней сборки мусора</td>
+        </tr>
+        <tr>
+            <td>go_memstats_lookups_total</td>
+            <td>counter</td>
+            <td>Общее количество поисков указателей</td>
+        </tr>
+        <tr>
+            <td>go_memstats_mallocs_total</td>
+            <td>counter</td>
+            <td>Общее количество выделений памяти</td>
+        </tr>
+        <tr>
+            <td>go_memstats_mcache_inuse_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых структурами mcache</td>
+        </tr>
+        <tr>
+            <td>go_memstats_mcache_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых структурами mcache, полученных из системы</td>
+        </tr>
+        <tr>
+            <td>go_memstats_mspan_inuse_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых структурами mspan</td>
+        </tr>
+        <tr>
+            <td>go_memstats_mspan_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых структурами mspan, полученных из системы</td>
+        </tr>
+        <tr>
+            <td>go_memstats_next_gc_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов кучи при следующей сборке мусора</td>
+        </tr>
+        <tr>
+            <td>go_memstats_other_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых для других системных выделений</td>
+        </tr>
+        <tr>
+            <td>go_memstats_stack_inuse_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, используемых выделителем стека</td>
+        </tr>
+        <tr>
+            <td>go_memstats_stack_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, полученных от системы для выделителя стека</td>
+        </tr>
+        <tr>
+            <td>go_memstats_sys_bytes</td>
+            <td>gauge</td>
+            <td>Количество байтов, полученных от системы</td>
+        </tr>
+        <tr>
+            <td>go_threads</td>
+            <td>gauge</td>
+            <td>Количество созданных ОС потоков</td>
+        </tr>
+        <tr>
+            <td class="green">healthcheck</td>
+            <td>gauge</td>
+            <td>Индикатор проверки состояния процесса (0 или 1)</td>
+        </tr>
+        <tr>
+            <td class="green">process_cpu_seconds_total</td>
+            <td>counter</td>
+            <td>Общее количество времени CPU пользователя и системы в секундах</td>
+        </tr>
+        <tr>
+            <td>process_max_fds</td>
+            <td>gauge</td>
+            <td>Максимальное количество открытых дескрипторов файлов</td>
+        </tr>
+        <tr>
+            <td>process_open_fds</td>
+            <td>gauge</td>
+            <td>Количество открытых дескрипторов файлов</td>
+        </tr>
+        <tr>
+            <td class="green">process_resident_memory_bytes</td>
+            <td>gauge</td>
+            <td>Размер резидентной памяти в байтах</td>
+        </tr>
+        <tr>
+            <td>process_start_time_seconds</td>
+            <td>gauge</td>
+            <td>Время запуска процесса с начала эпохи Unix в секундах</td>
+        </tr>
+        <tr>
+            <td>process_virtual_memory_bytes</td>
+            <td>gauge</td>
+            <td>Размер виртуальной памяти в байтах</td>
+        </tr>
+        <tr>
+            <td>process_virtual_memory_max_bytes</td>
+            <td>gauge</td>
+            <td>Максимальный объем доступной виртуальной памяти в байтах</td>
+        </tr>
+        <tr>
+            <td class="green">promhttp_metric_handler_requests_in_flight</td>
+            <td>counter</td>
+            <td>Общее количество выявленных запросов по коду состояния HTTP</td>
+        </tr>
+        <tr>
+            <td class="green">server_grpc_connections</td>
+            <td>gauge</td>
+            <td>Количество подключенных на данный момент агентов</td>
+        </tr>
+    </tbody>
+</table>

@@ -20,17 +20,108 @@ HBF-Server поддерживает PostgreSQL версии 14.8
 
 В этом разделе представлен обзор всех таблиц, созданных для стандартного использования HBF-Server. С последующим детальным описанием, что находится в каждой таблице.
 
-| **Название таблицы** | **Описание** | **Соответствующие области взаимодействия интерфейса (API)** |
-| --- | --- | --- |
-| [tbl_network](#tbl_network)<br /> | таблица tbl_network хранит информацию о IP Subnets c уникальным названием, CIDR и ссылкой на SG к сети которой она принадлежит | \- [отобразить список доступных сетей (Networks)](./api/v1/networks.md)<br />\- [Отобразить список доступных сетей (Networks) связанных с SG](./api/v1/subnets.md)<br />\- [Отобразить SG по IP или CIDR](./api/v1/address-sg.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_sg](#tbl_sg)<br /> | таблица tbl_sg хранит информацию о Security Groups (SG) с уникальным названием, правилом применяемым для входящих или исходящих пакетов, также возможностью включить логирование | \- [отобразить список Security Groups (SG)](./api/v1/security-groups.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_ie_sg_sg_rule](#tbl_ie_sg_sg_rule) | таблица tbl_ie_sg_sg_rule хранит информацию SG-SG правил для входящего и исходящего траффика с сетевым транспортным протоколами и диапазоном портов | \- [отобразить список IE-SG-SG правил для входящего и исходящего траффика](./api/v1/ie-sg-sg-rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_cidr_sg_rule](#tbl_cidr_sg_rule) | таблица tbl_cidr_sg_rule хранит информацию CIDR-SG правил для входящего и исходящего траффика с сетевым транспортным протоколом, бесклассовой междоменной маршрутизацией (CIDR) и диапазоном портов | \- [отобразить список CIRD-SG правил для входящего и исходящего траффика](./api/v1/cidr-sg-rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_fqdn_rule](#tbl_fqdn_rule)<br /> | таблица tbl_fqdn_rule хранит информацию SG-to-FQDN правил с сетевым транспортным протоколом и диапазоном портов | \- [отобразить список полных доменных имен (FQDN)](./api/v1/fqdn-rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_sg_icmp_rule](#tbl_sg_icmp_rule)<br /> | таблица tbl_sg_icmp_rule хранит информацию SG:ICMP правил<br /> | \- [Отобразить список правил SG:ICMP ограниченных по типу SG](./api/v1/sg-icmp-rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_sg_rule](#tbl_sg_rule)<br /> | таблица tbl_sg_rules хранит информацию о правилах виртуального файрволла который можно настраивать для того чтобы контролировать входящий и выходящий трафик | \- [отобразить список SG правил ограниченных по условиям from -\> to](./api/v1/rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_sg_sg_icmp_rule](#tbl_sg_sg_icmp_rule)<br /> | таблица tbl_sg_sg_icmp_rule хранит информацию SG-SG:ICMP правил<br /> | \- [Отобразить список правил SG-SG:ICMP ограниченных по типу SG from-\>to](./api/v1/sg-sg-icmp-rules.md)<br />\- [Внести изменения в БД](./api/v1/sync.mdx) |
-| [tbl_sync_status](#tbl_sync_status)<br /> | в таблице tbl_sync_status хранится информация об изменениях внесенных пользователем (дата последнего успешного изменения и кол-во изменённых строк)<br /> | \- [Отобразить статус последнего успешного обновления БД](./api/v1/status.md)<br /> |
+<table>
+    <thead>
+        <tr>
+            <th>**Название таблицы**</th>
+            <th>**Описание**</th>
+            <th>**Соответствующие области взаимодействия интерфейса (API)**</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>[tbl_network](#tbl_network)</td>
+            <td class="text-justify">таблица tbl_network хранит информацию о IP Subnets c уникальным названием, CIDR и ссылкой на SG к сети которой она принадлежит</td>
+            <td>
+                <ul>
+                    <li>[отобразить список доступных сетей (Networks)](./api/v1/networks.md)</li>
+                    <li>[Отобразить список доступных сетей (Networks) связанных с SG](./api/v1/subnets.md)</li>
+                    <li>[Отобразить SG по IP или CIDR](./api/v1/address-sg.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_sg](#tbl_sg)</td>
+            <td class="text-justify">таблица tbl_sg хранит информацию о Security Groups (SG) с уникальным названием, правилом применяемым для входящих или исходящих пакетов, также возможностью включить логирование</td>
+            <td>
+                <ul>
+                    <li>[отобразить список Security Groups (SG)](./api/v1/security-groups.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_ie_sg_sg_rule](#tbl_ie_sg_sg_rule)</td>
+            <td class="text-justify">таблица tbl_ie_sg_sg_rule хранит информацию SG-SG правил для входящего и исходящего траффика с сетевым транспортным протоколами и диапазоном портов</td>
+            <td>
+                <ul>
+                    <li>[отобразить список IE-SG-SG правил для входящего и исходящего траффика](./api/v1/ie-sg-sg-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_cidr_sg_rule](#tbl_cidr_sg_rule)</td>
+            <td class="text-justify">таблица tbl_cidr_sg_rule хранит информацию CIDR-SG правил для входящего и исходящего траффика с сетевым транспортным протоколом, бесклассовой междоменной маршрутизацией (CIDR) и диапазоном портов</td>
+            <td>
+                <ul>
+                    <li>[отобразить список CIRD-SG правил для входящего и исходящего траффика](./api/v1/cidr-sg-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_fqdn_rule](#tbl_fqdn_rule)</td>
+            <td class="text-justify">таблица tbl_fqdn_rule хранит информацию SG-to-FQDN правил с сетевым транспортным протоколом и диапазоном портов</td>
+            <td>
+                <ul>
+                    <li>[отобразить список полных доменных имен (FQDN)](./api/v1/fqdn-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_sg_icmp_rule](#tbl_sg_icmp_rule)</td>
+            <td class="text-justify">таблица tbl_sg_icmp_rule хранит информацию SG:ICMP правил</td>
+            <td>
+                <ul>
+                    <li>[Отобразить список правил SG:ICMP ограниченных по типу SG](./api/v1/sg-icmp-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_sg_rule](#tbl_sg_rule)</td>
+            <td class="text-justify">таблица tbl_sg_rules хранит информацию о правилах виртуального файрволла который можно настраивать для того чтобы контролировать входящий и выходящий трафик</td>
+            <td>
+                <ul>
+                    <li>[отобразить список SG правил ограниченных по условиям from -> to](./api/v1/rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_sg_sg_icmp_rule](#tbl_sg_sg_icmp_rule)</td>
+            <td class="text-justify">таблица tbl_sg_sg_icmp_rule хранит информацию SG-SG:ICMP правил</td>
+            <td>
+                <ul>
+                    <li>[Отобразить список правил SG-SG:ICMP ограниченных по типу SG from -> to](./api/v1/sg-sg-icmp-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>[tbl_sync_status](#tbl_sync_status)</td>
+            <td class="text-justify">в таблице tbl_sync_status хранится информация об изменениях внесенных пользователем (дата последнего успешного изменения и кол-во изменённых строк)</td>
+            <td>
+                <ul>
+                    <li>[Отобразить статус последнего успешного обновления БД](./api/v1/status.md)</li>
+                </ul>            
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Подробное описание таблиц**
 
@@ -38,150 +129,879 @@ HBF-Server поддерживает PostgreSQL версии 14.8
 
 ### tbl_network
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| sg | int(8) | YES | FK<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| name | cname | <br /> | ALT<br /> | <br /> | \- длина значения не должна превышать 256 символов<br />\- значения должно начинаться и заканчиваться символами без пробелов<br />\- значение должно быть уникальным |
-| network | cidr | <br /> | <br /> | <br /> | \- значение от 7 до 19 байт пример "192.168.100.128/25"<br />\- сетевые интервалы не должны пересекаться |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>sg</td>
+            <td>int(8)</td>
+            <td>YES</td>
+            <td>FK</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>cname</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>длина значения не должна превышать 256 символов</li>
+                    <li>значения должно начинаться и заканчиваться символами без пробелов</li>
+                    <li>значение должно быть уникальным</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>network</td>
+            <td>cidr</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>значение от 7 до 19 байт пример `192.168.100.128/25`</li>
+                    <li>сетевые интервалы не должны пересекаться</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Simple Key | cname |
+
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Simple Key</td>
+            <td>cname</td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_sg
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| name | cname | <br /> | ALT<br /> | <br /> | \- длина значения не должна превышать 256 символов<br />\- значения должно начинаться и заканчиваться символами без пробелов<br />\- значение должно быть уникальным<br /> |
-| logs | bool | <br /> | <br /> | false | <br /> |
-| trace | bool | <br /> | <br /> | false | <br /> |
-| default_action | chain_default_action | <br /> | <br /> | ‘DROP’::chain_default_action | одно из двух значений "DROP" или "ACCEPT"<br /> |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>cname</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>длина значения не должна превышать 256 символов</li>
+                    <li>значения должно начинаться и заканчиваться символами без пробелов</li>
+                    <li>значение должно быть уникальным</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>default_action</td>
+            <td>chain_default_action</td>
+            <td></td>
+            <td></td>
+            <td>‘DROP’::chain_default_action</td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>ACCEPT</li>
+                    <li>DROP</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Simple Key | cname |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Simple Key</td>
+            <td>cname</td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_ie_sg_sg_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| proto | proto | <br /> | ALT<br /> | <br /> | одно из двух значений "tcp" или "udp"<br /> |
-| sg | int(8) | <br /> | FK/ALT | <br /> | внешний ключ к таблице tbl_sg.id |
-| sg_local | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| traffic | traffic |  | ALT | <br /> | одно из двух значений "ingress" или "egress" |
-| ports | _sg_rule_ports | YES |  |  | \- должно быть указано значение порта исходящего либо входящего трафика<br />\- значение должно находиться в интервале от 1 до 65535<br />\- интервалы введённых значений портов для исходящего трафика не должны пересекаться |
-| logs | bool | <br /> | <br /> |  | <br /> |
-| trace | bool |  |  |  |  |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>proto</td>
+            <td>proto</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>tcp</li>
+                    <li>udp</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>sg</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>sg_local</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>traffic</td>
+            <td>traffic</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>ingress</li>
+                    <li>egress</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ports</td>
+            <td>sg_rule_ports[]</td>
+            <td>YES</td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>должно быть указано значение порта исходящего либо входящего трафика</li>
+                    <li>значение должно находиться в интервале от 1 до 65535</li>
+                    <li class="text-justify">интервалы введённых значений портов для исходящего трафика не должны пересекаться</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | proto, sg, sg_local, traffic |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>proto</li>
+                    <li>sg</li>
+                    <li>sg_local</li>
+                    <li>traffic</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_cidr_sg_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| proto | proto | <br /> | ALT<br /> | <br /> | одно из двух значений "tcp" или "udp"<br /> |
-| cidr | cidr | <br /> | ALT | <br /> | \- значение cidr (диапазон ip адресов) в рамках одного правила (proto, sg, traffic) не должны пересекаться |
-| sg | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| traffic | traffic |  | ALT | <br /> | одно из двух значений "ingress" или "egress" |
-| ports | _sg_rule_ports | YES |  |  | \- должно быть указано значение порта исходящего либо входящего трафика<br />\- значение должно находиться в интервале от 1 до 65535<br />\- интервалы введённых значений портов для исходящего трафика не должны пересекаться |
-| logs | bool | <br /> | <br /> |  | <br /> |
-| trace | bool |  |  |  |  |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>proto</td>
+            <td>proto</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>tcp</li>
+                    <li>udp</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>cidr</td>
+            <td>cidr</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td class="text-justify">значение cidr (диапазон ip адресов) в рамках одного правила (proto, sg, traffic) не должны пересекаться</td>
+        </tr>
+        <tr>
+            <td>sg</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>traffic</td>
+            <td>traffic</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>ingress</li>
+                    <li>egress</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>ports</td>
+            <td>sg_rule_ports[]</td>
+            <td>YES</td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>должно быть указано значение порта исходящего либо входящего трафика</li>
+                    <li>значение должно находиться в интервале от 1 до 65535</li>
+                    <li class="text-justify">интервалы введённых значений портов для исходящего трафика не должны пересекаться</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | proto, cidr, sg, traffic |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>proto</li>
+                    <li>cidr</li>
+                    <li>sg</li>
+                    <li>traffic</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_fqdn_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| sg_from | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| fqdn_to | fqdn | <br /> | ALT | <br /> | \- длина значения не должна превышать 256 символов<br />\- значение начинается со строки, которая содержит один или более символов, являющихся буквами нижнего регистра, цифрами, символом '**'** или символам**и '_'** и **'-'** (кроме первого символа, который не может быть '-' или '_'), и должна быть длиной от 1 до 62 символов.<br />затем может следовать любое количество строк, начинающихся с символа '.', за которым идет один символ, являющийся буквой нижнего регистра, цифрой, символом '' или символом '-', и длина строки от 0 до 62 символов.<br />(пример: google.com) |
-| proto | proto | <br /> | ALT<br /> | <br /> | одно из двух значений "tcp" или "udp"<br /> |
-| ports | _sg_rule_ports | YES | <br /> | <br /> | \- должно быть указано значение порта исходящего либо входящего трафика<br />\- значение должно находиться в интервале от 1 до 65535<br />\- интервалы введённых значений портов для исходящего трафика не должны пересекаться |
-| logs | bool | <br /> | <br /> | false | <br /> |
-| ndpi_protocols | citext |  |  |  | \- количество элементов в массиве (наименований протоколов) не должно превышать 255<br />\- значение элемента (наименование протокола) не должно начинаться или заканчиваться пробелом и не должно быть пустым |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>sg_from</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>fqdn_to</td>
+            <td>fqdn</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>длина значения не должна превышать 256 символов</li>
+                    <li class="text-justify">значение начинается со строки, которая содержит один или более символов, являющихся буквами нижнего регистра, цифрами, символом `.` или символами `_` и `-` (кроме первого символа, который не может быть `-` или `_`), и должна быть длиной от 1 до 62 символов</li>
+                    <li class="text-justify">затем может следовать любое количество строк, начинающихся с символа `.`, за которым идет один символ, являющийся буквой нижнего регистра, цифрой, символом `_` или символом `-`, и длина строки от 0 до 62 символов</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>proto</td>
+            <td>proto</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>tcp</li>
+                    <li>udp</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>ports</td>
+            <td>sg_rule_ports[]</td>
+            <td>YES</td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>должно быть указано значение порта исходящего либо входящего трафика</li>
+                    <li>значение должно находиться в интервале от 1 до 65535</li>
+                    <li class="text-justify">интервалы введённых значений портов для исходящего трафика не должны пересекаться</li>
+                </ul>            
+            </td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>ndpi_protocols</td>
+            <td>citext</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li class="text-justify">количество элементов в массиве (наименований протоколов) не должно превышать 255</li>
+                    <li class="text-justify">значение элемента (наименование протокола) не должно начинаться или заканчиваться пробелом и не должно быть пустым</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | sg_from, fqdn_to, proto |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>sg_from</li>
+                    <li>fqdn_to</li>
+                    <li>proto</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_sg_icmp_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| ip_v | ip_family | <br /> | ALT<br /> | <br /> | одно из двух значений "IPv6" или "IPv4"<br /> |
-| types | icmp_types | <br /> | <br /> | <br /> | массив из smallint[] кодов типа ICMP<br /> |
-| sg | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| logs | bool | <br /> | <br /> | <br /> | <br /> |
-| trace | bool | <br /> | <br /> | <br /> | <br /> |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>ip_v</td>
+            <td>ip_family</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>IPv6</li>
+                    <li>IPv4</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>types</td>
+            <td>icmp_types</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>массив из smallint[] кодов типа ICMP</td>
+        </tr>
+        <tr>
+            <td>sg</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | ip_v, sg |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>ip_v</li>
+                    <li>sg</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_sg_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| sg_from | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| sg_to | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| proto | proto | <br /> | ALT<br /> | <br /> | одно из двух значений "tcp" или "udp"<br /> |
-| ports | _sg_rule_ports | YES | <br /> | <br /> | \- должно быть указано значение порта исходящего либо входящего трафика<br />\- значение должно находиться в интервале от 1 до 65535<br />\- интервалы введённых значений портов для исходящего трафика не должны пересекаться |
-| logs | bool | <br /> | <br /> | false | <br /> |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>sg_from</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>sg_to</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>proto</td>
+            <td>proto</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>tcp</li>
+                    <li>udp</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>ports</td>
+            <td>sg_rule_ports[]</td>
+            <td>YES</td>
+            <td></td>
+            <td></td>
+            <td>
+                <ul>
+                    <li>должно быть указано значение порта исходящего либо входящего трафика</li>
+                    <li>значение должно находиться в интервале от 1 до 65535</li>
+                    <li class="text-justify">интервалы введённых значений портов для исходящего трафика не должны пересекаться</li>
+                </ul>             
+            </td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | sg_from, sg_to, proto |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>sg_from</li>
+                    <li>sg_to</li>
+                    <li>proto</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_sg_sg_icmp_rule
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| ip_v | ip_family | <br /> | ALT<br /> | <br /> | одно из двух значений "IPv6" или "IPv4"<br /> |
-| types | icmp_types | <br /> | <br /> | <br /> | массив из smallint[] кодов типа ICMP<br /> |
-| sg_from | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| sg_to | int(8) | <br /> | FK/ALT<br /> | <br /> | внешний ключ к таблице tbl_sg.id<br /> |
-| logs | bool | <br /> | <br /> | <br /> | <br /> |
-| trace | bool | <br /> | <br /> | <br /> | <br /> |
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>ip_v</td>
+            <td>ip_family</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>
+                одно из двух значений:
+                <ul>
+                    <li>IPv6</li>
+                    <li>IPv4</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>types</td>
+            <td>icmp_types</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>массив из smallint[] кодов типа ICMP</td>
+        </tr>
+        <tr>
+            <td>sg_from</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>sg_to</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>bool</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 Ключи
 
-| Имя ключа | Тип | Поля |
-| --- | --- | --- |
-| Alternative key | Compound Key | ip_v, sg_from, sg_to |
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>ip_v</li>
+                    <li>sg_from</li>
+                    <li>sg_to</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ### tbl_sync_status
 
-| Поле | Тип | Null | Ключ | По умолчанию | Дополнительно |
-| --- | --- | --- | --- | --- | --- |
-| id | int(8) | <br /> | PRI | <br /> | auto_increment |
-| total_affected_rows | int(8) | <br /> | <br /> | <br /> | при любой процедуре (удаление/добавление/редактирование) данных в таблицах, tbl_network, tbl_sg, tbl_fqdn_rule, tbl_sg_rule, tbl_sg_icmp_rule, tbl_sg_sg_icmp_rule, будет учтена сумма всех изменённых строк<br /> |
-| updated_at | timstamptz | YES | <br /> | <br /> | дата изменения<br /> |
-
-
-
-
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>total_affected_rows</td>
+            <td>int(8)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>при любой процедуре (удаление/добавление/редактирование) данных в таблицах, tbl_network, tbl_sg, tbl_fqdn_rule, tbl_sg_rule, tbl_sg_icmp_rule, tbl_sg_sg_icmp_rule, будет учтена сумма всех изменённых строк</td>
+        </tr>
+        <tr>
+            <td>updated_at</td>
+            <td>timstamptz</td>
+            <td>YES</td>
+            <td></td>
+            <td></td>
+            <td>дата изменения</td>
+        </tr>
+    </tbody>
+</table>

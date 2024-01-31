@@ -8,9 +8,12 @@ id: fqdn-rules
 
 `POST /v1/fqdn/rules`
 
-* если в теле запроса указать одно или более sgFrom - значений из имён источников Security Groups (sg), то получим ответ по указанным fqdn правилам
-* если в теле запроса указать пустой массив sgFrom, то получим ответ со всеми существующими fqdn правилами
-* если указано некорректное тело в запросе, то получим ответ со всеми существующими fqdn правилами
+<ul>
+    <li>если в теле запроса указать одно или более sgFrom - значений из имён источников Security Groups (sg), то получим ответ по указанным fqdn правилам</li>
+    <li>если в теле запроса указать пустой массив sgFrom, то получим ответ со всеми существующими fqdn правилами</li>
+    <li>если указано некорректное тело в запросе, то получим ответ со всеми существующими fqdn правилами</li>
+</ul>
+
 
 ```json
 {
@@ -47,31 +50,126 @@ id: fqdn-rules
 
 ## **Входные параметры**
 
-| № | Параметр | Тип данных | Обязательность | Описание | Варианты значений |
-| --- | --- | --- | --- | --- | --- |
-| 1 | sgFrom | array of strings | да | массив из имен источников SG | sg-11 |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Обязательность</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>sgFrom</td>
+            <td>array of strings</td>
+            <td>да</td>
+            <td>массив из имен источников SG</td>
+            <td>sg-11</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Проверки**
 
-| Параметр | Условие |
-| --- | --- |
-| sgFrom | \- длина значения не должна превышать 256 символов<br />\- значение должно начинаться и заканчиваться символами без пробелов |
+<table>
+    <thead>
+        <tr>
+            <th>Параметр</th>
+            <th>Условие</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>sgFrom</td>
+            <td>\- длина значения не должна превышать 256 символов&lt;br /&gt;\- значение должно начинаться и заканчиваться символами без пробелов</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Выходные параметры**
 
 ### **Положительный ответ**
 
-| № | Параметр | Тип данных | Описание | Варианты значений |
-| --- | --- | --- | --- | --- |
-| 1 | rules | array of objects |  | \- |
-| 1\.1 | rules[].FQDN | string | полное доменное имя | google.com |
-| 1\.2 | rules[].logs | bool | включено или выключено логирование (по умолчанию выключено) | true/false |
-| 1\.3 | rules[].ports | array of objects |  | \- |
-| 1\.3.1 | rules[].ports[].d | string | значения портов входящего трафика | "7600-7700,7800" |
-| 1\.3.2 | rules[].ports[].s | string | значения портов исходящего трафика | "4446" |
-| 1\.4 | rules[].sgFrom | string | название Security group | sg-0 |
-| 1\.5 | rules[].transport | string | метод передачи данных | "TCP"/"UDP" |
-| 1\.6 | rules[].protocols[] | array of strings | значения протоколов | "http", "ssh" |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>rules</td>
+            <td>array of objects</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1.1</td>
+            <td>rules[].FQDN</td>
+            <td>string</td>
+            <td>полное доменное имя</td>
+            <td>google.com</td>
+        </tr>
+        <tr>
+            <td>1.2</td>
+            <td>rules[].logs</td>
+            <td>bool</td>
+            <td>включено или выключено логирование (по умолчанию выключено)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>1.3</td>
+            <td>rules[].ports</td>
+            <td>array of objects</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1.3.1</td>
+            <td>rules[].ports[].d</td>
+            <td>string</td>
+            <td>значения портов входящего трафика</td>
+            <td>&quot;7600-7700,7800&quot;</td>
+        </tr>
+        <tr>
+            <td>1.3.2</td>
+            <td>rules[].ports[].s</td>
+            <td>string</td>
+            <td>значения портов исходящего трафика</td>
+            <td>&quot;4446&quot;</td>
+        </tr>
+        <tr>
+            <td>1.4</td>
+            <td>rules[].sgFrom</td>
+            <td>string</td>
+            <td>название Security group</td>
+            <td>sg-0</td>
+        </tr>
+        <tr>
+            <td>1.5</td>
+            <td>rules[].transport</td>
+            <td>string</td>
+            <td>метод передачи данных</td>
+            <td>&quot;TCP&quot;/&quot;UDP&quot;</td>
+        </tr>
+        <tr>
+            <td>1.6</td>
+            <td>rules[].protocols[]</td>
+            <td>array of strings</td>
+            <td>значения протоколов</td>
+            <td>&quot;http&quot;, &quot;ssh&quot;</td>
+        </tr>
+    </tbody>
+</table>
 
 ### **Ответ с ошибками**
 

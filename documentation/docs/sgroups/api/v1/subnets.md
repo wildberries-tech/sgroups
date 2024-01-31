@@ -25,26 +25,91 @@ id: subnets
 
 ## **Входные параметры**
 
-| № | Параметр | Тип данных | Обязательность | Описание | Варианты значений |
-| --- | --- | --- | --- | --- | --- |
-| 1 | \{sgName\} | string | да | уникальное имя sg | SG-11 |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Обязательность</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>\{sgName\}</td>
+            <td>string</td>
+            <td>да</td>
+            <td>уникальное имя sg</td>
+            <td>SG-11</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Проверки**
 
-| Параметр | Условие |
-| --- | --- |
-| \{sgName\} | \- длина значения не должна превышать 256 символов<br />\- значение должно начинаться и заканчиваться символами без пробелов |
+<table>
+    <thead>
+        <tr>
+            <th>Параметр</th>
+            <th>Условие</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>\{sgName\}</td>
+            <td>\- длина значения не должна превышать 256 символов&lt;br /&gt;\- значение должно начинаться и заканчиваться символами без пробелов</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Выходные параметры**
 
 ### **Положительный ответ**
 
-| № | Параметр | Тип данных | Описание | Варианты значений |
-| --- | --- | --- | --- | --- |
-| 1 | networks | array of objects |  | \- |
-| 1\.1 | networks[].name | string | уникальное имя сети | nw-1 |
-| 1\.2 | networks[].network | object |  | \- |
-| 1\.3 | networks[].network.CIDR | string |  | 10\.150.0.220/32 |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>networks</td>
+            <td>array of objects</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1.1</td>
+            <td>networks[].name</td>
+            <td>string</td>
+            <td>уникальное имя сети</td>
+            <td>nw-1</td>
+        </tr>
+        <tr>
+            <td>1.2</td>
+            <td>networks[].network</td>
+            <td>object</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1.3</td>
+            <td>networks[].network.CIDR</td>
+            <td>string</td>
+            <td></td>
+            <td>10.150.0.220/32</td>
+        </tr>
+    </tbody>
+</table>
 
 ### **Ответ с ошибками**
 

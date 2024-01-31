@@ -11,15 +11,17 @@ import TabItem from '@theme/TabItem';
 
 `POST /v1/sync`
 
-* можно отдельно добавить/удалить сеть (network) указав в теле только 5 и 9 пункты из входных параметров, при удалении сети все принадлежащие ей security group и правила так же будут удалены
-* можно отдельно добавить/удалить security group (sg) указав в теле только 4 и 9 пункты из входных параметров (предварительно необходимо создать сеть по которой будет сформирована security group), при удалении security group все принадлежащие ей правила так же будут удалены
-* можно отдельно добавить/удалить каждое из правил (предварительно для правила должны быть создана сеть и security group)
-  * для добавления/удаления FQDN правил, в теле необходимо указать 3 и 9 пункты из входных параметров
-  * для добавления/удаления CIDR-SG правил, в теле необходимо указать 2 и 9 пункты из входных параметров
-  * для добавления/удаления SG:ICMP правил, в теле необходимо указать 6 и 9 пункты из входных параметров
-  * для добавления/удаления SG-SG:ICMP правил, в теле необходимо добавить 8 и 9 пункты из входных параметров
-  * для добавления/удаления SG правил, в теле необходимо добавить 7 и 9 пункты из входных параметров
-  * для добавления/удаления IE-SG-SG правил, в теле необходимо указать 1 и 9 пункты из входных параметров
+<ul>
+    <li class="text-justify">можно отдельно добавить/удалить сеть (network) указав в теле только 5 и 9 пункты из входных параметров, при удалении сети все принадлежащие ей security group и правила так же будут удалены</li>
+    <li class="text-justify">можно отдельно добавить/удалить security group (sg) указав в теле только 4 и 9 пункты из входных параметров (предварительно необходимо создать сеть по которой будет сформирована security group), при удалении security group все принадлежащие ей правила так же будут удалены</li>
+    <li class="text-justify">можно отдельно добавить/удалить каждое из правил (предварительно для правила должны быть создана сеть и security group):
+      <ul><li>для добавления/удаления FQDN правил, в теле необходимо указать 3 и 9 пункты из входных параметров</li>
+      <li>для добавления/удаления CIDR-SG правил, в теле необходимо указать 2 и 9 пункты из входных параметров</li>
+      <li>для добавления/удаления SG:ICMP правил, в теле необходимо указать 6 и 9 пункты из входных параметров</li>
+      <li>для добавления/удаления SG-SG:ICMP правил, в теле необходимо добавить 8 и 9 пункты из входных параметров</li>
+      <li>для добавления/удаления SG правил, в теле необходимо добавить 7 и 9 пункты из входных параметров</li>
+      <li>для добавления/удаления IE-SG-SG правил, в теле необходимо указать 1 и 9 пункты из входных параметров</li></ul></li>
+</ul>
 
 ```json
 {
@@ -163,87 +165,620 @@ import TabItem from '@theme/TabItem';
 
 ## **Входные параметры**
 
-| № | Параметр | Тип данных | Обязательность | Описание | Варианты значений |
-| --- | --- | --- | --- | --- | --- |
-| 1 | sgSgRules | objects of objects | нет |  | \- |
-| 1\.2 | sgSgRules.rules | array of objects | нет |  | \- |
-| 1\.3 | sgSgRules.rules[].sg | string | нет | уникальное имя security group | SG-11 |
-| 1\.4 | sgSgRules.rules[].sg_local | string | нет | уникальное имя security group | SG-11 |
-| 1\.5 | sgSgRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 1\.6 | sgSgRules.rules[].trace | bool | нет | включить или выключить трассировку(по умолчанию выкл) | true/false |
-| 1\.7 | sgSgRules.rules[].ports | array of objects | нет |  | \- |
-| 1\.7.1 | sgSgRules.rules[].ports[].d | string | нет |  | 7600-7700,7800 |
-| 1\.7.2 | sgSgRules.rules[].ports[].s | string | нет |  | 4446 |
-| 1\.8 | sgSgRules.rules[].traffic | string | нет | тип траффика (входящий, исходящий или неопределенный) | "ingress"/"egress"/"undef" |
-| 1\.9 | sgSgRules.rules[].transport | string | нет | метод передачи данных | "TCP"/"UDP" |
-| 2 | cidrSgRules | objects of objects | нет |  | \- |
-| 2\.1 | cidrSgRules.rules | array of objects | нет |  | \- |
-| 2\.1.1 | cidrSgRules.rules[].CIDR | string | нет |  | 10\.10.0.8/30 |
-| 2\.1.2 | cidrSgRules.rules[].SG | string | нет | уникальное имя security group | sg-0 |
-| 2\.1.3 | cidrSgRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 2\.1.4 | cidrSgRules.rules[].ports | array of objects | нет |  | \- |
-| 2\.1.4.1 | cidrSgRules.rules[].ports[].d | string | нет |  | 7600-7700,7800 |
-| 2\.1.4.2 | cidrSgRules.rules[].ports[].s | string | нет |  | 4446 |
-| 2\.1.5 | cidrSgRules.rules[].trace | bool | нет | включить или выключить трассировку(по умолчанию выкл) | true/false |
-| 2\.1.6 | cidrSgRules.rules[].traffic | string | нет | тип траффика (входящий, исходящий или неопределенный) | "ingress"/"egress"/"undef" |
-| 2\.1.7 | cidrSgRules.rules[].transport | string | нет | метод передачи данных | "TCP"/"UDP" |
-| 3 | fqdnRules | objects of objects | нет |  | \- |
-| 3\.1 | fqdnRules.rules | array of objects | нет |  | \- |
-| 3\.1.1 | fqdnRules.rules[].FQDN | string | нет | максимальная длина значения не должна превышать 256 символов | google.com |
-| 3\.1.2 | fqdnRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 3\.1.3 | fqdnRules.rules[].ports | array of objects | нет |  | \- |
-| 3\.1.3.1 | fqdnRules.rules[].ports[].d | string | нет |  | 7600-7700,7800 |
-| 3\.1.3.2 | fqdnRules.rules[].ports[].s | string | нет |  | 4446 |
-| 3\.1.4 | fqdnRules.rules[].sgFrom | string | нет | уникальное имя security group | SG-11 |
-| 3\.1.5 | fqdnRules.rules[].transport | string | нет | метод передачи данных | "TCP"/"UDP" |
-| 3\.1.6 | fqdnRules.rules[].protocols | array of string | да | значения протоколов | "http", "ssh" |
-| 4 | groups | objects of objects | нет |  | \- |
-| 4\.1 | groups.groups | array of objects | нет |  | \- |
-| 4\.1.1 | groups.groups[].defaultAction | string | нет | представляет действие по умолчанию в конце цепочек для SG | DEFAULT, DROP, ACCEPT |
-| 4\.1.2 | groups.groups[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 4\.1.3 | groups.groups[].name | string | нет | уникальное имя сети | ntw-1 |
-| 4\.1.4 | groups.groups[].networks | array | нет |  | \- |
-| 4\.1.5 | groups.groups[].trace | bool | нет | включить или выключить трассировку(по умолчанию выкл) | true/false |
-| 5 | networks | objects of objects | нет |  | \- |
-| 5\.1 | networks.networks | array of objects | нет |  | \- |
-| 5\.1.1 | networks.networks[].name | string | нет | уникальное имя сети | ntw-1 |
-| 5\.1.2 | networks.networks[].network | objects of objects | нет |  | \- |
-| 5\.1.2.1 | networks.networks[].network.CIDR | string | нет |  | 10\.150.0.224/32 |
-| 6 | sgIcmpRules | objects | нет |  | \- |
-| 6\.1 | sgIcmpRules.rules | array of objects | нет |  | \- |
-| 6\.1.1 | sgIcmpRules.rules[].ICMP | objects | нет |  | \- |
-| 6\.1.1.1 | sgIcmpRules.rules[].ICMP.IPv | IPv4/IPv6 | нет | версия интернет-протокола | "IPv4"/"IPv6" |
-| 6\.1.1.2 | sgIcmpRules.rules[].ICMP.Types | array | нет | код типа ICMP | 0, 8, 100 |
-| 6\.1.2 | sgIcmpRules.rules[].Sg | string | нет | уникальное имя security group | SG-11 |
-| 6\.1.3 | sgIcmpRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 6\.1.4 | sgIcmpRules.rules[].trace | bool | нет | включить или выключить трассировку(по умолчанию выкл) | true/false |
-| 7 | sgRules | objects of objects | нет |  | \- |
-| 7\.1 | sgRules.rules | array of objects | нет |  | \- |
-| 7\.1.1 | sgRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 7\.1.2 | sgRules.rules[].ports | array of objects | нет | массив портов | \- |
-| 7\.1.2.1 | sgRules.rules[].ports[].d | string | нет |  | 7600-7700,7800 |
-| 7\.1.2.2 | sgRules.rules[].ports[].s | string | нет |  | 4446 |
-| 7\.1.3 | sgRules.rules[].sgFrom | string | нет | уникальное имя security group from | sg-0 |
-| 7\.1.4 | sgRules.rules[].sgTo | string | нет | уникальное имя security group to | SG-11 |
-| 7\.1.5 | sgRules.rules[].transport | string | нет | метод передачи данных | "TCP"/"UDP" |
-| 8 | sgSgIcmpRules | objects | нет |  | \- |
-| 8\.1 | sgSgIcmpRules.rules | array of objects | нет |  | \- |
-| 8\.1.1 | sgSgIcmpRules.rules[].ICMP | objects | нет |  | \- |
-| 8\.1.1.1 | sgSgIcmpRules.rules[].ICMP.IPv | string | нет | версия интернет-протокола | "IPv4"/"IPv6" |
-| 8\.1.1.2 | sgSgIcmpRules.rules[].ICMP.Types | array | нет | код типа ICMP | 0, 8, 100 |
-| 8\.1.2 | sgSgIcmpRules.rules[].SgFrom | string | нет | уникальное имя security group from | sg-0 |
-| 8\.1.3 | sgSgIcmpRules.rules[].SgTo | string | нет | уникальное имя security group to | SG-11 |
-| 8\.1.4 | sgSgIcmpRules.rules[].logs | bool | нет | включить или выключить логирование (по умолчанию выкл) | true/false |
-| 8\.1.5 | sgSgIcmpRules.rules[].trace | bool | нет | включить или выключить трассировку(по умолчанию выкл) | true/false |
-| 9 | syncOp | string | да | Delete - Удаление правила SG.<br />UpSert - Добавление нового правила SG (ранее добавленные сохраняются).<br />FullSync - Добавление нового правила SG (ранее добавленные удаляются).<br />(необходимо явно указать одно из трех значений) | "Delete"/"UpSert"/"FullSync" |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Обязательность</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>sgSgRules</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1\.2</td>
+            <td>sgSgRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1\.3</td>
+            <td>sgSgRules.rules[].sg</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>1\.4</td>
+            <td>sgSgRules.rules[].sg_local</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>1\.5</td>
+            <td>sgSgRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>1\.6</td>
+            <td>sgSgRules.rules[].trace</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить трассировку(по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>1\.7</td>
+            <td>sgSgRules.rules[].ports</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>1\.7.1</td>
+            <td>sgSgRules.rules[].ports[].d</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>7600-7700,7800</td>
+        </tr>
+        <tr>
+            <td>1\.7.2</td>
+            <td>sgSgRules.rules[].ports[].s</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>4446</td>
+        </tr>
+        <tr>
+            <td>1\.8</td>
+            <td>sgSgRules.rules[].traffic</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>тип траффика (входящий, исходящий или неопределенный)</td>
+            <td>&quot;ingress&quot;/&quot;egress&quot;/&quot;undef&quot;</td>
+        </tr>
+        <tr>
+            <td>1\.9</td>
+            <td>sgSgRules.rules[].transport</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>метод передачи данных</td>
+            <td>&quot;TCP&quot;/&quot;UDP&quot;</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>cidrSgRules</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>2\.1</td>
+            <td>cidrSgRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>2\.1.1</td>
+            <td>cidrSgRules.rules[].CIDR</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>10\.10.0.8/30</td>
+        </tr>
+        <tr>
+            <td>2\.1.2</td>
+            <td>cidrSgRules.rules[].SG</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group</td>
+            <td>sg-0</td>
+        </tr>
+        <tr>
+            <td>2\.1.3</td>
+            <td>cidrSgRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>2\.1.4</td>
+            <td>cidrSgRules.rules[].ports</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>2\.1.4.1</td>
+            <td>cidrSgRules.rules[].ports[].d</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>7600-7700,7800</td>
+        </tr>
+        <tr>
+            <td>2\.1.4.2</td>
+            <td>cidrSgRules.rules[].ports[].s</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>4446</td>
+        </tr>
+        <tr>
+            <td>2\.1.5</td>
+            <td>cidrSgRules.rules[].trace</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить трассировку(по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>2\.1.6</td>
+            <td>cidrSgRules.rules[].traffic</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>тип траффика (входящий, исходящий или неопределенный)</td>
+            <td>&quot;ingress&quot;/&quot;egress&quot;/&quot;undef&quot;</td>
+        </tr>
+        <tr>
+            <td>2\.1.7</td>
+            <td>cidrSgRules.rules[].transport</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>метод передачи данных</td>
+            <td>&quot;TCP&quot;/&quot;UDP&quot;</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>fqdnRules</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>3\.1</td>
+            <td>fqdnRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>3\.1.1</td>
+            <td>fqdnRules.rules[].FQDN</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>максимальная длина значения не должна превышать 256 символов</td>
+            <td>google.com</td>
+        </tr>
+        <tr>
+            <td>3\.1.2</td>
+            <td>fqdnRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>3\.1.3</td>
+            <td>fqdnRules.rules[].ports</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>3\.1.3.1</td>
+            <td>fqdnRules.rules[].ports[].d</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>7600-7700,7800</td>
+        </tr>
+        <tr>
+            <td>3\.1.3.2</td>
+            <td>fqdnRules.rules[].ports[].s</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>4446</td>
+        </tr>
+        <tr>
+            <td>3\.1.4</td>
+            <td>fqdnRules.rules[].sgFrom</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>3\.1.5</td>
+            <td>fqdnRules.rules[].transport</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>метод передачи данных</td>
+            <td>&quot;TCP&quot;/&quot;UDP&quot;</td>
+        </tr>
+        <tr>
+            <td>3\.1.6</td>
+            <td>fqdnRules.rules[].protocols</td>
+            <td>array of string</td>
+            <td>да</td>
+            <td>значения протоколов</td>
+            <td>&quot;http&quot;, &quot;ssh&quot;</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>groups</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>4\.1</td>
+            <td>groups.groups</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>4\.1.1</td>
+            <td>groups.groups[].defaultAction</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>представляет действие по умолчанию в конце цепочек для SG</td>
+            <td>DEFAULT, DROP, ACCEPT</td>
+        </tr>
+        <tr>
+            <td>4\.1.2</td>
+            <td>groups.groups[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>4\.1.3</td>
+            <td>groups.groups[].name</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя сети</td>
+            <td>ntw-1</td>
+        </tr>
+        <tr>
+            <td>4\.1.4</td>
+            <td>groups.groups[].networks</td>
+            <td>array</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>4\.1.5</td>
+            <td>groups.groups[].trace</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить трассировку(по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>networks</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>5\.1</td>
+            <td>networks.networks</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>5\.1.1</td>
+            <td>networks.networks[].name</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя сети</td>
+            <td>ntw-1</td>
+        </tr>
+        <tr>
+            <td>5\.1.2</td>
+            <td>networks.networks[].network</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>5\.1.2.1</td>
+            <td>networks.networks[].network.CIDR</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>10\.150.0.224/32</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>sgIcmpRules</td>
+            <td>objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>6\.1</td>
+            <td>sgIcmpRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>6\.1.1</td>
+            <td>sgIcmpRules.rules[].ICMP</td>
+            <td>objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>6\.1.1.1</td>
+            <td>sgIcmpRules.rules[].ICMP.IPv</td>
+            <td>IPv4/IPv6</td>
+            <td>нет</td>
+            <td>версия интернет-протокола</td>
+            <td>&quot;IPv4&quot;/&quot;IPv6&quot;</td>
+        </tr>
+        <tr>
+            <td>6\.1.1.2</td>
+            <td>sgIcmpRules.rules[].ICMP.Types</td>
+            <td>array</td>
+            <td>нет</td>
+            <td>код типа ICMP</td>
+            <td>0, 8, 100</td>
+        </tr>
+        <tr>
+            <td>6\.1.2</td>
+            <td>sgIcmpRules.rules[].Sg</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>6\.1.3</td>
+            <td>sgIcmpRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>6\.1.4</td>
+            <td>sgIcmpRules.rules[].trace</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить трассировку(по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>sgRules</td>
+            <td>objects of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>7\.1</td>
+            <td>sgRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>7\.1.1</td>
+            <td>sgRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>7\.1.2</td>
+            <td>sgRules.rules[].ports</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td>массив портов</td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>7\.1.2.1</td>
+            <td>sgRules.rules[].ports[].d</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>7600-7700,7800</td>
+        </tr>
+        <tr>
+            <td>7\.1.2.2</td>
+            <td>sgRules.rules[].ports[].s</td>
+            <td>string</td>
+            <td>нет</td>
+            <td></td>
+            <td>4446</td>
+        </tr>
+        <tr>
+            <td>7\.1.3</td>
+            <td>sgRules.rules[].sgFrom</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group from</td>
+            <td>sg-0</td>
+        </tr>
+        <tr>
+            <td>7\.1.4</td>
+            <td>sgRules.rules[].sgTo</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group to</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>7\.1.5</td>
+            <td>sgRules.rules[].transport</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>метод передачи данных</td>
+            <td>&quot;TCP&quot;/&quot;UDP&quot;</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>sgSgIcmpRules</td>
+            <td>objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>8\.1</td>
+            <td>sgSgIcmpRules.rules</td>
+            <td>array of objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>8\.1.1</td>
+            <td>sgSgIcmpRules.rules[].ICMP</td>
+            <td>objects</td>
+            <td>нет</td>
+            <td></td>
+            <td>\-</td>
+        </tr>
+        <tr>
+            <td>8\.1.1.1</td>
+            <td>sgSgIcmpRules.rules[].ICMP.IPv</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>версия интернет-протокола</td>
+            <td>&quot;IPv4&quot;/&quot;IPv6&quot;</td>
+        </tr>
+        <tr>
+            <td>8\.1.1.2</td>
+            <td>sgSgIcmpRules.rules[].ICMP.Types</td>
+            <td>array</td>
+            <td>нет</td>
+            <td>код типа ICMP</td>
+            <td>0, 8, 100</td>
+        </tr>
+        <tr>
+            <td>8\.1.2</td>
+            <td>sgSgIcmpRules.rules[].SgFrom</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group from</td>
+            <td>sg-0</td>
+        </tr>
+        <tr>
+            <td>8\.1.3</td>
+            <td>sgSgIcmpRules.rules[].SgTo</td>
+            <td>string</td>
+            <td>нет</td>
+            <td>уникальное имя security group to</td>
+            <td>SG-11</td>
+        </tr>
+        <tr>
+            <td>8\.1.4</td>
+            <td>sgSgIcmpRules.rules[].logs</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить логирование (по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>8\.1.5</td>
+            <td>sgSgIcmpRules.rules[].trace</td>
+            <td>bool</td>
+            <td>нет</td>
+            <td>включить или выключить трассировку(по умолчанию выкл)</td>
+            <td>true/false</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>syncOp</td>
+            <td>string</td>
+            <td>да</td>
+            <td>
+                <ul>
+                    <li><b>Delete</b> - Удаление правила SG</li>
+                    <li><b>UpSert</b> - Добавление нового правила SG (ранее добавленные сохраняются)</li>
+                    <li><b>FullSync</b> - Добавление нового правила SG (ранее добавленные удаляются)</li>
+                </ul>
+                <i>необходимо явно указать одно из трех значений</i>
+            </td>
+            <td>&quot;Delete&quot;/&quot;UpSert&quot;/&quot;FullSync&quot;</td>
+        </tr>
+    </tbody>
+</table>
 
 ## **Выходные параметры**
 
 ### **Положительный ответ**
 
-| № | Параметр | Тип данных | Описание | Варианты значений |
-| --- | --- | --- | --- | --- |
-| 1 | \- | object | в случае успеха возвращается пустое тело | \- |
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Параметр</th>
+            <th>Тип данных</th>
+            <th>Описание</th>
+            <th>Варианты значений</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>\-</td>
+            <td>object</td>
+            <td>в случае успеха возвращается пустое тело</td>
+            <td>\-</td>
+        </tr>
+    </tbody>
+</table>
 
 ### **Ответ с ошибками**
 
