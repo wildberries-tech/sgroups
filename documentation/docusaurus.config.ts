@@ -7,7 +7,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'http://swarm-ingress-controller.swarm.svc.k8s.stage-dp',
+  url: 'http://localhost',
   baseUrl: '/swarm_doc/',
 
   onBrokenLinks: 'throw',
