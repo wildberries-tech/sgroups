@@ -130,7 +130,7 @@ to-nft-deb:
 
 generate build:
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^release-docs-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "documentation"  
         
@@ -144,7 +144,7 @@ generate build:
 
 generate deploy:
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
+    - if: $CI_COMMIT_BRANCH =~ /^release-docs-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "documentation"
 

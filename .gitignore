@@ -20,6 +20,7 @@ documentation/.env.local
 documentation/.env.development.local
 documentation/.env.test.local
 documentation/.env.production.local
+documentation/env.sh
 
 documentation/npm-debug.log*
 documentation/yarn-debug.log*
