@@ -1,3 +1,0 @@
-env:
-  URL: "http://swarm-ingress-controller.swarm.svc.k8s.prod-dl"
-  BASE_URL: "/swarm_doc/"

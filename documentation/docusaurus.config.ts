@@ -9,8 +9,8 @@ const config: Config = {
   // Set the production url of your site here
   // url: 'http://swarm-ingress-controller.swarm.svc.k8s.prod-dl',
   // baseUrl: '/swarm_doc/',
-  url: process.env['URL'],
-  baseUrl: process.env['BASE_URL'],
+  url: process.env['DOCS_URL'],
+  baseUrl: process.env['DOCS_BASE_URL'],
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
