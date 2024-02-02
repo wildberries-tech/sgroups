@@ -1,15 +1,5 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-/**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
- */
 const sidebars: SidebarsConfig = {
 
   informationSidebar: [
@@ -135,9 +125,108 @@ const sidebars: SidebarsConfig = {
     id: 'to-nft/monitoring'
   },
   {
-    type: 'doc',
+    type: 'category',
     label: 'Конфигурация  правил',
-    id: 'to-nft/rules-configuration'
+    link: {
+      type: 'doc',
+      id: 'to-nft/rule-configuration/main'
+    },
+    items: [{
+      type: 'category',
+      label: 'INPUT',
+      link: {
+        type: 'doc',
+        id: 'to-nft/rule-configuration/input/main'
+      },
+      items: [{
+        type: 'category',
+        label: 'FW-IN',
+        link: {
+          type: 'doc',
+          id: 'to-nft/rule-configuration/input/fw-in/main'
+        },
+        items: [{
+          type: 'category',
+          label: 'FW-IN-sgName',
+          items: [{
+            type: 'doc',
+            label: 'Sgroup Default  Rule (icmp)',
+            id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/default-rule-icmp'
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to Sgroup (tcp|udp)',
+            id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/s2s-tcp-udp'
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to CIDR (tcp|udp)',
+            id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/s2c-tcp-udp'
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup Default Rule (all)',
+            id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/default-rule-all'
+          }]
+        }]
+      }]
+
+    },
+    {
+      type: 'category',
+      label: 'POSTROUTING',
+      link: {
+        type: 'doc',
+        id: 'to-nft/rule-configuration/postrouting/main'
+      },
+      items: [{
+        type: 'category',
+        label: 'FW-OUT',
+        link: {
+          type: 'doc',
+          id: 'to-nft/rule-configuration/postrouting/fw-out/main'
+        },
+        items: [{
+          type: 'doc',
+          label: 'Config Base Rules',
+          id: 'to-nft/rule-configuration/postrouting/fw-out/config-base-rules'
+        },
+        {
+          type: 'category',
+          label: 'FW-OUT-sgName',
+          items: [{
+            type: 'doc',
+            label: 'Sgroup Default Rule (icmp)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/default-rule-icmp'   
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to Sgroup (icmp)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/s2s-icmp'   
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to Sgroup (tcp|udp)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/s2s-tcp-udp'   
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to FQDN (tcp|udp)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/s2f-tcp-udp'   
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup to CIDR (tcp|udp)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/s2c-tcp-udp'   
+          },
+          {
+            type: 'doc',
+            label: 'Sgroup Default Rule (all)',
+            id: 'to-nft/rule-configuration/postrouting/fw-out/fw-out-sg-name/default-rule-all'   
+          }]
+        }]
+      }]
+    }]
   }],
 
   sgroups: [{
