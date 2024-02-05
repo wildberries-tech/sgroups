@@ -1,12 +1,12 @@
 ---
-id: s2f-tcp-udp
+id: s2s-icmp
 ---
 
-# Sgroup to FQDN (tcp|udp)
+# Sgroup to Sgroup (icmp)
 
 ### Описание
 
-Правило в обычной цепочке для исходящего трафика от FQDN. Имеет третий приоритет в цепочке FW-OUT-sgName.
+Правило в обычной цепочке для исходящего трафика от другой Security Group по ICMP. Имеет второй приоритет в цепочке FW-IN-sgName.
 
 ### Параметры
 
@@ -27,23 +27,23 @@ id: s2f-tcp-udp
                 <ul>
                     <li><b>1</b> - трассировка включена</li>
                     <li><b>0</b> - трассировка выключена</li>
-                </ul>             
+                </ul>              
             </td>
             <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>$\{DstFQDN\}</td>
+            <td>$\{SrcSgroup\}</td>
             <td>
-                <nobr>`saddr @${IPSet(sgName)}`</nobr>            
+                <nobr>`saddr @${IPSet(sgName)}`</nobr>
             </td>
-            <td>Наименование IPSet в котором описаны сети в FQDN</td>
+            <td>Наименование IPSet в котором описаны сети в Security Group</td>
             <td>Значение типа string, не должно содержать в себе пробелов</td>
         </tr>
         <tr>
             <td>$\{Transport\}</td>
-            <td>`tcp` | `udp`</td>
-            <td>протокол передачи данных в цепочке правил.</td>
-            <td>Одно из двух значений `tcp` | `udp`</td>
+            <td>`icmp`</td>
+            <td></td>
+            <td>Указывает на протокол транспортного уровня</td>
         </tr>
         <tr>
             <td>$\{RuleType\}</td>
@@ -52,16 +52,15 @@ id: s2f-tcp-udp
             <td>Описывает, что принимает трафик типа ip</td>
         </tr>
         <tr>
-            <td>$\{SrcPorts\}</td>
-            <td>`sport {}`</td>
-            <td>Набор целочисленных значений от 0 до 65535З</td>
-            <td class="text-justify">Значения `sport` (source port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
-        </tr>
-        <tr>
-            <td>$\{DstPorts\}</td>
-            <td>`dport {}`</td>
-            <td>Набор целочисленных значений от 0 до 65535З</td>
-            <td class="text-justify">Значения `dport` (destination port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
+            <td>$\{TypeList\}</td>
+            <td>`type {}`</td>
+            <td>
+                <div class="text-justify">
+                    список который содержит от 0 до 255 элементов в строковом представлении и указывает на числовой код ICMP
+                </div>
+                <i>Подробнее: [дескрипторы для ICMP](../../../main.md#icmp-descriptors)</i>             
+            </td>
+            <td>Значение кодов типа ICMP</td>
         </tr>
         <tr>
             <td>$\{Counter\}</td>
@@ -73,9 +72,7 @@ id: s2f-tcp-udp
         </tr>
         <tr>
             <td>$\{Log\}</td>
-            <td>
-                <nobr>`log level debug flags ip options`</nobr>            
-            </td>
+            <td>`log level debug flags ip options`</td>
             <td>Не параметризированный</td>
             <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
@@ -88,7 +85,7 @@ id: s2f-tcp-udp
                 <div class="text-justify">
                     <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                 </div>
-                <i>Подробнее: [Verdict statement](../main.md#verdict-statement)</i>              
+                <i>Подробнее: [Verdict statement](../main.md#verdict-statement)</i>             
             </td>
             <td>Вердикт политики по пакетам данных</td>
         </tr>
@@ -98,9 +95,9 @@ id: s2f-tcp-udp
 ### Шаблон
 
 ```hcl
-chain FW-OUT-sgName {
+chain FW-IN-sgName {
     # **********
-    ${Trace} ${RuleType} ${DstFQDN} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+    ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
     # **********
 }
 ```
@@ -108,9 +105,11 @@ chain FW-OUT-sgName {
 ### Пример использования
 
 ```hcl
-chain FW-OUT-sgname_example {
+chain FW-IN-sgname_example {
     # **********
-    nftrace set 1 ip daddr @familyName-fqdn-example.ru tcp dport { 80, 443 } sport { 80, 443 } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip saddr @familyName-v4-sgName_example icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip saddr @familyName-v6-sgName_example icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
     # **********
 }
+```
 ```

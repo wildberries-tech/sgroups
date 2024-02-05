@@ -21,8 +21,8 @@ id: s2c-tcp-udp
     </thead>
     <tbody>
         <tr>
-            <td>\{Trace\}</td>
-            <td>nftrace set</td>
+            <td>$\{Trace\}</td>
+            <td>`nftrace set`</td>
             <td>
                 <ul>
                     <li><b>1</b> - трассировка включена</li>
@@ -32,45 +32,45 @@ id: s2c-tcp-udp
             <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{SrcCIDR\}</td>
+            <td>$\{SrcCIDR\}</td>
             <td>`saddr {CIDR}`</td>
             <td>Массив подсетей</td>
             <td>Список сетей из которой разрешаем трафик</td>
         </tr>
         <tr>
-            <td>\{Transport\}</td>
+            <td>$\{Transport\}</td>
             <td>`tcp` | `udp`</td>
             <td>протокол передачи данных в цепочке правил.</td>
             <td>Одно из двух значений `tcp` | `udp`</td>
         </tr>
         <tr>
-            <td>\{RuleType\}</td>
-            <td>ip</td>
-            <td>Значение для входящего трафика в цепочке правил.</td>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
             <td>Описывает, что принимает трафик типа ip</td>
         </tr>
         <tr>
-            <td>\{SrcPorts\}</td>
-            <td>sport {}</td>
-            <td>Значения `sport`(source port). Может быть как одно значение, как и множество значений портов.</td>
-            <td>В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
+            <td>$\{SrcPorts\}</td>
+            <td>`sport {}`</td>
+            <td>Набор целочисленных значений от 0 до 65535</td>
+            <td class="text-justify">Значения `sport` (source port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
         </tr>
         <tr>
-            <td>\{DstPorts\}</td>
-            <td>dport {}</td>
-            <td>Значения `dport`(destination port). Может быть как одно значение, как и множество значений портов.</td>
-            <td>В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
+            <td>$\{DstPorts\}</td>
+            <td>`dport {}`</td>
+            <td>Набор целочисленных значений от 0 до 65535</td>
+            <td class="text-justify">Значения `dport` (destination port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
-                <nobr>counter packets 0 bytes 0</nobr>
+                <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
             <td>Не параметризированный</td>
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Log\}</td>
+            <td>$\{Log\}</td>
             <td>
                 <nobr>`log level debug flags ip options`</nobr>            
             </td>
@@ -78,8 +78,8 @@ id: s2c-tcp-udp
             <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
-            <td>Accept</td>
+            <td>$\{Verdict\}</td>
+            <td>`Accept`</td>
             <td>
                 <div>Не параметризированный</div>
                 <br />
@@ -98,8 +98,8 @@ id: s2c-tcp-udp
 ```hcl
 chain FW-IN-sgName {
     # **********
-		${Trace} ${RuleType} ${SrcCIDR} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
-		# **********
+    ${Trace} ${RuleType} ${SrcCIDR} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+    # **********
 }
 ```
 
@@ -107,8 +107,8 @@ chain FW-IN-sgName {
 
 ```hcl
 chain FW-IN-sgname_example {
-  # **********
-  nftrace set 1 ip saddr { 1.1.1.1/8 } tcp dport { 80, 443 } counter packets 0 bytes 0 log level debug flags ip options accept
-  # **********
+    # **********
+    nftrace set 1 ip saddr { 1.1.1.1/8 } tcp dport { 80, 443 } sport { 80, 443 } counter packets 0 bytes 0 log level debug flags ip options accept
+    # **********
 }
 ```

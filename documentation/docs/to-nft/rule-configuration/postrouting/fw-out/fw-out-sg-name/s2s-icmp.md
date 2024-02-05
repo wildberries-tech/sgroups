@@ -15,14 +15,14 @@ id: s2s-icmp
         <tr>
             <th>Шаблон параметра</th>
             <th>Структура параметра</th>
-            <th>Значения</th>
+            <th>Значение</th>
             <th>Описание</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>\{Trace\}</td>
-            <td>nftrace set</td>
+            <td>$\{Trace\}</td>
+            <td>`nftrace set`</td>
             <td>
                 <ul>
                     <li><b>1</b> - трассировка включена</li>
@@ -32,7 +32,7 @@ id: s2s-icmp
             <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{DstSgroup\}</td>
+            <td>$\{DstSgroup\}</td>
             <td>
                 <nobr>`daddr @${IPSet(sgName)}`</nobr>
             </td>
@@ -40,25 +40,20 @@ id: s2s-icmp
             <td>Значение типа string, не должно содержать в себе пробелов</td>
         </tr>
         <tr>
-            <td>\{Transport\}</td>
-            <td>icmp</td>
+            <td>$\{Transport\}</td>
+            <td>`icmp`</td>
             <td></td>
             <td>Указывает на протокол транспортного уровня</td>
         </tr>
         <tr>
-            <td>\{RuleType\}</td>
-            <td>ip</td>
-            <td>Значение для входящего трафика в цепочке правил.</td>
-            <td>
-                <ul>
-                    <li><b>saddr</b> - для входящей цепочки правил</li>
-                    <li><b>daddr</b> - для исходящей цепочки правил</li>
-                </ul>
-            </td>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
+            <td>Описывает, что принимает трафик типа ip</td>
         </tr>
         <tr>
-            <td>\{TypeList\}</td>
-            <td>type {}</td>
+            <td>$\{TypeList\}</td>
+            <td>`type {}`</td>
             <td>
                 <div class="text-justify">
                     список который содержит от 0 до 255 элементов в строковом представлении и указывает на числовой код ICMP
@@ -68,7 +63,7 @@ id: s2s-icmp
             <td>Значение кодов типа ICMP</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
                 <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
@@ -76,14 +71,14 @@ id: s2s-icmp
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Log\}</td>
-            <td>log level debug flags ip options</td>
+            <td>$\{Log\}</td>
+            <td>`log level debug flags ip options`</td>
             <td>Не параметризированный</td>
             <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
-            <td>Accept</td>
+            <td>$\{Verdict\}</td>
+            <td>`Accept`</td>
             <td>
                 <div>Не параметризированный</div>
                 <br />
@@ -102,8 +97,8 @@ id: s2s-icmp
 ```hcl
 chain FW-OUT-sgName {
     # **********
-		${Trace} ${RuleType} ${DstSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
-		# **********
+    ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
+    # **********
 }
 ```
 
@@ -111,8 +106,9 @@ chain FW-OUT-sgName {
 
 ```hcl
 chain FW-OUT-sgname_example {
-  # **********
-  nftrace set 1 ip daddr @familyName-sgName_example icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
-  # **********
+    # **********
+    nftrace set 1 ip daddr NetIPv4-sgName_example icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip daddr NetIPv6-sgName_example icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    # **********
 }
 ```

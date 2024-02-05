@@ -14,34 +14,34 @@ id: main
     <thead>
         <tr>
             <th>Шаблон параметра</th>
-            <th>Структура</th>
+            <th>Структура параметра</th>
             <th>Значение</th>
             <th>Описание</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>\{RuleType\}</td>
-            <td>ip</td>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
+            <td>Указатель на трафик типа IP</td>
+        </tr>
+        <tr>
+            <td>$\{DstSgroup\}</td>
+            <td>
+                <nobr>`dst @${IPSet({sgName})}`</nobr>
+            </td>
             <td>Наименование IPSet в котором описаны сети в Security Group</td>
             <td>Значение типа string, не должно содержать в себе пробелов</td>
         </tr>
         <tr>
-            <td>\{DstSgroup\}</td>
-            <td>
-                <nobr>`dst @${IPSet(sgName)}`</nobr>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>\{sgName\}</td>
+            <td>$\{sgName\}</td>
             <td></td>
             <td></td>
             <td>Название Security Group</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
                 <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
@@ -49,9 +49,9 @@ id: main
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
+            <td>$\{Verdict\}</td>
             <td>
-                <nobr>`goto ${chainName}`</nobr>
+                <nobr>`goto {chainName}`</nobr>
             </td>
             <td>
                 <div>Не параметризированный</div>
@@ -81,7 +81,8 @@ chain FW-IN {
 ```hcl
 chain FW-IN {  
   # **********
-  ip daddr @familyName-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
+  ip daddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
+  ip daddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
   # **********
 }
 ```

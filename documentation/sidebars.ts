@@ -155,6 +155,11 @@ const sidebars: SidebarsConfig = {
           },
           {
             type: 'doc',
+            label: 'Sgroup to Sgroup (icmp)',
+            id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/s2s-icmp'
+          },
+          {
+            type: 'doc',
             label: 'Sgroup to Sgroup (tcp|udp)',
             id: 'to-nft/rule-configuration/input/fw-in/fw-in-sg-name/s2s-tcp-udp'
           },

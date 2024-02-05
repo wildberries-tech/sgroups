@@ -2,6 +2,8 @@
 id: main
 ---
 
+# FW-OUT
+
 ### Описание
 
 Правило перехода в цепочку FW-OUT-sgName с проверкой что трафик от указанной Security Group.
@@ -19,27 +21,27 @@ id: main
     </thead>
     <tbody>
         <tr>
-            <td>\{RuleType\}</td>
-            <td>ip</td>
-            <td>Наименование IPSet в котором описаны сети в Security Group</td>
-            <td>Значение типа string, не должно содержать в себе пробелов</td>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
+            <td>Описывает, что принимает трафик типа ip</td>
         </tr>
         <tr>
-            <td>\{SrsSgroup\}</td>
+            <td>$\{SrcSgroup\}</td>
             <td>
-                <nobr>`saddr @${IPSet(sgName)}`</nobr>
+                <nobr>`saddr @${IPSet({sgName})}`</nobr>
             </td>
             <td>Наименование IPSet в котором описаны сети от Security Group</td>
             <td>Значение типа string, не должно содержать в себе пробелов</td>
         </tr>
         <tr>
-            <td>\{sgName\}</td>
+            <td>$\{sgName\}</td>
             <td></td>
             <td></td>
             <td>Название Security Group</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
                 <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
@@ -47,9 +49,9 @@ id: main
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
+            <td>$\{Verdict\}</td>
             <td>
-                <nobr>`goto ${chainName}`</nobr>
+                <nobr>`goto {chainName}`</nobr>
             </td>
             <td>
                 <div>Не параметризированный</div>
@@ -69,7 +71,7 @@ id: main
 ```hcl
 chain FW-OUT {  
  # ********** 
- ${RuleType} ${SrsSgroup} ${Counter} ${Verdict} FW-OUT-${sgName}
+ ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-${sgName}
  # **********
 }
 ```
@@ -79,7 +81,8 @@ chain FW-OUT {
 ```nft
 chain FW-OUT {  
   # **********
-  ip saddr @familyName-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
+  ip saddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
+  ip saddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
   # **********
 }
 ```

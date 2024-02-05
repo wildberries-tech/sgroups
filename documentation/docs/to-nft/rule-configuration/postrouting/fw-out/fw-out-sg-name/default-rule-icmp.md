@@ -21,8 +21,8 @@ id: default-rule-icmp
     </thead>
     <tbody>
         <tr>
-            <td>\{Trace\}</td>
-            <td>nftrace set</td>
+            <td>$\{Trace\}</td>
+            <td>`nftrace set`</td>
             <td>
                 <ul>
                     <li><b>1</b> - трассировка включена</li>
@@ -32,43 +32,43 @@ id: default-rule-icmp
             <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{Transport\}</td>
-            <td>icmp</td>
+            <td>$\{Transport\}</td>
+            <td>`icmp`</td>
             <td></td>
             <td>Указывает на протокол транспортного уровня</td>
         </tr>
         <tr>
-            <td>\{TypeList\}</td>
+            <td>$\{TypeList\}</td>
             <td>
                 <nobr>`type ${TypeList}`</nobr>
             </td>
             <td>
                 <div class="text-justify">
-                    список который содержит от 0 до 255 элементов в строковом представлении и указывает на числовой код ICMP
+                    Список который содержит от 0 до 255 элементов в строковом представлении и указывает на числовой код ICMP
                 </div>
                 <i>Подробнее: [дескрипторы для ICMP](../../../main.md#icmp-descriptors)</i>            
             </td>
             <td>Значение кодов типа ICMP</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
-              <nobr>counter packets 0 bytes 0</nobr>            
+              <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
             <td>Не параметризированный</td>
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Log\}</td>
+            <td>$\{Log\}</td>
             <td>
-                <nobr>log level debug flags ip options</nobr>            
+                <nobr>`log level debug flags ip options`</nobr>
             </td>
             <td>Не параметризированный</td>
             <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
-            <td>Accept</td>
+            <td>$\{Verdict\}</td>
+            <td>`Accept`</td>
             <td>
                 <div>Не параметризированный</div>
                 <br />
@@ -87,8 +87,8 @@ id: default-rule-icmp
 ```hcl
 chain FW-OUT-sgName {
     # **********
-		${Trace} ${RuleType} ${Counter} ${Log} ${Verdict}
-		# **********
+    ${Trace} ${RuleType} ${Counter} ${Log} ${Verdict}
+    # **********
 }
 ```
 
@@ -97,7 +97,7 @@ chain FW-OUT-sgName {
 ```hcl
 chain FW-OUT-sgname_example {
     # **********
-		nftrace set 1 icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
     # **********
 }
 ```

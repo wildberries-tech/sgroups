@@ -2,6 +2,8 @@
 id: main
 ---
 
+# POSTROUTING
+
 ### Описание
 
 Правило перехода в цепочку FW-OUT с проверкой что трафик является исходящим.
@@ -12,14 +14,14 @@ id: main
     <thead>
         <tr>
             <th>Шаблон параметра</th>
-            <th>Структура</th>
+            <th>Структура параметра</th>
             <th>Значение</th>
             <th>Описание</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>\{Condition\}</td>
+            <td>$\{Condition\}</td>
             <td>
                 <nobr>`oifname != "lo"`</nobr>
             </td>
@@ -27,7 +29,7 @@ id: main
             <td>Проверка что трафик является исходящим</td>
         </tr>
         <tr>
-            <td>\{Counter\}</td>
+            <td>$\{Counter\}</td>
             <td>
                 <nobr>`counter packets 0 bytes 0`</nobr>
             </td>
@@ -35,8 +37,8 @@ id: main
             <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
-            <td>goto</td>
+            <td>$\{Verdict\}</td>
+            <td>`goto`</td>
             <td>
                 <div>Не параметризированный</div>
                 <br />
@@ -47,16 +49,29 @@ id: main
             </td>
             <td>Вердикт политики по пакетам данных</td>
         </tr>
+        <tr>
+            <td>$\{Hook\}</td>
+            <td>`hook {Name}`</td>
+            <td>input</td>
+            <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
+        </tr>
+                <tr>
+            <td>$\{HookPriority\}</td>
+            <td>`priority {IntValue}`</td>
+            <td>0</td>
+            <td>Приоритет выполнения цепочки одного типа</td>
+        </tr>        
     </tbody>
 </table>
 
 ### Шаблон
 
 ```hcl
-chain FW-IN {  
-  # **********
-  ${Condition} ${Counter} ${Verdict} FW-OUT
-  # **********
+chain FW-IN {
+    type filter ${Hook} ${HookPriority}; policy accept;
+    # **********
+    ${Condition} ${Counter} ${Verdict} FW-OUT
+    # **********
 }
 ```
 
@@ -66,7 +81,7 @@ chain FW-IN {
 chain POSTROUTING {
     type filter hook postrouting priority 300; policy accept;
     # **********
-		oifname != "lo" counter packets 0 bytes 0 goto FW-OUT
-		# **********
-	}
+    oifname != "lo" counter packets 0 bytes 0 goto FW-OUT
+    # **********
+}
 ```

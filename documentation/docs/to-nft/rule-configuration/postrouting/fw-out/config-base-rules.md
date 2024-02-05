@@ -6,6 +6,10 @@ id: config-base-rules
 
 ### Описание
 
+<div class="paragraph">
+Base Rules - набор правил, которые прописываются статично из конфиграционнного файла агента для того что бы всегда был доступ до высококритичных сервисов таких как HBF и DNS.
+</div>
+
 ### Параметры
 
 <table>
@@ -19,7 +23,7 @@ id: config-base-rules
     </thead>
     <tbody>
         <tr>
-            <td>\{DstCIDR\}</td>
+            <td>$\{DstCIDR\}</td>
             <td>
                 <nobr>`daddr {CIDR}`</nobr>
             </td>
@@ -27,8 +31,14 @@ id: config-base-rules
             <td>Список сетей в которые разрешаем трафик</td>
         </tr>
         <tr>
-            <td>\{Verdict\}</td>
-            <td>Accept</td>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
+            <td>Описывает, что принимает трафик типа ip</td>
+        </tr>
+        <tr>
+            <td>$\{Verdict\}</td>
+            <td>`Accept`</td>
             <td>
                 <div>Не параметризированный</div>
                 <br />
@@ -46,9 +56,9 @@ id: config-base-rules
 
 ```
 chain FW-OUT {
-  # **********
-  ${DstCIDR} ${Verdict}
-  # **********
+    # **********
+    ${RuleType} ${DstCIDR} ${Verdict}
+    # **********
 }
 ```
 
@@ -56,10 +66,8 @@ chain FW-OUT {
 
 ```
 chain FW-OUT {
-  # **********
-  ip daddr { 1.1.1.1, 2.2.2.2} accept
-  # **********
+    # **********
+    ip daddr { 1.1.1.1, 2.2.2.2} accept
+    # **********
 }
 ```
-
-
