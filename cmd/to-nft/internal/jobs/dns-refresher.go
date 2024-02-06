@@ -3,6 +3,7 @@ package jobs
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/H-BF/sgroups/cmd/to-nft/internal"
@@ -11,7 +12,6 @@ import (
 	"github.com/H-BF/sgroups/internal/queue"
 
 	"github.com/H-BF/corlib/logger"
-	"github.com/H-BF/corlib/pkg/jsonview"
 	"github.com/H-BF/corlib/pkg/patterns/observer"
 	"github.com/c-robinson/iplib"
 )
@@ -20,9 +20,9 @@ type (
 
 	// Ask2ResolveDomainAddresses -
 	Ask2ResolveDomainAddresses struct {
-		IpVersion int
-		FQDN      model.FQDN
-		TTL       time.Duration
+		IpVersion   int
+		FQDN        model.FQDN
+		ValidBefore time.Time
 
 		observer.EventType
 	}
@@ -32,21 +32,20 @@ type (
 		IpVersion int
 		FQDN      model.FQDN
 		DnsAnswer internal.DomainAddresses
-		At        time.Time
 
 		observer.EventType
 	}
 
-	fqdn2timer = dict.RBDict[Ask2ResolveDomainAddresses, *time.Timer]
-
-	// FqdnRefresher -
-	FqdnRefresher struct {
-		AgentSubj observer.Subject
-		Resolver  internal.DomainAddressQuerier
-	}
+	// DnsRefresher -
+	DnsRefresher struct{}
 )
 
-func (rf *FqdnRefresher) Run(ctx context.Context) {
+// Run -
+func (rf *DnsRefresher) Run(ctx context.Context) {
+	type fqdn2timer = struct {
+		sync.Mutex
+		dict.RBDict[Ask2ResolveDomainAddresses, *time.Timer]
+	}
 	var activeQueries fqdn2timer
 	defer activeQueries.Iterate(func(_ Ask2ResolveDomainAddresses, v *time.Timer) bool {
 		_ = v.Stop()
@@ -57,8 +56,9 @@ func (rf *FqdnRefresher) Run(ctx context.Context) {
 	obs := observer.NewObserver(func(ev observer.EventType) {
 		_ = que.Put(ev)
 	}, false, Ask2ResolveDomainAddresses{})
-	defer rf.AgentSubj.ObserversDetach(obs)
-	rf.AgentSubj.ObserversAttach(obs)
+	agentSubj := internal.AgentSubject()
+	defer agentSubj.ObserversDetach(obs)
+	agentSubj.ObserversAttach(obs)
 
 	log := logger.FromContext(ctx).Named("dns")
 	log.Info("start")
@@ -79,50 +79,54 @@ func (rf *FqdnRefresher) Run(ctx context.Context) {
 				if e := ev.DnsAnswer.Err; e != nil {
 					log1.Error(e)
 				} else {
-					log1.Debug("resolved")
+					log1.Debugf("resolved; TTL: %s", ev.DnsAnswer.TTL.Round(time.Second))
 				}
-				rf.AgentSubj.Notify(ev)
+				agentSubj.Notify(ev)
 			case Ask2ResolveDomainAddresses:
-				if activeQueries.At(ev) != nil {
-					continue
+				activeQueries.Lock()
+				if activeQueries.At(ev) == nil {
+					now := time.Now()
+					ttl := ev.ValidBefore.Sub(now)
+					if ttl < time.Minute {
+						ttl = time.Minute
+					}
+					log.Debugw("ask-to-resolve",
+						"ip-v", ev.IpVersion,
+						"domain", ev.FQDN.String(),
+						"after", ttl.Round(time.Second),
+					)
+					newTimer := time.AfterFunc(ttl, func() {
+						activeQueries.Lock()
+						activeQueries.Del(ev)
+						activeQueries.Unlock()
+						ret := rf.resolve(ctx, ev)
+						que.Put(ret)
+					})
+					activeQueries.Put(ev, newTimer)
 				}
-				ttl := ev.TTL
-				if ttl < time.Minute {
-					ttl = time.Minute
-				}
-				log.Debugw("ask-to-resolve",
-					"ip-v", ev.IpVersion,
-					"domain", ev.FQDN.String(),
-					"after", jsonview.Stringer(ttl),
-				)
-				newTimer := time.AfterFunc(ttl, func() {
-					defer activeQueries.Del(ev)
-					ret := rf.resolve(ctx, ev)
-					que.Put(ret)
-				})
-				activeQueries.Put(ev, newTimer)
+				activeQueries.Unlock()
 			}
 		}
 	}
 }
 
-func (rf *FqdnRefresher) resolve(ctx context.Context, ask Ask2ResolveDomainAddresses) DomainAddresses {
+func (rf *DnsRefresher) resolve(ctx context.Context, ask Ask2ResolveDomainAddresses) DomainAddresses {
 	ret := DomainAddresses{
 		IpVersion: ask.IpVersion,
 		FQDN:      ask.FQDN,
 	}
+	resolver := internal.GetDnsResolver()
 	domain := ask.FQDN.String()
 	switch ask.IpVersion {
 	case iplib.IP4Version:
-		ret.DnsAnswer = rf.Resolver.A(ctx, domain)
+		ret.DnsAnswer = resolver.A(ctx, domain)
 	case iplib.IP6Version:
-		ret.DnsAnswer = rf.Resolver.AAAA(ctx, domain)
+		ret.DnsAnswer = resolver.AAAA(ctx, domain)
 	default:
 		panic(
 			fmt.Errorf("FqdnRefresher: passed unsupported IP version: %v'", ask.IpVersion),
 		)
 	}
-	ret.At = time.Now().Local()
 	return ret
 }
 
