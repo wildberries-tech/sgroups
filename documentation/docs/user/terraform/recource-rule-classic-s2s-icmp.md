@@ -61,18 +61,24 @@ sgroups_icmp_rules - это ресурс Terraform для определения
 
 ```hcl
 resource "sgroups_icmp_rules" "rules" {
-    items = {
-      "sg(sg-1)sg(sg-2)icmpIPv4" = {
-        logs = true
-        trace = true
-        sg_from = "sg-1"
-        sg_to = "sg-2"
-        ip_v = "IPv4"
-        type = [
-         0, 8
-         ]
-        }
+  items = {
+    "sg(sg-example-from)sg(sg-example-to)icmp4" => {
+        logs    = true
+        trace   = true
+        sg_from = sg-example-from
+        sg_to   = sg-example-to
+        ip_v    = IPv4
+        type    = [0,8]
     }
+    "sg(sg-example-from)sg(sg-example-to)icmp6" => {
+        logs    = true
+        trace   = true
+        sg_from = sg-example-from
+        sg_to   = sg-example-to
+        ip_v    = IPv6
+        type    = [0,8]
+    }
+  }
 }
 ```
 

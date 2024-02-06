@@ -1,14 +1,11 @@
 ---
-id: s2f-tcp-udp
+id: s2f-e-tcp-udp
 ---
 
-# Sgroup to FQDN (tcp|udp)
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-### Описание
-
-Правило в обычной цепочке для исходящего трафика от FQDN. Имеет третий приоритет в цепочке FW-OUT-sgName.
-
-### Параметры
+# Sgroup to FQDN (e: tcp|udp)
 
 <table>
     <thead>
@@ -88,14 +85,125 @@ id: s2f-tcp-udp
                 <div class="text-justify">
                     <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                 </div>
-                <i>Подробнее: [Verdict statement](../main.md#verdict-statement)</i>              
+                <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>              
             </td>
             <td>Вердикт политики по пакетам данных</td>
         </tr>
     </tbody>
 </table>
 
-### Шаблон
+
+
+<Tabs
+    defaltValue = "terraform-m"
+    values = {[
+        { label: "Terraform module", value: "terraform-m" },
+        { label: "Terraform resource", value: "terraform-r" },
+        { label: "API", value: "api" }
+    ]}
+>
+
+    <TabItem value="terraform-m">
+        ```yaml
+        name: sg-example-1
+        rules:
+            egress:
+              - fqdnSet:
+                    - example.com
+                logs:  true
+                trace: true
+                protocols: 
+                    - "http"
+                    - "dns"
+                access:
+                    tcp:
+                      - description: ""
+                        ports_from:
+                          - 64231
+                        ports_to:
+                          - 443
+                          - 80
+                    udp:
+                      - description: ""
+                        ports_from:
+                          - 64231
+                        ports_to:
+                          - 443
+                          - 80        
+        ```
+    </TabItem>
+
+    <TabItem value="terraform-r">
+        ```hcl
+        resource "sgroups_ie_rules" "rules" { 
+            items = { 
+                "tcp:sg(sg-example-1)fqdn(example.com)" = {
+                    transport   = "tcp"
+                    sg_from     = "sg-example-1"
+                    fqdn        = "example.com"
+                    protocols   = ["http", "dns"]
+                    ports = [
+                        {
+                            d = "443,80"
+                            s = "64231"
+                        }
+                    ]
+                    logs  = true
+                    trace = true
+                }
+                "udp:sg(sg-example-1)fqdn(example.com)" = {
+                    transport   = "udp"
+                    sg_from     = "sg-example-1"
+                    fqdn        = "example.com"
+                    protocols   = ["http", "dns"]
+                    ports = [
+                        {
+                            d = "443,80"
+                            s = "64231"
+                        }
+                    ]
+                    logs  = true
+                    trace = true
+                }                
+            }
+        }        
+        ```
+    </TabItem>
+
+    <TabItem value="api">
+        ```json
+        {
+            "fqdnRules": {
+                "rules": [{
+                    "FQDN": "example.com",
+                    "logs": true,
+                    "ports": [{
+                        "d": "443,80",
+                        "s": "64231"
+                    }],
+                    "sgFrom": "sg-example-1",
+                    "transport": "TCP",
+                    "protocols": ["http","dns"] 
+                },
+                {
+                    "FQDN": "example.com",
+                    "logs": true,
+                    "ports": [{
+                        "d": "443,80",
+                        "s": "64231"
+                    }],
+                    "sgFrom": "sg-example-1",
+                    "transport": "UDP",
+                    "protocols": ["http","dns"] 
+                }]
+            },
+            "syncOp": "Upsert"
+        }
+        ```
+    </TabItem>
+</Tabs>
+
+#### Шаблон
 
 ```hcl
 chain FW-OUT-sgName {
@@ -105,12 +213,18 @@ chain FW-OUT-sgName {
 }
 ```
 
-### Пример использования
+#### Пример использования
 
 ```hcl
-chain FW-OUT-sgname_example {
+chain FW-OUT-sg-example-1 {
     # **********
-    nftrace set 1 ip daddr @familyName-fqdn-example.ru tcp dport { 80, 443 } sport { 80, 443 } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip daddr @NetIPv4-fqdn-example.com tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip daddr @NetIPv6-fqdn-example.com tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+
+    nftrace set 1 ip daddr @NetIPv4-fqdn-example.com udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip daddr @NetIPv6-fqdn-example.com udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept            
     # **********
 }
-```
+```   
+
+

@@ -1,0 +1,388 @@
+---
+id: s2s-ie-icmp
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Sgroup to Sgroup (ie: icmp)
+
+<table>
+    <thead>
+        <tr>
+            <th>Шаблон параметра</th>
+            <th>Структура параметра</th>
+            <th>Значения</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>$\{Trace\}</td>
+            <td>`nftrace set`</td>
+            <td>
+                <ul>
+                    <li><b>1</b> - трассировка включена</li>
+                    <li><b>0</b> - трассировка выключена</li>
+                </ul>            
+            </td>
+            <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
+        </tr>
+        <tr>
+            <td>$\{SrcSgroup\}</td>
+            <td>
+                <nobr>`saddr @${IPSet(sgName)}`</nobr>
+            </td>
+            <td>Наименование IPSet в котором описаны сети от Security Group</td>
+            <td>Значение типа string, не должно содержать в себе пробелов</td>
+        </tr>
+        <tr>
+            <td>$\{DstSgroup\}</td>
+            <td>
+                <nobr>`saddr @${IPSet(sgName)}`</nobr>            
+            </td>
+            <td>Наименование IPSet в котором описаны сети в Security Group</td>
+            <td>Значение типа string, не должно содержать в себе пробелов</td>
+        </tr>
+        <tr>
+            <td>$\{Transport\}</td>
+            <td>`tcp` | `udp`</td>
+            <td>протокол передачи данных в цепочке правил.</td>
+            <td>Одно из двух значений `tcp` | `udp`</td>
+        </tr>
+        <tr>
+            <td>$\{RuleType\}</td>
+            <td>`ip`</td>
+            <td></td>
+            <td>Описывает, что принимает трафик типа ip</td>
+        </tr>
+        <tr>
+            <td>$\{SrcPorts\}</td>
+            <td>`sort {}`</td>
+            <td>Набор целочисленных значений от 0 до 65535</td>
+            <td class="text-justify">Значения `sport` (source port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
+        </tr>
+        <tr>
+            <td>$\{DstPorts\}</td>
+            <td>`dport {}`</td>
+            <td>Набор целочисленных значений от 0 до 65535</td>
+            <td class="text-justify">Значения `dport` (destination port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
+        </tr>
+        <tr>
+            <td>$\{Counter\}</td>
+            <td>
+                <nobr>`counter packets 0 bytes 0`</nobr>
+            </td>
+            <td>Не параметризированный</td>
+            <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+        </tr>
+        <tr>
+            <td>$\{Log\}</td>
+            <td>
+                <nobr>`log level debug flags ip options`</nobr>
+            </td>
+            <td>Не параметризированный</td>
+            <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
+        </tr>
+        <tr>
+            <td>$\{Verdict\}</td>
+            <td>`Accept`</td>
+            <td>
+                <div>Не параметризированный</div>
+                <br />
+                <div class="text-justify">
+                    <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                </div>
+                <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
+            </td>
+            <td>Вердикт политики по пакетам данных</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<Tabs
+    defaltValue = "ingress"
+    values = {[
+        { label: "Ingress", value: "ingress" },
+        { label: "Egress", value: "egress" }
+    ]}
+>
+    <TabItem value="ingress">
+        <Tabs
+            defaltValue = "terraform-m"
+            values = {[
+                { label: "Terraform module", value: "terraform-m" },
+                { label: "Terraform resource", value: "terraform-r" },
+                { label: "API", value: "api" }
+            ]}
+        >
+
+            <TabItem value="terraform-m">
+                ```yaml
+                name: sg-example-1
+                rules:
+                    ingress:
+                        - sgroupSet:
+                            - sg-example-2
+                        logs:  true
+                        trace: true
+                        access:
+                            tcp:
+                            - description: ""
+                                ports_from:
+                                - 64231
+                                ports_to:
+                                - 443
+                                - 80
+                            udp:
+                            - description: ""
+                                ports_from:
+                                - 64231
+                                ports_to:
+                                - 443
+                                - 80        
+                ```
+            </TabItem>
+
+            <TabItem value="terraform-r">
+                ```hcl
+                resource "sgroups_ie_rules" "rules" { 
+                    items = { 
+                        "tcp:sg(sg-example-1)sg(sg-example-2)ingress" = {
+                            traffic     = "ingress"
+                            transport   = "tcp"
+                            sg          = "sg-example-2"
+                            sg_local    = "sg-example-1"
+                            ports = [
+                                {
+                                    d = "443,80"
+                                    s = "64231"
+                                }
+                            ]
+                            logs  = true
+                            trace = true
+                        }
+                        "udp:sg(sg-example-1)sg(sg-example-2)ingress" = {
+                            traffic     = "ingress"
+                            transport   = "udp"
+                            sg          = "sg-example-2"
+                            sg_local    = "sg-example-1"
+                            ports = [
+                                {
+                                    d = "443,80"
+                                    s = "64231"
+                                }
+                            ]
+                            logs  = true
+                            trace = true
+                        }                
+                    }
+                }        
+                ```
+            </TabItem>
+
+            <TabItem value="api">
+                ```json
+                {
+                    "sgSgRules": {
+                        "rules": [
+                            {
+                                "sg": "sg-example-2",
+                                "sg_local": "sg-example-1",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [
+                                    {
+                                        "d": "443,80",
+                                        "s": "64231"
+                                    }
+                                ],
+                                "traffic": "Ingress",
+                                "transport": "TCP"
+                            },
+                            {
+                                "sg": "sg-example-2",
+                                "sg_local": "sg-example-1",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [
+                                    {
+                                        "d": "443,80",
+                                        "s": "64231"
+                                    }
+                                ],
+                                "traffic": "Ingress",
+                                "transport": "UDP"
+                            }
+                        ]
+                    },
+                    "syncOp": "Upsert"
+                }
+                ```
+            </TabItem>
+        </Tabs>
+        #### Шаблон
+
+        ```hcl
+        chain FW-IN-sgName {
+            # **********
+            ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+            # **********
+        }
+        ```
+
+        #### Пример использования
+
+        ```hcl
+        chain FW-IN-sg-example-1 {
+            # **********
+            nftrace set 1 ip saddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            nftrace set 1 ip saddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            
+            nftrace set 1 ip saddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            nftrace set 1 ip saddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            # **********
+        }
+        ```          
+    </TabItem>
+
+    <TabItem value="egress">
+        <Tabs
+            defaltValue = "terraform-m"
+            values = {[
+                { label: "Terraform module", value: "terraform-m" },
+                { label: "Terraform resource", value: "terraform-r" },
+                { label: "API", value: "api" }
+            ]}
+        >
+
+            <TabItem value="terraform-m">
+                ```yaml
+                name: sg-example-1
+                rules:
+                    egress:
+                        - sgroupSet:
+                            - sg-example-2
+                        logs:  true
+                        trace: true
+                        access:
+                            tcp:
+                            - description: ""
+                                ports_from:
+                                - 64231
+                                ports_to:
+                                - 443
+                                - 80
+                            udp:
+                            - description: ""
+                                ports_from:
+                                - 64231
+                                ports_to:
+                                - 443
+                                - 80        
+                ```
+            </TabItem>
+
+            <TabItem value="terraform-r">
+                ```hcl
+                resource "sgroups_ie_rules" "rules" { 
+                    items = { 
+                        "tcp:sg(sg-example-1)sg(sg-example-2)egress" = {
+                            traffic     = "egress"
+                            transport   = "tcp"
+                            sg          = "sg-example-2"
+                            sg_local    = "sg-example-1"
+                            ports = [
+                                {
+                                    d = "443,80"
+                                    s = "64231"
+                                }
+                            ]
+                            logs  = true
+                            trace = true
+                        }
+                        "udp:sg(sg-example-1)sg(sg-example-2)egress" = {
+                            traffic     = "egress"
+                            transport   = "udp"
+                            sg          = "sg-example-2"
+                            sg_local    = "sg-example-1"
+                            ports = [
+                                {
+                                    d = "443,80"
+                                    s = "64231"
+                                }
+                            ]
+                            logs  = true
+                            trace = true
+                        }                
+                    }
+                }        
+                ```
+            </TabItem>
+
+            <TabItem value="api">
+                ```json
+                {
+                    "sgSgRules": {
+                        "rules": [
+                            {
+                                "sg": "sg-example-2",
+                                "sg_local": "sg-example-1",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [
+                                    {
+                                        "d": "443,80",
+                                        "s": "64231"
+                                    }
+                                ],
+                                "traffic": "Egress",
+                                "transport": "TCP"
+                            },
+                            {
+                                "sg": "sg-example-2",
+                                "sg_local": "sg-example-1",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [
+                                    {
+                                        "d": "443,80",
+                                        "s": "64231"
+                                    }
+                                ],
+                                "traffic": "Egress",
+                                "transport": "UDP"
+                            }
+                        ]
+                    },
+                    "syncOp": "Upsert"
+                }
+                ```
+            </TabItem>
+        </Tabs>
+        #### Шаблон
+
+        ```hcl
+        chain FW-OUT-sgName {
+            # **********
+            ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+            # **********
+        }
+        ```
+
+        #### Пример использования
+
+        ```hcl
+        chain FW-OUT-sg-example-1 {
+            # **********
+            nftrace set 1 ip daddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            nftrace set 1 ip daddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            
+            nftrace set 1 ip daddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            nftrace set 1 ip daddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            # **********
+        }
+        ```    
+    </TabItem>
+</Tabs>

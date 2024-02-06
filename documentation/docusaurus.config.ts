@@ -58,35 +58,42 @@ const config: Config = {
           position: 'left',
           label: 'Информация',
         },
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'settingsSidebar',
+        //   position: 'left',
+        //   label: 'Настройки'
+        // },
         {
           type: 'docSidebar',
-          sidebarId: 'settingsSidebar',
+          sidebarId: 'UserDocs',
           position: 'left',
-          label: 'Настройки'
+          label: 'Пользовательская документация' 
         },
         {
           type: 'docSidebar',
-          sidebarId: 'docsForUsers',
+          sidebarId: 'techDocs',
           position: 'left',
-          label: 'Документация для пользователей' 
+          label: 'Техническая документация'
         },
-        {
-          type: 'docSidebar',
-          sidebarId: 'toNft',
-          position: 'left',
-          label: 'to-nft'
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'sgroups',
-          position: 'left',
-          label: 'sgroups'
-        },
-        {
-          type: 'doc',
-          label: 'Терминология',
-          docId: 'terminology'
-        }],
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'toNft',
+        //   position: 'left',
+        //   label: 'to-nft'
+        // },
+        // {
+        //   type: 'docSidebar',
+        //   sidebarId: 'sgroups',
+        //   position: 'left',
+        //   label: 'sgroups'
+        // },
+        // {
+        //   type: 'doc',
+        //   label: 'Терминология',
+        //   docId: 'terminology'
+        // }
+      ],
     },
     footer: {
       style: 'dark',

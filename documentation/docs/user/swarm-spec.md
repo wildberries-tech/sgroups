@@ -765,10 +765,11 @@ rules:
 ### Пример использования
 
 ```yaml
+name: sg-example-from
 rules:
   s2s:
     - sgroupSet:
-        - namespace/env/gitlab-runner
+        - sg-example-to
       logs:  true
       access:
         tcp:
@@ -778,7 +779,25 @@ rules:
             ports_to:
               - 443
               - 80
+        udp:
+          - description: ""
+            ports_from:
+              - 64231
+            ports_to:
+              - 443
+              - 80
+        icmpIPv4:
+          - description: "" 
+            Types:
+                - 0
+                - 8
+        icmpIPv6:
+          - description: "" 
+            Types:
+                - 0
+                - 8
 ```
+
 
 ### Ограничения
 
