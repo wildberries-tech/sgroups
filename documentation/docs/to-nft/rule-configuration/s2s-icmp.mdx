@@ -117,14 +117,14 @@ import TabItem from '@theme/TabItem';
                 access:
                     icmpIPv4:
                     - description: "" 
-                        Types:
-                            - 0
-                            - 8
+                      Types:
+                        - 0
+                        - 8
                     icmpIPv6:
                     - description: "" 
-                        Types:
-                            - 0
-                            - 8
+                      Types:
+                        - 0
+                        - 8
         ```
     </TabItem>
     
@@ -208,7 +208,7 @@ chain FW-OUT-sgName {
 ```hcl
 chain FW-IN-sg-example-to {
     # **********
-    nftrace set 1 ip saddr @familyName-v4-sg-example-from icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip saddr @familyName-v4-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
     nftrace set 1 ip saddr @familyName-v6-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
     # **********
 }
@@ -217,7 +217,7 @@ chain FW-IN-sg-example-to {
 ```hcl
 chain FW-OUT-sg-example-from {
     # **********
-    nftrace set 1 ip daddr NetIPv4-sg-example-to icmp type { echo-reply, echo-request } counter packets 0 bytes 0 log level debug flags ip options accept
+    nftrace set 1 ip daddr NetIPv4-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
     nftrace set 1 ip daddr NetIPv6-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
     # **********
 }

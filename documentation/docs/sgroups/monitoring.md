@@ -23,7 +23,7 @@ id: monitoring
 
 **Описание метрик**
 
-Зеленым цветом выделены<span class="green"> ключевые метрики</span>.
+<span class="green"><b>Зеленым</b></span> цветом выделены ключевые метрики.
 
 <table>
     <thead>
@@ -175,12 +175,12 @@ id: monitoring
             <td>Количество созданных ОС потоков</td>
         </tr>
         <tr>
-            <td class="green">healthcheck</td>
+            <td class="green"><b>healthcheck</b></td>
             <td>gauge</td>
             <td>Индикатор проверки состояния процесса (0 или 1)</td>
         </tr>
         <tr>
-            <td class="green">process_cpu_seconds_total</td>
+            <td class="green"><b>process_cpu_seconds_total</b></td>
             <td>counter</td>
             <td>Общее количество времени CPU пользователя и системы в секундах</td>
         </tr>
@@ -195,7 +195,7 @@ id: monitoring
             <td>Количество открытых дескрипторов файлов</td>
         </tr>
         <tr>
-            <td class="green">process_resident_memory_bytes</td>
+            <td class="green"><b>process_resident_memory_bytes</b></td>
             <td>gauge</td>
             <td>Размер резидентной памяти в байтах</td>
         </tr>
@@ -215,12 +215,12 @@ id: monitoring
             <td>Максимальный объем доступной виртуальной памяти в байтах</td>
         </tr>
         <tr>
-            <td class="green">promhttp_metric_handler_requests_in_flight</td>
+            <td class="green"><b>promhttp_metric_handler_requests_in_flight</b></td>
             <td>counter</td>
             <td>Общее количество выявленных запросов по коду состояния HTTP</td>
         </tr>
         <tr>
-            <td class="green">server_grpc_connections</td>
+            <td class="green"><b>server_grpc_connections</b></td>
             <td>gauge</td>
             <td>Количество подключенных на данный момент агентов</td>
         </tr>

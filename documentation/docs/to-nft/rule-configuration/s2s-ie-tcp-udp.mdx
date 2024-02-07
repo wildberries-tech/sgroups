@@ -262,23 +262,23 @@ import TabItem from '@theme/TabItem';
                 name: sg-example-1
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg-example-2
+                      - sgroupSet:
+                          - sg-example-2
                         logs:  true
                         trace: true
                         access:
                             tcp:
                             - description: ""
-                                ports_from:
+                              ports_from:
                                 - 64231
-                                ports_to:
+                              ports_to:
                                 - 443
                                 - 80
                             udp:
                             - description: ""
-                                ports_from:
+                              ports_from:
                                 - 64231
-                                ports_to:
+                              ports_to:
                                 - 443
                                 - 80        
                 ```

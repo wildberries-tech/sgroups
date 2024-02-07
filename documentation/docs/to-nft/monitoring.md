@@ -5,7 +5,7 @@ id: monitoring
 # Мониторинг
 
 <div class="paragraph">
-Информация о состоянии агента на различных узлах основывается на метриках. В таблице ниже предоставлены доступные метрики и их описания. <span class="green">Зеленым</span> цветом выделены ключевые метрики.
+Информация о состоянии агента на различных узлах основывается на метриках. В таблице ниже предоставлены доступные метрики и их описания. <span class="green"><b>Зеленым</b></span> цветом выделены ключевые метрики.
 </div>
 
 <table>
@@ -18,7 +18,7 @@ id: monitoring
     </thead>
     <tbody>
         <tr>
-            <td class="green">agent_applied_configs</td>
+            <td class="green"><b>agent_applied_configs</b></td>
             <td>counter</td>
             <td>Количество успешно примененных конфигураций</td>
         </tr>
@@ -48,7 +48,7 @@ id: monitoring
             <td>Количество горутин, существующих в данный момент</td>
         </tr>
         <tr>
-            <td class="green">go_info</td>
+            <td class="green"><b>go_info</b></td>
             <td>gauge</td>
             <td>Информация о среде выполнения Go</td>
         </tr>
@@ -173,12 +173,12 @@ id: monitoring
             <td>Количество созданных потоков ОС</td>
         </tr>
         <tr>
-            <td class="green">healthcheck</td>
+            <td class="green"><b>healthcheck</b></td>
             <td>gauge</td>
             <td>Индикатор проверки состояния процесса (0 или 1)</td>
         </tr>
         <tr>
-            <td class="green">process_cpu_seconds_total</td>
+            <td class="green"><b>process_cpu_seconds_total</b></td>
             <td>counter</td>
             <td>Общее количество времени процессора, затраченного в секундах</td>
         </tr>
@@ -193,7 +193,7 @@ id: monitoring
             <td>Количество открытых файловых дескрипторов</td>
         </tr>
         <tr>
-            <td class="green">process_resident_memory_bytes</td>
+            <td class="green"><b>process_resident_memory_bytes</b></td>
             <td>gauge</td>
             <td>Размер резидентной памяти в байтах</td>
         </tr>
@@ -213,7 +213,7 @@ id: monitoring
             <td>Максимальное количество виртуальной памяти в байтах</td>
         </tr>
         <tr>
-            <td class="green">promhttp_metric_handler_errors_total</td>
+            <td class="green"><b>promhttp_metric_handler_errors_total</b></td>
             <td>counter</td>
             <td>Общее количество http ошибок, выявленных обработчиком</td>
         </tr>

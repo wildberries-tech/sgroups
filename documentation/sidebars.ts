@@ -1,7 +1,8 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 import { toNft } from './src/sidebars/technical-docs/to-nft';
 import { sgroups } from './src/sidebars/technical-docs/sgroups';
-import { terraformItems } from './src/sidebars/users-docs/terraform.items';
+import { terraformResourceItems } from './src/sidebars/users-docs/terraform.resource.items';
+import { terraformModuleItems } from './src/sidebars/users-docs/terraform.module.items';
 
 const sidebars: SidebarsConfig = {
 
@@ -38,14 +39,19 @@ const sidebars: SidebarsConfig = {
   ],
 
   UserDocs: [{
-    type: 'doc',
+    type: 'category',
     label: 'Terraform module',
-    id: 'user/swarm-spec'
+    link: {
+      type: 'doc',
+      id: 'user/terraform-module/main'
+    },
+    items: terraformModuleItems
+    
   },
   {
     type: 'category',
-    label: 'Terraform',
-    items: terraformItems
+    label: 'Terraform resource',
+    items: terraformResourceItems
   }],
 
   techDocs: [{

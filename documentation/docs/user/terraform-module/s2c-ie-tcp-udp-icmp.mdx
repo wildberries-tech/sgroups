@@ -1,0 +1,347 @@
+---
+id: s2c-ie-tcp-udp-icmp
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Sgroup to CIDR (ie: tcp|udp|icmp)
+
+<Tabs
+    defaltValue="ingress"
+    values = {[
+        { label: "Ingress", value: "ingress" },
+        { label: "Egress", value: "egress" }
+    ]}
+>
+
+    <TabItem value="ingress">
+        #### Описание
+
+        Правило для входящего траффика в указанную Security Group для взаимодействия с указанными списком CIDR.
+
+        #### Параметры ресурса
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Название параметра</th>
+                    <th>Описание</th>
+                    <th>Значение по умолчанию</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>rules</td>
+                    <td>Структура, содержащая описания сетевого взаимодействия (ingress, egress или s2s).</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[]</td>
+                    <td>Список, описывающий сетевое взаимодействие ingress (для входящего траффика). Для применения данных политик, добавляется соответствующее правило как на стороне инициатора.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].cidrSet[]</td>
+                    <td>Список, содержащий допустимые CIDR для ingress правила.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].log</td>
+                    <td>Включить/отключить логирование ingress трафика.</td>
+                    <td>boolean</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].trace</td>
+                    <td>Включить/отключить трассировку ingress трафика .</td>
+                    <td>boolean</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.tcp</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP либо с icmpIPv4.</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.tcp.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.tcp.ports_to[]</td>
+                    <td>Список destination портов, открытых для ingress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.tcp.ports_from[]</td>
+                    <td>Список source портов, открытых для ingress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.udp</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP.</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.udp.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.udp.ports_to[]</td>
+                    <td>Список destination портов, открытых для ingress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.udp.ports_from[]</td>
+                    <td>Список source портов, открытых для ingress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.icmpIPv4</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP либо с icmpIPv4.</td>
+                    <td>{}</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.icmpIPv4.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.ingress[].access.icmpIPv4.type[]</td>
+                    <td>Список, определяющий допустимые типы ICMP запросов.</td>
+                    <td>[]</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
+                    <td>{}</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6.type[]</td>
+                    <td>Список, определяющий допустимые типы ICMPv6 запросов.</td>
+                    <td>[]</td>
+                    <td>TODO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        #### Пример использования
+
+        ```yaml
+        rules:
+        ingress:
+            - cidrSet:
+                - 10.0.0.0/8
+            logs:  true
+            trace: true
+            access:
+                tcp:
+                - description: ""
+                    ports_from:
+                    - 64231
+                    ports_to:
+                    - 443
+                    - 80
+        ```
+
+        #### Ограничения
+        <ul>
+            <li>Необходимо указать минимум одно значение в cidrSet.</li>
+            <li>Не должно быть пересечений в cidrSet.</li>
+            <li>Может быть использован только один протокол для текущего правила (TCP или UDP)</li>
+            <li class="text-justify">Значения `rules.ingress[].tcp/udp.ports_to[]` и `rules.ingress[].tcp/udp.ports_from[]` портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+            <li class="text-justify">Значения `rules.ingress[].tcp/udp.ports_from[]` портов не должно пересекаться в рамках текущего правила.</li>
+            <li class="text-justify">**TODO:** `rules.egress.access[].icmpIPv4/icmpIPv6.type[]` - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255.</li>
+        </ul>
+    </TabItem>
+
+    <TabItem value="egress">
+        #### Описание
+
+        Правило для исходящего траффика в указанную Security Group для взаимодействия с указанными списком CIDR.
+
+        #### Параметры ресурса
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Название параметра</th>
+                    <th>Описание</th>
+                    <th>Значение по умолчанию</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>rules</td>
+                    <td>Структура, содержащая описания сетевого взаимодействия (ingress, egress или s2s).</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[]</td>
+                    <td>Список, описывающий сетевое взаимодействие egress (для исходящего траффика). Для применения данных политик, добавляется соответствующее правило как на стороне инициатора.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].cidrSet[]</td>
+                    <td>Список, содержащий допустимые CIDR для egressправила.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].log</td>
+                    <td>Включить/отключить логирование egress трафика.</td>
+                    <td>boolean</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].trace</td>
+                    <td>Включить/отключить трассировку egress трафика .</td>
+                    <td>boolean</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.tcp</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.tcp.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.tcp.ports_to[]</td>
+                    <td>Список destination портов, открытых для egress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.tcp.ports_from[]</td>
+                    <td>Список source портов, открытых для egress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.udp</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
+                    <td>{}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.udp.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.udp.ports_to[]</td>
+                    <td>Список destination портов, открытых для egress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.udp.ports_from[]</td>
+                    <td>Список source портов, открытых для egress трафика.</td>
+                    <td>[]</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv4</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
+                    <td>{}</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv4.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv4.type[]</td>
+                    <td>Список, определяющий допустимые типы ICMP запросов.</td>
+                    <td>[]</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6</td>
+                    <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
+                    <td>{}</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6.description</td>
+                    <td>Формальное текстовое описание текущего правила.</td>
+                    <td>&quot;&quot;</td>
+                    <td>TODO</td>
+                </tr>
+                <tr>
+                    <td>rules.egress[].access.icmpIPv6.type[]</td>
+                    <td>Список, определяющий допустимые типы ICMPv6 запросов.</td>
+                    <td>[]</td>
+                    <td>TODO</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        #### Пример использования
+
+        ```yaml
+        rules:
+        egress:
+            - cidrSet:
+                - 10.0.0.0/8
+            logs:  true
+            trace: true
+            access:
+                tcp:
+                - description: ""
+                    ports_from:
+                    - 64231
+                    ports_to:
+                    - 443
+                    - 80
+        ```
+
+        #### Ограничения
+
+        <ul>
+            <li>Необходимо указать минимум одно значение в cidrSet</li>
+            <li>Не должно быть пересечений в cidrSet</li>
+            <li>Может быть использован только один протокол для текущего правила (TCP или UDP)</li>
+            <li class="text-justify">Значения `rules.egress[].access.tcp/udp.ports_to[]` и `rules.egress[].access.tcp/udp.ports_from[]` портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов</li>
+            <li class="text-justify">Значения `rules.egress[].access.tcp/udp.ports_from[]` портов не должно пересекаться в рамках текущего правила</li>
+            <li class="text-justify">**TODO**\: `rules.egress.access[].icmpIPv4/icmpIPv6.type[]` - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255</li>
+        </ul>  
+    </TabItem>
+</Tabs>

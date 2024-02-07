@@ -295,6 +295,8 @@ set NetIPv4-${NAME} {
     </TabItem>
 </Tabs>
 
+---
+
 ```hcl
 table inet main-1705582480 {
 
@@ -517,6 +519,30 @@ chain INPUT {
         ```    
     </TabItem>
 </Tabs>
+
+---
+
+```hcl
+table inet main-1705582480 {
+
+chain FW-OUT-exampleSG {
+    # ******
+    counter packets 0 bytes 0 accept
+}
+
+chain FW-OUT {
+    # ******
+    ip saddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-OUT-exampleSG
+    # ******
+  }
+
+chain POSTROUTING {
+    type filter hook input priority 0; policy accept;
+    ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-OUT
+  }
+}
+```
+---
 
 ## Verdict statement
 
