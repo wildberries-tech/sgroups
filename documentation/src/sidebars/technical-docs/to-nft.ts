@@ -28,13 +28,13 @@ export const toNft: any =  [{
     },
     {
       type: 'doc',
-      label: 'Sgroup to Sgroup (ie: tcp|udp)',
+      label: 'Sgroup to Sgroup (I/E)',
       id: 'to-nft/rule-configuration/s2s-ie'
     }, 
     {
       type:'doc',
-      label: 'Sgroup to CIDR (ie: tcp|udp)',
-      id: 'to-nft/rule-configuration/s2c-ie-tcp-udp'
+      label: 'Sgroup to CIDR (I/E)',
+      id: 'to-nft/rule-configuration/s2c-ie'
     },
     {
       type:'doc',
