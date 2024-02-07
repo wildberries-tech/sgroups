@@ -5,41 +5,31 @@ export const toNft: any =  [{
     id: 'to-nft/monitoring'
   },
   {
+    type: 'doc',
+    label: 'Config Base Rules',
+    id: 'to-nft/rule-configuration/config-base-rules'
+  },
+  {
     type: 'category',
-    label: 'Конфигурация  правил',
+    label: 'Конфигурация  ресурсов',
     link: {
       type: 'doc',
       id: 'to-nft/rule-configuration/main'
     },
     items: [{
       type: 'doc',
-      label: 'Config Base Rules',
-      id: 'to-nft/rule-configuration/config-base-rules'
+      label: 'Security Groups',
+      id: 'to-nft/rule-configuration/default-rule-all'
     },
     {
       type:'doc',
-      label: 'Sgroup to Sgroup (tcp|udp)',
-      id: 'to-nft/rule-configuration/s2s-tcp-udp'
-    },
-    {
-      type: 'doc',
-      label: 'Sgroup to Sgroup (icmp)',
-      id: 'to-nft/rule-configuration/s2s-icmp'
-    },
-    {
-      type: 'doc',
-      label: 'Sgroup Default Rule (all)',
-      id: 'to-nft/rule-configuration/default-rule-all'
+      label: 'Sgroup to Sgroup',
+      id: 'to-nft/rule-configuration/s2s'
     },
     {
       type: 'doc',
       label: 'Sgroup to Sgroup (ie: tcp|udp)',
-      id: 'to-nft/rule-configuration/s2s-ie-tcp-udp'
-    },
-    {
-      type: 'doc',
-      label: 'Sgroup Default  Rule (icmp)',
-      id: 'to-nft/rule-configuration/default-rule-icmp'
+      id: 'to-nft/rule-configuration/s2s-ie'
     }, 
     {
       type:'doc',
