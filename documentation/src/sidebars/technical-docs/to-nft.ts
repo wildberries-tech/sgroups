@@ -18,6 +18,11 @@ export const toNft: any =  [{
     },
     items: [{
       type: 'doc',
+      label: 'Example',
+      id: 'to-nft/rule-configuration/example'
+    },
+    {
+      type: 'doc',
       label: 'Security Groups',
       id: 'to-nft/rule-configuration/default-rule-all'
     },

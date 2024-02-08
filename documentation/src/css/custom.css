@@ -54,3 +54,17 @@ table {
   display: table;
   width: 100%;
 }
+
+.center { 
+  text-align: center
+}
+
+.parent-div {
+  display: flex;
+}
+
+.child-block {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #000;
+}
