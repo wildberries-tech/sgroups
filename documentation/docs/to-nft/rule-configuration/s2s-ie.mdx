@@ -29,6 +29,8 @@ import {
 
 # Sgroup to Sgroup (I/E)
 
+TODO добавить описания что это за ресурсы
+
 <Tabs
     defaltValue = 'terraform-m'
     values = {[
@@ -630,7 +632,7 @@ import {
 
     <TabItem value='api'>
         <div class="text-justify">
-            Более подробную документацию по API можно посмотреть [здесь](../../sgroups/api/v1/sync.mdx)<br />
+            Более подробную документацию по API можно посмотреть [здесь](../../sgroups/api/v1/sync.mdx).<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgSgRules` `sgSgIcmpRules`.
         </div>
 
@@ -974,6 +976,16 @@ import {
             </TabItem>
         </Tabs>
 
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
+            <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg${SG)}sg${sg_local}${traffic}"`</li>
+            <li>sg и sg_local - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
+            <li>Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (traffic, transport, sg, sg_local).</li>
+            <li>Значения s (source) и d (distinct) портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+        </ul>        
+
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
         ```mermaid
@@ -1018,13 +1030,13 @@ import {
         >
             <TabItem value="tcp-udp">
                 <details>
-                <summary>Пересечение значений source портов</summary>
+                    <summary>Ошибка в запросе</summary>
 
                     ```json
                     {
-                        "code": 13,
+                        "code": 5,
                         "details":  [],
-                        "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
+                        "message": "Not Found"
                     }
                     ```
                 </details>
@@ -1049,9 +1061,23 @@ import {
                         "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
                     }
                     ```
-                </details>
+                </details>                              
                 <details>
-                <summary>Ошибка в запросе</summary>
+                <summary>Пересечение значений source портов</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
+                    }
+                    ```
+                </details>                   
+            </TabItem>
+
+            <TabItem value="icmp">
+                <details>
+                    <summary>Ошибка в запросе</summary>
 
                     ```json
                     {
@@ -1060,29 +1086,37 @@ import {
                         "message": "Not Found"
                     }
                     ```
-                </details>                       
-            </TabItem>
-
-            <TabItem value="icmp">
-                <details>
-                <summary>Некорректное значение кода ICMP</summary>
-
-                    ```json
-                    {
-                        "code": 3,
-                        "details":  [],
-                        "message": "ICMP type(s) must be in [0-255] but we got (256)"
-                    }
-                    ```
                 </details>
                 <details>
-                <summary>Нет такого значения имени SG</summary>
+                    <summary>Нет такого значения имени SG</summary>
 
                     ```json
                     {
                         "code": 13,
                         "details":  [],
                         "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                    <summary>Добавление несуществующего SG к правилу</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>                                            
+                <details>
+                    <summary>Некорректное значение кода ICMP</summary>
+
+                    ```json
+                    {
+                        "code": 3,
+                        "details":  [],
+                        "message": "ICMP type(s) must be in [0-255] but we got (256)"
                     }
                     ```
                 </details>
@@ -1096,29 +1130,7 @@ import {
                         "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
                     }
                     ```
-                </details>
-                <details>
-                <summary>Добавление несуществующего SG к правилу</summary>
-
-                    ```json
-                    {
-                        "code": 13,
-                        "details":  [],
-                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
-                    }
-                    ```
-                </details>
-                <details>
-                <summary>Ошибка в запросе</summary>
-
-                    ```json
-                    {
-                        "code": 5,
-                        "details":  [],
-                        "message": "Not Found"
-                    }
-                    ```
-                </details>                        
+                </details>                     
             </TabItem>
         </Tabs>
        
