@@ -95,6 +95,10 @@ const config: Config = {
         // }
       ],
     },
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true  
+    },
     footer: {
       style: 'dark',
       copyright: `Copyright © ${new Date().getFullYear()} Swarm. Built with Docusaurus.`,

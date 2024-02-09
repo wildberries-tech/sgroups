@@ -18,23 +18,18 @@ export const toNft: any =  [{
     },
     items: [{
       type: 'doc',
-      label: 'Example',
-      id: 'to-nft/rule-configuration/example'
-    },
-    {
-      type: 'doc',
       label: 'Security Groups',
       id: 'to-nft/rule-configuration/default-rule-all'
-    },
-    {
-      type:'doc',
-      label: 'Sgroup to Sgroup',
-      id: 'to-nft/rule-configuration/s2s'
     },
     {
       type: 'doc',
       label: 'Sgroup to Sgroup (I/E)',
       id: 'to-nft/rule-configuration/s2s-ie'
+    },
+    {
+      type:'doc',
+      label: 'Sgroup to Sgroup',
+      id: 'to-nft/rule-configuration/s2s'
     }, 
     {
       type:'doc',
