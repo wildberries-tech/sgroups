@@ -34,7 +34,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       label: 'Терминология',
-      id: 'terminology'
+      id: 'info/terminology'
     }
   ],
 

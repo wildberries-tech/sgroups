@@ -46,6 +46,11 @@
   text-indent: 20px;
 }
 
+.custom-heading {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .green {
   color: green;
 }

@@ -2,9 +2,30 @@
 id: example
 ---
 
+import React from 'react';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import React from 'react';
+import {
+    Traffic,
+    Log, 
+    Trace,
+    Ports,
+    SrcPorts,
+    DstPorts,
+    ICMPTypes,
+    SgroupSet,
+    Description,
+    Rules,
+    Transport,
+    Sg,
+    SgLocal,
+    ApiIcmp,
+    ICMPV,
+    NftRuleType,
+    NftCounter,
+    NftRuleVerdict,
+    SyncOp
+} from '../../dictionary.mdx';
 
 # Example
 
@@ -20,21 +41,20 @@ import React from 'react';
     <TabItem value='terraform-m'>
         <div class="text-justify">
             Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять одно из двух значений: `Ingress` `Egress`.
-            Аналогчично для `$protocol` подразумевается одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`
+            Аналогчично для `$transport` подразумевается одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`
         </div>
 
         <ul>
-            <li><SG /></li>
-            <li class="text-justify">`rules` - Структура, содержащая описания сетевого взаимодействия.</li>
-            <li class="text-justify">`rules.$traffic[]` - Список, описывающий сетевое взаимодействие.</li>
-            <li class="text-justify">`rules.$traffic[].sgroupSet[]` - Список, содержащий допустимые CIDR для ingress правила.</li>
-            <li class="text-justify">`rules.$traffic[].log` - Включить/отключить логирование ingress трафика.</li>
-            <li class="text-justify">`rules.$traffic[].trace` - Включить/отключить трассировку ingress трафика.</li>
-            <li class="text-justify">`rules.$traffic[].access.$protocol[]` - Тип протокола для данного правила.</li>
-            <li class="text-justify">`rules.$traffic[].access.$protocol[].description` - Формальное текстовое описание текущего правила.</li>
-            <li class="text-justify">`rules.$traffic[].access.$protocol[].ports_to[]` - Список открытых destination портов.</li>
-            <li class="text-justify">`rules.$traffic[].access.$protocol[].ports_from[]` - Список открытых source портов.</li>
-            <li class="text-justify">`rules.$traffic[].access.$protocol[].type[]` - Список, определяющий допустимые типы ICMP запросов.</li>
+            <li class="text-justify">`rules` - <Rules description="short" /></li>
+            <li class="text-justify">`rules.$traffic[]` - <Traffic description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].sgroupSet[]` - <SgroupSet description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].log` - <Log description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].trace` - <Trace description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].access.$transport[]` - <Transport description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].description` - <Description description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]` - <DstPorts description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]` - <SrcPorts description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].type[]` - <ICMPTypes description="short" /></li>
         </ul>
         <br />
         <table>
@@ -42,7 +62,7 @@ import React from 'react';
                 <tr>
                     <th rowspan="2">Название параметра</th>
                     <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Protocol</th>
+                    <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -87,35 +107,35 @@ import React from 'react';
                     <td class="green center">✔</td>  
                 </tr>
                 <tr>
-                    <td>rules.$traffic.access.$protocol[]</td>
+                    <td>rules.$traffic.access.$transport[]</td>
                     <td>{}</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>  
                 </tr>
                 <tr>
-                    <td>rules.$traffic.access.$protocol[].description</td>
+                    <td>rules.$traffic.access.$transport[].description</td>
                     <td>&quot;&quot;</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>  
                 </tr>
                 <tr>
-                    <td>rules.$traffic.access.$protocol[].ports_to[]</td>
+                    <td>rules.$traffic.access.$transport[].ports_to[]</td>
                     <td>[]</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center"></td>  
                 </tr>
                 <tr>
-                    <td>rules.$traffic.access.$protocol[].ports_from[]</td>
+                    <td>rules.$traffic.access.$transport[].ports_from[]</td>
                     <td>[]</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center"></td>  
                 </tr>                       
                 <tr>
-                    <td>rules.$traffic[].access.$protocol[].type[]</td>
+                    <td>rules.$traffic[].access.$transport[].type[]</td>
                     <td>[]</td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -124,7 +144,7 @@ import React from 'react';
             </tbody>
         </table>
 
-        #### Пример использования
+        <h4 class="custom-heading">Пример использования</h4>
 
         <Tabs
             defaltValue = "tcp"
@@ -281,17 +301,17 @@ import React from 'react';
     <TabItem value='terraform-r'>
 
         <ul>
-            <li>`traffic` - Направление трафика для данного правила.</li>
-            <li>`transport` - Тип протокола для данного правила. Должен быть установлен в "TCP" или "UDP".</li>
-            <li>`sg` - Имя исходной группы безопасности.</li>
-            <li>`sg_local` - Имя целевой группы безопасности.</li>
-            <li>`ports` - Массив объектов, представляющих порты. Каждый объект содержит поля s (source) и d (destination).</li>
-            <li>`ports[].d` - Значения s (source) портов в рамках одного правила не должны пересекаться</li>
-            <li>`ports[].s` - Значения d (destination) портов в рамках одного правила могут пересекаться</li>
-            <li>`logs` - Определяет, включены ли логи для данного правила.</li>
-            <li>`trace` - Определяет, включен ли трассировочный режим для данного правила.</li>
-            <li>`ip_v` - Версия IP для ICMP.</li>
-            <li>`type` - Список, определяющий допустимые типы ICMP запросов.</li>
+            <li>`traffic` - <Traffic description="short" /></li>
+            <li>`transport` - <Transport description="short" /></li>
+            <li>`sg` - <Sg description="short" /></li>
+            <li>`sg_local` - <SgLocal description="short" /></li>
+            <li>`ports` - <Ports description="short" /></li>
+            <li>`ports[].d` - <DstPorts description="short" /></li>
+            <li>`ports[].s` - <SrcPorts description="short" /></li>
+            <li>`logs` - <Log description="short" /></li>
+            <li>`trace` - <Trace description="short" /></li>
+            <li>`ip_v` - <ICMPV description="short" /></li>
+            <li>`type` - <ICMPTypes description="short" /></li>
         </ul>
 
         <table>
@@ -301,7 +321,7 @@ import React from 'react';
                     <th rowspan="2">обязательность</th>
                     <th rowspan="2">тип данных</th>
                     <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Protocol</th>
+                    <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -612,19 +632,20 @@ import React from 'react';
         </div>
 
         <ul>
-            <li>`$node.rules[].sg` - уникальное имя security group</li>
-            <li>`$node.rules[].sg_local` - уникальное имя security group</li>
-            <li>`$node.rules[].logs` - включить или выключить логирование</li>
-            <li>`$node.rules[].trace` - включить или выключить трассировку</li>
-            <li>`$node.rules[].ports` - </li>
-            <li>`$node.rules[].ports[].d`</li>
-            <li>`$node.rules[].ports[].s`</li>
-            <li>`$node.rules[].traffic` - тип траффика</li>
-            <li>`$node.rules[].transport` - метод передачи данных</li>
-            <li>`$node.rules[].ICMP`</li>
-            <li>`$node.rules[].ICMP.IPv` - версия интернет-протокола</li>
-            <li>`$node.rules[].ICMP.Types` - код типа ICMP</li>
-            <li>`syncOp`</li>
+            <li>`$node.rules[]` - <Rules description="short" /></li>
+            <li>`$node.rules[].sg` - <Sg description="short" /></li>
+            <li>`$node.rules[].sg_local` - <SgLocal description="short" /></li>
+            <li>`$node.rules[].logs` - <Log description="short" /></li>
+            <li>`$node.rules[].trace` - <Trace description="short" /></li>
+            <li>`$node.rules[].ports` - <Ports description="short" /></li>
+            <li>`$node.rules[].ports[].d` - <DstPorts description="short" /></li>
+            <li>`$node.rules[].ports[].s` - <SrcPorts description="short" /></li>
+            <li>`$node.rules[].traffic` - <Traffic description="short" /></li>
+            <li>`$node.rules[].transport` - <Transport description="short" /></li>
+            <li>`$node.rules[].ICMP` - <ApiIcmp description="short" /></li>
+            <li>`$node.rules[].ICMP.IPv` - <ICMPV description="short" /></li>
+            <li>`$node.rules[].ICMP.Types` - <ICMPTypes description="short" /></li>
+            <li>`syncOp` - <SyncOp description="short" /></li>
         </ul>
 
         <table>
@@ -634,7 +655,7 @@ import React from 'react';
                     <th rowspan="2">обязательность</th>
                     <th rowspan="2">тип данных</th>
                     <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Protocol</th>
+                    <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -643,6 +664,15 @@ import React from 'react';
                 </tr>
             </thead>      
             <tbody>
+                <tr>
+                    <td>$node.rules[]</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
                 <tr>
                     <td>$node.rules[].sg</td>
                     <td></td>
@@ -924,26 +954,171 @@ import React from 'react';
                     </div>
                 </div>            
             </TabItem>
-        </Tabs>        
+        </Tabs>
+
+        #### Диаграмма последовательности
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить IE-SG-SG правило
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе 
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Нет такого значения имени SG(sg и/или sg_local)
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о IE-SG-SG в БД
+
+        db-->>server: Ответ с успешно добавленным новым IE-SG-SG правилом
+        server-->>user: Успешно добавленное новое IE-SG-SG правило
+        ```
+
+        #### Возможные ошибки API
+
+        <Tabs
+            defaltValue='tcp-udp'
+            values={[
+                { label: "TCP/UDP", value: "tcp-udp"},
+                { label: "ICMP", value: "icmp" }
+            ]}
+        >
+            <TabItem value="tcp-udp">
+                <details>
+                <summary>Пересечение значений source портов</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Нет такого значения имени SG</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Добавление несуществующего SG к правилу</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Ошибка в запросе</summary>
+
+                    ```json
+                    {
+                        "code": 5,
+                        "details":  [],
+                        "message": "Not Found"
+                    }
+                    ```
+                </details>                       
+            </TabItem>
+
+            <TabItem value="icmp">
+                <details>
+                <summary>Некорректное значение кода ICMP</summary>
+
+                    ```json
+                    {
+                        "code": 3,
+                        "details":  [],
+                        "message": "ICMP type(s) must be in [0-255] but we got (256)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Нет такого значения имени SG</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Некорректное значение IPv</summary>
+
+                    ```json
+                    {
+                        "code": 3,
+                        "details":  [],
+                        "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Добавление несуществующего SG к правилу</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Ошибка в запросе</summary>
+
+                    ```json
+                    {
+                        "code": 5,
+                        "details":  [],
+                        "message": "Not Found"
+                    }
+                    ```
+                </details>                        
+            </TabItem>
+        </Tabs>
+       
     </TabItem>
  
     <TabItem value='nft'>
         <ul>
-            <li>`$Trace` - Трассировка указанного правила</li>
-            <li>`$SrcSgroup` - Значение типа string, не должно содержать в пробелов</li>
-            <li>`$DstGroup` - Значение типа string, не должно содержать в пробелов</li>
-            <li>`$Transport` - Одно из двух значений tcp | udp | icmp</li>
-            <li>`$RuleType` - Описывает, что принимает трафик типа ip</li>
-            <li>`$TypeList` - Значение кодов типа ICMP</li>
-            <li class="text-justify">`$SrcPorts` - Значения sport (source port). Может быть как одно значение, как и множество значений портов.
-            В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. 
-            Если передается массив значений портов то они должны быть внутри {} перечислены через запятую.</li>
-            <li class="text-justify">`$DstPorts` - Значения dport (destination port). Может быть как одно значение, как и множество значений портов.
-            В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта.
-            Если передается массив значений портов то они должны быть внутри {} перечислены через запятую.</li>
-            <li>`$Counter` - Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил. </li>
-            <li>`$Log` - Логирование указанного правила </li>
-            <li>`$Verdict` - Вердикт политики по пакетам данных </li>
+            <li>`$Trace` - <Trace description="short" /></li>
+            <li>`$SrcSgroup` - <Sg description="short" /></li>
+            <li>`$DstGroup` - <Sg description="short" /></li>
+            <li>`$Transport` - <Transport description="short" /></li>
+            <li>`$NftRuleType` - <NftRuleType description="short" /></li>
+            <li>`$TypeList` - <ICMPTypes description="short" /></li>
+            <li class="text-justify">`$SrcPorts` - <SrcPorts description="short" /></li>
+            <li class="text-justify">`$DstPorts` - <DstPorts description="short" /></li>
+            <li>`$NftCounter` - <NftCounter description="short" /></li>
+            <li>`$Log` - <Log description="short" /></li>
+            <li>`$NftRuleVerdict` - <NftRuleVerdict description="short" /></li>
         </ul>
 
         <table>
@@ -952,7 +1127,7 @@ import React from 'react';
                     <th rowspan="2">Шаблон параметра</th>
                     <th rowspan="2">Структура параметра</th>
                     <th rowspan="2">Значения</th>
-		            <th colspan="3">Protocol</th>
+		            <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -1003,7 +1178,7 @@ import React from 'react';
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>$RuleType</td>
+                    <td>$NftRuleType</td>
                     <td>`ip`</td>
                     <td></td>
                     <td class="green center">✔</td>
@@ -1035,7 +1210,7 @@ import React from 'react';
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>$Counter</td>
+                    <td>$NftCounter</td>
                     <td>
                         <nobr>`counter packets 0 bytes 0`</nobr>
                     </td>
@@ -1055,7 +1230,7 @@ import React from 'react';
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>$Verdict</td>
+                    <td>$NftRuleVerdict</td>
                     <td>`Accept`</td>
                     <td>
                         <div>Не параметризированный</div>
@@ -1093,7 +1268,7 @@ import React from 'react';
                         ```hcl
                         chain FW-IN-sgName {
                             # **********
-                            $Trace $RuleType $SrcSgroup $Transport $SrcPorts $DstPorts $Counter $Log $Verdict
+                            $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                             # **********
                         }
                         ```
@@ -1115,7 +1290,7 @@ import React from 'react';
                         ```hcl
                         chain FW-OUT-sgName {
                             # **********
-                            $Trace $RuleType $DstSgroup $Transport $SrcPorts $DstPorts $Counter $Log $Verdict
+                            $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                             # **********
                         }
                         ```
@@ -1147,7 +1322,7 @@ import React from 'react';
                         ```hcl
                         chain FW-IN-sgName {
                             # **********
-                            $Trace $RuleType $SrcSgroup $Transport $SrcPorts $DstPorts $Counter $Log $Verdict
+                            $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                             # **********
                         }
                         ```
@@ -1169,7 +1344,7 @@ import React from 'react';
                         ```hcl
                         chain FW-OUT-sgName {
                             # **********
-                            $Trace $RuleType $DstSgroup $Transport $SrcPorts $DstPorts $Counter $Log $Verdict
+                            $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                             # **********
                         }
                         ```
@@ -1201,7 +1376,7 @@ import React from 'react';
                         ```hcl
                         chain FW-IN-sgName {
                             # **********
-                                $Trace $RuleType $DstSgroup $Transport $TypeList $Counter $Log $Verdict
+                                $Trace $NftRuleType $DstSgroup $Transport $TypeList $NftCounter $Log $NftRuleVerdict
                                 # **********
                         }
                         ```
@@ -1223,7 +1398,7 @@ import React from 'react';
                         ```hcl
                         chain FW-OUT-sgName {
                             # **********
-                                $Trace $RuleType $DstSgroup $Transport $TypeList $Counter $Log $Verdict
+                                $Trace $NftRuleType $DstSgroup $Transport $TypeList $NftCounter $Log $NftRuleVerdict
                                 # **********
                         }
                         ```
