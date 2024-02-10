@@ -453,7 +453,7 @@ TODO добавить описания что это за ресурсы
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "tcp:sg(sg_example)sg(sg_local_example-1)ingress" = {
+                            "tcp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "tcp"
                               sg          = "sg_example"
@@ -478,7 +478,7 @@ TODO добавить описания что это за ресурсы
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "tcp:sg(sg_example)sg(sg_local_example-1)egress" = {
+                            "tcp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "tcp"
                               sg          = "sg_example"
@@ -508,7 +508,7 @@ TODO добавить описания что это за ресурсы
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "udp:sg(sg_example)sg(sg_local_example-1)ingress" = {
+                            "udp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "udp"
                               sg          = "sg_example"
@@ -531,7 +531,7 @@ TODO добавить описания что это за ресурсы
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "udp:sg(sg_example)sg(sg_local_example-1)egress" = {
+                            "udp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "udp"
                               sg          = "sg_example"
