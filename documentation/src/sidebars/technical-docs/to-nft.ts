@@ -34,7 +34,7 @@ export const toNft: any =  [{
     {
       type:'doc',
       label: 'Sgroup to CIDR (I/E)',
-      id: 'to-nft/rule-configuration/s2c-ie'
+      id: 'to-nft/rule-configuration/s2c-ie2'
     },
     {
       type:'doc',

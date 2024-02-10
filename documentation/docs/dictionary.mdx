@@ -186,3 +186,12 @@ export function TerraformResource({description}) {
             return (<span>Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки инфраструктуры согласно подходу Infrastructure as Code (IaC).</span>)
     }
 }
+
+export function CidrSet({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Список, содержащий подсети типа IP.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}

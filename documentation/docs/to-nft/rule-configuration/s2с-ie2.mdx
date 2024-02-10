@@ -1,5 +1,5 @@
 ---
-id: s2s-ie
+id: s2c-ie2
 ---
 
 import React from 'react';
@@ -13,7 +13,6 @@ import {
     SrcPorts,
     DstPorts,
     ICMPTypes,
-    SgroupSet,
     Description,
     Rules,
     Transport,
@@ -26,13 +25,14 @@ import {
     NftRuleVerdict,
     SyncOp,
     TerraformModule,
-    TerraformResource
+    TerraformResource,
+    CidrSet
 } from '../../dictionary.mdx';
 
 # Sgroup to Sgroup (I/E)
 
 #### Описание
-Правило `IE:S2S` (Ingress/Egress Security Group to Security Group) обеспечивает гибкое управление и контроль сетевого трафика между разными группами безопасности, используя протоколы TCP, UDP и ICMP. Это правило позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий уровень защиты и контроля в сетевой инфраструктуре.
+Правило `IE:S2C` (Ingress/Egress Security Group to CIDR) предоставляет возможность гибкого управления и контроля за сетевым трафиком между различными группами безопасности и подсетями, используя TCP, UDP и ICMP протоколы. Это правило дает возможность детально настроить, какой трафик разрешен к передаче между группами безопасности и определенными подсетями, тем самым гарантируя высокий уровень защиты и управления сетевой инфраструктурой.
 <Tabs
     defaltValue = 'terraform-m'
     values = {[
@@ -53,7 +53,7 @@ import {
 
             <li class="text-justify">`rules` - <Rules description="short" /></li>
             <li class="text-justify">`rules.$traffic[]` - <Traffic description="short" /></li>
-            <li class="text-justify">`rules.$traffic[].sgroupSet[]` - <SgroupSet description="short" /></li>
+            <li class="text-justify">`rules.$traffic[].cidrSet[]` - <CidrSet description="short" /></li>
             <li class="text-justify">`rules.$traffic[].log` - <Log description="short" /></li>
             <li class="text-justify">`rules.$traffic[].trace` - <Trace description="short" /></li>
             <li class="text-justify">`rules.$traffic[].access.$transport[]` - <Transport description="short" /></li>
@@ -99,7 +99,7 @@ import {
                     <td class="green center">✔</td>                    
                 </tr>
                 <tr>
-                    <td>rules.$traffic.sgroupSet[]</td>
+                    <td>rules.$traffic.cidrSet[]</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -175,8 +175,8 @@ import {
                         name: sg-example-1
                         rules:
                             ingress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -195,8 +195,8 @@ import {
                         name: sg-example-1
                         rules:
                             egress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -219,8 +219,8 @@ import {
                         name: sg-example-1
                         rules:
                             ingress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -239,8 +239,8 @@ import {
                         name: sg-example-1
                         rules:
                             egress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -263,8 +263,8 @@ import {
                         name: sg-example-1
                         rules:
                             ingress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -282,8 +282,8 @@ import {
                         name: sg-example-1
                         rules:
                             egress:
-                              - sgroupSet:
-                                  - sg-example-2
+                              - cidrSet:
+                                  - "10.0.0.0/8"
                                 logs:  true
                                 trace: true
                                 access:
@@ -307,12 +307,10 @@ import {
                     <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
                     <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
                 </ul>
-            <li class="text-justify">`sgroupSet`:</li>
+            <li class="text-justify">`cidrSet`:</li>
                 <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                    <li class="text-justify">Необходимо указать минимум одно значение.</li>
+                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
+                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
                 </ul>
             <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
                 <ul>
@@ -343,8 +341,8 @@ import {
             <li>`items.$ruleName` - уникальное имя создаваемого ресурса.</li>
             <li>`items.$ruleName.traffic` - <Traffic description="short" /></li>
             <li>`items.$ruleName.transport` - <Transport description="short" /></li>
-            <li>`items.$ruleName.sg` - <Sg description="short" /></li>
-            <li>`items.$ruleName.sg_local` - <SgLocal description="short" /></li>
+            <li>`items.$ruleName.cidr` - <CidrSet description="short" /></li>
+            <li>`items.$ruleName.sg_name` - <SgLocal description="short" /></li>
             <li>`items.$ruleName.ports` - <Ports description="short" /></li>
             <li>`items.$ruleName.ports[].d` - <DstPorts description="short" /></li>
             <li>`items.$ruleName.ports[].s` - <SrcPorts description="short" /></li>
@@ -409,7 +407,7 @@ import {
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>items.$ruleName.sg</td>
+                    <td>items.$ruleName.cidr</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -418,7 +416,7 @@ import {
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>items.$ruleName.sg_local</td>
+                    <td>items.$ruleName.sg_name</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -509,13 +507,13 @@ import {
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" { 
+                        resource "sgroups_cidr_rules" "rules" { 
                           items = { 
-                            "tcp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
+                            "tcp:cidr(10.0.0.0/8)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "tcp"
-                              sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_name     = "sg_example"
+                              cidr        = "10.0.0.0/8"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -534,13 +532,13 @@ import {
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" { 
+                        resource "sgroups_cidr_rules" "rules" { 
                           items = { 
-                            "tcp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
+                            "tcp:cidr(10.0.0.0/8)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "tcp"
-                              sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_name     = "sg_example"
+                              cidr        = "10.0.0.0/8"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -564,13 +562,13 @@ import {
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" { 
+                        resource "sgroups_cidr_rules" "rules" { 
                           items = { 
-                            "udp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
+                            "udp:cidr(10.0.0.0/8)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "udp"
-                              sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_name     = "sg_example"
+                              cidr        = "10.0.0.0/8"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -587,13 +585,13 @@ import {
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" { 
+                        resource "sgroups_cidr_rules" "rules" { 
                           items = { 
-                            "udp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
+                            "udp:cidr(10.0.0.0/8)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "udp"
-                              sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_name     = "sg_example"
+                              cidr        = "10.0.0.0/8"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -614,13 +612,13 @@ import {
                         <h4 class="center">Ingress</h4>
 
                         ```hcl
-                        resource "sgroups_icmp_rules" "rules" {
+                        resource "sgroups_cidr_icmp_rules" "rules" {
                           items = {
                             "sg(sg-example-local)sg(sg-example)icmp4" = {
                                 logs    = true
                                 trace   = true
-                                sg_local = sg-example-local
-                                sg       = sg-example
+                                sg_name = sg-example-local
+                                cidr    = 10.0.0.0/8
                                 ip_v    = IPv4
                                 type    = [0,8]
                                 traffic = ingress
@@ -628,8 +626,8 @@ import {
                             "sg(sg-example-local)sg(sg-example)icmp6" = {
                                 logs    = true
                                 trace   = true
-                                sg_local = sg-example-local
-                                sg       = sg-example
+                                sg_name = sg-example-local
+                                cidr    = 10.0.0.0/8
                                 ip_v    = IPv6
                                 type    = [0,8]
                                 traffic = ingress
@@ -645,13 +643,13 @@ import {
 
 
                         ```hcl
-                        resource "sgroups_icmp_rules" "rules" {
+                        resource "sgroups_cidr_icmp_rules" "rules" {
                           items = {
                             "sg(sg-example-local)sg(sg-example)icmp4" = {
                                 logs    = true
                                 trace   = true
-                                sg_local = sg-example-local
-                                sg       = sg-example
+                                sg_name = sg-example-local
+                                cidr    = 10.0.0.0/8
                                 ip_v    = IPv4
                                 type    = [0,8]
                                 traffic = egress
@@ -659,8 +657,8 @@ import {
                             "sg(sg-example-local)sg(sg-example)icmp6" = {
                                 logs    = true
                                 trace   = true
-                                sg_local = sg-example-local
-                                sg       = sg-example
+                                sg_name = sg-example-local
+                                cidr    = 10.0.0.0/8
                                 ip_v    = IPv6
                                 type    = [0,8]
                                 traffic = egress
@@ -684,17 +682,17 @@ import {
                 </ul>
             <li class="text-justify">`items.$ruleName`:</li>
                 <ul>
-                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:sg-local(${sg_local})sg$({sg})${traffic}"`.</li>
+                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:cidr(${cidr})sg(${sg_name})${traffic}"`.</li>
                 </ul>
-            <li class="text-justify">`items.$ruleName.sg`:</li>
+            <li class="text-justify">`items.$ruleName.sg_name`:</li>
                 <ul>
                     <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
                     <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
                 </ul>
-            <li class="text-justify">`items.$ruleName.sg_local`:</li>
+            <li class="text-justify">`cidr`:</li>
                 <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
+                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
                 </ul>
             <li class="text-justify">`items.$ruleName.ports[].s`:</li>
                 <ul>
@@ -722,14 +720,14 @@ import {
         <div class="text-justify">
             <ul>
             Более подробную документацию по API можно посмотреть [здесь](../../sgroups/api/v1/sync.mdx).<br />
-            Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgSgRules` `sgSgIcmpRules`.
+            Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `cidrSgRules` `cidrSgIcmpRules`.
             </ul>
         </div>
 
         <ul>
             <li>`$node.rules[]` - <Rules description="short" /></li>
-            <li>`$node.rules[].sg` - <Sg description="short" /></li>
-            <li>`$node.rules[].sg_local` - <SgLocal description="short" /></li>
+            <li>`$node.rules[].cidr` - <CidrSet description="short" /></li>
+            <li>`$node.rules[].sg_name` - <SgLocal description="short" /></li>
             <li>`$node.rules[].logs` - <Log description="short" /></li>
             <li>`$node.rules[].trace` - <Trace description="short" /></li>
             <li>`$node.rules[].ports` - <Ports description="short" /></li>
@@ -741,6 +739,12 @@ import {
             <li>`$node.rules[].ICMP.IPv` - <ICMPV description="short" /></li>
             <li>`$node.rules[].ICMP.Types` - <ICMPTypes description="short" /></li>
             <li>`syncOp` - <SyncOp description="short" /></li>
+        </ul>
+
+
+        <ul>
+            #### Так же в таблице представлены области применения полей относительно используемого протокола:
+
         </ul>
 
         <table>
@@ -769,7 +773,7 @@ import {
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>$node.rules[].sg</td>
+                    <td>$node.rules[].cidr</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -778,7 +782,7 @@ import {
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>$node.rules[].sg_local</td>
+                    <td>$node.rules[].sg_name</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -906,11 +910,11 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
                                     "trace": true,
                                     "ports": [{
@@ -932,11 +936,11 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{                         
-                            "sgSgRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
                                     "trace": true,
                                     "ports": [{
@@ -962,11 +966,11 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
                                     "trace": true,
                                     "ports": [{
@@ -988,11 +992,11 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
                                     "trace": true,
                                     "ports": [{
@@ -1014,21 +1018,21 @@ import {
                 <div class="parent-div">
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
-                        ```bash
+                         ```bash
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgIcmpRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "ICMP": {
-                                    "IPv": "IPv4",
-                                    "Types": [0, 8]
-                                    },
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
-                                    "trace": true
+                                    "trace": true,
+                                    "ICMP": {
+                                        "IPv": "IPv4",
+                                        "Types": [0, 8]
+                                    },
                                     "traffic": "Ingress",
                                 }
                                 ]
@@ -1043,24 +1047,24 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgIcmpRules": {
+                            "cidrSgRules": {
                                 "rules": [
                                 {
-                                    "ICMP": {
-                                    "IPv": "IPv4",
-                                    "Types": [0, 8]
-                                    },
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
+                                    "cidr": "10.0.0.0/8",
+                                    "sg_name": "sg-example-local",
                                     "logs": true,
-                                    "trace": true
+                                    "trace": true,
+                                    "ICMP": {
+                                        "IPv": "IPv4",
+                                        "Types": [0, 8]
+                                    },
                                     "traffic": "Egress",
                                 }
                                 ]
                             },
                             "syncOp": "UpSert"
                         }'
-                        ```                          
+                        ```                       
                     </div>
                 </div>            
             </TabItem>
@@ -1069,12 +1073,36 @@ import {
         <h4 class="custom-heading">Ограничения</h4>
 
         <ul>
-            <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
-            <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg${SG)}sg${sg_local}${traffic}"`</li>
-            <li>sg и sg_local - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li>Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (traffic, transport, sg, sg_local).</li>
-            <li>Значения s (source) и d (distinct) портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-        </ul>        
+            <li class="text-justify">`$node.rules[].sg_name`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`$node.rules[].cidr`:</li>
+                <ul>
+                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
+                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
+                </ul>
+            <li class="text-justify">`$node.rules[].ports[].s`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`$node.rules[].ports[].d`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`$node.rules[].type[]`:</li>
+                <ul>
+                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
+                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
+                </ul>
+        </ul>
 
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
@@ -1093,7 +1121,7 @@ import {
         server->>db: Отправить запрос
         db->>db: Проверка входящего запроса
 
-        alt Нет такого значения имени SG(sg и/или sg_local)
+        alt Нет такого значения имени SG(sg и/или sg_name)
             db-->>server: Ответ с ошибкой
             server-->>user: Показать ошибку в запросе
         end
@@ -1408,8 +1436,8 @@ import {
                         ```hcl
                         chain FW-IN-sg-example-1 {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1430,8 +1458,8 @@ import {
                         ```hcl
                         chain FW-OUT-sg-example-1 {
                             # **********
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1462,8 +1490,8 @@ import {
                         ```hcl
                         chain FW-IN-sg-example-1 {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1484,8 +1512,8 @@ import {
                         ```hcl
                         chain FW-OUT-sg-example-1 {
                             # **********                           
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1516,8 +1544,8 @@ import {
                         ```hcl
                         chain FW-IN-sg-example-1 {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                      
@@ -1538,8 +1566,8 @@ import {
                         ```hcl
                         chain FW-OUT-sg-example-1 {
                             # **********
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                      
