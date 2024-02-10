@@ -24,13 +24,15 @@ import {
     NftRuleType,
     NftCounter,
     NftRuleVerdict,
-    SyncOp
+    SyncOp,
+    TerraformModule,
+    TerraformResource
 } from '../../dictionary.mdx';
 
 # Sgroup to Sgroup (I/E)
 
-TODO добавить описания что это за ресурсы
-
+#### Описание
+Правило "IE:S2S" (Ingress/Egress Security Group to Security Group) обеспечивает гибкое управление и контроль сетевого трафика между разными группами безопасности, используя протоколы TCP, UDP и ICMP. Это правило позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий уровень защиты и контроля в сетевой инфраструктуре.
 <Tabs
     defaltValue = 'terraform-m'
     values = {[
@@ -42,11 +44,13 @@ TODO добавить описания что это за ресурсы
 >
     <TabItem value='terraform-m'>
         <div class="text-justify">
-            Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять одно из двух значений: `Ingress` `Egress`.
-            Аналогчично для `$transport` подразумевается одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`
+            <ul class="text-justify"><TerraformModule description="full"/></ul>
         </div>
 
         <ul>
+            Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять одно из двух значений: `Ingress` `Egress`.
+            Аналогчично для `$transport` подразумевается одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`
+
             <li class="text-justify">`rules` - <Rules description="short" /></li>
             <li class="text-justify">`rules.$traffic[]` - <Traffic description="short" /></li>
             <li class="text-justify">`rules.$traffic[].sgroupSet[]` - <SgroupSet description="short" /></li>
@@ -57,6 +61,13 @@ TODO добавить описания что это за ресурсы
             <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]` - <DstPorts description="short" /></li>
             <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]` - <SrcPorts description="short" /></li>
             <li class="text-justify">`rules.$traffic[].access.$transport[].type[]` - <ICMPTypes description="short" /></li>
+        
+            
+        </ul>
+
+        <ul>
+            #### Так же в таблице представлены области применения полей относительно используемого протокола:
+
         </ul>
         <br />
         <table>
@@ -170,12 +181,12 @@ TODO добавить описания что это за ресурсы
                                 trace: true
                                 access:
                                     tcp:
-                                    - description: "example"
-                                      ports_from:
-                                        - 64231
-                                      ports_to:
-                                        - 443
-                                        - 80      
+                                      - description: "example"
+                                        ports_from:
+                                          - 64231
+                                        ports_to:
+                                          - 443
+                                          - 80      
                         ```                            
                     </div>
                     <div class="child-block">
@@ -183,19 +194,19 @@ TODO добавить описания что это за ресурсы
                         ```yaml
                         name: sg-example-1
                         rules:
-                            eggress:
+                            egress:
                               - sgroupSet:
                                   - sg-example-2
                                 logs:  true
                                 trace: true
                                 access:
                                     tcp:
-                                    - description: "example"
-                                      ports_from:
-                                        - 64231
-                                      ports_to:
-                                        - 443
-                                        - 80      
+                                      - description: "example"
+                                        ports_from:
+                                          - 64231
+                                        ports_to:
+                                          - 443
+                                          - 80      
                         ```                         
                     </div>
                 </div>
@@ -214,12 +225,12 @@ TODO добавить описания что это за ресурсы
                                 trace: true
                                 access:
                                     udp:
-                                    - description: "example"
-                                      ports_from:
-                                        - 64231
-                                      ports_to:
-                                        - 443
-                                        - 80      
+                                      - description: "example"
+                                        ports_from:
+                                          - 64231
+                                        ports_to:
+                                          - 443
+                                          - 80      
                         ```                            
                     </div>
                     <div class="child-block">
@@ -227,19 +238,19 @@ TODO добавить описания что это за ресурсы
                         ```yaml
                         name: sg-example-1
                         rules:
-                            eggress:
+                            egress:
                               - sgroupSet:
                                   - sg-example-2
                                 logs:  true
                                 trace: true
                                 access:
                                     udp:
-                                    - description: "example"
-                                      ports_from:
-                                        - 64231
-                                      ports_to:
-                                        - 443
-                                        - 80      
+                                      - description: "example"
+                                        ports_from:
+                                          - 64231
+                                        ports_to:
+                                          - 443
+                                          - 80      
                         ```                         
                     </div>
                 </div>            
@@ -258,11 +269,11 @@ TODO добавить описания что это за ресурсы
                                 trace: true
                                 access:
                                     icmpIPv4:
-                                    - description: "example"
-                                      type: [0, 8]
+                                      - description: "example"
+                                        type: [0, 8]
                                     icmpIPv6:
-                                    - description: "example"
-                                      type: [0, 8]
+                                      - description: "example"
+                                        type: [0, 8]
                         ```                            
                     </div>
                     <div class="child-block">
@@ -291,31 +302,62 @@ TODO добавить описания что это за ресурсы
         <h4 class="custom-heading">Ограничения</h4>
         
         <ul>
-            <li>Необходимо указать минимум одно значение в sgroupSet.</li>
-            <li class="text-justify">sgroupSet - длина одного значения из списка не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li>Может быть использован только один протокол для текущего правила (TCP или UDP).</li>
-            <li class="text-justify">Значения `rules.$traffic[].access.tcp/udp.ports_to[]` и `rules.$traffic[].access.tcp/udp.ports_from[]` портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-            <li class="text-justify">Значения `rules.$traffic[].access.tcp/udp.ports_from[]` портов не должно пересекаться в рамках текущего правила.</li>
-            <li class="text-justify">`rules.$traffic[].access.icmpIPv4/icmpIPv6.type[]` - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255.</li>
+            <li class="text-justify">`name`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`sgroupSet`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
+                    <li class="text-justify">Необходимо указать минимум одно значение.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].type[]`:</li>
+                <ul>
+                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
+                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
+                </ul>
         </ul>
     </TabItem>
 
     <TabItem value='terraform-r'>
-
+        <div class="text-justify">
+            <ul class="text-justify"><TerraformResource description="full"/></ul>
+        </div>
         <ul>
-            <li>`traffic` - <Traffic description="short" /></li>
-            <li>`transport` - <Transport description="short" /></li>
-            <li>`sg` - <Sg description="short" /></li>
-            <li>`sg_local` - <SgLocal description="short" /></li>
-            <li>`ports` - <Ports description="short" /></li>
-            <li>`ports[].d` - <DstPorts description="short" /></li>
-            <li>`ports[].s` - <SrcPorts description="short" /></li>
-            <li>`logs` - <Log description="short" /></li>
-            <li>`trace` - <Trace description="short" /></li>
-            <li>`ip_v` - <ICMPV description="short" /></li>
-            <li>`type` - <ICMPTypes description="short" /></li>
-        </ul>
+            #### В следующем списке представлены атрибуты ресурсов Terraform вместе с их краткими определениями:
 
+            <li>`items` - список ресурсов создаваемые terraform ресурсом. </li>
+            <li>`items.$ruleName` - уникальное имя создаваемого ресурса.</li>
+            <li>`items.$ruleName.traffic` - <Traffic description="short" /></li>
+            <li>`items.$ruleName.transport` - <Transport description="short" /></li>
+            <li>`items.$ruleName.sg` - <Sg description="short" /></li>
+            <li>`items.$ruleName.sg_local` - <SgLocal description="short" /></li>
+            <li>`items.$ruleName.ports` - <Ports description="short" /></li>
+            <li>`items.$ruleName.ports[].d` - <DstPorts description="short" /></li>
+            <li>`items.$ruleName.ports[].s` - <SrcPorts description="short" /></li>
+            <li>`items.$ruleName.logs` - <Log description="short" /></li>
+            <li>`items.$ruleName.trace` - <Trace description="short" /></li>
+            <li>`items.$ruleName.ip_v` - <ICMPV description="short" /></li>
+            <li>`items.$ruleName.type` - <ICMPTypes description="short" /></li>
+        </ul>
+        <ul>
+            #### Так же в таблице представлены области применения полей относительно используемого протокола:
+        </ul>
         <table>
             <thead>
                 <tr>
@@ -333,7 +375,25 @@ TODO добавить описания что это за ресурсы
             </thead>
             <tbody>
                 <tr>
-                    <td>traffic</td>
+                    <td>items</td>
+                    <td>да</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName</td>
+                    <td>да</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.traffic</td>
                     <td>да</td>
                     <td>ingress | egress</td>
                     <td></td>
@@ -342,7 +402,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>transport</td>
+                    <td>items.$ruleName.transport</td>
                     <td>да</td>
                     <td>TCP | UDP</td>
                     <td></td>
@@ -351,7 +411,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>sg</td>
+                    <td>items.$ruleName.sg</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -360,7 +420,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>sg_local</td>
+                    <td>items.$ruleName.sg_local</td>
                     <td>да</td>
                     <td>String</td>
                     <td></td>
@@ -369,7 +429,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>ports</td>
+                    <td>items.$ruleName.ports</td>
                     <td>нет</td>
                     <td>Object[]</td>
                     <td>null</td>
@@ -378,7 +438,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>ports[].d</td>
+                    <td>items.$ruleName.ports[].d</td>
                     <td>нет</td>
                     <td>String</td>
                     <td>null</td>
@@ -387,7 +447,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>ports[].s</td>
+                    <td>items.$ruleName.ports[].s</td>
                     <td>нет</td>
                     <td>String</td>
                     <td>null</td>
@@ -396,7 +456,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center"></td>
                 </tr>
                 <tr>
-                    <td>logs</td>
+                    <td>items.$ruleName.logs</td>
                     <td>нет</td>
                     <td>Boolean</td>
                     <td>false</td>
@@ -405,7 +465,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>trace</td>
+                    <td>items.$ruleName.trace</td>
                     <td>нет</td>
                     <td>Boolean</td>
                     <td>false</td>
@@ -414,7 +474,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>ip_v</td>
+                    <td>items.$ruleName.ip_v</td>
                     <td>да</td>
                     <td>IPv4 | IPv6</td>
                     <td></td>
@@ -423,7 +483,7 @@ TODO добавить описания что это за ресурсы
                     <td class="green center">✔</td>
                 </tr>
                 <tr>
-                    <td>type</td>
+                    <td>items.$ruleName.type</td>
                     <td>да</td>
                     <td>Strng[]</td>
                     <td>null</td>
@@ -555,7 +615,6 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
 
-
                         ```hcl
                         resource "sgroups_icmp_rules" "rules" {
                           items = {
@@ -621,19 +680,52 @@ TODO добавить описания что это за ресурсы
         <h4 class="custom-heading">Ограничения</h4>
 
         <ul>
-            <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
-            <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg${SG)}sg${sg_local}${traffic}"`</li>
-            <li>sg и sg_local - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li>Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (traffic, transport, sg, sg_local).</li>
-            <li>Значения s (source) и d (distinct) портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+            <li class="text-justify">`items`:</li>
+                <ul>
+                    <li class="text-justify">Каждое правило должно обладать уникальным ключом для предотвращения конфликтов.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName`:</li>
+                <ul>
+                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:sg-local(${sg_local})sg$({sg})${traffic}"`.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.sg`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.sg_local`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.ports[].s`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.ports[].d`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.type[]`:</li>
+                <ul>
+                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
+                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
+                </ul>
         </ul>
-
     </TabItem>
 
     <TabItem value='api'>
         <div class="text-justify">
+            <ul>
             Более подробную документацию по API можно посмотреть [здесь](../../sgroups/api/v1/sync.mdx).<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgSgRules` `sgSgIcmpRules`.
+            </ul>
         </div>
 
         <ul>
@@ -813,7 +905,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                          ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "sgSgRules": {
@@ -839,7 +931,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                          ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{                         
                             "sgSgRules": {
@@ -869,7 +961,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                          ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "sgSgRules": {
@@ -895,7 +987,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                          ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "sgSgRules": {
@@ -925,7 +1017,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                         ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "sgSgIcmpRules": {
@@ -950,7 +1042,7 @@ TODO добавить описания что это за ресурсы
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```bash
-                         curl --location '127.0.0.1:9007/v1/sync' \
+                        curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
                             "sgSgIcmpRules": {
@@ -1138,6 +1230,9 @@ TODO добавить описания что это за ресурсы
  
     <TabItem value='nft'>
         <ul>
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
+        </ul>
+        <ul>
             <li>`$Trace` - <Trace description="short" /></li>
             <li>`$SrcSgroup` - <Sg description="short" /></li>
             <li>`$DstGroup` - <Sg description="short" /></li>
@@ -1149,6 +1244,10 @@ TODO добавить описания что это за ресурсы
             <li>`$NftCounter` - <NftCounter description="short" /></li>
             <li>`$Log` - <Log description="short" /></li>
             <li>`$NftRuleVerdict` - <NftRuleVerdict description="short" /></li>
+        </ul>
+
+        <ul>
+            #### Так же в таблице представлены области применения полей относительно используемого протокола:
         </ul>
 
         <table>

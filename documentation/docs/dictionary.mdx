@@ -168,3 +168,21 @@ export function NftRuleVerdict({description}) {
             return (<span>TODO</span>)
     }
 }
+
+export function TerraformModule({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>TODO</span>)
+        case 'full':
+            return (<span>Terraform module представляет собой высокоуровневую абстракцию над <code>terraform resources</code>, которая упрощает работу с ресурсами Terraform, скрывая сложность их непосредственного использования. Он предлагает простой и понятный интерфейс для взаимодействия, позволяя пользователям легко интегрироваться и управлять компонентами инфраструктуры без необходимости глубоко погружаться в детали каждого ресурса.</span>)
+    }
+}
+
+export function TerraformResource({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>TODO</span>)
+        case 'full':
+            return (<span>Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки инфраструктуры согласно подходу Infrastructure as Code (IaC).</span>)
+    }
+}
