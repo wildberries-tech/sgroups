@@ -15,15 +15,16 @@ import {
     Ports,
     DstPorts,
     SrcPorts,
-    SgFrom,
+    SgLocal,
     Fqdn,
-    Protocols,
     TerraformModule,
-    TerraformResource
+    TerraformResource,
+    L7ProtocolList,
 } from '../dictionary.mdx';
 
 # Sgroup to FQDN (Egress)
 
+Правило E:S2F (Egress Security Group to FQDN) предоставляет возможность гибкого управления и контроля за сетевым трафиком между различными группами безопасности и FQDN записями, используя TCP, UDP протоколы. Это правило дает возможность детально настроить, какой трафик разрешен к передаче между группами безопасности и определенными FQDN записями, тем самым гарантируя высокий уровень защиты и управления сетевой инфраструктурой.
 <Tabs
     defaltValue = "terraform-m"
     values = {[
@@ -49,6 +50,7 @@ import {
             <li>`rules.$traffic[].log` - <Log description="short" /></li>
             <li>`rules.$traffic[].trace` - <Trace description="short" /></li>
             <li>`rules.$traffic[].access.$transport` - <Transport description="short" /></li>
+            <li>`rules.$traffic[].access.protocols[]`  - <L7ProtocolList description="short" /></li>
             <li>`rules.$traffic[].access.$transport.description` - <Description description="short" /></li>
             <li>`rules.$traffic[].access.$transport.ports_to[]` - <DstPorts description="short" /></li>
             <li>`rules.$traffic[].access.$transport.ports_from[]` - <SrcPorts description="short" /></li>
@@ -139,21 +141,21 @@ import {
                 name: sg-example-1
                 rules:
                     egress:
-                    - fqdnSet:
-                            - example.com
+                      - fqdnSet:
+                          - example.com
                         logs:  true
                         trace: true
                         protocols: 
-                            - "http"
-                            - "dns"
+                          - "http"
+                          - "dns"
                         access:
                             tcp:
-                            - description: "example"
+                              - description: "example"
                                 ports_from:
-                                - 64231
+                                  - 64231
                                 ports_to:
-                                - 443
-                                - 80        
+                                  - 443
+                                  - 80        
                 ```            
             </TabItem>
 
@@ -162,21 +164,21 @@ import {
                 name: sg-example-1
                 rules:
                     egress:
-                    - fqdnSet:
-                            - example.com
+                      - fqdnSet:
+                          - example.com
                         logs:  true
                         trace: true
                         protocols: 
-                            - "http"
-                            - "dns"
+                          - "http"
+                          - "dns"
                         access:
                             udp:
-                            - description: "example"
+                              - description: "example"
                                 ports_from:
-                                - 64231
+                                  - 64231
                                 ports_to:
-                                - 443
-                                - 80        
+                                  - 443
+                                  - 80              
                 ```            
             </TabItem>
         </Tabs>
@@ -184,12 +186,37 @@ import {
         #### Ограничения
 
         <ul>
-            <li>Необходимо указать минимум одно значение в fqdnSet.</li>
-            <li>fqdnSet - длина одного значения из списка не должна превышать 256 символов.</li>
-            <li>Может быть использован только один протокол для текущего правила (TCP или UDP).</li>
-            <li class="text-justify">Значения `rules.egress[].access.tcp/udp.ports_to[]` и `rules.egress[].access.tcp/udp.ports_from[]` портов должно находиться в интервале от 1 до 65535 Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-            <li class="text-justify">Значения `rules.egress[].access.tcp/udp.ports_from[]` портов не должно пересекаться в рамках текущего правила.</li>
+            <li class="text-justify">`name`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`fqdnSet`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
+                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>  
+                </ul>
+            <li class="text-justify">`items.$ruleName.protocols[]`:</li>
+                <ul>
+                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
+                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+
         </ul>
+
     </TabItem>
 
     <TabItem value="terraform-r">
@@ -200,11 +227,11 @@ import {
             <li>`items` - список ресурсов создаваемые terraform ресурсом. </li>
             <li>`items.$ruleName` - уникальное имя создаваемого ресурса.</li>
             <li>`items.$ruleName.transport` - <Transport description="short" /></li>
+            <li>`items.$ruleName.protocols[]` - <L7ProtocolList description="short" /></li>
             <li>`items.$ruleName.logs` - <Log description="short" /></li>
             <li>`items.$ruleName.trace` - <Trace description="short" /></li>
-            <li>`items.$ruleName.sg_from` - <SgFrom description="short" /></li>
+            <li>`items.$ruleName.sg_from` - <SgLocal description="short" /></li>
             <li>`items.$ruleName.fqdn` - <Fqdn description="short" /></li>
-            <li>`items.$ruleName.protocols[]` - <Protocols description="short" /></li>
             <li>`items.$ruleName.ports[]` - <Ports description="short" /></li>
             <li>`items.$ruleName.ports[].s` - <SrcPorts description="short" /></li>
             <li>`items.$ruleName.ports[].d` - <DstPorts description="short" /></li>
@@ -376,13 +403,44 @@ import {
         #### Ограничения
 
         <ul>
-            <li class="text-justify">Каждое правило должно иметь уникальный ключ, обеспечивающий отсутствие пересечений.</li>
-            <li class="text-justify">Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg(${sgroup_from})fqdn(${fqdn_to})"`</li>
-            <li class="text-justify">sg_from - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li class="text-justify">Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (transport, sg_from, fqdn).</li>
-            <li class="text-justify">fqdn - длина значения не должна превышать 256 символов. Значение начинается со строки, которая содержит один или более символов, являющихся буквами нижнего регистра, цифрами, символом '**'** или символам**и '_'** и **'-'** (кроме первого символа, который не может быть '-' или '_'), и должна быть длиной от 1 до 62 символов. затем может следовать любое количество строк, начинающихся с символа '.', за которым идет один символ, являющийся буквой нижнего регистра, цифрой, символом '' или символом '-', и длина строки от 0 до 62 символов. (пример: google.com).</li>
-            <li class="text-justify">transport - может быть только одно из двух значений "TCP" или "UDP".</li>
-            <li class="text-justify">protocols - Если протокол не указан, то в режиме работы "dpi" и "combine" взаимодействие по указанному правилу будет без учета протокола.</li>
+            <li class="text-justify">`items`:</li>
+                <ul>
+                    <li class="text-justify">Каждое правило должно обладать уникальным ключом для предотвращения конфликтов.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName`:</li>
+                <ul>
+                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:sg(${sg_from})fqdn$({fqdn})"`.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.protocols[]`:</li>
+                <ul>
+                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
+                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.sg_from`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.fqdn`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
+                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.ports[].s`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`items.$ruleName.ports[].d`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
         </ul>
     </TabItem>
 
@@ -397,9 +455,9 @@ import {
             <li>`fqdnRules.rules[].ports` - <Trace description="short" /></li>
             <li>`fqdnRules.rules[].ports[].d` - <DstPorts description="short" /></li>
             <li>`fqdnRules.rules[].ports[].s` - <SrcPorts description="short" /></li>
-            <li>`fqdnRules.rules[].sgFrom` - <SgFrom description="short" /></li>
+            <li>`fqdnRules.rules[].sgFrom` - <SgLocal description="short" /></li>
             <li>`fqdnRules.rules[].transport` - <Transport description="short" /></li>
-            <li>`fqdnRules.rules[].protocols` - <Protocols description="short" /></li>
+            <li>`fqdnRules.rules[].protocols` - <L7ProtocolList description="short" /></li>
         </ul>
 
         <table>
@@ -551,15 +609,35 @@ import {
         #### Ограничения
 
         <ul>
-            <li class="text-justify">Каждое правило должно иметь уникальный ключ, обеспечивающий отсутствие пересечений.</li>
-            <li class="text-justify">Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg(${sgroup_from})fqdn(${fqdn_to})"`</li>
-            <li class="text-justify">sg_from - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li class="text-justify">Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (transport, sg_from, fqdn).</li>
-            <li class="text-justify">fqdn - длина значения не должна превышать 256 символов. Значение начинается со строки, которая содержит один или более символов, являющихся буквами нижнего регистра, цифрами, символом '**'** или символам**и '_'** и **'-'** (кроме первого символа, который не может быть '-' или '_'), и должна быть длиной от 1 до 62 символов. затем может следовать любое количество строк, начинающихся с символа '.', за которым идет один символ, являющийся буквой нижнего регистра, цифрой, символом '' или символом '-', и длина строки от 0 до 62 символов. (пример: google.com).</li>
-            <li class="text-justify">transport - может быть только одно из двух значений "TCP" или "UDP".</li>
-            <li class="text-justify">protocols - Если протокол не указан, то в режиме работы "dpi" и "combine" взаимодействие по указанному правилу будет без учета протокола.</li>
+            <li class="text-justify">`fqdn`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
+                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>
+                </ul>
+            <li class="text-justify">`sgFrom`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`protocols[]`:</li>
+                <ul>
+                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
+                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
         </ul>
-
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
             ```mermaid
@@ -643,6 +721,11 @@ import {
     </TabItem>
 
     <TabItem value="nft">
+        <div class="paragraph">
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. 
+            Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
+        </div>
+        
         <table>
             <thead>
                 <tr>

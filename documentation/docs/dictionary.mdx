@@ -207,15 +207,6 @@ export function FqdnSet({description}) {
 
 ####
 
-export function SgFrom({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Имя исходной группы безопасности.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
-}
-
 export function Fqdn({description}) {
     switch(description) {
         case 'short':
@@ -225,11 +216,12 @@ export function Fqdn({description}) {
     }
 }
 
-export function Protocols({description}) {
+export function L7ProtocolList({description}) {
     switch(description) {
         case 'short':
-            return (<span>Массив протоколов которые будут учитываться при формировании правила.</span>)
+            return (<span>Список протоколов L7 уровня модели OSI.</span>)
         case 'full':
             return (<span>TODO</span>)
     }
 }
+

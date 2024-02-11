@@ -716,10 +716,11 @@ import {
     </TabItem>
 
     <TabItem value='api'>
-        <div class="text-justify">
+        <div class="paragraph">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
-            Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgSgRules` `sgSgIcmpRules`.
-        </div>
+            Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `cidrSgRules` `cidrSgIcmpRules`.
+        </div> 
+
 
         <ul>
             <li>`$node.rules[]` - <Rules description="short" /></li>
@@ -1014,22 +1015,22 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgIcmpRules": {
-                                "rules": [
-                                {
-                                    "ICMP": {
-                                    "IPv": "IPv4",
-                                    "Types": [0, 8]
-                                    },
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
-                                    "logs": true,
-                                    "trace": true
-                                    "traffic": "Ingress",
-                                }
-                                ]
-                            },
-                            "syncOp": "UpSert"
+                           "sgSgIcmpRules": {
+                               "rules": [
+                               {
+                                   "sg": "sg-example",
+                                   "sg_local": "sg-example-local",
+                                   "logs": true,
+                                   "trace": true,
+                                   "ICMP": {
+                                       "IPv": "IPv4",
+                                       "Types": [0, 8]
+                                   },
+                                   "traffic": "Ingress"
+                               }
+                               ]
+                           },
+                           "syncOp": "UpSert"
                         }'
                         ```
                     </div>
@@ -1039,22 +1040,22 @@ import {
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
                         --data '{
-                            "sgSgIcmpRules": {
-                                "rules": [
-                                {
-                                    "ICMP": {
-                                    "IPv": "IPv4",
-                                    "Types": [0, 8]
-                                    },
-                                    "sg": "sg-example",
-                                    "sg_local": "sg-example-local",
-                                    "logs": true,
-                                    "trace": true
-                                    "traffic": "Egress",
-                                }
-                                ]
-                            },
-                            "syncOp": "UpSert"
+                           "sgSgIcmpRules": {
+                               "rules": [
+                               {
+                                   "sg": "sg-example",
+                                   "sg_local": "sg-example-local",
+                                   "logs": true,
+                                   "trace": true,
+                                   "ICMP": {
+                                       "IPv": "IPv4",
+                                       "Types": [0, 8]
+                                   },
+                                   "traffic": "Egress"
+                               }
+                               ]
+                           },
+                           "syncOp": "UpSert"
                         }'
                         ```                          
                     </div>
@@ -1065,13 +1066,34 @@ import {
         <h4 class="custom-heading">Ограничения</h4>
 
         <ul>
-            <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
-            <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg${SG)}sg${sg_local}${traffic}"`</li>
-            <li>sg и sg_local - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-            <li>Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (traffic, transport, sg, sg_local).</li>
-            <li>Значения s (source) и d (distinct) портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-        </ul>        
-
+            <li class="text-justify">`sg`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`sg_local`:</li>
+                <ul>
+                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
+                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            <li class="text-justify">`rules.$traffic[].access.$transport[].type[]`:</li>
+                <ul>
+                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
+                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
+                </ul>
+        </ul>
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
         ```mermaid
