@@ -3,6 +3,7 @@ import { toNft } from './src/sidebars/technical-docs/to-nft';
 import { sgroups } from './src/sidebars/technical-docs/sgroups';
 import { terraformResourceItems } from './src/sidebars/users-docs/terraform.resource.items';
 import { terraformModuleItems } from './src/sidebars/users-docs/terraform.module.items';
+import { ruleConfiguration } from './src/sidebars/technical-docs/rule-configuration';
 
 const sidebars: SidebarsConfig = {
 
@@ -56,13 +57,22 @@ const sidebars: SidebarsConfig = {
 
   techDocs: [{
     type: 'category',
-    label: 'to-nft',
+    label: 'HBF-агент',
     items: toNft
   },
   {
     type: 'category',
-    label: 'sgroups',
+    label: 'HBF-сервер',
     items: sgroups
+  },
+  {
+    type: 'category',
+    label: 'Конфигурация  ресурсов',
+    link: {
+      type: 'doc',
+      id: 'rule-configuration/main'
+    },
+    items: ruleConfiguration
   }]
 };
 

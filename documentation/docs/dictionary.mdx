@@ -174,16 +174,16 @@ export function TerraformModule({description}) {
         case 'short':
             return (<span>TODO</span>)
         case 'full':
-            return (<span>Terraform module представляет собой высокоуровневую абстракцию над <code>terraform resources</code>, которая упрощает работу с ресурсами Terraform, скрывая сложность их непосредственного использования. Он предлагает простой и понятный интерфейс для взаимодействия, позволяя пользователям легко интегрироваться и управлять компонентами инфраструктуры без необходимости глубоко погружаться в детали каждого ресурса.</span>)
+            return (<p>Terraform module представляет собой высокоуровневую абстракцию над <code>terraform resources</code>, которая упрощает работу с ресурсами Terraform, скрывая сложность их непосредственного использования. Он предлагает простой и понятный интерфейс для взаимодействия, позволяя пользователям легко интегрироваться и управлять компонентами инфраструктуры без необходимости глубоко погружаться в детали каждого ресурса.</p>)
     }
 }
 
 export function TerraformResource({description}) {
     switch(description) {
         case 'short':
-            return (<span>TODO</span>)
+            return (<p>TODO</p>)
         case 'full':
-            return (<span>Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки инфраструктуры согласно подходу Infrastructure as Code (IaC).</span>)
+            return (<p>Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки инфраструктуры согласно подходу Infrastructure as Code (IaC).</p>)
     }
 }
 
@@ -191,6 +191,44 @@ export function CidrSet({description}) {
     switch(description) {
         case 'short':
             return (<span>Список, содержащий подсети типа IP.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+export function FqdnSet({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Список, содержащий FQDN записи.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+####
+
+export function SgFrom({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Имя исходной группы безопасности.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+export function Fqdn({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Полное доменное имя (FQDN), для которого применяется данное правило.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+export function Protocols({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Массив протоколов которые будут учитываться при формировании правила.</span>)
         case 'full':
             return (<span>TODO</span>)
     }

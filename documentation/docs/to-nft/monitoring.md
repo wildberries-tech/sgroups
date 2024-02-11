@@ -38,11 +38,6 @@ id: monitoring
             <td>Количество циклов сборки мусора</td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
             <td>go_goroutines</td>
             <td>gauge</td>
             <td>Количество горутин, существующих в данный момент</td>
