@@ -19,7 +19,7 @@ id: monitoring
 Метрики по умолчанию доступны через порт **9650**. Для активации метрик следует установить параметр "metrics.enable" в конфигурационном файле в значение `true` ( по умолчанию файл конфигурации находится в */opt/swarm/etc/sgroups/config.yaml* ). Для проверки доступности метрик рекомендуется выполнить команду `curl 0.0.0.0:9650/metrics`.
 </div>
 
-![](../../static/img/sgroups.monitoring.metrics.png)
+![](../../../static/img/sgroups.monitoring.metrics.png)
 
 **Описание метрик**
 

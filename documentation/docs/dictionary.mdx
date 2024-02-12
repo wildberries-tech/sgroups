@@ -205,8 +205,6 @@ export function FqdnSet({description}) {
     }
 }
 
-####
-
 export function Fqdn({description}) {
     switch(description) {
         case 'short':
@@ -225,3 +223,21 @@ export function L7ProtocolList({description}) {
     }
 }
 
+
+export function Networks({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Массив/Список подсетей типа IP.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+export function Cidr({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Подсеть типа IP.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}

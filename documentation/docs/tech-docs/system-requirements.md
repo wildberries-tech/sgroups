@@ -2,7 +2,8 @@
 id: installation-system-requirements
 ---
 
-#
+# Требования
+
 :::info "Рой совместим с  `x86_64`, `amd64`, `armhf`, `arm64`,  `s390x` архитектурами."
 :::
 

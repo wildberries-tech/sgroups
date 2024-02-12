@@ -58,41 +58,12 @@ const config: Config = {
           position: 'left',
           label: 'Информация',
         },
-        // {
-        //   type: 'docSidebar',
-        //   sidebarId: 'settingsSidebar',
-        //   position: 'left',
-        //   label: 'Настройки'
-        // },
-        {
-          type: 'docSidebar',
-          sidebarId: 'UserDocs',
-          position: 'left',
-          label: 'Пользовательская документация' 
-        },
         {
           type: 'docSidebar',
           sidebarId: 'techDocs',
           position: 'left',
           label: 'Техническая документация'
-        },
-        // {
-        //   type: 'docSidebar',
-        //   sidebarId: 'toNft',
-        //   position: 'left',
-        //   label: 'to-nft'
-        // },
-        // {
-        //   type: 'docSidebar',
-        //   sidebarId: 'sgroups',
-        //   position: 'left',
-        //   label: 'sgroups'
-        // },
-        // {
-        //   type: 'doc',
-        //   label: 'Терминология',
-        //   docId: 'terminology'
-        // }
+        }
       ],
     },
     colorMode: {
