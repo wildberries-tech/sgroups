@@ -29,6 +29,8 @@ import {
     CidrSet
 } from '../../dictionary.mdx';
 
+import {RName,RCidrSet,RPorts,RIcmpType,RItems,RItemsRuleName,RCidr} from '../../restrictions.mdx'
+
 # Sgroup to CIDR (Ingress/Egress)
 
 #### Описание
@@ -158,6 +160,31 @@ import {
                 </tr>                
             </tbody>
         </table>
+
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>
+                `name`:
+                <RName />
+            </li>
+            <li>
+                `rules.$traffic[].cidrSet`:
+                <RCidrSet />
+            </li>
+            <li>
+                `rules.$traffic[].access.$transport[].ports_to[]`:
+                <RPorts />
+            </li>
+            <li>
+                `rules.$traffic[].access.$transport[].ports_from[]`:
+                <RPorts />
+            </li>
+            <li>
+                `rules.$traffic[].access.$transport[].type[]`:
+                <RIcmpType />
+            </li>
+        </ul>        
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -299,39 +326,7 @@ import {
                     </div>
                 </div>            
             </TabItem>
-        </Tabs>
-
-        <h4 class="custom-heading">Ограничения</h4>
-        
-        <ul>
-            <li class="text-justify">`name`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].cidrSet`:</li>
-                <ul>
-                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
-                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].type[]`:</li>
-                <ul>
-                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                </ul>
-        </ul>
+        </Tabs> 
     </TabItem>
 
     <TabItem value='terraform-r'>
@@ -490,6 +485,40 @@ import {
                 </tr>                
             </tbody>
         </table>
+
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>
+                `items`:
+                <RItems />
+            </li>
+            <li>
+                `items.$ruleName`:
+                <RItemsRuleName type="s2c" />
+            </li>
+            <li>
+                `items.$ruleName.sg_name`:
+                <RItems />
+            </li>            
+            <li>
+                `items.$ruleName.cidr`:
+                <RCidr />
+            </li>
+            <li>
+                `items.$ruleName.ports[].s`:
+                <RPorts />
+            </li>
+            <li>
+                `items.$ruleName.ports[].d`:
+                <RPorts />
+            </li>
+            <li>
+                `items.$ruleName.type[]`:
+                <RIcmpType />
+            </li>
+
+        </ul>        
         
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -673,48 +702,6 @@ import {
                 </div>            
             </TabItem>
         </Tabs>
-
-        <h4 class="custom-heading">Ограничения</h4>
-
-        <ul>
-            <li class="text-justify">`items`:</li>
-                <ul>
-                    <li class="text-justify">Каждое правило должно обладать уникальным ключом для предотвращения конфликтов.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName`:</li>
-                <ul>
-                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:cidr(${cidr})sg(${sg_name})${traffic}"`.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.sg_name`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`cidr`:</li>
-                <ul>
-                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
-                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.ports[].s`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.ports[].d`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.type[]`:</li>
-                <ul>
-                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                </ul>
-        </ul>
     </TabItem>
 
     <TabItem value='api'>
@@ -886,6 +873,31 @@ import {
                 </tr>                
             </tbody>
         </table>
+
+        <h4 class="custom-heading">Ограничения</h4>
+
+		<ul>
+            <li>
+                `$node.rules[].sg_name`:
+                <RName />
+            </li>
+            <li>
+                `$node.rules[].cidr`:
+                <RCidr />
+            </li>
+            <li>
+                `$node.rules[].ports[].s`:
+                <RPorts />
+            </li>
+            <li>
+                `$node.rules[].ports[].d`:
+                <RPorts />
+            </li>
+            <li>
+                `$node.rules[].type[]`:
+                <RIcmpType />
+            </li>
+        </ul>
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -1064,40 +1076,6 @@ import {
                 </div>            
             </TabItem>
         </Tabs>
-
-        <h4 class="custom-heading">Ограничения</h4>
-
-        <ul>
-            <li class="text-justify">`$node.rules[].sg_name`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`$node.rules[].cidr`:</li>
-                <ul>
-                    <li class="text-justify">В пределах одной Security Group и направления трафика ($traffic), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
-                    <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
-                </ul>
-            <li class="text-justify">`$node.rules[].ports[].s`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`$node.rules[].ports[].d`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`$node.rules[].type[]`:</li>
-                <ul>
-                    <li class="text-justify">Значение должно быть числом в диапазоне от 0 до 255.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                </ul>
-        </ul>
 
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 

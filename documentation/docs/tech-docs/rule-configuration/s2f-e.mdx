@@ -22,6 +22,8 @@ import {
     L7ProtocolList,
 } from '../../dictionary.mdx';
 
+import {RName,RFqdnSet,RPorts,RItems,RItemsRuleName,RFqdn,RProtocols} from '../../restrictions.mdx'
+
 # Sgroup to FQDN (Egress)
 
 <div class="paragraph">
@@ -133,6 +135,31 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+		
+        <ul>
+            <li>
+                `name`:
+                <RName />
+            </li>
+            <li>
+                `rules.$traffic[].fqdnSet`:
+                <RFqdnSet />
+            </li>
+            <li>
+                `rules.$traffic[].protocols[]`:
+                <RProtocols />
+            </li>
+            <li>
+                `rules.$traffic[].access.$transport[].ports_to[]`:
+                <RPorts />
+            </li>
+            <li>
+                `rules.$traffic[].access.$transport[].ports_from[]`:
+                <RPorts />
+            </li>
+        </ul>        
+
         #### Пример использования
 
         <Tabs
@@ -189,41 +216,6 @@ import {
                 ```            
             </TabItem>
         </Tabs>
-
-        #### Ограничения
-
-        <ul>
-            <li class="text-justify">`name`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`fqdnSet`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
-                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>  
-                </ul>
-            <li class="text-justify">`items.$ruleName.protocols[]`:</li>
-                <ul>
-                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
-                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-
-        </ul>
-
     </TabItem>
 
     <TabItem value="terraform-r">
@@ -352,6 +344,39 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+
+		<ul>
+            <li>
+                `items`:
+                <RItems />
+            </li>
+            <li>
+                `items.$ruleName`:
+                <RItemsRuleName type="s2f" />
+            </li>
+            <li>
+                `items.$ruleName.protocols[]`:
+                <RProtocols />
+            </li>
+            <li>
+                `items.$ruleName.sg_from`:
+                <RName />
+            </li>
+            <li>
+                `items.$ruleName.fqdn`:
+                <RFqdn />
+            </li>
+            <li>
+                `items.$ruleName.ports[].s`:
+                <RPorts />
+            </li>
+            <li>
+                `items.$ruleName.ports[].d`:
+                <RPorts />
+            </li>
+        </ul>        
+
         #### Пример использования
 
         <Tabs
@@ -408,49 +433,6 @@ import {
                 ```
             </TabItem>
         </Tabs>
-
-        #### Ограничения
-
-        <ul>
-            <li class="text-justify">`items`:</li>
-                <ul>
-                    <li class="text-justify">Каждое правило должно обладать уникальным ключом для предотвращения конфликтов.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName`:</li>
-                <ul>
-                    <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать `"${$transport}:sg(${sg_from})fqdn$({fqdn})"`.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.protocols[]`:</li>
-                <ul>
-                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
-                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.sg_from`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.fqdn`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
-                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.ports[].s`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`items.$ruleName.ports[].d`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Значения портов прописываются по одному или интервально используя `-` через запятую `80,443,8080-9090`.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-        </ul>
     </TabItem>
 
     <TabItem value="api">
@@ -561,6 +543,31 @@ import {
             </tbody>
         </table>
 
+        <h4 class="custom-heading">Ограничения</h4>
+
+		<ul>
+            <li>
+                `fqdnRules.rules[].FQDN`:
+                <RFqdn />
+            </li>
+            <li>
+                `fqdnRules.rules[].sgFrom`:
+                <RName />
+            </li>
+            <li>
+                `fqdnRules.rules[].protocols[]`:
+                <RProtocols />
+            </li>
+            <li>
+                `fqdnRules.rules[].ports[].ports_to[]`:
+                <RPorts />
+            </li>
+            <li>
+                `fqdnRules.rules[].ports[].ports_from[]`:
+                <RPorts />
+            </li>
+        </ul>        
+
         <h4 class="custom-heading">Пример использования</h4>
 
         <Tabs
@@ -617,38 +624,6 @@ import {
             </TabItem>
         </Tabs>
 
-        #### Ограничения
-
-        <ul>
-            <li class="text-justify">`fqdn`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Необходимо указать минимум одно значение в fqdnSet.</li>
-                    <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC `1034,1035,1123`.</li>
-                </ul>
-            <li class="text-justify">`sgFrom`:</li>
-                <ul>
-                    <li class="text-justify">Длина одного значения из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`protocols[]`:</li>
-                <ul>
-                    <li class="text-justify">Протоколы уровня приложения, где ищут совпадения FQDN в заголовках.</li>
-                    <li class="text-justify">Не допускаются дубликация протоколов в списке.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]`:</li>
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-        </ul>
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
             ```mermaid

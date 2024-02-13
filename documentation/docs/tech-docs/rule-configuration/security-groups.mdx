@@ -20,6 +20,8 @@ import {
     TerraformResource
 } from '../../dictionary.mdx';
 
+import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restrictions.mdx';
+
 # Security Group
 
 <Tabs
@@ -106,6 +108,27 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+		
+        <ul>
+            <li>
+                `name`:
+                <RName />
+            </li>
+            <li>
+                `networks`:
+                <RCidrSet />
+            </li>
+            <li>
+                `default_rules.access.icmp.type`:
+                <RIcmpType />
+            </li>
+            <li>
+                `default_rules.access.icmp6.type`:
+                <RIcmpType />
+            </li>
+        </ul> 
+
         #### Пример использования
 
         ```yaml
@@ -127,14 +150,7 @@ import {
                     logs:  true
                     trace: true
                     type:  [0,8]
-        ```
-
-        #### Ограничения
-
-        <ul>
-            <li>`default_rules.access.default.action` - обязательный параметр. Допустимые значения: `ACCEPT`, `DROP`.</li>
-            <li class="text-justify">`default_rules.access.icmp.type` и `default_rules.access.icmp6.type` - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255.</li>
-        </ul>        
+        ```       
     </TabItem>
 
     <TabItem value="terraform-r">
@@ -223,6 +239,31 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+
+		<ul>
+            <li>
+                `items`:
+                <RItems />
+            </li>
+            <li>
+                `items.key.name`:
+                <RName />
+            </li>
+            <li>
+                `items.key.networks`:
+                <RCidr />
+            </li>
+            <li>
+                `items.key.icmp.type`:
+                <RIcmpType />
+            </li>
+            <li>
+                `items.key.icmp6.type`:
+                <RIcmpType />
+            </li>
+        </ul>         
+
         #### Пример использования
 
         ```hcl
@@ -247,14 +288,7 @@ import {
                 }
             }
         }
-        ```
-        #### Ограничения
-
-        <ul>
-            <li> Каждая группа должна иметь уникальный ключ</li>
-            <li class="text-justify"> name и networks - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов</li>
-            <li> type - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255</li>
-        </ul>                        
+        ```                       
     </TabItem>
 
     <TabItem value="api">
@@ -400,6 +434,27 @@ import {
             </tbody>
         </table>
 
+        <h4 class="custom-heading">Ограничения</h4>
+
+		<ul>
+            <li>
+                `groups.groups[].name`:
+                <RName />
+            </li>
+            <li>
+                `groups.groups[].networks[]`:
+                <RCidrSet />
+            </li>
+            <li>
+                `sgIcmpRules.rules[].Sg`:
+                <RName />
+            </li>
+            <li>
+                `$node.rules[].type[]`:
+                <RIcmpType />
+            </li>
+        </ul>     
+
         #### Пример использования
 
         <Tabs
@@ -458,35 +513,7 @@ import {
                 }'
                 ```            
             </TabItem>
-
         </Tabs>
-
-        <h4 class="custom-heading">Ограничения</h4>
-
-        <ul>
-            <li class="text-justify">`groups.groups[].name`:</li>
-                <ul>
-                    <li class="text-justify">Длина значения не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>
-            <li class="text-justify">`groups.groups[].networks[]`:</li>
-                <ul>
-                    <li class="text-justify">Длина каждого значения элемента из списка не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение каждого элемента из списка должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                </ul>                
-            <li class="text-justify">`sgIcmpRules.rules[].Sg`:</li>
-                <ul>
-                    <li class="text-justify">Длина значения не должна превышать 256 символов.</li>
-                    <li class="text-justify">Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                </ul>                
-            <li class="text-justify">`$node.rules[].type[]`:</li>
-                <ul>
-                    <li class="text-justify">Значение каждого элемента список должно быть числом в диапазоне от 0 до 255.</li>
-                    <li class="text-justify">Повторения значений в списке не допускаются.</li>
-                </ul>
-        </ul>
-
     </TabItem>
 
     <TabItem value="nft">

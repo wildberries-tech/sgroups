@@ -58,6 +58,14 @@ export function SrcPorts({description}) {
             return (<span>Набор открытых портов отправителя.</span>)
         case 'full':
             return (<span>TODO</span>)
+        case 'restrictions':
+            return(
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            )        
     }
 }
 
@@ -67,6 +75,14 @@ export function DstPorts({description}) {
             return (<span>Набор открытых портов получателя.</span>)
         case 'full':
             return (<span>TODO</span>)
+        case 'restrictions':
+            return(
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            )             
     }
 }
 

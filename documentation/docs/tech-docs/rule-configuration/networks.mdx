@@ -11,6 +11,8 @@ import {
     TerraformResource
 } from '../../dictionary.mdx';
 
+import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
+
 # Networks
 
 <Tabs
@@ -48,19 +50,26 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+
+		<ul>
+            <li>
+                `name`:
+                <RName />
+            </li>
+            <li>
+                `cidr[]`:
+                <RCidrSet />
+            </li>
+        </ul>    
+
         #### Пример использования
         ```yaml
         name: sg-example-1
         cidrs:
           - 10.0.0.0/24
         ``` 
-        
-        #### Ограничения
-
-        <ul>
-            <li>Не должно быть пересечений в cidrs.</li>
-        </ul>
-
+    
     </TabItem>
 
     <TabItem value='terraform-r'>
@@ -104,6 +113,23 @@ import {
             </tbody>
         </table>
 
+        #### Ограничения
+
+		<ul>
+            <li>
+                `items`:
+                <RItems />
+            </li>
+            <li>
+                `items.key.name`:
+                <RName />
+            </li>
+            <li>
+                `items.key.cidr`:
+                <RCidr />
+            </li>
+        </ul> 
+
         #### Пример использования
 
         ```hcl
@@ -116,13 +142,6 @@ import {
             }
         }
         ```
-
-        #### Ограничения
-
-        <ul>
-            <li>Каждая сеть должна иметь уникальный ключ.</li>
-            <li>Не должно быть пересечений в CIDR.</li>
-        </ul> 
     </TabItem>
 
     <TabItem value='api'>
@@ -171,6 +190,19 @@ import {
             </tbody>
         </table>
 
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>
+                `networks.networks[].name`:
+                <RName />
+            </li>
+            <li>
+                `networks.networks[].network.CIDR`:
+                <RCidr />
+            </li>            
+        </ul>
+
         <h4 class="custom-heading">Пример использования</h4>
 
         ```bash
@@ -187,13 +219,6 @@ import {
             }
         }'
         ```
-
-        #### Ограничения
-
-        <ul>
-            <li>Каждая сеть должна иметь уникальный ключ.</li>
-            <li>Не должно быть пересечений в CIDR.</li>
-        </ul>
 
         <h4 class="custom-heading">Диаграмма последовательности</h4>
 
