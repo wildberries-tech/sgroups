@@ -291,6 +291,13 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
     </TabItem>
 
     <TabItem value='nft'>
+        <div class="paragraph">
+            В этом разделе мы покажем, как ресурс networks, созданный с помощью Terraform/API, внедряются в настройки nftables.
+            В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента 
+            nftables, обеспечивая более широкие возможности для управления группировкой подсетей.
+        </div>
+
+
         <p>В этом разделе мы покажем, как ресурс тnetwork, созданный с помощью Terraform и API, внедряется в настройки nftables. </p>
         <ul>
             <li>`$IPSet_Name` - Наименование IPSet</li>

@@ -104,12 +104,15 @@ export function RItemsRuleName({type}) {
     let template = ''
     switch(type) {
         case 's2s':
+            template = `"$\{transport\}:sg-local($\{sg_local\})sg($\{sg\})"`;
+            break;
+        case 's2s-ie':
             template = `"$\{transport\}:sg-local($\{sg_local\})sg($\{sg\})$\{traffic\}"`;
             break;
-        case 's2c':
+        case 's2c-ie':
             template = `"$\{transport\}:cidr($\{cidr\})sg($\{sg_name\})$\{traffic\}"`;
             break;
-        case 's2f':
+        case 's2f-e':
             template = `"$\{transport\}:sg($\{sg_from\})fqdn($\{fqdn\})"`;
             break;
     }

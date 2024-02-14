@@ -4,202 +4,440 @@ id: s2s
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import {
+    Traffic,
+    Log, 
+    Trace,
+    Ports,
+    SrcPorts,
+    DstPorts,
+    ICMPTypes,
+    SgroupSet,
+    Description,
+    Rules,
+    Transport,
+    Sg,
+    SgLocal,
+    ApiIcmp,
+    ICMPV,
+    NftRuleType,
+    NftCounter,
+    NftRuleVerdict,
+    SyncOp,
+    TerraformModule,
+    TerraformResource
+} from '../../dictionary.mdx';
+import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../restrictions.mdx'
 
 # Sgroup to Sgroup
 
+<div class="paragraph">
+    Данный тип правил управляет обменом данными между различными группами безопасности. Он автоматически создает два правила на хостах: одно для исходящего трафика 
+    от инициирующей стороны и другое для входящего трафика от группы безопасности, к которой предоставлен доступ.
+</div>
+
 <Tabs
-    defaultValue = "tcp-udp"
-    values = {[
-        { label: "TCP/UDP", value: "tcp-udp" },
-        { label: "ICMP", value: "icmp" }
+    defaltValue="terraform-m"
+    values={[
+        { label: "Terraform module", value: "terraform-m" },
+        { label: "Terraform resource", value: "terraform-r" },
+        { label: "API", value: "api" },
+        { label: "nftables", value: "nft" }        
     ]}
 >
-    <TabItem value="tcp-udp">
+    <TabItem value="terraform-m">
+        <div class="paragraph">
+            <TerraformModule description="full" />
+        </div>
+        <div class="paragraph">
+            Далее везде в документе подразумевается что все места, содержащие переменную  `$transport` иогут принимать 
+            одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`.
+        </div>        
+        <ul>
+            <li class="text-justify">`rules` - <Rules description="short" /></li>
+            <li class="text-justify">`rules.s2s[]` - Список правил, описывающий сетевое взаимодействие текущей Security Group с внешней Security Group.</li>
+            <li class="text-justify">`rules.s2s[].sgroupSet[]` - <SgroupSet description="short" /></li>
+            <li class="text-justify">`rules.s2s[].log` - <Log description="short" /></li>
+            <li class="text-justify">`rules.s2s[].trace` - <Trace description="short" /></li>
+            <li class="text-justify">`rules.s2s[].access.$transport` - <Transport description="short" /></li>
+            <li class="text-justify">`rules.s2s[].access.$transport.description` - <Description description="short" /></li>
+            <li class="text-justify">`rules.s2s[].access.$transport.ports_to[]` - <DstPorts description="short" /></li>
+            <li class="text-justify">`rules.s2s[].access.$transport.ports_from[]` - <SrcPorts description="short" /></li>
+            <li class="text-justify">`rules.s2s[].access.$transport.type[]` - <ICMPTypes description="short" /></li>
+        </ul>
+
+        <table>
+            <caption>Области применения полей относительно используемого протокола</caption>
+            <thead>
+                <tr>
+                    <th rowspan="2">Название параметра</th>
+                    <th rowspan="2">Значение по умолчанию</th>
+                    <th colspan="3">Transport*</th>
+                </tr>
+                <tr>
+                    <th>TCP</th>
+                    <th>UDP</th>
+                    <th>ICMP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>rules</td>
+                    <td>[]</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>rules.s2s</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>                    
+                </tr>
+                <tr>
+                    <td>rules.s2s.sgroupSet[]</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.log</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.trace</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.access.$transport[]</td>
+                    <td>{}</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.access.$transport[].description</td>
+                    <td>&quot;&quot;</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.access.$transport[].ports_to[]</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>  
+                </tr>
+                <tr>
+                    <td>rules.s2s.access.$transport[].ports_from[]</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>  
+                </tr>                       
+                <tr>
+                    <td>rules.s2s[].access.$transport[].type[]</td>
+                    <td>null</td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>  
+                </tr>                
+            </tbody>
+        </table>
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>
+                `name`:
+                <RName />
+            </li>
+            <li>
+                `rules.s2s[].sgroupSet`:
+                <RSgroupSet />
+            </li>
+            <li>
+                `rules.s2s[].access.$transport[].ports_to[]`:
+                <RPorts />
+            </li>
+            <li>
+                `rules.s2s[].access.$transport[].ports_from[]`:
+                <RPorts />
+            </li>
+            <li>
+                `rules.s2s[].access.$transport[].type[]`:
+                <RIcmpType />
+            </li>
+        </ul>        
+
+        <h4 class="custom-heading">Пример использования</h4>
+
         <Tabs
-            defaltValue = "terraform-m"
+            defaltValue = "tcp"
             values = {[
-                { label: "Terraform module", value: "terraform-m" },
-                { label: "Terraform resource", value: "terraform-r" },
-                { label: "API", value: "api" },
-                { label: "nftables", value: "nft" }
+                { label: "TCP", value: "tcp" },
+                { label: "UDP", value: "udp" },
+                { label: "ICMP", value: "icmp" }
             ]}
         >
-
-            <TabItem value="terraform-m">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Название параметра</th>
-                            <th>Описание</th>
-                            <th>Значение по умолчанию</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>rules</td>
-                            <td>Структура, содержащая описания сетевого взаимодействия (ingress, egress или s2s).</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[]</td>
-                            <td>Список, описывающий сетевое взаимодействие текущей Security Group с внешней Security Group. Для применения данных политик, добавляется соответствующее правило как на стороне инициатора так и на стороне внешней Secyrity Group.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].sgroupSet[]</td>
-                            <td>Список, содержащий имена внешний Security Group.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].log</td>
-                            <td>Включить/отключить логирование для текущего правила.</td>
-                            <td>boolean</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.tcp</td>
-                            <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP либо с типом UDP</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.tcp.description</td>
-                            <td>Формальное текстовое описание текущего правила.</td>
-                            <td>&quot;&quot;</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.tcp.ports_to[]</td>
-                            <td>Список destination портов, открытых для текущего правила.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.tcp.ports_from[]</td>
-                            <td>Список source портов, открытых для текущего правила.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.udp</td>
-                            <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP либо с типом UDP</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.udp.description</td>
-                            <td>Формальное текстовое описание текущего правила.</td>
-                            <td>&quot;&quot;</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.udp.ports_to[]</td>
-                            <td>Список destination портов, открытых для текущего правила.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.udp.ports_from[]</td>
-                            <td>Список source портов, открытых для текущего правила.</td>
-                            <td>[]</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                #### Пример использования
-
+            <TabItem value="tcp">
                 ```yaml
                 name: sg-example-from
                 rules:
                     s2s:
                     - sgroupSet:
                         - sg-example-to
-                        logs:  true
-                        trace: true
-                        access:
-                            tcp:
-                            - description: ""
-                            ports_from:
-                                - 64231
-                            ports_to:
-                                - 443
-                                - 80
-                            udp:
-                            - description: ""
-                            ports_from:
-                                - 64231
-                            ports_to:
-                                - 443
-                                - 80        
-                ```
-
-                ## Ограничения
-
-                <ul>
-                    <li>Необходимо указать минимум одно значение в sgroupSet.</li>
-                    <li class="text-justify">sgroupSet - длина одного значения из списка не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li>Может быть использован только один протокол для текущего правила (TCP или UDP).</li>
-                    <li class="text-justify">Значения `rules.s2s[].access.tcp/udp.ports_to[]` и `rules.s2s[].access.tcp/udp.ports_from[]` портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li>Значения `rules.s2s[].access.tcp/udp.ports_from[]` портов не должно пересекаться в рамках текущего правила.</li>
-                </ul>
+                      logs:  true
+                      trace: true
+                      access:
+                        tcp:
+                        - description: ""
+                          ports_from:
+                            - 64231
+                          ports_to:
+                            - 443
+                            - 80      
+                ```                
             </TabItem>
+            <TabItem value="udp">
+                ```yaml
+                name: sg-example-from
+                rules:
+                    s2s:
+                    - sgroupSet:
+                        - sg-example-to
+                      logs:  true
+                      trace: true
+                      access:
+                        udp:
+                        - description: ""
+                          ports_from:
+                            - 64231
+                          ports_to:
+                            - 443
+                            - 80        
+                ```                      
+            </TabItem>
+            <TabItem value="icmp">
+                ```yaml
+                name: sg-example-from
+                rules:
+                    s2s:
+                    - sgroupSet:
+                        - sg-example-to
+                      logs:  true
+                      access:
+                          icmpIPv4:
+                          - description: "" 
+                            Types:
+                              - 0
+                              - 8
+                        icmpIPv6:
+                          - description: "" 
+                            Types:
+                              - 0
+                              - 8
+                ```          
+            </TabItem>
+        </Tabs>        
+    </TabItem>
 
-            <TabItem value="terraform-r">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>название</th>
-                            <th>обязательность</th>
-                            <th>тип данных</th>
-                            <th>доп. описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>transport</td>
-                            <td>да</td>
-                            <td>&quot;TCP\|UDP&quot;</td>
-                            <td>Тип протокола для данного правила. Должен быть установлен в &quot;TCP&quot; или &quot;UDP&quot;.</td>
-                        </tr>
-                        <tr>
-                            <td>logs</td>
-                            <td>нет</td>
-                            <td>bool</td>
-                            <td>Определяет, включены ли логи для данного правила. По умолчанию значение &quot;false&quot;. Установите в &quot;true&quot;, если требуется включить логирование.</td>
-                        </tr>
-                        <tr>
-                            <td>trace</td>
-                            <td>нет</td>
-                            <td>bool</td>
-                            <td>Определяет, включен ли трассировочный режим для данного правила. По умолчанию значение &quot;false&quot;. Установите в &quot;true&quot;, если требуется включить трассировку. (пока не реализовано)</td>
-                        </tr>
-                        <tr>
-                            <td>sg_from</td>
-                            <td>да</td>
-                            <td>string</td>
-                            <td>Имя исходной группы безопасности.</td>
-                        </tr>
-                        <tr>
-                            <td>sg_to</td>
-                            <td>да</td>
-                            <td>string</td>
-                            <td>Имя целевой группы безопасности.</td>
-                        </tr>
-                        <tr>
-                            <td>ports[]</td>
-                            <td>нет</td>
-                            <td>array of object</td>
-                            <td>Массив объектов, представляющих порты. Каждый объект содержит поля s (source) и d (destination).</td>
-                        </tr>
-                        <tr>
-                            <td>ports[].s</td>
-                            <td>нет</td>
-                            <td>string</td>
-                            <td>Значения s (source) портов в рамках одного правила не должны пересекаться</td>
-                        </tr>
-                        <tr>
-                            <td>ports[].d</td>
-                            <td>нет</td>
-                            <td>string</td>
-                            <td>Значения d (destination) портов в рамках одного правила могут пересекаться</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <TabItem value="terraform-r">
+        <div class="paragraph">
+            <TerraformResource description="full"/>
+        </div>
+        <ul>
+            <li>`items` - список ресурсов создаваемые terraform ресурсом. </li>
+            <li>`items.$ruleName` - уникальное имя создаваемого ресурса.</li>
+            <li>`items.$ruleName.transport` - <Transport description="short" /></li>
+            <li>`items.$ruleName.sg_from` - <Sg description="short" /></li>
+            <li>`items.$ruleName.sg_to` - <Sg description="short" /></li>
+            <li>`items.$ruleName.ports` - <Ports description="short" /></li>
+            <li>`items.$ruleName.ports[].d` - <DstPorts description="short" /></li>
+            <li>`items.$ruleName.ports[].s` - <SrcPorts description="short" /></li>
+            <li>`items.$ruleName.logs` - <Log description="short" /></li>
+            <li>`items.$ruleName.trace` - <Trace description="short" /></li>
+            <li>`items.$ruleName.ip_v` - <ICMPV description="short" /></li>
+            <li>`items.$ruleName.type` - <ICMPTypes description="short" /></li>
+        </ul>
+        <table>
+            <caption>Области применения полей относительно используемого протокола</caption>
+            <thead>
+                <tr>
+                    <th rowspan="2">название</th>
+                    <th rowspan="2">обязательность</th>
+                    <th rowspan="2">тип данных</th>
+                    <th rowspan="2">Значение по умолчанию</th>
+                    <th colspan="3">Transport*</th>
+                </tr>
+                <tr>
+                    <th>TCP</th>
+                    <th>UDP</th>
+                    <th>ICMP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>items</td>
+                    <td>да</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName</td>
+                    <td>да</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.transport</td>
+                    <td>да</td>
+                    <td>TCP | UDP</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.sg_from</td>
+                    <td>да</td>
+                    <td>String</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.sg_to</td>
+                    <td>да</td>
+                    <td>String</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.ports</td>
+                    <td>нет</td>
+                    <td>Object[]</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.ports[].d</td>
+                    <td>нет</td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.ports[].s</td>
+                    <td>нет</td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.logs</td>
+                    <td>нет</td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.trace</td>
+                    <td>нет</td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.ip_v</td>
+                    <td>да</td>
+                    <td>IPv4 | IPv6</td>
+                    <td></td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>items.$ruleName.type</td>
+                    <td>да</td>
+                    <td>Strng[]</td>
+                    <td>null</td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>                
+            </tbody>
+        </table>
+        <h4 class="custom-heading">Ограничения</h4>
 
-                #### Пример использования
+        <ul>
+            <li>
+                `items`:
+                <RItems />
+            </li>
+            <li>
+                `items.$ruleName`:
+                <RItemsRuleName type="s2s"/>
+            </li>
+            <li>
+                `items.$ruleName.sg_from`:
+                <RName />
+            </li>
+            <li>
+                `items.$ruleName.sg_to`:
+                <RName />
+            </li>
+            <li>
+                `items.$ruleName.ports[].s`:
+                <RPorts />
+            </li>
+            <li>
+                `items.$ruleName.ports[].d`:
+                <RPorts />
+            </li>
+            <li>
+                `items.$ruleName.type[]`:
+                <RIcmpType />
+            </li>
+        </ul>
+        <h4 class="custom-heading">Пример использования</h4>
 
+        <Tabs
+            defaltValue = "tcp"
+            values = {[
+                { label: "TCP", value: "tcp" },
+                { label: "UDP", value: "udp" },
+                { label: "ICMP", value: "icmp" }
+            ]}
+        >
+            <TabItem value="tcp">
                 ```hcl
                 resource "sgroups_ie_rules" "rules" { 
                     items = { 
@@ -215,7 +453,16 @@ import TabItem from '@theme/TabItem';
                             ]
                             logs  = true
                             trace = true
-                        }
+                        }              
+                    }
+                }        
+                ```                
+            </TabItem>
+
+            <TabItem value="udp">
+                ```hcl
+                resource "sgroups_ie_rules" "rules" { 
+                    items = {
                         "udp:sg(sg-example-from)sg(sg-example-to)" = {
                             transport   = "udp"
                             sg_from     = "sg-example-from"
@@ -231,356 +478,10 @@ import TabItem from '@theme/TabItem';
                         }                
                     }
                 }        
-                ```
-
-                #### Ограничения
-
-                <ul>
-                    <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
-                    <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"${transport}:sg(${sgroup_from})sg(${sgroup_to})"`</li>
-                    <li>sg_from и sg_to - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li>Значения s (source) портов не должно пересекаться в рамках одного правила состоящего из уникального составного ключа (transport, sg_from, sg_to).</li>
-                    <li>Значения s (source) и d (distinct) портов должно находиться в интервале от 1 до 65535. Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                </ul>
-
+                ```                     
             </TabItem>
 
-            <TabItem value="api">
-                ```json
-                {
-                    "sgSgRules": {
-                        "rules": [
-                            {
-                                "sgFrom": "sg-example-from",
-                                "sgTo": "sg-example-to",
-                                "logs": true,
-                                "trace": true,
-                                "ports": [
-                                    {
-                                        "d": "443,80",
-                                        "s": "64231"
-                                    }
-                                ],
-                                "transport": "TCP"
-                            },
-                            {
-                                "sgFrom": "sg-example-from",
-                                "sgTo": "sg-example-to",
-                                "logs": true,
-                                "trace": true,
-                                "ports": [
-                                    {
-                                        "d": "443,80",
-                                        "s": "64231"
-                                    }
-                                ],
-                                "transport": "UDP"
-                            }
-                        ]
-                    },
-                    "syncOp": "Upsert"
-                }
-                ```
-            </TabItem>
-
-            <TabItem value="nft">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Шаблон параметра</th>
-                            <th>Структура параметра</th>
-                            <th>Значения</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>$\{Trace\}</td>
-                            <td>`nftrace set`</td>
-                            <td>
-                                <ul>
-                                    <li><b>1</b> - трассировка включена</li>
-                                    <li><b>0</b> - трассировка выключена</li>
-                                </ul>            
-                            </td>
-                            <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
-                        </tr>
-                        <tr>
-                            <td>$\{SrcSgroup\}</td>
-                            <td>
-                                <nobr>`saddr @${IPSet(sgName)}`</nobr>
-                            </td>
-                            <td>Наименование IPSet в котором описаны сети от Security Group</td>
-                            <td>Значение типа string, не должно содержать в себе пробелов</td>
-                        </tr>
-                        <tr>
-                            <td>$\{DstSgroup\}</td>
-                            <td>
-                                <nobr>`saddr @${IPSet(sgName)}`</nobr>            
-                            </td>
-                            <td>Наименование IPSet в котором описаны сети в Security Group</td>
-                            <td>Значение типа string, не должно содержать в себе пробелов</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Transport\}</td>
-                            <td>`tcp` | `udp`</td>
-                            <td>протокол передачи данных в цепочке правил.</td>
-                            <td>Одно из двух значений `tcp` | `udp`</td>
-                        </tr>
-                        <tr>
-                            <td>$\{RuleType\}</td>
-                            <td>`ip`</td>
-                            <td></td>
-                            <td>Описывает, что принимает трафик типа ip</td>
-                        </tr>
-                        <tr>
-                            <td>$\{SrcPorts\}</td>
-                            <td>`sort {}`</td>
-                            <td>Набор целочисленных значений от 0 до 65535</td>
-                            <td class="text-justify">Значения `sport` (source port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
-                        </tr>
-                        <tr>
-                            <td>$\{DstPorts\}</td>
-                            <td>`dport {}`</td>
-                            <td>Набор целочисленных значений от 0 до 65535</td>
-                            <td class="text-justify">Значения `dport` (destination port). Может быть как одно значение, как и множество значений портов. В случае если одно значение у порта то передается значение либо как целочисленное значение либо как название порта. Если передается массив значений портов то они должны быть внутри `{}` перечислены через запятую.</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Counter\}</td>
-                            <td>
-                                <nobr>`counter packets 0 bytes 0`</nobr>
-                            </td>
-                            <td>Не параметризированный</td>
-                            <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Log\}</td>
-                            <td>
-                                <nobr>`log level debug flags ip options`</nobr>
-                            </td>
-                            <td>Не параметризированный</td>
-                            <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Verdict\}</td>
-                            <td>`Accept`</td>
-                            <td>
-                                <div>Не параметризированный</div>
-                                <br />
-                                <div class="text-justify">
-                                    <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                                </div>
-                                <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
-                            </td>
-                            <td>Вердикт политики по пакетам данных</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                #### Шаблон
-
-                ```hcl
-                chain FW-IN-sgName {
-                    # **********
-                    ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
-                    # **********
-                }
-                ```
-
-                ```hcl
-                chain FW-OUT-sgName {
-                    # **********
-                    ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
-                    # **********
-                }
-                ```
-
-                #### Пример использования
-
-                ```hcl
-                chain FW-IN-sg-example-to {
-                    # **********
-                    nftrace set 1 ip saddr NetIPv4-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr NetIPv6-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    
-                    nftrace set 1 ip saddr NetIPv4-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr NetIPv6-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    # **********
-                }
-                ```          
-
-                ```hcl
-                chain FW-OUT-sg-example-from {
-                    # **********
-                    nftrace set 1 ip daddr NetIPv4-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip daddr NetIPv6-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    
-                    nftrace set 1 ip daddr NetIPv4-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip daddr NetIPv6-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    # **********
-                }
-                ```  
-            </TabItem>
-        </Tabs>
-    </TabItem>
-
-    <TabItem value="icmp">
-        <Tabs
-            defaltValue = "terraform-m"
-            values = {[
-                { label: "Terraform module", value: "terraform-m" },
-                { label: "Terraform resource", value: "terraform-r" },
-                { label: "API", value: "api" },
-                { label: "nftables", value: "nft" }
-            ]}
-        >
-
-            <TabItem value="terraform-m">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Название параметра</th>
-                            <th>Описание</th>
-                            <th>Значение по умолчанию</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>rules</td>
-                            <td>Структура, содержащая описания сетевого взаимодействия (ingress, egress или s2s).</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[]</td>
-                            <td>Список, описывающий сетевое взаимодействие текущей Security Group с внешней Security Group. Для применения данных политик, добавляется соответствующее правило как на стороне инициатора так и на стороне внешней Secyrity Group.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].sgroupSet[]</td>
-                            <td>Список, содержащий имена внешний Security Group.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].log</td>
-                            <td>Включить/отключить логирование для текущего правила.</td>
-                            <td>boolean</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv4</td>
-                            <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv4.description</td>
-                            <td>Формальное текстовое описание текущего правила.</td>
-                            <td>&quot;&quot;</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv4.type[]</td>
-                            <td>Список, определяющий допустимые типы ICMP запросов.</td>
-                            <td>[]</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv6</td>
-                            <td>Тип протокола для данного правила, можно использовать либо блок с типом TCP, либо с UDP, либо с icmpIPv4 либо с icmpIPv6.</td>
-                            <td>{}</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv6.description</td>
-                            <td>Формальное текстовое описание текущего правила.</td>
-                            <td>&quot;&quot;</td>
-                        </tr>
-                        <tr>
-                            <td>rules.s2s[].access.icmpIPv6.type[]</td>
-                            <td>Список, определяющий допустимые типы ICMPv6 запросов.</td>
-                            <td>[]</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                #### Пример использования
-
-                ```yaml
-                name: sg-example-from
-                rules:
-                    s2s:
-                    - sgroupSet:
-                            - sg-example-to
-                        logs:  true
-                        access:
-                            icmpIPv4:
-                            - description: "" 
-                            Types:
-                                - 0
-                                - 8
-                            icmpIPv6:
-                            - description: "" 
-                            Types:
-                                - 0
-                                - 8
-                ```
-
-                #### Ограничения
-
-                <ul>
-                    <li>Необходимо указать минимум одно значение в sgroupSet.</li>
-                    <li class="text-justify">sgroupSet - длина одного значения из списка не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li class="text-justify">`rules.s2s[].access.icmpIPv4/icmpIPv6.type[]` - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255.</li>
-                </ul>
-            </TabItem>
-            
-            <TabItem value="terraform-r">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>название</th>
-                            <th>обязательность</th>
-                            <th>тип данных</th>
-                            <th>доп. описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>logs</td>
-                            <td>нет</td>
-                            <td>bool</td>
-                            <td>Определяет, включены ли логи для данного правила. По умолчанию значение &quot;false&quot;. Установите в &quot;true&quot;, если требуется включить логирование.</td>
-                        </tr>
-                        <tr>
-                            <td>trace</td>
-                            <td>нет</td>
-                            <td>bool</td>
-                            <td>Определяет, включен ли трассировочный режим для данного правила. По умолчанию значение &quot;false&quot;. Установите в &quot;true&quot;, если требуется включить трассировку.</td>
-                        </tr>
-                        <tr>
-                            <td>sg_from</td>
-                            <td>да</td>
-                            <td>string</td>
-                            <td>Имя исходной группы безопасности.</td>
-                        </tr>
-                        <tr>
-                            <td>sg_to</td>
-                            <td>да</td>
-                            <td>string</td>
-                            <td>Имя целевой группы безопасности.</td>
-                        </tr>
-                        <tr>
-                            <td>ip_v</td>
-                            <td>да</td>
-                            <td>&quot;IPv4\|IPv6&quot;</td>
-                            <td>Версия IP для ICMP (IPv4 или IPv6).</td>
-                        </tr>
-                        <tr>
-                            <td>type</td>
-                            <td>да</td>
-                            <td>array of strings</td>
-                            <td>Список, определяющий допустимые типы ICMP запросов.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-               #### Пример использования
-
+            <TabItem value="icmp">
                 ```hcl
                 resource "sgroups_icmp_rules" "rules" {
                     items = {
@@ -602,22 +503,249 @@ import TabItem from '@theme/TabItem';
                         }
                     }
                 }
-                ```  
-
-                #### Ограничения
-
-                <ul>
-                    <li>Каждое правило должно иметь уникальный ключ, чтобы избежать пересечений.</li>
-                    <li>Структура формы items должна соответствовать определенной последовательности которой необходимо придерживаться `"sg(${sgroup_from})sg(${sgroup_to})icmp${split("icmpIPv", protocol).1}"`</li>
-                    <li>sg_from и sg_to - длина значения не должна превышать 256 символов. Значение должно начинаться и заканчиваться символами без пробелов.</li>
-                    <li>ip_v - может быть только одно из двух значений "IPv4" или "IPv6".</li>
-                    <li>type - значения в списке не должны повторяться. Значение должно быть цифрой от 0 до 255.  </li>
-                </ul>
+                ```                      
             </TabItem>
+        </Tabs>                             
+    </TabItem>
 
-            <TabItem value="api">
-                ```json
-                {
+    <TabItem value="api">
+        <div class="paragraph">
+            Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
+            Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgRules`, `sgSgIcmpRules`.
+        </div> 
+        <ul>
+            <li>`$node.rules[]` - <Rules description="short" /></li>
+            <li>`$node.rules[].sgFrom` - <Sg description="short" /></li>
+            <li>`$node.rules[].sgTo` - <Sg description="short" /></li>
+            <li>`$node.rules[].logs` - <Log description="short" /></li>
+            <li>`$node.rules[].trace` - <Trace description="short" /></li>
+            <li>`$node.rules[].ports` - <Ports description="short" /></li>
+            <li>`$node.rules[].ports[].d` - <DstPorts description="short" /></li>
+            <li>`$node.rules[].ports[].s` - <SrcPorts description="short" /></li>
+            <li>`$node.rules[].transport` - <Transport description="short" /></li>
+            <li>`$node.rules[].ICMP` - <ApiIcmp description="short" /></li>
+            <li>`$node.rules[].ICMP.IPv` - <ICMPV description="short" /></li>
+            <li>`$node.rules[].ICMP.Types` - <ICMPTypes description="short" /></li>
+            <li>`syncOp` - <SyncOp description="short" /></li>
+        </ul>
+        <table>
+            <caption>Области применения полей относительно используемого протокола</caption>
+            <thead>
+                <tr>
+                    <th rowspan="2">название</th>
+                    <th rowspan="2">обязательность</th>
+                    <th rowspan="2">тип данных</th>
+                    <th rowspan="2">Значение по умолчанию</th>
+                    <th colspan="3">Transport*</th>
+                </tr>
+                <tr>
+                    <th>TCP</th>
+                    <th>UDP</th>
+                    <th>ICMP</th>
+                </tr>
+            </thead>      
+            <tbody>
+                <tr>
+                    <td>$node.rules[]</td>
+                    <td>да</td>
+                    <td>Object[]</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].sgFrom</td>
+                    <td>да</td>
+                    <td>String</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].sgTo</td>
+                    <td>да</td>
+                    <td>String</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].logs</td>
+                    <td>нет</td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>                    
+                    <td>$node.rules[].trace</td>
+                    <td>нет</td>
+                    <td>Boolean</td>
+                    <td>false</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ports</td>
+                    <td>нет</td>
+                    <td>Object[]</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ports[].d</td>
+                    <td>нет</td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ports[].s</td>
+                    <td>нет</td>
+                    <td>String</td>
+                    <td>null</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].transport</td>
+                    <td>нет</td>
+                    <td>TCP | UDP</td>
+                    <td>TCP</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ICMP</td>
+                    <td>да</td>
+                    <td>Object</td>
+                    <td></td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ICMP.IPv</td>
+                    <td>да</td>
+                    <td>IPv4 | IPv6</td>
+                    <td></td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$node.rules[].ICMP.Types</td>
+                    <td>нет</td>
+                    <td>String[]</td>
+                    <td>[]</td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>syncOp</td>
+                    <td>да</td>
+                    <td>Delete | UpSert | FullSync</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>                
+            </tbody>
+        </table>
+
+        <h4 class="custom-heading">Ограничения</h4>
+
+        <ul>
+            <li>
+                `sgSgRules.rules[].sgFrom`:
+                <RName />
+            </li>
+            <li>
+                `sgSgRules.rules[].sgTo`:
+                <RName />
+            </li>
+            <li>
+                `sgSgRules.rules[].ports[].d`:
+                <RPorts />
+            </li>
+            <li>
+                `sgSgRules.rules[].ports[].s`:
+                <RPorts />
+            </li>
+            <li>
+                `sgSgRules.rules[].ICMP.Types[]`:
+                <RIcmpType />
+            </li>
+        </ul>
+       <Tabs
+            defaltValue = "tcp"
+            values = {[
+                { label: "TCP", value: "tcp" },
+                { label: "UDP", value: "udp" },
+                { label: "ICMP", value: "icmp" }
+            ]}
+        >
+            <TabItem value="tcp">
+               ```bash
+                curl '127.0.0.1:9007/v1/sync' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                    "sgRules": {
+                        "rules": [{
+                                "sgFrom": "sg-example-from",
+                                "sgTo": "sg-example-to",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [{
+                                        "d": "443,80",
+                                        "s": "64231"
+                                }],
+                                "transport": "TCP"
+                        }]
+                    },
+                    "syncOp": "Upsert"
+                }'
+                ```                
+            </TabItem>
+            <TabItem value="udp">
+               ```bash
+                curl '127.0.0.1:9007/v1/sync' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                    "sgRules": {
+                        "rules": [{
+                                "sgFrom": "sg-example-from",
+                                "sgTo": "sg-example-to",
+                                "logs": true,
+                                "trace": true,
+                                "ports": [{
+                                        "d": "443,80",
+                                        "s": "64231"
+                                }],
+                                "transport": "UDP"
+                        }]
+                    },
+                    "syncOp": "Upsert"
+                }'
+                ```               
+            </TabItem>
+            <TabItem value="icmp">
+                ```bash
+                curl '127.0.0.1:9007/v1/sync' \
+                --header 'Content-Type: application/json' \
+                --data '{
                     "sgSgIcmpRules": {
                         "rules": [{
                             "ICMP": {
@@ -641,101 +769,388 @@ import TabItem from '@theme/TabItem';
                         }]
                     },
                     "syncOp": "Upsert"
-                }
-                ```
+                }'
+                ```                          
+            </TabItem>
+        </Tabs>
+
+        <h4 class="custom-heading">Диаграмма последовательности</h4>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить IE-SG-SG правило
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе 
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Нет такого значения имени SG(sg и/или sg_local)
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о IE-SG-SG в БД
+
+        db-->>server: Ответ с успешно добавленным новым IE-SG-SG правилом
+        server-->>user: Успешно добавленное новое IE-SG-SG правило
+        ```
+
+        <h4 class="custom-heading">Возможные ошибки API</h4>
+
+        <Tabs
+            defaltValue='tcp-udp'
+            values={[
+                { label: "TCP/UDP", value: "tcp-udp"},
+                { label: "ICMP", value: "icmp" }
+            ]}
+        >
+            <TabItem value="tcp-udp">
+                <details>
+                    <summary>Ошибка в запросе</summary>
+
+                    ```json
+                    {
+                        "code": 5,
+                        "details":  [],
+                        "message": "Not Found"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Нет такого значения имени SG</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Добавление несуществующего SG к правилу</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>                              
+                <details>
+                <summary>Пересечение значений source портов</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
+                    }
+                    ```
+                </details>                   
             </TabItem>
 
-            <TabItem value="nft">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Шаблон параметра</th>
-                            <th>Структура параметра</th>
-                            <th>Значение</th>
-                            <th>Описание</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>$\{Trace\}</td>
-                            <td>`nftrace set`</td>
-                            <td>
-                                <ul>
-                                    <li><b>1</b> - трассировка включена</li>
-                                    <li><b>0</b> - трассировка выключена</li>
-                                </ul>              
-                            </td>
-                            <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
-                        </tr>
-                        <tr>
-                            <td>$\{SrcSgroup\}</td>
-                            <td>
-                                <nobr>`saddr @${IPSet(sgName)}`</nobr>
-                            </td>
-                            <td>Наименование IPSet в котором описаны сети в Security Group</td>
-                            <td>Значение типа string, не должно содержать в себе пробелов</td>
-                        </tr>
-                        <tr>
-                            <td>$\{DstSgroup\}</td>
-                            <td>
-                                <nobr>`daddr @${IPSet(sgName)}`</nobr>
-                            </td>
-                            <td>Наименование IPSet в котором описаны сети в Security Group</td>
-                            <td>Значение типа string, не должно содержать в себе пробелов</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Transport\}</td>
-                            <td>`icmp`</td>
-                            <td></td>
-                            <td>Указывает на протокол транспортного уровня</td>
-                        </tr>
-                        <tr>
-                            <td>$\{RuleType\}</td>
-                            <td>`ip`</td>
-                            <td></td>
-                            <td>Описывает, что принимает трафик типа ip</td>
-                        </tr>
-                        <tr>
-                            <td>$\{TypeList\}</td>
-                            <td>`type {}`</td>
-                            <td>
-                                <div class="text-justify">
-                                    список который содержит от 0 до 255 элементов в строковом представлении и указывает на числовой код ICMP
-                                </div>
-                                <i>Подробнее: [дескрипторы для ICMP](./main.mdx#icmp-descriptors)</i>             
-                            </td>
-                            <td>Значение кодов типа ICMP</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Counter\}</td>
-                            <td>
-                                <nobr>`counter packets 0 bytes 0`</nobr>
-                            </td>
-                            <td>Не параметризированный</td>
-                            <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Log\}</td>
-                            <td>`log level debug flags ip options`</td>
-                            <td>Не параметризированный</td>
-                            <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
-                        </tr>
-                        <tr>
-                            <td>$\{Verdict\}</td>
-                            <td>`Accept`</td>
-                            <td>
-                                <div>Не параметризированный</div>
-                                <br />
-                                <div class="text-justify">
-                                    <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                                </div>
-                                <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>             
-                            </td>
-                            <td>Вердикт политики по пакетам данных</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <TabItem value="icmp">
+                <details>
+                    <summary>Ошибка в запросе</summary>
 
+                    ```json
+                    {
+                        "code": 5,
+                        "details":  [],
+                        "message": "Not Found"
+                    }
+                    ```
+                </details>
+                <details>
+                    <summary>Нет такого значения имени SG</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>
+                <details>
+                    <summary>Добавление несуществующего SG к правилу</summary>
+
+                    ```json
+                    {
+                        "code": 13,
+                        "details":  [],
+                        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+                    }
+                    ```
+                </details>                                            
+                <details>
+                    <summary>Некорректное значение кода ICMP</summary>
+
+                    ```json
+                    {
+                        "code": 3,
+                        "details":  [],
+                        "message": "ICMP type(s) must be in [0-255] but we got (256)"
+                    }
+                    ```
+                </details>
+                <details>
+                <summary>Некорректное значение IPv</summary>
+
+                    ```json
+                    {
+                        "code": 3,
+                        "details":  [],
+                        "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
+                    }
+                    ```
+                </details>                     
+            </TabItem>
+        </Tabs>
+    </TabItem>
+
+    <TabItem value="nft">
+        <div class="paragraph">
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. 
+            Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
+        </div>
+
+        <ul>
+            <li>`$Trace` - <Trace description="short" /></li>
+            <li>`$SrcSgroup` - <Sg description="short" /></li>
+            <li>`$DstGroup` - <Sg description="short" /></li>
+            <li>`$Transport` - <Transport description="short" /></li>
+            <li>`$NftRuleType` - <NftRuleType description="short" /></li>
+            <li>`$IcmpTypeList` - <ICMPTypes description="short" /></li>
+            <li class="text-justify">`$SrcPorts` - <SrcPorts description="short" /></li>
+            <li class="text-justify">`$DstPorts` - <DstPorts description="short" /></li>
+            <li>`$NftCounter` - <NftCounter description="short" /></li>
+            <li>`$Log` - <Log description="short" /></li>
+            <li>`$NftRuleVerdict` - <NftRuleVerdict description="short" /></li>
+        </ul>
+
+        <table>
+            <caption>Области применения полей относительно используемого протокола</caption>
+            <thead>
+                <tr>
+                    <th rowspan="2">Шаблон параметра</th>
+                    <th rowspan="2">Структура параметра</th>
+                    <th rowspan="2">Значения</th>
+		            <th colspan="3">Transport*</th>
+                </tr>
+                <tr>
+                    <th>TCP</th>
+                    <th>UDP</th>
+                    <th>ICMP</th>
+                </tr>                
+            </thead>
+            <tbody>
+                <tr>
+                    <td>$Trace</td>
+                    <td>`nftrace set`</td>
+                    <td>
+                        <ul>
+                            <li><b>1</b> - трассировка включена</li>
+                            <li><b>0</b> - трассировка выключена</li>
+                        </ul>            
+                    </td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$SrcSgroup</td>
+                    <td>
+                        <nobr>`saddr`</nobr>
+                    </td>
+                    <td>`@${IPSet(sgName)}`</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$DstSgroup</td>
+                    <td>
+                        <nobr>`daddr`</nobr>            
+                    </td>
+                    <td>`@${IPSet(sgName)}`</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$Transport</td>
+                    <td>
+                        <nobr>`tcp | udp | icmp`</nobr>
+                    </td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$NftRuleType</td>
+                    <td>`ip`</td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$IcmpTypeList</td>
+                    <td>`type {}`</td>
+                    <td>Набор целочисленных значений от 0 до 255</td>
+                    <td class="green center"></td>
+                    <td class="green center"></td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$SrcPorts</td>
+                    <td>`sport {}`</td>
+                    <td>Набор целочисленных значений от 0 до 65535</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$DstPorts</td>
+                    <td>`dport {}`</td>
+                    <td>Набор целочисленных значений от 0 до 65535</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center"></td>
+                </tr>
+                <tr>
+                    <td>$NftCounter</td>
+                    <td>
+                        <nobr>`counter`</nobr>
+                    </td>
+                    <td>`packets 0 bytes 0`</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$Log</td>
+                    <td>
+                        <nobr>`log`</nobr>
+                    </td>
+                    <td>`level debug flags ip options`</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+                <tr>
+                    <td>$NftRuleVerdict</td>
+                    <td>`Accept`</td>
+                    <td>
+                        <div class="text-justify">
+                            <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                        </div>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
+                    </td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="custom-heading">Пример использования</h4>
+
+        <Tabs
+            defaltValue=""
+            values={[
+                { label: "TCP", value: "tcp" },
+                { label: "UDP", value: "udp" },
+                { label: "ICMP", value: "icmp" }                
+            ]}
+        >
+            <TabItem value="tcp">
+                #### Шаблон
+                ```hcl
+                chain FW-IN-sgName {
+                    # **********
+                    ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+                    # **********
+                }
+
+                chain FW-OUT-sgName {
+                    # **********
+                    ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-IN-sg-example-to {
+                    # **********
+                    nftrace set 1 ip saddr NetIPv4-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+
+                chain FW-OUT-sg-example-from {
+                    # **********
+                    nftrace set 1 ip daddr NetIPv4-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr NetIPv6-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```  
+            </TabItem>
+
+            <TabItem value="udp">
+                #### Шаблон
+                ```hcl
+                chain FW-IN-sgName {
+                    # **********
+                    ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+                    # **********
+                }
+
+                chain FW-OUT-sgName {
+                    # **********
+                    ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-IN-sg-example-to {
+                    # **********
+                    nftrace set 1 ip saddr NetIPv4-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+
+                chain FW-OUT-sg-example-from {
+                    # **********
+                    nftrace set 1 ip daddr NetIPv4-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr NetIPv6-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```              
+            </TabItem>
+
+            <TabItem value="icmp">
                 #### Шаблон
 
                 ```hcl
@@ -744,9 +1159,7 @@ import TabItem from '@theme/TabItem';
                     ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
                     # **********
                 }
-                ```
 
-                ```hcl
                 chain FW-OUT-sgName {
                     # **********
                     ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
@@ -759,25 +1172,19 @@ import TabItem from '@theme/TabItem';
                 ```hcl
                 chain FW-IN-sg-example-to {
                     # **********
-                    nftrace set 1 ip saddr @familyName-v4-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr @familyName-v6-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv4-v4-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-v6-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
-                ```
 
-                ```hcl
                 chain FW-OUT-sg-example-from {
                     # **********
                     nftrace set 1 ip daddr NetIPv4-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr NetIPv6-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
-                ```
-            </TabItem>   
-        </Tabs>
+                ```            
+            </TabItem>
+        </Tabs>                                
     </TabItem>
 </Tabs>
-
-
-  
-
