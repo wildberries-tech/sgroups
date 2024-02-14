@@ -15,6 +15,12 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
 # Networks
 
+<div class="text-justify">
+    Ресурс `Networks` представляет собой введенную нами абстракцию, которая позволяет определять группы IP-адресов или подсетей, 
+    доступных для управления Host Based Firewall. Эти подсети затем могут быть связаны с конкретными группами безопасности 
+    для логического разделения и использоваться в правилах  для разрешения или блокирования доступа к определенным ресурсам в вашей сети.
+</div>
+
 <Tabs
     defaultValue='terraform-m'
     values={[
@@ -58,14 +64,14 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 <RName />
             </li>
             <li>
-                `cidr[]`:
+                `cidrs[]`:
                 <RCidrSet />
             </li>
         </ul>    
 
         #### Пример использования
         ```yaml
-        name: sg-example-1
+        name: sg-example
         cidrs:
           - 10.0.0.0/24
         ``` 
@@ -90,7 +96,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                     <td>items</td>
                     <td>да</td>
                     <td>Object</td>
-                    <td>Cписок ресурсов создаваемые terraform ресурсом.</td>                    
+                    <td>Cписок ресурсов создаваемые terraform.</td>                    
                 </tr>
                 <tr>
                     <td>items.key</td>
@@ -102,13 +108,13 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                     <td>items.key.name</td>
                     <td>да</td>
                     <td>string</td>
-                    <td>Имя сети.</td>
+                    <td>Имя подсети.</td>
                 </tr>
                 <tr>
                     <td>items.key.cidr</td>
                     <td>да</td>
                     <td>string</td>
-                    <td>CIDR блок для данной сети.</td>
+                    <td><Cidr description="short" /></td>
                 </tr>
             </tbody>
         </table>
@@ -148,8 +154,8 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
         <ul>
             <li>networks[] - <Networks description="short" /></li>
-            <li>networks[].name - название сети.</li>
-            <li>networks[].network - объект содержащий CIDR сети</li>
+            <li>networks[].name - название подсети.</li>
+            <li>networks[].network - объект содержащий CIDR подсети</li>
             <li>networks[].network.CIDR - <Cidr description="short" /></li>
         </ul>
 
@@ -213,7 +219,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 "networks": [{
                     "name": "nw-1",
                     "network": {
-                    "CIDR": "10.0.0.0/24"
+                        "CIDR": "10.0.0.0/24"
                     }
                 }]
             }
@@ -292,13 +298,10 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
     <TabItem value='nft'>
         <div class="paragraph">
-            В этом разделе мы покажем, как ресурс networks, созданный с помощью Terraform/API, внедряются в настройки nftables.
+            В этом разделе мы покажем, как ресурс networks, созданный с помощью Terraform/API, внедряется в настройки nftables.
             В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента 
-            nftables, обеспечивая более широкие возможности для управления группировкой подсетей.
+            nftables, обеспечивая более широкие возможности для управления подсетями.
         </div>
-
-
-        <p>В этом разделе мы покажем, как ресурс тnetwork, созданный с помощью Terraform и API, внедряется в настройки nftables. </p>
         <ul>
             <li>`$IPSet_Name` - Наименование IPSet</li>
             <li>`$type` - Описывает тип данных</li>
@@ -318,7 +321,13 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 <tr>
                     <td>$IPSet_Name</td>
                     <td>`^NetIPv[4|6]-.*`</td>
-                    <td>sg-example</td>
+                    <td>
+                        Примеры значений:
+                        <ul>
+                            <li><b>NetIPv4-sg-example</b> - для описания массивов IP адресов типа v4</li>
+                            <li><b>NetIPv6-sg-example</b> - для описания массивов IP адресов типа v6</li>
+                        </ul>                      
+                    </td>
                 </tr>
                 <tr>
                     <td>$type</td>
@@ -362,10 +371,10 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
         #### Пример использования
 
         ```hcl
-        set NetIPv4-sg-example-1 {
+        set NetIPv4-sg-example {
             type ipv4_addr
             flags constant,interval
-            elements = { 10.0.0.0/24 }
+            elements = { 10.0.0.0/24 } <- networks
         }
         ```
 

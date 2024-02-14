@@ -257,3 +257,21 @@ export function Cidr({description}) {
             return (<span>TODO</span>)
     }
 }
+
+export function TRFItems({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Список ресурсов создаваемые terraform ресурсом.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}
+
+export function TRFRuleName({description}) {
+    switch(description) {
+        case 'short':
+            return (<span>Уникальное имя создаваемого ресурса.</span>)
+        case 'full':
+            return (<span>TODO</span>)
+    }
+}

@@ -14,7 +14,7 @@ export function RCidr() {
         <ul>
             <li class="text-justify">Значение поля должно начинаться и заканчиваться символами без пробелов.</li>
             <li class="text-justify">В пределах одной Security Group и направления трафика (I/E), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
-            <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
+            <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC <a href="https://datatracker.ietf.org/doc/html/rfc4632">4632</a>.</li>
         </ul>
     )    
 }
@@ -24,7 +24,11 @@ export function RFqdn() {
         <ul>
             <li class="text-justify">Длина значения поля не должна превышать 256 символов.</li>
             <li class="text-justify">Значение поля должно начинаться и заканчиваться символами без пробелов.</li>
-            <li class="text-justify">FQDN должна соответствовать формату записи, определенному в RFC 1034,1035,1123.</li>
+            <li class="text-justify">FQDN должен соответствовать формату записи, определенному в RFC&nbsp;  
+                <a href="https://datatracker.ietf.org/doc/html/rfc1034">1034</a>,&nbsp; 
+                <a href="https://datatracker.ietf.org/doc/html/rfc1035">1035</a>,&nbsp; 
+                <a href="https://datatracker.ietf.org/doc/html/rfc1123">1123</a>.
+            </li>
         </ul>
     )    
 }
@@ -47,7 +51,7 @@ export function RCidrSet() {
             <li class="text-justify">Повторения значений в списке не допускаются.</li>
             <li class="text-justify">Необходимо указать минимум одно значение.</li>
             <li class="text-justify">В пределах одной Security Group и направления трафика (I/E), необходимо обеспечить, непересекаемость диапазонов адресов подсетей.</li>
-            <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC 4632.</li>
+            <li class="text-justify">Подсеть должна соответствовать формату записи, определенному в RFC <a href="https://datatracker.ietf.org/doc/html/rfc4632">4632</a>.</li>
         </ul>
     )
 }
@@ -59,6 +63,11 @@ export function RFqdnSet() {
             <li class="text-justify">Значение элемента должно начинаться и заканчиваться символами без пробелов.</li>
             <li class="text-justify">Повторения значений в списке не допускаются.</li>
             <li class="text-justify">Необходимо указать минимум одно значение.</li>
+            <li class="text-justify">FQDN должны соответствовать формату записи, определенному в RFC&nbsp;
+                <a href="https://datatracker.ietf.org/doc/html/rfc1034">1034</a>,&nbsp; 
+                <a href="https://datatracker.ietf.org/doc/html/rfc1035">1035</a>,&nbsp; 
+                <a href="https://datatracker.ietf.org/doc/html/rfc1123">1123</a>.
+            </li>            
         </ul>
     )
 }

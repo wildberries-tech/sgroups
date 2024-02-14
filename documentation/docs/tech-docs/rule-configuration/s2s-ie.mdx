@@ -26,7 +26,9 @@ import {
     NftRuleVerdict,
     SyncOp,
     TerraformModule,
-    TerraformResource
+    TerraformResource,
+    TRFRuleName,
+    TRFItems
 } from '../../dictionary.mdx';
 
 import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../restrictions.mdx'
@@ -35,8 +37,8 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
 
 #### Описание
 <div class="paragraph">
-    Правило `IE:S2S` (Ingress/Egress Security Group to Security Group) обеспечивает гибкое управление и контроль сетевого трафика между разными группами безопасности,
-    используя протоколы TCP, UDP и ICMP. Это правило позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий 
+    Ресурс `Security Group to Security Group` представляет собой введенную нами абстракцию, которая обеспечивает гибкое управление и контроль сетевого трафика между разными группами безопасности,
+    используя протоколы TCP, UDP и ICMP. Этот ресурс позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий 
     уровень защиты и контроля в сетевой инфраструктуре.
 </div>
 
@@ -197,11 +199,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             ingress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -217,11 +219,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             egress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -241,11 +243,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             ingress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -261,11 +263,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             egress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -285,11 +287,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Ingress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             ingress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -304,11 +306,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```yaml
-                        name: sg-example-1
+                        name: sg_local_example
                         rules:
                             egress:
                               - sgroupSet:
-                                  - sg-example-2
+                                  - sg_example
                                 logs:  true
                                 trace: true
                                 access:
@@ -330,8 +332,8 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
             <TerraformResource description="full"/>
         </div>
         <ul>
-            <li>`items` - список ресурсов создаваемые terraform ресурсом. </li>
-            <li>`items.$ruleName` - уникальное имя создаваемого ресурса.</li>
+            <li>`items` - <TRFItems description="short" /></li>
+            <li>`items.$ruleName` - <TRFRuleName description="short" /></li>
             <li>`items.$ruleName.traffic` - <Traffic description="short" /></li>
             <li>`items.$ruleName.transport` - <Transport description="short" /></li>
             <li>`items.$ruleName.sg` - <Sg description="short" /></li>
@@ -383,7 +385,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>items.$ruleName.traffic</td>
                     <td>да</td>
-                    <td>ingress | egress</td>
+                    <td>Enum("ingress", "egress")</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -392,7 +394,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>items.$ruleName.transport</td>
                     <td>да</td>
-                    <td>TCP | UDP</td>
+                    <td>Enum("TCP", "UDP")</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -464,7 +466,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>items.$ruleName.ip_v</td>
                     <td>да</td>
-                    <td>IPv4 | IPv6</td>
+                    <td>Enum("IPv4", "IPv6")</td>
                     <td></td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -534,11 +536,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "tcp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
+                            "tcp:sg-local(sg_local_example)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "tcp"
                               sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_local    = "sg_local_example"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -559,11 +561,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "tcp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
+                            "tcp:sg-local(sg_local_example)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "tcp"
                               sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_local    = "sg_local_example"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -589,11 +591,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "udp:sg-local(sg_local_example-1)sg(sg_example)ingress" = {
+                            "udp:sg-local(sg_local_example)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "udp"
                               sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_local    = "sg_local_example"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -612,11 +614,11 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         ```hcl
                         resource "sgroups_ie_rules" "rules" { 
                           items = { 
-                            "udp:sg-local(sg_local_example-1)sg(sg_example)egress" = {
+                            "udp:sg-local(sg_local_example)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "udp"
                               sg          = "sg_example"
-                              sg_local    = "sg_local_example-1"
+                              sg_local    = "sg_local_example"
                               ports = [{
                                 d = "80"
                                 s = ""
@@ -815,7 +817,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>$node.rules[].traffic</td>
                     <td>да</td>
-                    <td>Ingress | Egress</td>
+                    <td>Enum("Ingress", "Egress")</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -824,7 +826,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>$node.rules[].transport</td>
                     <td>нет</td>
-                    <td>TCP | UDP</td>
+                    <td>Enum("TCP", "UDP")</td>
                     <td>TCP</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -842,7 +844,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>$node.rules[].ICMP.IPv</td>
                     <td>да</td>
-                    <td>IPv4 | IPv6</td>
+                    <td>Enum("IPv4", "IPv6")</td>
                     <td></td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -860,7 +862,9 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>syncOp</td>
                     <td>да</td>
-                    <td>Delete | UpSert | FullSync</td>
+                    <td>
+                        <nobr>Enum("Delete", "UpSert", "FullSync")</nobr>
+                    </td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -1319,7 +1323,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>$SrcPorts</td>
                     <td>`sport {}`</td>
-                    <td>Набор целочисленных значений от 0 до 65535</td>
+                    <td>Набор целочисленных значений от 1 до 65535</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center"></td>
@@ -1327,7 +1331,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 <tr>
                     <td>$DstPorts</td>
                     <td>`dport {}`</td>
-                    <td>Набор целочисленных значений от 0 до 65535</td>
+                    <td>Набор целочисленных значений от 1 до 65535</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center"></td>
@@ -1400,10 +1404,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         #### Пример использования
 
                         ```hcl
-                        chain FW-IN-sg-example-1 {
+                        chain FW-IN-sg_local_example {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv4-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1422,10 +1426,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         #### Пример использования
 
                         ```hcl
-                        chain FW-OUT-sg-example-1 {
+                        chain FW-OUT-sg_local_example {
                             # **********
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv4-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1454,10 +1458,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         #### Пример использования
 
                         ```hcl
-                        chain FW-IN-sg-example-1 {
+                        chain FW-IN-sg_local_example {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv4-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1476,10 +1480,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         #### Пример использования
 
                         ```hcl
-                        chain FW-OUT-sg-example-1 {
+                        chain FW-OUT-sg_local_example {
                             # **********                           
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv4-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                    
@@ -1508,10 +1512,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         #### Пример использования
 
                         ```hcl
-                        chain FW-IN-sg-example-1 {
+                        chain FW-IN-sg_local_example {
                             # **********
-                            nftrace set 1 ip saddr NetIPv4-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip saddr NetIPv6-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv4-sg_example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip saddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                      
@@ -1522,18 +1526,18 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                         ```hcl
                         chain FW-OUT-sgName {
                             # **********
-                                $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
-                                # **********
+                            $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
+                            # **********
                         }
                         ```
 
                         #### Пример использования
 
                         ```hcl
-                        chain FW-OUT-sg-example-1 {
+                        chain FW-OUT-sg_local_example {
                             # **********
-                            nftrace set 1 ip daddr NetIPv4-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                            nftrace set 1 ip daddr NetIPv6-sg-example-2 icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv4-sg_example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                            nftrace set 1 ip daddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
                         ```                      

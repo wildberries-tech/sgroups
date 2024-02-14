@@ -22,7 +22,13 @@ import {
 
 import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restrictions.mdx';
 
-# Security Group
+# Security Groups
+
+<div class="paragraph">
+ Ресурс `Groups` представляет собой введенную нами абстракцию, которая позволят объединить подсети в логические группы и применять к 
+ ним единые правила сетевого взаимодействия.
+</div>
+
 
 <Tabs
     defaltValue = "terraform-m"
@@ -135,12 +141,14 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
         name: sg-example
         networks: 
             - 10.0.0.0/24
+            - 11.0.0.0/24
         default_rules:
             access:
                 default:
                     logs:   true
                     trace:  true
                     action: ACCEPT
+
                 icmp:
                     logs:  true
                     trace: true
@@ -158,7 +166,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
             <TerraformResource description="full"/>
         </div>
         <div class="paragraph">
-            Далее везде в документе подразумевается что все места, содержащие переменную `$transport` подразумевается одно из двух значений: `icmp`, `icmp6`.
+            Далее везде в документе подразумевается что все места, содержащие переменную `$transport` (<Transport description="short" />) подразумевается одно из двух значений: `icmp`, `icmp6`.
         </div>
         <table>
             <thead>
@@ -192,7 +200,10 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>items.key.networks</td>
                     <td>да</td>
                     <td>string</td>
-                    <td>Имя сети которая включена в указанную группу безопасности.</td>
+                    <td>
+                        Список содержащий имена подсетей которые включены в указанную группу безопасности. Т.к. описывается имплементация 
+                        Terrafom module в Terraform resource то имя Networks совпадает с CIDR хотя им не является.
+                    </td>
                 </tr>
                 <tr>
                     <td>items.key.logs</td>
@@ -271,7 +282,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
             items = {
                 key = {
                     name           = "sg-example"
-                    networks       = 10.0.0.0/24
+                    networks       = ["10.0.0.0/24", "11.0.0.0/24"]
                     logs           = true
                     trace          = true
                     default_action = "ACCEPT"
@@ -475,7 +486,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                             "defaultAction": "ACCEPT",
                             "logs": true,
                             "name": "sg-example",
-                            "networks": [],
+                            "networks": ["10.0.0.0/24", "11.0.0.0/24"],
                             "trace": true
                         }]
                     },
@@ -517,6 +528,11 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
     </TabItem>
 
     <TabItem value="nft">
+        <div class="paragraph">
+            В этом разделе мы покажем, как ресурс `groups`, созданный с помощью Terraform/API, внедряется в настройки nftables.
+            В контексте HBF мы интерпретируем  ресурс groups как проекцию на ресурсы `IPSet` и `Chains` которые функционируют в рамках инструмента 
+            nftables, обеспечивая более широкие возможности для управления подсетями и правилами.
+        </div>
         <ul>
             <li>`$Trace` - <Trace description="short" /></li>
             <li>`$Transport` - <Transport description="short" /></li>
