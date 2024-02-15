@@ -66,7 +66,7 @@ HBF-Server поддерживает PostgreSQL версии 14.8
             <td class="text-justify">таблица tbl_ie_sg_sg_icmp_rule хранит информацию SG-SG правил для входящего и исходящего траффика через сетевой протокол ICMP</td>
             <td>
                 <ul>
-                    <li>[отобразить список IE-SG-SG-ICMP правил для входящего и исходящего траффика](./api/v1/ie-sg-sg-icmp-rules.md)</li>
+                    <li>[отобразить список IE-SG-SG-ICMP правил для входящего и исходящего траффика](./api/v1/ie-sg-sg-icmp-rules.mdx)</li>
                     <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
                 </ul>
             </td>
