@@ -75,9 +75,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
             <caption>Области применения полей относительно используемого протокола</caption>
             <thead>
                 <tr>
-                    <th rowspan="2">Название параметра</th>
-                    <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Transport*</th>
+                    <th rowspan="2">название параметра</th>
+                    <th rowspan="2">тип данных</th>
+                    <th rowspan="2">значение по умолчанию</th>
+                    <th colspan="3">transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -88,6 +89,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
             <tbody>
                 <tr>
                     <td>rules</td>
+                    <td>Object[]</td>
                     <td>[]</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -95,6 +97,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic</td>
+                    <td>Object</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -102,6 +105,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.sgroupSet[]</td>
+                    <td>String[]</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -109,6 +113,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.log</td>
+                    <td>Boolean</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -116,6 +121,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.trace</td>
+                    <td>Boolean</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -123,13 +129,15 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[]</td>
-                    <td>{}</td>
+                    <td>Object[]</td>
+                    <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].description</td>
+                    <td>String</td>
                     <td>&quot;&quot;</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -137,6 +145,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].ports_to[]</td>
+                    <td>Integer[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -144,6 +153,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].ports_from[]</td>
+                    <td>Integer[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -151,6 +161,7 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                 </tr>                       
                 <tr>
                     <td>rules.$traffic[].access.$transport[].type[]</td>
+                    <td>Integer[]</td>
                     <td>null</td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -354,8 +365,8 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <th rowspan="2">название</th>
                     <th rowspan="2">обязательность</th>
                     <th rowspan="2">тип данных</th>
-                    <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Transport*</th>
+                    <th rowspan="2">значение по умолчанию</th>
+                    <th colspan="3">transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -732,8 +743,8 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
                     <th rowspan="2">название</th>
                     <th rowspan="2">обязательность</th>
                     <th rowspan="2">тип данных</th>
-                    <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="3">Transport*</th>
+                    <th rowspan="2">значение по умолчанию</th>
+                    <th colspan="3">transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
@@ -1249,10 +1260,10 @@ import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../res
             <caption>Области применения полей относительно используемого протокола</caption>
             <thead>
                 <tr>
-                    <th rowspan="2">Шаблон параметра</th>
-                    <th rowspan="2">Структура параметра</th>
-                    <th rowspan="2">Значения</th>
-		            <th colspan="3">Transport*</th>
+                    <th rowspan="2">шаблон параметра</th>
+                    <th rowspan="2">структура параметра</th>
+                    <th rowspan="2">значения</th>
+		            <th colspan="3">transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>

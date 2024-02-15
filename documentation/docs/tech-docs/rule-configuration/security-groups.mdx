@@ -50,65 +50,79 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
         <table>
             <thead>
                 <tr>
-                    <th>Название параметра</th>
-                    <th>Описание</th>
-                    <th>Значение по умолчанию</th>
+                    <th>название параметра</th>
+                    <th>описание</th>
+                    <th>тип данных</th>
+                    <th>значение по умолчанию</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>name</td>
                     <td>Название Security Group</td>
+                    <td>String</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>networks</td>
                     <td><Networks description="short" /></td>
+                    <td>String[]</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>default_rules</td>
                     <td>Структура, описывающая правила по умолчанию, для пакетов не соответствующих ни одному из установленных правил в цепочке.</td>
+                    <td>Object</td>
                     <td>{}</td>
                 </tr>
                 <tr>
                     <td>default_rules.access</td>
                     <td>Структура, описывающая взаимодействие с пакетами не соответствующими ни одному из установленных правил в таблице.</td>
+                    <td>Object</td>
                     <td>{}</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.default.logs</td>
                     <td><Log description="short" /></td>
+                    <td>Boolean</td>
                     <td>false</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.default.trace</td>
                     <td><Trace description="short" /></td>
+                    <td>Boolean</td>
                     <td>false</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.default.action</td>
                     <td>Определяет действие по умолчанию для пакетов, не соответствующих ни одному из установленных правил в цепочке.</td>
+                    <td>
+                        <nobr>Enum("ACCEPT", "DROP")</nobr>
+                    </td>
                     <td>`ACCEPT`</td>
                 </tr>
                  <tr>
                     <td>default_rules.access.$transport</td>
                     <td>Структура, описывающая взаимодействие с ICMP-трафиком по умолчанию. Для обработки ICMP-трафика добавляется соответствующее правило в начало цепочки.</td>
+                    <td>Object</td>
                     <td>{}</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.$transport.logs</td>
                     <td><Log description="short" /></td>
+                    <td>Boolean</td>
                     <td>false</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.$transport.trace</td>
                     <td><Trace description="short" /></td>
+                    <td>Boolean</td>
                     <td>false</td>
                 </tr>
                 <tr>
                     <td>default_rules.access.$transport.type[]</td>
                     <td><ICMPTypes description="short" /></td>
+                    <td>Integer[]</td>
                     <td>[]</td>
                 </tr>
             </tbody>
@@ -544,11 +558,11 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
         <table>
             <thead>
                 <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значение</th>
-                    <th>Общие</th>
-                    <th>ICMP</th>
+                    <th>шаблон параметра</th>
+                    <th>структура параметра</th>
+                    <th>значение</th>
+                    <th>общие</th>
+                    <th>icmp</th>
                 </tr>
             </thead>
             <tbody>
