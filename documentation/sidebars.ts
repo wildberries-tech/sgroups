@@ -1,10 +1,9 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
-import { toNft } from './src/sidebars/technical-docs/to-nft';
-import { sgroups } from './src/sidebars/technical-docs/sgroups';
-import { ruleConfiguration } from './src/sidebars/technical-docs/rule-configuration';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs'
+import { toNft } from './src/sidebars/technical-docs/to-nft'
+import { sgroups } from './src/sidebars/technical-docs/sgroups'
+import { ruleConfiguration } from './src/sidebars/technical-docs/rule-configuration'
 
 const sidebars: SidebarsConfig = {
-
   informationSidebar: [
     {
       type: 'doc',
@@ -14,49 +13,54 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       label: 'Выбор инструмента',
-      id: 'info/toolset'
+      id: 'info/toolset',
     },
     {
       type: 'doc',
       label: 'Терминология',
-      id: 'info/terminology'
-    }
+      id: 'info/terminology',
+    },
   ],
 
-  techDocs: [{
-    type: 'doc',
-    label: 'Компоненты',
-    id: 'tech-docs/components'
-  },
-  {
-    type: 'category',
-    label: 'HBF-агент',
-    items: toNft
-  },
-  {
-    type: 'category',
-    label: 'HBF-сервер',
-    items: sgroups
-  },
-  {
-    type: 'category',
-    label: 'Конфигурация  ресурсов',
-    link: {
+  techDocs: [
+    {
       type: 'doc',
-      id: 'tech-docs/rule-configuration/main'
+      label: 'Компоненты',
+      id: 'tech-docs/components',
     },
-    items: ruleConfiguration
-  },
-  {
-    type: 'doc',
-    label: 'Требования',
-    id: 'tech-docs/installation-system-requirements'
-  },
-  {
-    type: 'doc',
-    label: 'Terraform провайдер',
-    id: 'tech-docs/installation-terraform'
-  }]
-};
+    {
+      type: 'category',
+      label: 'HBF-агент',
+      collapsed: false,
+      items: toNft,
+    },
+    {
+      type: 'category',
+      label: 'HBF-сервер',
+      collapsed: false,
+      items: sgroups,
+    },
+    {
+      type: 'category',
+      label: 'Конфигурация  ресурсов',
+      collapsed: false,
+      link: {
+        type: 'doc',
+        id: 'tech-docs/rule-configuration/main',
+      },
+      items: ruleConfiguration,
+    },
+    {
+      type: 'doc',
+      label: 'Требования',
+      id: 'tech-docs/installation-system-requirements',
+    },
+    {
+      type: 'doc',
+      label: 'Terraform провайдер',
+      id: 'tech-docs/installation-terraform',
+    },
+  ],
+}
 
-export default sidebars;
+export default sidebars

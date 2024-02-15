@@ -1,277 +1,290 @@
-export function SyncOp({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Поле определяющее действие с данными из запроса.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }    
+export function SyncOp({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Поле определяющее действие с данными из запроса.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Traffic({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Поле описывающий направление трафика.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Traffic({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Поле описывающий направление трафика.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Transport({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Протокол L3/L4 уровня модели OSI.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Transport({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Протокол L3/L4 уровня модели OSI.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Log({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Включить/отключить логирование.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Log({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Включить/отключить логирование.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Trace({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Включить/отключить трассировку.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Trace({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Включить/отключить трассировку.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Ports({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Блок описывающий набор пар портов (src-dst).</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Ports({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Блок описывающий набор пар портов (src-dst).</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function SrcPorts({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Набор открытых портов отправителя.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-        case 'restrictions':
-            return(
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            )        
-    }
+export function SrcPorts({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Набор открытых портов отправителя.</span>
+    case 'full':
+      return <span>TODO</span>
+    case 'restrictions':
+      return (
+        <ul>
+          <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+          <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+          <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+        </ul>
+      )
+  }
 }
 
-export function DstPorts({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Набор открытых портов получателя.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-        case 'restrictions':
-            return(
-                <ul>
-                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-                </ul>
-            )             
-    }
+export function DstPorts({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Набор открытых портов получателя.</span>
+    case 'full':
+      return <span>TODO</span>
+    case 'restrictions':
+      return (
+        <ul>
+          <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+          <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+          <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+        </ul>
+      )
+  }
 }
 
-export function ApiIcmp({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Структура, содержащая описание создаваемых правил типа ICMP.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function ApiIcmp({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Структура, содержащая описание создаваемых правил типа ICMP.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function ICMPV({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Версия IP для ICMP (IPv4 или IPv6).</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function ICMPV({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Версия IP для ICMP (IPv4 или IPv6).</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function ICMPTypes({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список, определяющий допустимые типы ICMP запросов.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function ICMPTypes({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список, определяющий допустимые типы ICMP запросов.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function SgroupSet({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список, содержащий названия Security Group(s).</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function SgroupSet({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список, содержащий названия Security Group(s).</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Sg({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Security Group, с которой устанавливаются правила взаимодействия.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Sg({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Security Group, с которой устанавливаются правила взаимодействия.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function SgLocal({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Security Group относительно которой рассматриваются правила.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function SgLocal({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Security Group относительно которой рассматриваются правила.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Description({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Формальное текстовое описание.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Description({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Формальное текстовое описание.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Rules({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Структура, содержащая описание создаваемых правил.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Rules({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Структура, содержащая описание создаваемых правил.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function NftRuleType({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Характеристика описывающая, что принимается трафик типа ip.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function NftRuleType({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Характеристика описывающая, что принимается трафик типа ip.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function NftCounter({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Счетчик количества байтов и пакетов.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function NftCounter({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Счетчик количества байтов и пакетов.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function NftRuleVerdict({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Результат применения правила, определяющий действие, которое будет применено к пакету.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function NftRuleVerdict({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Результат применения правила, определяющий действие, которое будет применено к пакету.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function TerraformModule({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>TODO</span>)
-        case 'full':
-            return (<p>Terraform module представляет собой высокоуровневую абстракцию над <code>terraform resources</code>, которая упрощает работу с ресурсами Terraform, скрывая сложность их непосредственного использования. Он предлагает простой и понятный интерфейс для взаимодействия, позволяя пользователям легко интегрироваться и управлять компонентами инфраструктуры без необходимости глубоко погружаться в детали каждого ресурса.</p>)
-    }
+export function TerraformModule({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>TODO</span>
+    case 'full':
+      return (
+        <p>
+          Terraform module представляет собой высокоуровневую абстракцию над <code>terraform resources</code>, которая
+          упрощает работу с ресурсами Terraform, скрывая сложность их непосредственного использования. Он предлагает
+          простой и понятный интерфейс для взаимодействия, позволяя пользователям легко интегрироваться и управлять
+          компонентами инфраструктуры без необходимости глубоко погружаться в детали каждого ресурса.
+        </p>
+      )
+  }
 }
 
-export function TerraformResource({description}) {
-    switch(description) {
-        case 'short':
-            return (<p>TODO</p>)
-        case 'full':
-            return (<p>Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки инфраструктуры согласно подходу Infrastructure as Code (IaC).</p>)
-    }
+export function TerraformResource({ description }) {
+  switch (description) {
+    case 'short':
+      return <p>TODO</p>
+    case 'full':
+      return (
+        <p>
+          Terraform resource является ключевым элементом в Terraform, предназначенным для управления различными
+          аспектами инфраструктуры через код. Он позволяет задавать, настраивать и управлять инфраструктурными
+          компонентами без привязки к их конкретным типам, обеспечивая автоматизацию развертывания и поддержки
+          инфраструктуры согласно подходу Infrastructure as Code (IaC).
+        </p>
+      )
+  }
 }
 
-export function CidrSet({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список, содержащий подсети типа IP.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function CidrSet({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список, содержащий подсети типа IP.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function FqdnSet({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список, содержащий FQDN записи.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function FqdnSet({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список, содержащий FQDN записи.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Fqdn({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Полное доменное имя (FQDN), для которого применяется данное правило.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Fqdn({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Полное доменное имя (FQDN), для которого применяется данное правило.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function L7ProtocolList({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список протоколов L7 уровня модели OSI.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function L7ProtocolList({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список протоколов L7 уровня модели OSI.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-
-export function Networks({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Массив/Список подсетей типа IP.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Networks({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Массив/Список подсетей типа IP.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function Cidr({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Подсеть типа IP.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function Cidr({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Подсеть типа IP.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function TRFItems({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Список ресурсов создаваемые terraform ресурсом.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function TRFItems({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Список ресурсов создаваемые terraform ресурсом.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }
 
-export function TRFRuleName({description}) {
-    switch(description) {
-        case 'short':
-            return (<span>Уникальное имя создаваемого ресурса.</span>)
-        case 'full':
-            return (<span>TODO</span>)
-    }
+export function TRFRuleName({ description }) {
+  switch (description) {
+    case 'short':
+      return <span>Уникальное имя создаваемого ресурса.</span>
+    case 'full':
+      return <span>TODO</span>
+  }
 }

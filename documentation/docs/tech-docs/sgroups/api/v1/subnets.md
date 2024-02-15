@@ -11,16 +11,16 @@ id: subnets
 ## **Ответ**
 
 ```json
- {
+{
   "networks": [
-     {
-     "name": "nw-2",
-     "network":  {
-       "CIDR": "10.150.0.222/32"
+    {
+      "name": "nw-2",
+      "network": {
+        "CIDR": "10.150.0.222/32"
       }
-    } 
-   ]
- }
+    }
+  ]
+}
 ```
 
 ## **Входные параметры**
@@ -115,24 +115,24 @@ id: subnets
 
 Код ошибки 404
 
-* Указано неверное значение \{sgName\}
+- Указано неверное значение \{sgName\}
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "SG 'string' is not found"
- }
+}
 ```
 
-* Ошибка в запросе
+- Ошибка в запросе
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 ## **Описание интеграции**
@@ -146,7 +146,7 @@ participant db as Database
 user->>server: Отобразить список доступных сетей связанных с SG
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

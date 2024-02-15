@@ -17,34 +17,28 @@ id: sg-sg-icmp-rules
 
 ```json
 {
-  "sgFrom": [
-    "sg-0"
-  ],
-  "sgTo": [
-    "sg-1"
-  ]
+  "sgFrom": ["sg-0"],
+  "sgTo": ["sg-1"]
 }
 ```
 
 ## **Ответ**
 
 ```json
- {
+{
   "rules": [
-     {
-     "ICMP":  {
-       "IPv": "IPv6",
-       "Types": [
-         8 
-        ]
+    {
+      "ICMP": {
+        "IPv": "IPv6",
+        "Types": [8]
       },
-     "SgTo": "sg-3",
-     "logs": false,
-     "trace": false,
-     "SgFrom": "sg-2"
+      "SgTo": "sg-3",
+      "logs": false,
+      "trace": false,
+      "SgFrom": "sg-2"
     }
-   ]
- }
+  ]
+}
 ```
 
 ## **Входные параметры**
@@ -179,26 +173,26 @@ id: sg-sg-icmp-rules
 
 Код ошибки 400
 
-* Указано некорректное значение существующего параметра
+- Указано некорректное значение существующего параметра
 
 ```json
- {
+{
   "code": 3,
-  "details":  [],
+  "details": [],
   "message": "proto: syntax error (line __): unexpected token \"string\""
- }
+}
 ```
 
 Код ошибки 404
 
-* Ошибка в запросе
+- Ошибка в запросе
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 ## **Описание интеграции**
@@ -212,7 +206,7 @@ participant db as Database
 user->>server: Отобразить список правил SG-SG:ICMP ограниченных по типу SG from>to
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

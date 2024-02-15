@@ -2,8 +2,8 @@
 id: installation-agent
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
 
 # Установка
 
@@ -18,7 +18,7 @@ values = {[
 
 <TabItem value='docker'>
 
-``` bash title='bash'
+```bash title='bash'
 export VERSION=1.0.4
 export HBF_SERVER=example.com:80
 
@@ -47,7 +47,7 @@ docker run \
 -d \
 -v $(pwd)/config-agent.yaml:/etc/hbf/agent/config-agent.yaml \
 --name hbf-agent \
---entrypoint "./bin/sgroups"  
+--entrypoint "./bin/sgroups"
 fraima/hbf-client:$VERSION -config /etc/hbf/agent/config-agent.yaml
 
 ```
@@ -55,7 +55,7 @@ fraima/hbf-client:$VERSION -config /etc/hbf/agent/config-agent.yaml
 </TabItem>
 <TabItem value='deb'>
 
-``` bash title='bash'
+```bash title='bash'
 export VERSION=1.0.4
 export ARCH=amd64
 export PACKAGE_TYPE=deb
@@ -71,7 +71,7 @@ systemctl start to-nft
 </TabItem>
 <TabItem value='rpm'>
 
-``` bash title='bash'
+```bash title='bash'
 export VERSION=1.0.4
 export ARCH=x86_64
 export PACKAGE_TYPE=rpm
@@ -87,7 +87,7 @@ systemctl start to-nft
 </TabItem>
 <TabItem value='source'>
 
-``` bash title='bash'
+```bash title='bash'
 export VERSION=1.0.4
 export HBF_SERVER=example.com:80
 
@@ -146,7 +146,7 @@ systemctl start  hbf-agent.service
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
-``` yaml title='YAML'
+```yaml title='YAML'
 ---
 server:
   graceful-shutdown: 10s
@@ -164,5 +164,4 @@ server:
         address: tcp://${hbf_server}:9000
         # interval(duration) backend sync-status check [mandatory]
         check-sync-status: 15s
-
 ```

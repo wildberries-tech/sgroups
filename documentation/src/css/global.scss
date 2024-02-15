@@ -1,0 +1,50 @@
+* {
+  font-family: 'Roboto';
+}
+
+/*
+  Выравнивание текста по ширине
+*/
+
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/*
+  Выравнивание текста по ширине и добавление красной строки
+*/
+
+.paragraph {
+  text-align: justify;
+  text-indent: 20px;
+  text-justify: inter-word;
+}
+
+.custom-heading {
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.green {
+  color: green;
+}
+
+table {
+  display: table;
+  width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
+.parent-div {
+  display: flex;
+}
+
+.child-block {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #000;
+}

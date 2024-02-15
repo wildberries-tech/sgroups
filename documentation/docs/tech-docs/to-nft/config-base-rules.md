@@ -45,7 +45,7 @@ Base Rules - набор правил, которые прописываются 
                 <div class="text-justify">
                     <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                 </div>
-                <i>Подробнее: [Verdict statement](../rule-configuration/main.mdx#verdict-statement)</i>              
+                <i>Подробнее: [Verdict statement](../rule-configuration/main.mdx#verdict-statement)</i>
             </td>
             <td>Вердикт политики по пакетам данных</td>
         </tr>
@@ -56,10 +56,9 @@ Base Rules - набор правил, которые прописываются 
 
 ```yaml
 base-rules:
-  networks: 
-    - "1.1.1.1"
-    - "2.2.2.2"
-
+  networks:
+    - '1.1.1.1'
+    - '2.2.2.2'
 ```
 
 ## Шаблон
