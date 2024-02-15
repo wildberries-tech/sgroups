@@ -2,35 +2,34 @@
 id: s2f-e
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import {
-  Rules,
-  Traffic,
-  FqdnSet,
-  Log,
-  Trace,
-  Transport,
-  Description,
-  Ports,
-  DstPorts,
-  SrcPorts,
-  SgLocal,
-  Fqdn,
-  TerraformModule,
-  TerraformResource,
-  L7ProtocolList,
-} from '../../dictionary.mdx'
+    Rules,
+    Traffic,
+    FqdnSet,
+    Log,
+    Trace,
+    Transport,
+    Description,
+    Ports,
+    DstPorts,
+    SrcPorts,
+    SgLocal,
+    Fqdn,
+    TerraformModule,
+    TerraformResource,
+    L7ProtocolList,
+} from '../../dictionary.mdx';
 
-import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } from '../../restrictions.mdx'
+import {RName,RFqdnSet,RPorts,RItems,RItemsRuleName,RFqdn,RProtocols} from '../../restrictions.mdx'
 
 # Sgroup to FQDN (Egress)
 
 <div class="paragraph">
-  Правило E:S2F (Egress Security Group to FQDN) предоставляет возможность гибкого управления и контроля за сетевым
-  трафиком между различными группами безопасности и FQDN записями, используя TCP, UDP протоколы. Это правило дает
-  возможность детально настроить, какой трафик разрешен к передаче между группами безопасности и определенными FQDN
-  записями, тем самым гарантируя высокий уровень защиты и управления сетевой инфраструктурой.
+    Правило E:S2F (Egress Security Group to FQDN) предоставляет возможность гибкого управления и контроля за сетевым трафиком между различными группами 
+    безопасности и FQDN записями, используя TCP, UDP протоколы. Это правило дает возможность детально настроить, какой трафик разрешен к передаче между 
+    группами безопасности и определенными FQDN записями, тем самым гарантируя высокий уровень защиты и управления сетевой инфраструктурой.
 </div>
 
 <Tabs
@@ -76,20 +75,20 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 <tr>
                     <th>TCP</th>
                     <th>UDP</th>
-                </tr>
+                </tr>                
             </thead>
             <tbody>
                 <tr>
                     <td>rules</td>
                     <td>[]</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>                   
                 </tr>
                 <tr>
                     <td>rules.$traffic[]</td>
                     <td></td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td> 
                 </tr>
                 <tr>
                     <td>rules.$traffic[].fqdnSet[]</td>
@@ -119,7 +118,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                     <td>rules.$traffic[].access.$transport.description</td>
                     <td>&quot;&quot;</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td> 
                 </tr>
                 <tr>
                     <td>rules.$traffic[].access.$transport.ports_to[]</td>
@@ -137,7 +136,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
         </table>
 
         #### Ограничения
-
+		
         <ul>
             <li>
                 `name`:
@@ -159,7 +158,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 `rules.$traffic[].access.$transport[].ports_from[]`:
                 <RPorts />
             </li>
-        </ul>
+        </ul>        
 
         #### Пример использования
 
@@ -180,7 +179,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                           - example.com
                         logs:  true
                         trace: true
-                        protocols:
+                        protocols: 
                           - "http"
                           - "dns"
                         access:
@@ -190,8 +189,8 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                                   - 64231
                                 ports_to:
                                   - 443
-                                  - 80
-                ```
+                                  - 80        
+                ```            
             </TabItem>
 
             <TabItem value="udp">
@@ -203,7 +202,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                           - example.com
                         logs:  true
                         trace: true
-                        protocols:
+                        protocols: 
                           - "http"
                           - "dns"
                         access:
@@ -213,8 +212,8 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                                   - 64231
                                 ports_to:
                                   - 443
-                                  - 80
-                ```
+                                  - 80              
+                ```            
             </TabItem>
         </Tabs>
     </TabItem>
@@ -251,7 +250,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 <tr>
                     <th>TCP</th>
                     <th>UDP</th>
-                </tr>
+                </tr>                
             </thead>
             <tbody>
                 <tr>
@@ -269,7 +268,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>            
                 <tr>
                     <td>transport</td>
                     <td>да</td>
@@ -347,7 +346,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
 
         #### Ограничения
 
-    	<ul>
+		<ul>
             <li>
                 `items`:
                 <RItems />
@@ -376,7 +375,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 `items.$ruleName.ports[].d`:
                 <RPorts />
             </li>
-        </ul>
+        </ul>        
 
         #### Пример использования
 
@@ -390,8 +389,8 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
 
             <TabItem value="tcp">
                 ```hcl
-                resource "sgroups_ie_rules" "rules" {
-                    items = {
+                resource "sgroups_ie_rules" "rules" { 
+                    items = { 
                         "tcp:sg(sg-example-1)fqdn(example.com)" = {
                             transport   = "tcp"
                             sg_from     = "sg-example-1"
@@ -405,16 +404,16 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                             ]
                             logs  = true
                             trace = true
-                        }
+                        }               
                     }
-                }
-                ```
+                }        
+                ```            
             </TabItem>
 
             <TabItem value="udp">
                 ```hcl
-                resource "sgroups_ie_rules" "rules" {
-                    items = {
+                resource "sgroups_ie_rules" "rules" { 
+                    items = { 
                         "udp:sg(sg-example-1)fqdn(example.com)" = {
                             transport   = "udp"
                             sg_from     = "sg-example-1"
@@ -428,9 +427,9 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                             ]
                             logs  = true
                             trace = true
-                        }
+                        }                
                     }
-                }
+                }        
                 ```
             </TabItem>
         </Tabs>
@@ -461,13 +460,13 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                     <th rowspan="2">обязательность</th>
                     <th rowspan="2">тип данных</th>
                     <th rowspan="2">Значение по умолчанию</th>
-                    <th colspan="2">Transport*</th>
+                    <th colspan="2">Transport*</th>                    
                 </tr>
                 <tr>
                     <th>TCP</th>
                     <th>UDP</th>
-                </tr>
-            </thead>
+                </tr>                
+            </thead>        
             <tbody>
                 <tr>
                     <td>fqdnRules.rules</td>
@@ -540,13 +539,13 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>            
             </tbody>
         </table>
 
         <h4 class="custom-heading">Ограничения</h4>
 
-    	<ul>
+		<ul>
             <li>
                 `fqdnRules.rules[].FQDN`:
                 <RFqdn />
@@ -567,7 +566,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 `fqdnRules.rules[].ports[].ports_from[]`:
                 <RPorts />
             </li>
-        </ul>
+        </ul>        
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -593,12 +592,12 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                             }],
                             "sgFrom": "sg-example-1",
                             "transport": "TCP",
-                            "protocols": ["http","dns"]
+                            "protocols": ["http","dns"] 
                         }]
                     },
                     "syncOp": "Upsert"
                 }'
-                ```
+                ```            
             </TabItem>
 
             <TabItem value="udp">
@@ -616,12 +615,12 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                             }],
                             "sgFrom": "sg-example-1",
                             "transport": "UDP",
-                            "protocols": ["http","dns"]
+                            "protocols": ["http","dns"] 
                         }]
                     },
                     "syncOp": "Upsert"
                 }'
-                ```
+                ```             
             </TabItem>
         </Tabs>
 
@@ -636,7 +635,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
         user->>server: Добавить FQDN правило
 
         alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
+            server-->>user: Показать ошибку в запросе 
         end
 
         server->>db: Отправить запрос
@@ -692,7 +691,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
             }
             ```
-        </details>
+        </details>        
         <details>
             <summary>Пересечение значений source портов</summary>
 
@@ -703,13 +702,13 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
             }
             ```
-        </details>
+        </details>               
 
     </TabItem>
 
     <TabItem value="nft">
         <div class="paragraph">
-            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables.
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. 
             Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
         </div>
 
@@ -732,14 +731,14 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                         <ul>
                             <li><b>1</b> - трассировка включена</li>
                             <li><b>0</b> - трассировка выключена</li>
-                        </ul>
+                        </ul>             
                     </td>
                     <td>Трассировка указанного правила (опциональна, можно включить/выключить)</td>
                 </tr>
                 <tr>
                     <td>$\{DstFQDN\}</td>
                     <td>
-                        <nobr>`saddr @${IPSet(sgName)}`</nobr>
+                        <nobr>`saddr @${IPSet(sgName)}`</nobr>            
                     </td>
                     <td>Наименование IPSet в котором описаны сети в FQDN</td>
                     <td>Значение типа string, не должно содержать в себе пробелов</td>
@@ -779,7 +778,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                 <tr>
                     <td>$\{Log\}</td>
                     <td>
-                        <nobr>`log level debug flags ip options`</nobr>
+                        <nobr>`log level debug flags ip options`</nobr>            
                     </td>
                     <td>Не параметризированный</td>
                     <td>Логирование указанного правила (опциональна, можно включить/выключить)</td>
@@ -793,7 +792,7 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>              
                     </td>
                     <td>Вердикт политики по пакетам данных</td>
                 </tr>
@@ -819,10 +818,9 @@ import { RName, RFqdnSet, RPorts, RItems, RItemsRuleName, RFqdn, RProtocols } fr
             nftrace set 1 ip daddr @NetIPv6-fqdn-example.com tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
 
             nftrace set 1 ip daddr @NetIPv4-fqdn-example.com udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-            nftrace set 1 ip daddr @NetIPv6-fqdn-example.com udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+            nftrace set 1 ip daddr @NetIPv6-fqdn-example.com udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept            
             # **********
         }
-        ```
+        ```   
     </TabItem>
-
 </Tabs>

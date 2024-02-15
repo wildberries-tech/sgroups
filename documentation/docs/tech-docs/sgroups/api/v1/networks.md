@@ -16,22 +16,24 @@ id: networks
 
 ```json
 {
-  "neteworkNames": ["nw-0"]
+  "neteworkNames": [
+    "nw-0"
+  ]
 }
 ```
 
 ## **Ответ**
 
 ```json
-{
+ {
   "networks": [
-    {
-      "name": "nw-0",
-      "network": {
-        "CIDR": "10.150.0.220/32"
+     {
+     "name": "nw-0",
+     "network":  {
+       "CIDR": "10.150.0.220/32"
       }
     }
-  ]
+   ]
 }
 ```
 
@@ -127,26 +129,27 @@ id: networks
 
 Код ошибки 400
 
-- Указано некорректное значение существующего параметра
+* Указано некорректное значение существующего параметра
 
   ```json
-  {
+   {
     "code": 3,
-    "details": [],
+    "details":  [],
     "message": "proto: syntax error (line __): unexpected token \"string\""
-  }
+   }
+  
   ```
 
 Код ошибки 404
 
-- Ошибка в запросе
+* Ошибка в запросе
 
 ```json
-{
+ {
   "code": 5,
-  "details": [],
+  "details":  [],
   "message": "Not Found"
-}
+ }
 ```
 
 ## **Описание интеграции**
@@ -160,7 +163,7 @@ participant db as Database
 user->>server: Отобразить список доступных сетей
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе
+    server-->>user: Показать ошибку в запросе 
 end
 
 server->>db: Отправить запрос

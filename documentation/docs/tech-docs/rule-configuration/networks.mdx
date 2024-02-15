@@ -2,19 +2,23 @@
 id: networks
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
-import { Cidr, Networks, TerraformModule, TerraformResource } from '../../dictionary.mdx'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import {
+    Cidr,
+    Networks,
+    TerraformModule,
+    TerraformResource
+} from '../../dictionary.mdx';
 
-import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
+import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
 # Networks
 
 <div class="text-justify">
-  Ресурс `Networks` представляет собой введенную нами абстракцию, которая позволяет определять группы IP-адресов или
-  подсетей, доступных для управления Host Based Firewall. Эти подсети затем могут быть связаны с конкретными группами
-  безопасности для логического разделения и использоваться в правилах для разрешения или блокирования доступа к
-  определенным ресурсам в вашей сети.
+    Ресурс `Networks` представляет собой введенную нами абстракцию, которая позволяет определять группы IP-адресов или подсетей, 
+    доступных для управления Host Based Firewall. Эти подсети затем могут быть связаны с конкретными группами безопасности 
+    для логического разделения и использоваться в правилах  для разрешения или блокирования доступа к определенным ресурсам в вашей сети.
 </div>
 
 <Tabs
@@ -29,7 +33,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
     <TabItem value='terraform-m'>
         <div class="paragraph">
             <TerraformModule description="full" />
-        </div>
+        </div>    
         <table>
             <thead>
                 <tr>
@@ -43,7 +47,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                     <td>name</td>
                     <td>Имя Security Group</td>
                     <td></td>
-                </tr>
+                </tr>            
                 <tr>
                     <td>cidrs[]</td>
                     <td>Список CIDR, связанных с Security Group</td>
@@ -54,7 +58,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
 
         #### Ограничения
 
-    	<ul>
+		<ul>
             <li>
                 `name`:
                 <RName />
@@ -63,15 +67,15 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                 `cidrs[]`:
                 <RCidrSet />
             </li>
-        </ul>
+        </ul>    
 
         #### Пример использования
         ```yaml
         name: sg-example
         cidrs:
           - 10.0.0.0/24
-        ```
-
+        ``` 
+    
     </TabItem>
 
     <TabItem value='terraform-r'>
@@ -92,13 +96,13 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                     <td>items</td>
                     <td>да</td>
                     <td>Object</td>
-                    <td>Cписок ресурсов создаваемые terraform.</td>
+                    <td>Cписок ресурсов создаваемые terraform.</td>                    
                 </tr>
                 <tr>
                     <td>items.key</td>
                     <td>да</td>
                     <td>String</td>
-                    <td>Уникальный ключ блока items.</td>
+                    <td>Уникальный ключ блока items.</td>                    
                 </tr>
                 <tr>
                     <td>items.key.name</td>
@@ -117,7 +121,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
 
         #### Ограничения
 
-    	<ul>
+		<ul>
             <li>
                 `items`:
                 <RItems />
@@ -130,7 +134,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                 `items.key.cidr`:
                 <RCidr />
             </li>
-        </ul>
+        </ul> 
 
         #### Пример использования
 
@@ -163,7 +167,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                     <th>тип данных</th>
                     <th>Значение по умолчанию</th>
                 </tr>
-            </thead>
+            </thead>        
             <tbody>
                 <tr>
                     <td>networks[]</td>
@@ -188,7 +192,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                     <td>да</td>
                     <td>String</td>
                     <td></td>
-                </tr>
+                </tr>            
             </tbody>
         </table>
 
@@ -202,7 +206,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
             <li>
                 `networks.networks[].network.CIDR`:
                 <RCidr />
-            </li>
+            </li>            
         </ul>
 
         <h4 class="custom-heading">Пример использования</h4>
@@ -233,7 +237,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
         user->>server: Добавить сеть
 
         alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
+            server-->>user: Показать ошибку в запросе 
         end
 
         server->>db: Отправить запрос
@@ -289,13 +293,13 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                 "message": "the '200.150.0.225/28' seems just an IP address; the address of network is expected instead"
             }
             ```
-        </details>
+        </details>        
     </TabItem>
 
     <TabItem value='nft'>
         <div class="paragraph">
             В этом разделе мы покажем, как ресурс networks, созданный с помощью Terraform/API, внедряется в настройки nftables.
-            В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента
+            В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента 
             nftables, обеспечивая более широкие возможности для управления подсетями.
         </div>
         <ul>
@@ -322,7 +326,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                         <ul>
                             <li><b>NetIPv4-sg-example</b> - для описания массивов IP адресов типа v4</li>
                             <li><b>NetIPv6-sg-example</b> - для описания массивов IP адресов типа v6</li>
-                        </ul>
+                        </ul>                      
                     </td>
                 </tr>
                 <tr>
@@ -333,7 +337,7 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                         <ul>
                             <li><b>ipv4_addr</b> - для описания массивов IP адресов типа v4</li>
                             <li><b>ipv6_addr</b> - для описания массивов IP адресов типа v6</li>
-                        </ul>
+                        </ul>                      
                     </td>
                 </tr>
                 <tr>
@@ -344,14 +348,14 @@ import { RName, RCidrSet, RCidr, RItems } from '../../restrictions.mdx'
                         <ul>
                             <li><b>constant</b> - флаг используется если значение элементов в множестве являются постоянными и не могут быть изменены</li>
                             <li><b>interval</b> - флаг используется для создания диапазона элементов множества</li>
-                        </ul>
-                    </td>
+                        </ul>                    
+                    </td>                    
                 </tr>
                 <tr>
                     <td>$elements</td>
                     <td>`elements = {}`</td>
                     <td>Значения CIDR, в случае нескольких значений перечисляются через запятую</td>
-                </tr>
+                </tr>                                
             </tbody>
         </table>
 

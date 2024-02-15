@@ -2,46 +2,44 @@
 id: s2s-ie
 ---
 
-import React from 'react'
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
+import React from 'react';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import {
-  Traffic,
-  Log,
-  Trace,
-  Ports,
-  SrcPorts,
-  DstPorts,
-  ICMPTypes,
-  SgroupSet,
-  Description,
-  Rules,
-  Transport,
-  Sg,
-  SgLocal,
-  ApiIcmp,
-  ICMPV,
-  NftRuleType,
-  NftCounter,
-  NftRuleVerdict,
-  SyncOp,
-  TerraformModule,
-  TerraformResource,
-  TRFRuleName,
-  TRFItems,
-} from '../../dictionary.mdx'
+    Traffic,
+    Log, 
+    Trace,
+    Ports,
+    SrcPorts,
+    DstPorts,
+    ICMPTypes,
+    SgroupSet,
+    Description,
+    Rules,
+    Transport,
+    Sg,
+    SgLocal,
+    ApiIcmp,
+    ICMPV,
+    NftRuleType,
+    NftCounter,
+    NftRuleVerdict,
+    SyncOp,
+    TerraformModule,
+    TerraformResource,
+    TRFRuleName,
+    TRFItems
+} from '../../dictionary.mdx';
 
-import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '../../restrictions.mdx'
+import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../restrictions.mdx'
 
 # Sgroup to Sgroup (Ingress/Egress)
 
 #### Описание
-
 <div class="paragraph">
-  Ресурс `Security Group to Security Group` представляет собой введенную нами абстракцию, которая обеспечивает гибкое
-  управление и контроль сетевого трафика между разными группами безопасности, используя протоколы TCP, UDP и ICMP. Этот
-  ресурс позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий
-  уровень защиты и контроля в сетевой инфраструктуре.
+    Ресурс `Security Group to Security Group` представляет собой введенную нами абстракцию, которая обеспечивает гибкое управление и контроль сетевого трафика между разными группами безопасности,
+    используя протоколы TCP, UDP и ICMP. Этот ресурс позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий 
+    уровень защиты и контроля в сетевой инфраструктуре.
 </div>
 
 <Tabs
@@ -56,7 +54,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
     <TabItem value='terraform-m'>
         <div class="paragraph">
             <TerraformModule description="full" />
-        </div>
+        </div> 
         <div class="paragraph">
             Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять одно из двух значений: `Ingress` `Egress`.
             Аналогчично для `$transport` подразумевается одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`
@@ -100,64 +98,64 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>                    
                 </tr>
                 <tr>
                     <td>rules.$traffic.sgroupSet[]</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.log</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.trace</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[]</td>
                     <td>{}</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].description</td>
                     <td>&quot;&quot;</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].ports_to[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center"></td>
+                    <td class="green center"></td>  
                 </tr>
                 <tr>
                     <td>rules.$traffic.access.$transport[].ports_from[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center"></td>
-                </tr>
+                    <td class="green center"></td>  
+                </tr>                       
                 <tr>
                     <td>rules.$traffic[].access.$transport[].type[]</td>
                     <td>null</td>
                     <td class="green center"></td>
                     <td class="green center"></td>
-                    <td class="green center">✔</td>
-                </tr>
+                    <td class="green center">✔</td>  
+                </tr>                
             </tbody>
         </table>
 
@@ -184,7 +182,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 `rules.$traffic[].access.$transport[].type[]`:
                 <RIcmpType />
             </li>
-        </ul>
+        </ul>        
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -215,8 +213,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                           - 64231
                                         ports_to:
                                           - 443
-                                          - 80
-                        ```
+                                          - 80      
+                        ```                            
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
@@ -235,8 +233,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                           - 64231
                                         ports_to:
                                           - 443
-                                          - 80
-                        ```
+                                          - 80      
+                        ```                         
                     </div>
                 </div>
             </TabItem>
@@ -259,8 +257,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                           - 64231
                                         ports_to:
                                           - 443
-                                          - 80
-                        ```
+                                          - 80      
+                        ```                            
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
@@ -279,10 +277,10 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                           - 64231
                                         ports_to:
                                           - 443
-                                          - 80
-                        ```
+                                          - 80      
+                        ```                         
                     </div>
-                </div>
+                </div>            
             </TabItem>
             <TabItem value="icmp">
                 <div class="parent-div">
@@ -303,7 +301,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                     icmpIPv6:
                                       - description: "example"
                                         type: [0, 8]
-                        ```
+                        ```                            
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
@@ -322,9 +320,9 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                                     icmpIPv6:
                                     - description: "example"
                                       type: [0, 8]
-                        ```
+                        ```                         
                     </div>
-                </div>
+                </div>            
             </TabItem>
         </Tabs>
     </TabItem>
@@ -348,7 +346,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
             <li>`items.$ruleName.ip_v` - <ICMPV description="short" /></li>
             <li>`items.$ruleName.type` - <ICMPTypes description="short" /></li>
         </ul>
-
+        
         <table>
             <caption>Области применения полей относительно используемого протокола</caption>
             <thead>
@@ -482,7 +480,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center"></td>
                     <td class="green center"></td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>                
             </tbody>
         </table>
 
@@ -517,8 +515,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 `items.$ruleName.type[]`:
                 <RIcmpType />
             </li>
-        </ul>
-
+        </ul>        
+        
         <h4 class="custom-heading">Пример использования</h4>
 
         <Tabs
@@ -536,8 +534,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" {
-                          items = {
+                        resource "sgroups_ie_rules" "rules" { 
+                          items = { 
                             "tcp:sg-local(sg_local_example)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "tcp"
@@ -561,8 +559,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" {
-                          items = {
+                        resource "sgroups_ie_rules" "rules" { 
+                          items = { 
                             "tcp:sg-local(sg_local_example)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "tcp"
@@ -591,8 +589,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
 
 
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" {
-                          items = {
+                        resource "sgroups_ie_rules" "rules" { 
+                          items = { 
                             "udp:sg-local(sg_local_example)sg(sg_example)ingress" = {
                               traffic     = "ingress"
                               transport   = "udp"
@@ -607,15 +605,15 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             }
                           }
                         }
-                        ```
+                        ```   
 
 
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
                         ```hcl
-                        resource "sgroups_ie_rules" "rules" {
-                          items = {
+                        resource "sgroups_ie_rules" "rules" { 
+                          items = { 
                             "udp:sg-local(sg_local_example)sg(sg_example)egress" = {
                               traffic     = "egress"
                               transport   = "udp"
@@ -630,9 +628,9 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             }
                           }
                         }
-                        ```
+                        ```                              
                     </div>
-                </div>
+                </div>            
             </TabItem>
 
             <TabItem value="icmp">
@@ -664,8 +662,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                           }
                         }
                         ```
-
-
+                        
+                                                  
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
@@ -695,10 +693,10 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                           }
                         }
                         ```
-
-
+                        
+                                                  
                     </div>
-                </div>
+                </div>            
             </TabItem>
         </Tabs>
     </TabItem>
@@ -707,7 +705,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
         <div class="paragraph">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgSgRules`, `sgSgIcmpRules`.
-        </div>
+        </div> 
 
 
         <ul>
@@ -742,7 +740,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <th>UDP</th>
                     <th>ICMP</th>
                 </tr>
-            </thead>
+            </thead>      
             <tbody>
                 <tr>
                     <td>$node.rules[]</td>
@@ -780,7 +778,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                 </tr>
-                <tr>
+                <tr>                    
                     <td>$node.rules[].trace</td>
                     <td>нет</td>
                     <td>Boolean</td>
@@ -871,7 +869,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>                
             </tbody>
         </table>
 
@@ -898,7 +896,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 `sgSgRules.rules[].ICMP.Types[]`:
                 <RIcmpType />
             </li>
-        </ul>
+        </ul>        
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -943,7 +941,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                          ```bash
                         curl '127.0.0.1:9007/v1/sync' \
                         --header 'Content-Type: application/json' \
-                        --data '{
+                        --data '{                         
                             "sgSgRules": {
                                 "rules": [
                                 {
@@ -962,7 +960,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             },
                             "syncOp": "UpSert"
                         }'
-                         ```
+                         ```                       
                     </div>
                 </div>
             </TabItem>
@@ -992,7 +990,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             },
                             "syncOp": "UpSert"
                         }'
-                         ```
+                         ```                            
                     </div>
                     <div class="child-block">
                         <h4 class="center">Egress</h4>
@@ -1018,9 +1016,9 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             },
                             "syncOp": "UpSert"
                         }'
-                         ```
+                         ```                            
                     </div>
-                </div>
+                </div>            
             </TabItem>
             <TabItem value="icmp">
                 <div class="parent-div">
@@ -1072,9 +1070,9 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                            },
                            "syncOp": "UpSert"
                         }'
-                        ```
+                        ```                          
                     </div>
-                </div>
+                </div>            
             </TabItem>
         </Tabs>
 
@@ -1089,7 +1087,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
         user->>server: Добавить IE-SG-SG правило
 
         alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
+            server-->>user: Показать ошибку в запросе 
         end
 
         server->>db: Отправить запрос
@@ -1153,7 +1151,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
                     }
                     ```
-                </details>
+                </details>                              
                 <details>
                 <summary>Пересечение значений source портов</summary>
 
@@ -1164,7 +1162,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
                     }
                     ```
-                </details>
+                </details>                   
             </TabItem>
 
             <TabItem value="icmp">
@@ -1200,7 +1198,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
                     }
                     ```
-                </details>
+                </details>                                            
                 <details>
                     <summary>Некорректное значение кода ICMP</summary>
 
@@ -1222,15 +1220,15 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
                     }
                     ```
-                </details>
+                </details>                     
             </TabItem>
         </Tabs>
-
+       
     </TabItem>
-
+ 
     <TabItem value='nft'>
         <div class="paragraph">
-            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables.
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. 
             Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
         </div>
         <ul>
@@ -1254,13 +1252,13 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <th rowspan="2">Шаблон параметра</th>
                     <th rowspan="2">Структура параметра</th>
                     <th rowspan="2">Значения</th>
-    	            <th colspan="3">Transport*</th>
+		            <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
                     <th>UDP</th>
                     <th>ICMP</th>
-                </tr>
+                </tr>                
             </thead>
             <tbody>
                 <tr>
@@ -1270,7 +1268,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         <ul>
                             <li><b>1</b> - трассировка включена</li>
                             <li><b>0</b> - трассировка выключена</li>
-                        </ul>
+                        </ul>            
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -1289,7 +1287,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 <tr>
                     <td>$DstSgroup</td>
                     <td>
-                        <nobr>`daddr`</nobr>
+                        <nobr>`daddr`</nobr>            
                     </td>
                     <td>`@${IPSet(sgName)}`</td>
                     <td class="green center">✔</td>
@@ -1365,7 +1363,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -1412,7 +1410,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             nftrace set 1 ip saddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                    
                     </TabItem>
                     <TabItem value="egress">
                         #### Шаблон
@@ -1434,7 +1432,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             nftrace set 1 ip daddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                    
                     </TabItem>
                 </Tabs>
             </TabItem>
@@ -1466,7 +1464,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             nftrace set 1 ip saddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                    
                     </TabItem>
                     <TabItem value="egress">
                         #### Шаблон
@@ -1483,14 +1481,14 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
 
                         ```hcl
                         chain FW-OUT-sg_local_example {
-                            # **********
+                            # **********                           
                             nftrace set 1 ip daddr @NetIPv4-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             nftrace set 1 ip daddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                    
                     </TabItem>
-                </Tabs>
+                </Tabs>            
             </TabItem>
             <TabItem value="icmp">
                 <Tabs
@@ -1520,7 +1518,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             nftrace set 1 ip saddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                      
                     </TabItem>
                     <TabItem value="egress">
                         #### Шаблон
@@ -1542,11 +1540,10 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             nftrace set 1 ip daddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                             # **********
                         }
-                        ```
+                        ```                      
                     </TabItem>
-                </Tabs>
+                </Tabs>           
             </TabItem>
-        </Tabs>
+        </Tabs> 
     </TabItem>
-
 </Tabs>

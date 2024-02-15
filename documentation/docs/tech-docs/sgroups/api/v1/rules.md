@@ -17,8 +17,12 @@ id: rules
 
 ```json
 {
-  "sgFrom": ["sg-0"],
-  "sgTo": ["sg-1"]
+  "sgFrom": [
+    "sg-0"
+  ],
+  "sgTo": [
+    "sg-1"
+  ]
 }
 ```
 
@@ -34,7 +38,7 @@ id: rules
         {
         "d": "5000",
         "s": ""
-       }
+       } 
       ],
      "sgFrom": "sg-1",
      "transport": "TCP"
@@ -174,26 +178,27 @@ id: rules
 
 Код ошибки 400
 
-- Указано некорректное значение существующего параметра
+* Указано некорректное значение существующего параметра
 
   ```json
-  {
+   {
     "code": 3,
-    "details": [],
+    "details":  [],
     "message": "proto: syntax error (line __): unexpected token \"string\""
-  }
+   }
+  
   ```
 
 Код ошибки 404
 
-- Ошибка в запросе
+* Ошибка в запросе
 
 ```json
-{
+ {
   "code": 5,
-  "details": [],
+  "details":  [],
   "message": "Not Found"
-}
+ }
 ```
 
 ## **Описание интеграции**
@@ -207,7 +212,7 @@ participant db as Database
 user->>server: Отобразить список правил SG ограниченных по условиям from>to
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе
+    server-->>user: Показать ошибку в запросе 
 end
 
 server->>db: Отправить запрос

@@ -2,39 +2,38 @@
 id: s2s
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import {
-  Traffic,
-  Log,
-  Trace,
-  Ports,
-  SrcPorts,
-  DstPorts,
-  ICMPTypes,
-  SgroupSet,
-  Description,
-  Rules,
-  Transport,
-  Sg,
-  SgLocal,
-  ApiIcmp,
-  ICMPV,
-  NftRuleType,
-  NftCounter,
-  NftRuleVerdict,
-  SyncOp,
-  TerraformModule,
-  TerraformResource,
-} from '../../dictionary.mdx'
-import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '../../restrictions.mdx'
+    Traffic,
+    Log, 
+    Trace,
+    Ports,
+    SrcPorts,
+    DstPorts,
+    ICMPTypes,
+    SgroupSet,
+    Description,
+    Rules,
+    Transport,
+    Sg,
+    SgLocal,
+    ApiIcmp,
+    ICMPV,
+    NftRuleType,
+    NftCounter,
+    NftRuleVerdict,
+    SyncOp,
+    TerraformModule,
+    TerraformResource
+} from '../../dictionary.mdx';
+import {RName,RSgroupSet,RPorts,RIcmpType,RItems,RItemsRuleName} from '../../restrictions.mdx'
 
 # Sgroup to Sgroup
 
 <div class="paragraph">
-  Данный тип правил управляет обменом данными между различными группами безопасности. Он автоматически создает два
-  правила на хостах: одно для исходящего трафика от инициирующей стороны и другое для входящего трафика от группы
-  безопасности, к которой предоставлен доступ.
+    Данный тип правил управляет обменом данными между различными группами безопасности. Он автоматически создает два правила на хостах: одно для исходящего трафика 
+    от инициирующей стороны и другое для входящего трафика от группы безопасности, к которой предоставлен доступ.
 </div>
 
 <Tabs
@@ -43,7 +42,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
         { label: "Terraform module", value: "terraform-m" },
         { label: "Terraform resource", value: "terraform-r" },
         { label: "API", value: "api" },
-        { label: "nftables", value: "nft" }
+        { label: "nftables", value: "nft" }        
     ]}
 >
     <TabItem value="terraform-m">
@@ -51,9 +50,9 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
             <TerraformModule description="full" />
         </div>
         <div class="paragraph">
-            Далее везде в документе подразумевается что все места, содержащие переменную  `$transport` иогут принимать
+            Далее везде в документе подразумевается что все места, содержащие переменную  `$transport` иогут принимать 
             одно из четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`.
-        </div>
+        </div>        
         <ul>
             <li class="text-justify">`rules` - <Rules description="short" /></li>
             <li class="text-justify">`rules.s2s[]` - Список правил, описывающий сетевое взаимодействие текущей Security Group с внешней Security Group.</li>
@@ -94,64 +93,64 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>                    
                 </tr>
                 <tr>
                     <td>rules.s2s.sgroupSet[]</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.log</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.trace</td>
                     <td>false</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.access.$transport[]</td>
                     <td>{}</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.access.$transport[].description</td>
                     <td>&quot;&quot;</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.access.$transport[].ports_to[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center"></td>
+                    <td class="green center"></td>  
                 </tr>
                 <tr>
                     <td>rules.s2s.access.$transport[].ports_from[]</td>
                     <td>null</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                    <td class="green center"></td>
-                </tr>
+                    <td class="green center"></td>  
+                </tr>                       
                 <tr>
                     <td>rules.s2s[].access.$transport[].type[]</td>
                     <td>null</td>
                     <td class="green center"></td>
                     <td class="green center"></td>
-                    <td class="green center">✔</td>
-                </tr>
+                    <td class="green center">✔</td>  
+                </tr>                
             </tbody>
         </table>
         <h4 class="custom-heading">Ограничения</h4>
@@ -177,7 +176,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 `rules.s2s[].access.$transport[].type[]`:
                 <RIcmpType />
             </li>
-        </ul>
+        </ul>        
 
         <h4 class="custom-heading">Пример использования</h4>
 
@@ -205,8 +204,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             - 64231
                           ports_to:
                             - 443
-                            - 80
-                ```
+                            - 80      
+                ```                
             </TabItem>
             <TabItem value="udp">
                 ```yaml
@@ -224,8 +223,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             - 64231
                           ports_to:
                             - 443
-                            - 80
-                ```
+                            - 80        
+                ```                      
             </TabItem>
             <TabItem value="icmp">
                 ```yaml
@@ -237,18 +236,18 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                       logs:  true
                       access:
                           icmpIPv4:
-                          - description: ""
+                          - description: "" 
                             Types:
                               - 0
                               - 8
                         icmpIPv6:
-                          - description: ""
+                          - description: "" 
                             Types:
                               - 0
                               - 8
-                ```
+                ```          
             </TabItem>
-        </Tabs>
+        </Tabs>        
     </TabItem>
 
     <TabItem value="terraform-r">
@@ -393,7 +392,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center"></td>
                     <td class="green center"></td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>                
             </tbody>
         </table>
         <h4 class="custom-heading">Ограничения</h4>
@@ -440,8 +439,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
         >
             <TabItem value="tcp">
                 ```hcl
-                resource "sgroups_ie_rules" "rules" {
-                    items = {
+                resource "sgroups_ie_rules" "rules" { 
+                    items = { 
                         "tcp:sg(sg-example-from)sg(sg-example-to)" = {
                             transport   = "tcp"
                             sg_from     = "sg-example-from"
@@ -454,15 +453,15 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             ]
                             logs  = true
                             trace = true
-                        }
+                        }              
                     }
-                }
-                ```
+                }        
+                ```                
             </TabItem>
 
             <TabItem value="udp">
                 ```hcl
-                resource "sgroups_ie_rules" "rules" {
+                resource "sgroups_ie_rules" "rules" { 
                     items = {
                         "udp:sg(sg-example-from)sg(sg-example-to)" = {
                             transport   = "udp"
@@ -476,10 +475,10 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                             ]
                             logs  = true
                             trace = true
-                        }
+                        }                
                     }
-                }
-                ```
+                }        
+                ```                     
             </TabItem>
 
             <TabItem value="icmp">
@@ -504,16 +503,16 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         }
                     }
                 }
-                ```
+                ```                      
             </TabItem>
-        </Tabs>
+        </Tabs>                             
     </TabItem>
 
     <TabItem value="api">
         <div class="paragraph">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgRules`, `sgSgIcmpRules`.
-        </div>
+        </div> 
         <ul>
             <li>`$node.rules[]` - <Rules description="short" /></li>
             <li>`$node.rules[].sgFrom` - <Sg description="short" /></li>
@@ -544,7 +543,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <th>UDP</th>
                     <th>ICMP</th>
                 </tr>
-            </thead>
+            </thead>      
             <tbody>
                 <tr>
                     <td>$node.rules[]</td>
@@ -582,7 +581,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                 </tr>
-                <tr>
+                <tr>                    
                     <td>$node.rules[].trace</td>
                     <td>нет</td>
                     <td>Boolean</td>
@@ -662,7 +661,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>
+                </tr>                
             </tbody>
         </table>
 
@@ -718,7 +717,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     },
                     "syncOp": "Upsert"
                 }'
-                ```
+                ```                
             </TabItem>
             <TabItem value="udp">
                ```bash
@@ -740,7 +739,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     },
                     "syncOp": "Upsert"
                 }'
-                ```
+                ```               
             </TabItem>
             <TabItem value="icmp">
                 ```bash
@@ -771,7 +770,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     },
                     "syncOp": "Upsert"
                 }'
-                ```
+                ```                          
             </TabItem>
         </Tabs>
 
@@ -786,7 +785,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
         user->>server: Добавить IE-SG-SG правило
 
         alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
+            server-->>user: Показать ошибку в запросе 
         end
 
         server->>db: Отправить запрос
@@ -850,7 +849,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
                     }
                     ```
-                </details>
+                </details>                              
                 <details>
                 <summary>Пересечение значений source портов</summary>
 
@@ -861,7 +860,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
                     }
                     ```
-                </details>
+                </details>                   
             </TabItem>
 
             <TabItem value="icmp">
@@ -897,7 +896,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
                     }
                     ```
-                </details>
+                </details>                                            
                 <details>
                     <summary>Некорректное значение кода ICMP</summary>
 
@@ -919,14 +918,14 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
                     }
                     ```
-                </details>
+                </details>                     
             </TabItem>
         </Tabs>
     </TabItem>
 
     <TabItem value="nft">
         <div class="paragraph">
-            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables.
+            В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки nftables. 
             Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
         </div>
 
@@ -951,13 +950,13 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     <th rowspan="2">Шаблон параметра</th>
                     <th rowspan="2">Структура параметра</th>
                     <th rowspan="2">Значения</th>
-    	            <th colspan="3">Transport*</th>
+		            <th colspan="3">Transport*</th>
                 </tr>
                 <tr>
                     <th>TCP</th>
                     <th>UDP</th>
                     <th>ICMP</th>
-                </tr>
+                </tr>                
             </thead>
             <tbody>
                 <tr>
@@ -967,7 +966,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         <ul>
                             <li><b>1</b> - трассировка включена</li>
                             <li><b>0</b> - трассировка выключена</li>
-                        </ul>
+                        </ul>            
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -986,7 +985,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                 <tr>
                     <td>$DstSgroup</td>
                     <td>
-                        <nobr>`daddr`</nobr>
+                        <nobr>`daddr`</nobr>            
                     </td>
                     <td>`@${IPSet(sgName)}`</td>
                     <td class="green center">✔</td>
@@ -1062,7 +1061,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -1078,7 +1077,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
             values={[
                 { label: "TCP", value: "tcp" },
                 { label: "UDP", value: "udp" },
-                { label: "ICMP", value: "icmp" }
+                { label: "ICMP", value: "icmp" }                
             ]}
         >
             <TabItem value="tcp">
@@ -1113,7 +1112,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     nftrace set 1 ip daddr NetIPv6-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
-                ```
+                ```  
             </TabItem>
 
             <TabItem value="udp">
@@ -1148,7 +1147,7 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     nftrace set 1 ip daddr NetIPv6-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
-                ```
+                ```              
             </TabItem>
 
             <TabItem value="icmp">
@@ -1184,9 +1183,8 @@ import { RName, RSgroupSet, RPorts, RIcmpType, RItems, RItemsRuleName } from '..
                     nftrace set 1 ip daddr NetIPv6-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
-                ```
+                ```            
             </TabItem>
-        </Tabs>
+        </Tabs>                                
     </TabItem>
-
 </Tabs>

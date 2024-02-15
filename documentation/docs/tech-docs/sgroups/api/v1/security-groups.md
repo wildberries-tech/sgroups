@@ -16,23 +16,28 @@ id: security-groups
 
 ```json
 {
-  "sgNames": ["sg-0"]
+  "sgNames": [
+    "sg-0"
+  ]
 }
 ```
 
 ## **Ответ**
 
 ```json
-{
+ {
   "groups": [
-    {
-      "logs": false,
-      "name": "sg-0",
-      "trace": false,
-      "networks": ["nw-0", "nw-1"],
-      "defaultAction": "DROP"
+     {
+     "logs": false,
+     "name": "sg-0",
+     "trace": false,
+     "networks": [
+       "nw-0" ,
+       "nw-1" 
+      ],
+     "defaultAction": "DROP"
     }
-  ]
+   ]
 }
 ```
 
@@ -170,7 +175,7 @@ participant db as Database
 user->>server: Отобразить список Security Group
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе
+    server-->>user: Показать ошибку в запросе 
 end
 
 server->>db: Отправить запрос

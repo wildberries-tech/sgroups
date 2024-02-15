@@ -2,16 +2,15 @@
 id: main
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Конфигурация правил (nftables cli)
 
 ### Описание
 
 <div class="paragraph">
-  [*nftables*](https://wiki.nftables.org/) представляет собой инструмент для управления сетевыми правилами, предоставляя
-  гибкую и эффективную систему фильтрации трафика.
+[*nftables*](https://wiki.nftables.org/) представляет собой инструмент для управления сетевыми правилами, предоставляя гибкую и эффективную систему фильтрации трафика.
 </div>
 
 ## IPSet (set)
@@ -19,10 +18,7 @@ import TabItem from '@theme/TabItem'
 ### Описание
 
 <div class="paragraph">
-  IPSet представляет собой структуру данных, позволяющую хранить и организовывать множество элементов для использования
-  в правилах nftables. Он используется для обработки больших списков элементов с минимальными затратами на ресурсы. В
-  нашем случае IPSet формируется для описания массива IP-адресов, относящихся к FQDN или Security Groups, для
-  дальнейшего использования в описаниях правил.
+IPSet представляет собой структуру данных, позволяющую хранить и организовывать множество элементов для использования в правилах nftables. Он используется для обработки больших списков элементов с минимальными затратами на ресурсы. В нашем случае IPSet формируется для описания массива IP-адресов, относящихся к FQDN или Security Groups, для дальнейшего использования в описаниях правил.
 </div>
 
 ### Параметры
@@ -44,7 +40,7 @@ import TabItem from '@theme/TabItem'
                 <ul>
                     <li><b>NetIPv4-$\{NAME\}</b> - для описания массивов IP адресов типа v4</li>
                     <li><b>NetIPv6-$\{NAME\}</b> - для описания массивов IP адресов типа v6</li>
-                </ul>
+                </ul>            
             </td>
         </tr>
         <tr>
@@ -87,47 +83,38 @@ set NetIPv4-${NAME} {
 }
 ```
 
+
+
 ## Цепочки (Chains)
 
 ### Описание
 
 <div class="paragraph">
-  В нашей реализации структуры мы вводим для INPUT и OUTPUT понятие 3-х цепочек. *Первая* цепочка является точкой входа
-  для пакетов из сетевого стека, в ней указывается хук (input, prerouting, postrouting) и приоритет выполнения. *Вторая*
-  цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group.
-  Последняя цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
+В нашей реализации структуры мы вводим для INPUT и OUTPUT понятие 3-х цепочек. *Первая* цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input, prerouting, postrouting) и приоритет выполнения. *Вторая* цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group. Последняя цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
 </div>
 
 <table>
-  <caption>Цепочки для входящего трафика</caption>
-  <thead>
-    <tr>
-      <th>Наименование цепочки</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>INPUT</td>
-      <td>
-        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и
-        приоритет выполнения 0 (filter)
-      </td>
-    </tr>
-    <tr>
-      <td>FW-IN</td>
-      <td>
-        <i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной
-        Security Group
-      </td>
-    </tr>
-    <tr>
-      <td>FW-IN-sgName (Security Group name)</td>
-      <td>
-        <i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
-      </td>
-    </tr>
-  </tbody>
+    <caption>Цепочки для входящего трафика</caption>
+    <thead>
+        <tr>
+            <th>Наименование цепочки</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>INPUT</td>
+            <td><i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и приоритет выполнения 0 (filter)</td>
+        </tr>
+        <tr>
+            <td>FW-IN</td>
+            <td><i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group</td>
+        </tr>
+        <tr>
+            <td>FW-IN-sgName (Security Group name)</td>
+            <td><i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.</td>
+        </tr>
+    </tbody>
 </table>
 
 <Tabs
@@ -202,7 +189,7 @@ set NetIPv4-${NAME} {
         #### Шаблон
 
         ```hcl
-        chain INPUT {
+        chain INPUT {  
             type filter ${Hook} ${HookPriority}; policy accept;
             # **********
             ${Condition} ${Counter} ${Verdict} FW-IN
@@ -278,7 +265,7 @@ set NetIPv4-${NAME} {
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>            
                     </td>
                     <td>Вердикт политики по пакетам данных</td>
                 </tr>
@@ -288,7 +275,7 @@ set NetIPv4-${NAME} {
         #### Шаблон
 
         ```hcl
-        chain FW-IN {
+        chain FW-IN {  
             # **********
             ${RuleType} ${DstSgroup} ${Counter} ${Verdict} FW-IN-${sgName}
             # **********
@@ -298,15 +285,14 @@ set NetIPv4-${NAME} {
         #### Пример использования
 
         ```hcl
-        chain FW-IN {
+        chain FW-IN {  
             # **********
             ip daddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
             ip daddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
             # **********
         }
-        ```
+        ```    
     </TabItem>
-
 </Tabs>
 
 ---
@@ -333,36 +319,29 @@ chain INPUT {
 ```
 
 <table>
-  <caption>Цепочки для исходящего трафика</caption>
-  <thead>
-    <tr>
-      <th>Наименование цепочки</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>POSTROUTING</td>
-      <td>
-        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) и
-        приоритет выполнения 300
-      </td>
-    </tr>
-    <tr>
-      <td>FW-OUT</td>
-      <td>
-        <i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной
-        Security Group
-      </td>
-    </tr>
-    <tr>
-      <td>FW-OUT-sgName (Security Group name)</td>
-      <td>
-        <i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
-      </td>
-    </tr>
-  </tbody>
+    <caption>Цепочки для исходящего трафика</caption>
+    <thead>
+        <tr>
+            <th>Наименование цепочки</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>POSTROUTING</td>
+            <td><i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) и приоритет выполнения 300</td>
+        </tr>
+        <tr>
+            <td>FW-OUT</td>
+            <td><i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group</td>
+        </tr>
+        <tr>
+            <td>FW-OUT-sgName (Security Group name)</td>
+            <td><i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.</td>
+        </tr>
+    </tbody>
 </table>
+
 
 <Tabs
     defaltValue="postrouting"
@@ -413,7 +392,7 @@ chain INPUT {
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>              
                     </td>
                     <td>Вердикт политики по пакетам данных</td>
                 </tr>
@@ -428,7 +407,7 @@ chain INPUT {
                     <td>`priority {IntValue}`</td>
                     <td>0</td>
                     <td>Приоритет выполнения цепочки одного типа</td>
-                </tr>
+                </tr>        
             </tbody>
         </table>
 
@@ -452,7 +431,7 @@ chain INPUT {
             oifname != "lo" counter packets 0 bytes 0 goto FW-OUT
             # **********
         }
-        ```
+        ```    
     </TabItem>
 
     <TabItem value="fw-out">
@@ -511,7 +490,7 @@ chain INPUT {
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>              
                     </td>
                     <td>Вердикт политики по пакетам данных</td>
                 </tr>
@@ -521,8 +500,8 @@ chain INPUT {
         #### Шаблон
 
         ```hcl
-        chain FW-OUT {
-            # **********
+        chain FW-OUT {  
+            # ********** 
             ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-${sgName}
             # **********
         }
@@ -531,15 +510,14 @@ chain INPUT {
         #### Пример использования
 
         ```nft
-        chain FW-OUT {
+        chain FW-OUT {  
             # **********
             ip saddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
             ip saddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
             # **********
         }
-        ```
+        ```    
     </TabItem>
-
 </Tabs>
 
 ---
@@ -564,125 +542,108 @@ chain POSTROUTING {
   }
 }
 ```
-
 ---
 
 ## Verdict statement
 
 <table>
-  <thead>
-    <tr>
-      <th>Значение</th>
-      <th>Описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>accept</td>
-      <td class="text-justify">
-        Терминирующие правило которое разрещает трафик, попавший под это условие, и завершает обработку пакета в текущей
-        таблице.
-      </td>
-    </tr>
-    <tr>
-      <td>drop</td>
-      <td class="text-justify">
-        Терминирующие правило которое запрещает трафик, попавший под это условие, и завершает обработку пакета в текущей
-        таблице.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        goto <i>chain</i>
-      </td>
-      <td class="text-justify">
-        Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке обратно в ту же
-        цепочку трафик попасть не сможет.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <nobr>
-          jump <i>chain</i>
-        </nobr>
-      </td>
-      <td class="text-justify">
-        Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке трафик вернется в
-        исходную цепочку.
-      </td>
-    </tr>
-  </tbody>
+    <thead>
+        <tr>
+            <th>Значение</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>accept</td>
+            <td class="text-justify">Терминирующие правило которое разрещает трафик, попавший под это условие, и завершает обработку пакета в текущей таблице.</td>
+        </tr>
+        <tr>
+            <td>drop</td>
+            <td class="text-justify">Терминирующие правило которое запрещает трафик, попавший под это условие, и завершает обработку пакета в текущей таблице.</td>
+        </tr>
+        <tr>
+            <td>goto <i>chain</i></td>
+            <td class="text-justify">Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке обратно в ту же цепочку трафик попасть не сможет.</td>
+        </tr>
+        <tr>
+            <td>
+                <nobr>jump <i>chain</i></nobr>
+            </td>
+            <td class="text-justify">Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке трафик вернется в исходную цепочку.</td>
+        </tr>
+    </tbody>
 </table>
 
 ## Дескрипторы которые могут использоваться при указании типа ICMP.
 
 <table>
-  <thead>
-    <tr>
-      <th>Дескриптор</th>
-      <th>Значение</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>echo-reply</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <td>destination-unreachable</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>source-quench</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>redirect</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <td>echo-request</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <td>router-advertisement</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <td>router-solicitation</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <td>time-exceeded</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>parameter-problem</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <td>timestamp-request</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <td>timestamp-reply</td>
-      <td>14</td>
-    </tr>
-    <tr>
-      <td>info-request</td>
-      <td>15</td>
-    </tr>
-    <tr>
-      <td>info-reply</td>
-      <td>16</td>
-    </tr>
-    <tr>
-      <td>address-mask-request</td>
-      <td>17</td>
-    </tr>
-    <tr>
-      <td>address-mask-reply</td>
-      <td>18</td>
-    </tr>
-  </tbody>
+    <thead>
+        <tr>
+            <th>Дескриптор</th>
+            <th>Значение</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>echo-reply</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>destination-unreachable</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>source-quench</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>redirect</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>echo-request</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>router-advertisement</td>
+            <td>9</td>
+        </tr>
+        <tr>
+            <td>router-solicitation</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>time-exceeded</td>
+            <td>11</td>
+        </tr>
+        <tr>
+            <td>parameter-problem</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>timestamp-request</td>
+            <td>13</td>
+        </tr>
+        <tr>
+            <td>timestamp-reply</td>
+            <td>14</td>
+        </tr>
+        <tr>
+            <td>info-request</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td>info-reply</td>
+            <td>16</td>
+        </tr>
+        <tr>
+            <td>address-mask-request</td>
+            <td>17</td>
+        </tr>
+        <tr>
+            <td>address-mask-reply</td>
+            <td>18</td>
+        </tr>
+    </tbody>
 </table>
