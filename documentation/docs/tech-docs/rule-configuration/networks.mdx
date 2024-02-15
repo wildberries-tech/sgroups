@@ -2,23 +2,26 @@
 id: networks
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 import {
-    Cidr,
-    Networks,
-    TerraformModule,
-    TerraformResource
-} from '../../dictionary.mdx';
+  Cidr,
+  SyncOp,
+  Networks,
+  TerraformModule,
+  TerraformResource,
+} from "../../dictionary.mdx";
 
-import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
+import { RName, RCidrSet, RCidr, RItems } from "../../restrictions.mdx";
 
 # Networks
 
-<div class="text-justify">
-    Ресурс `Networks` представляет собой введенную нами абстракцию, которая позволяет определять группы IP-адресов или подсетей, 
-    доступных для управления Host Based Firewall. Эти подсети затем могут быть связаны с конкретными группами безопасности 
-    для логического разделения и использоваться в правилах  для разрешения или блокирования доступа к определенным ресурсам в вашей сети.
+<div class="paragraph">
+  Ресурс `Networks` представляет собой введенную нами абстракцию, которая
+  позволяет определять группы IP-адресов или подсетей, доступных для управления
+  Host Based Firewall. Эти подсети затем могут быть связаны с конкретными
+  группами безопасности для логического разделения и использоваться в правилах
+  для разрешения или блокирования доступа к определенным ресурсам в вашей сети.
 </div>
 
 <Tabs
@@ -37,20 +40,23 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
         <table>
             <thead>
                 <tr>
-                    <th>Название параметра</th>
-                    <th>Описание</th>
-                    <th>Значение по умолчанию</th>
+                    <th>название параметра</th>
+                    <th>описание</th>
+                    <th>тип данных</th>
+                    <th>значение по умолчанию</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>name</td>
                     <td>Имя Security Group</td>
+                    <td>String</td>
                     <td></td>
                 </tr>            
                 <tr>
                     <td>cidrs[]</td>
                     <td>Список CIDR, связанных с Security Group</td>
+                    <td>String[]</td>
                     <td>[]</td>
                 </tr>
             </tbody>
@@ -58,7 +64,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
         #### Ограничения
 
-		<ul>
+    	<ul>
             <li>
                 `name`:
                 <RName />
@@ -67,15 +73,15 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 `cidrs[]`:
                 <RCidrSet />
             </li>
-        </ul>    
+        </ul>
 
         #### Пример использования
         ```yaml
         name: sg-example
         cidrs:
           - 10.0.0.0/24
-        ``` 
-    
+        ```
+
     </TabItem>
 
     <TabItem value='terraform-r'>
@@ -96,13 +102,13 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                     <td>items</td>
                     <td>да</td>
                     <td>Object</td>
-                    <td>Cписок ресурсов создаваемые terraform.</td>                    
+                    <td>Cписок ресурсов создаваемые terraform.</td>
                 </tr>
                 <tr>
                     <td>items.key</td>
                     <td>да</td>
                     <td>String</td>
-                    <td>Уникальный ключ блока items.</td>                    
+                    <td>Уникальный ключ блока items.</td>
                 </tr>
                 <tr>
                     <td>items.key.name</td>
@@ -121,7 +127,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
 
         #### Ограничения
 
-		<ul>
+    	<ul>
             <li>
                 `items`:
                 <RItems />
@@ -134,7 +140,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 `items.key.cidr`:
                 <RCidr />
             </li>
-        </ul> 
+        </ul>
 
         #### Пример использования
 
@@ -151,12 +157,19 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
     </TabItem>
 
     <TabItem value='api'>
+        <div class="test-justify">
+            Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
+            Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_network)
+        </div>
+
+        #### Входные параметры
 
         <ul>
-            <li>networks[] - <Networks description="short" /></li>
-            <li>networks[].name - название подсети.</li>
-            <li>networks[].network - объект содержащий CIDR подсети</li>
-            <li>networks[].network.CIDR - <Cidr description="short" /></li>
+            <li>`networks[]` - <Networks description="short" /></li>
+            <li>`networks[].name` - название подсети.</li>
+            <li>`networks[].network` - объект содержащий CIDR подсети</li>
+            <li>`networks[].network.CIDR` - <Cidr description="short" /></li>
+            <li>`syncOp` - <SyncOp description="short" /></li>
         </ul>
 
         <table>
@@ -165,9 +178,9 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                     <th>название</th>
                     <th>обязательность</th>
                     <th>тип данных</th>
-                    <th>Значение по умолчанию</th>
+                    <th>значение по умолчанию</th>
                 </tr>
-            </thead>        
+            </thead>
             <tbody>
                 <tr>
                     <td>networks[]</td>
@@ -192,7 +205,13 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                     <td>да</td>
                     <td>String</td>
                     <td></td>
-                </tr>            
+                </tr>
+                <tr>
+                    <td>syncOp</td>
+                    <td>да</td>
+                    <td>Enum("Delete", "Upsert", "FullSync")</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
 
@@ -206,7 +225,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
             <li>
                 `networks.networks[].network.CIDR`:
                 <RCidr />
-            </li>            
+            </li>
         </ul>
 
         <h4 class="custom-heading">Пример использования</h4>
@@ -222,42 +241,29 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                         "CIDR": "10.0.0.0/24"
                     }
                 }]
-            }
+            },
+            "syncOp": "Upsert"
         }'
         ```
 
-        <h4 class="custom-heading">Диаграмма последовательности</h4>
+        <h4 class="custom-heading">Выходные параметры</h4>
 
-        ```mermaid
-        sequenceDiagram
-        participant user as User
-        participant server as Server
-        participant db as Database
-
-        user->>server: Добавить сеть
-
-        alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе 
-        end
-
-        server->>db: Отправить запрос
-        db->>db: Проверка входящего запроса
-
-        alt Сеть с таким названием уже существует
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        alt Пересечение значений CIDR
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        db->>db: Сохранить данные о сети в БД
-
-        db-->>server: Ответ с успешно добавленной новой сетью
-        server-->>user: Успешно добавленная новая сеть
-        ```
+        <table>
+            <thead>
+                <tr>
+                    <th>название</th>
+                    <th>тип данных</th>
+                    <th>описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>-</td>
+                    <td>Object</td>
+                    <td>в случае успеха возвращается пустое тело</td>
+                </tr>
+            </tbody>
+        </table>
 
         <h4 class="custom-heading">Возможные ошибки API</h4>
 
@@ -293,13 +299,46 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                 "message": "the '200.150.0.225/28' seems just an IP address; the address of network is expected instead"
             }
             ```
-        </details>        
+        </details>
+
+        <h4 class="custom-heading">Диаграмма последовательности</h4>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить сеть
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Сеть с таким названием уже существует
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений CIDR
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о сети в БД
+
+        db-->>server: Ответ с успешно добавленной новой сетью
+        server-->>user: Успешно добавленная новая сеть
+        ```
     </TabItem>
 
     <TabItem value='nft'>
         <div class="paragraph">
             В этом разделе мы покажем, как ресурс networks, созданный с помощью Terraform/API, внедряется в настройки nftables.
-            В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента 
+            В контексте HBF мы интерпретируем  ресурс networks как проекцию на поле `elements` ресурса `IPSet`, который функционирует в рамках инструмента
             nftables, обеспечивая более широкие возможности для управления подсетями.
         </div>
         <ul>
@@ -312,9 +351,9 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
         <table>
             <thead>
                 <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значения</th>
+                    <th>шаблон параметра</th>
+                    <th>структура параметра</th>
+                    <th>значения</th>
                 </tr>
             </thead>
             <tbody>
@@ -326,7 +365,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                         <ul>
                             <li><b>NetIPv4-sg-example</b> - для описания массивов IP адресов типа v4</li>
                             <li><b>NetIPv6-sg-example</b> - для описания массивов IP адресов типа v6</li>
-                        </ul>                      
+                        </ul>
                     </td>
                 </tr>
                 <tr>
@@ -337,7 +376,7 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                         <ul>
                             <li><b>ipv4_addr</b> - для описания массивов IP адресов типа v4</li>
                             <li><b>ipv6_addr</b> - для описания массивов IP адресов типа v6</li>
-                        </ul>                      
+                        </ul>
                     </td>
                 </tr>
                 <tr>
@@ -348,14 +387,14 @@ import {RName,RCidrSet,RCidr,RItems} from '../../restrictions.mdx'
                         <ul>
                             <li><b>constant</b> - флаг используется если значение элементов в множестве являются постоянными и не могут быть изменены</li>
                             <li><b>interval</b> - флаг используется для создания диапазона элементов множества</li>
-                        </ul>                    
-                    </td>                    
+                        </ul>
+                    </td>
                 </tr>
                 <tr>
                     <td>$elements</td>
                     <td>`elements = {}`</td>
                     <td>Значения CIDR, в случае нескольких значений перечисляются через запятую</td>
-                </tr>                                
+                </tr>
             </tbody>
         </table>
 

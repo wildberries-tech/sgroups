@@ -1,9 +1,8 @@
-import type { SidebarsConfig } from '@docusaurus/plugin-content-docs'
 import { toNft } from './src/sidebars/technical-docs/to-nft'
 import { sgroups } from './src/sidebars/technical-docs/sgroups'
 import { ruleConfiguration } from './src/sidebars/technical-docs/rule-configuration'
 
-const sidebars: SidebarsConfig = {
+const sidebars = {
   informationSidebar: [
     {
       type: 'doc',

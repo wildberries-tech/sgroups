@@ -11,15 +11,13 @@ id: address-sg
 ## **Ответ**
 
 ```json
- {
+{
   "logs": false,
   "name": "sg-4",
   "trace": false,
-  "networks": [
-    "nw-5" 
-   ],
+  "networks": ["nw-5"],
   "defaultAction": "DROP"
- }
+}
 ```
 
 ## **Входные параметры**
@@ -121,36 +119,36 @@ id: address-sg
 
 Код ошибки 400
 
-* Указано значение не является ни IP ни CIDR
+- Указано значение не является ни IP ни CIDR
 
 ```json
- {
+{
   "code": 3,
-  "details":  [],
+  "details": [],
   "message": "invalid request: no address is provided"
- }
+}
 ```
 
-* Указано значение в формате CIDR (10.10.0.8/30)
+- Указано значение в формате CIDR (10.10.0.8/30)
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 Код ошибки 400
 
-* Ошибка в запросе
+- Ошибка в запросе
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 ## **Описание интеграции**
@@ -164,7 +162,7 @@ participant db as Database
 user->>server: Отобразить SG по IP или CIDR
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

@@ -1,4 +1,4 @@
-export const sgroups: any = [
+export const sgroups = [
   {
     type: 'doc',
     label: 'Установка',

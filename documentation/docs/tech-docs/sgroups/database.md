@@ -62,6 +62,16 @@ HBF-Server поддерживает PostgreSQL версии 14.8
             </td>
         </tr>
         <tr>
+            <td>[tbl_ie_sg_sg_icmp_rule](#tbl_ie_sg_sg_icmp_rule)</td>
+            <td class="text-justify">таблица tbl_ie_sg_sg_icmp_rule хранит информацию SG-SG правил для входящего и исходящего траффика через сетевой протокол ICMP</td>
+            <td>
+                <ul>
+                    <li>[отобразить список IE-SG-SG-ICMP правил для входящего и исходящего траффика](./api/v1/ie-sg-sg-icmp-rules.md)</li>
+                    <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
             <td>[tbl_cidr_sg_rule](#tbl_cidr_sg_rule)</td>
             <td class="text-justify">таблица tbl_cidr_sg_rule хранит информацию CIDR-SG правил для входящего и исходящего траффика с сетевым транспортным протоколом, бесклассовой междоменной маршрутизацией (CIDR) и диапазоном портов</td>
             <td>
@@ -413,6 +423,113 @@ HBF-Server поддерживает PostgreSQL версии 14.8
                     <li>sg</li>
                     <li>sg_local</li>
                     <li>traffic</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### tbl_ie_sg_sg_icmp_rule
+
+<table>
+    <thead>
+        <tr>
+            <th>Поле</th>
+            <th>Тип</th>
+            <th>Null</th>
+            <th>Ключ</th>
+            <th>По умолчанию</th>
+            <th>Дополнительно</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>id</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>PRI</td>
+            <td></td>
+            <td>auto_increment</td>
+        </tr>
+        <tr>
+            <td>sg</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>sg_local</td>
+            <td>int(8)</td>
+            <td></td>
+            <td>FK/ALT</td>
+            <td></td>
+            <td>внешний ключ к таблице tbl_sg.id</td>
+        </tr>
+        <tr>
+            <td>traffic</td>
+            <td>traffic</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>одно из двух значений "ingress" или "egress"</td>
+        </tr>
+        <tr>
+            <td>ip_v</td>
+            <td>ip_family</td>
+            <td></td>
+            <td>ALT</td>
+            <td></td>
+            <td>одно из двух значений "IPv6" или "IPv4"</td>
+        </tr>
+        <tr>
+            <td>types</td>
+            <td>icmp_types</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>массив из smallint[] кодов типа ICMP</td>
+        </tr>
+        <tr>
+            <td>logs</td>
+            <td>Boolean</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>trace</td>
+            <td>Boolean</td>
+            <td></td>
+            <td></td>
+            <td>false</td>
+            <td></td>
+        </tr>                                                        
+    </tbody>
+</table>
+
+Ключи
+
+<table>
+    <thead>
+        <tr>
+            <th>Имя ключа</th>
+            <th>Тип</th>
+            <th>Поля</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alternative key</td>
+            <td>Compound Key</td>
+            <td>
+                <ul>
+                    <li>sg</li>
+                    <li>sg_local</li>
+                    <li>traffic</li>
+                    <li>ip_v</li>
                 </ul>
             </td>
         </tr>

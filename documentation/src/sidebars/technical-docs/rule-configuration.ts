@@ -1,4 +1,4 @@
-export const ruleConfiguration: any = [
+export const ruleConfiguration = [
   {
     type: 'doc',
     label: 'Networks',

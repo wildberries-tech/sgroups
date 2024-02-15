@@ -1,4 +1,4 @@
-export const toNft: any = [
+export const toNft = [
   {
     type: 'doc',
     label: 'Установка',

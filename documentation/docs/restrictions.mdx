@@ -1,4 +1,3 @@
-
 export function RName() {
     return (
         <ul>
@@ -72,15 +71,26 @@ export function RFqdnSet() {
     )
 }
 
-export function RPorts() {
-    return (
-        <ul>
-            <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
-            <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
-            <li class="text-justify">Значения портов прописываются по одному или интервально используя '-'.</li>
-            <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
-        </ul>
-    )
+export function RPorts({type}) {
+    switch(type) {
+        case 'from':
+            return (
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя '-'.</li>
+                    <li class="text-justify">Не допускаются пересечения портов в правилах в рамках одной пары Security Group.</li>
+                </ul>
+            )
+        case 'to': 
+            return (
+                <ul>
+                    <li class="text-justify">Значения портов должно находиться в интервале от 1 до 65535.</li>
+                    <li class="text-justify">Если значение не будет указано то будет использоваться весь диапазон портов.</li>
+                    <li class="text-justify">Значения портов прописываются по одному или интервально используя '-'.</li>
+                </ul>
+            )
+    }
 }
 
 export function RIcmpType() {
@@ -130,4 +140,5 @@ export function RItemsRuleName({type}) {
             <li class="text-justify">Форма ruleName должна быть организована в соответствии с определенной последовательностью, которую нужно соблюдать <code>{template}</code>.</li>
         </ul>
     )
+
 }
