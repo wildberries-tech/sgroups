@@ -1,6 +1,6 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from 'prism-react-renderer'
+import type { Config } from '@docusaurus/types'
+import type * as Preset from '@docusaurus/preset-classic'
 
 const config: Config = {
   title: 'Swarm',
@@ -22,7 +22,7 @@ const config: Config = {
   },
 
   markdown: {
-    mermaid: true
+    mermaid: true,
   },
 
   presets: [
@@ -31,26 +31,45 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/'
+          routeBasePath: '/',
         },
         blog: false,
-        pages: false,
+        pages: {
+          path: 'src/pages',
+          routeBasePath: '',
+          include: ['**/*.{js,jsx,ts,tsx,md,mdx}'],
+          exclude: ['**/_*.{js,jsx,ts,tsx,md,mdx}', '**/_*/**', '**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**'],
+          mdxPageComponent: '@theme/MDXPage',
+          remarkPlugins: [],
+          rehypePlugins: [],
+          beforeDefaultRemarkPlugins: [],
+          beforeDefaultRehypePlugins: [],
+        },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: './src/css/custom.scss',
         },
       } satisfies Preset.Options,
     ],
   ],
 
-  themes: [
-    '@docusaurus/theme-mermaid'
+  plugins: [require.resolve('./plugins/webpack'), 'docusaurus-plugin-astroturf'],
+
+  themes: ['@docusaurus/theme-mermaid'],
+
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap',
+      type: 'text/css',
+      crossOrigin: 'anonymous',
+    },
   ],
 
   themeConfig: {
     navbar: {
       logo: {
-        src: 'img/logo.jpg'
+        src: 'img/logo.jpg',
       },
+      title: 'SGroups',
       items: [
         {
           type: 'docSidebar',
@@ -62,13 +81,20 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'techDocs',
           position: 'left',
-          label: 'Техническая документация'
-        }
+          label: 'Техническая документация',
+        },
+        {
+          href: 'https://github.com/H-BF/sgroups',
+          position: 'right',
+          label: 'H-BF/sgroups',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+        },
       ],
     },
     colorMode: {
       defaultMode: 'dark',
-      disableSwitch: true  
+      disableSwitch: true,
     },
     footer: {
       style: 'dark',
@@ -77,9 +103,9 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'hcl', 'json']
+      additionalLanguages: ['bash', 'hcl', 'json'],
     },
   } satisfies Preset.ThemeConfig,
-};
+}
 
-export default config;
+export default config

@@ -1,16 +1,17 @@
-
-export const toNft: any =  [{
-     type: 'doc',
-     label: 'Установка',
-     id: 'tech-docs/to-nft/installation-agent'
+export const toNft = [
+  {
+    type: 'doc',
+    label: 'Установка',
+    id: 'tech-docs/to-nft/installation-agent',
   },
   {
     type: 'doc',
     label: 'Мониторинг',
-    id: 'tech-docs/to-nft/monitoring'
+    id: 'tech-docs/to-nft/monitoring',
   },
   {
     type: 'doc',
     label: 'Config Base Rules',
-    id: 'tech-docs/to-nft/config-base-rules'
-  }]
+    id: 'tech-docs/to-nft/config-base-rules',
+  },
+]

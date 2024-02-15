@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import SwaggerUI from 'swagger-ui-react';
-import 'swagger-ui-react/swagger-ui.css';
+import { useEffect } from 'react'
+import SwaggerUI from 'swagger-ui-react'
+import 'swagger-ui-react/swagger-ui.css'
 
 type SwaggerProps = {
-    url: string;
-};
+  url: string
+}
 
 export default function Swagger({ url }: SwaggerProps): JSX.Element {
-    useEffect(() => {
-        document.title = 'Swagger UI';
-    }, []);
+  useEffect(() => {
+    document.title = 'Swagger UI'
+  }, [])
 
-    return <SwaggerUI url={url} />;
+  return <SwaggerUI url={url} />
 }
