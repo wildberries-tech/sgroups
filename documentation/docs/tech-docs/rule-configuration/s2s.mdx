@@ -186,11 +186,11 @@ import {
             </li>
             <li>
                 `rules.s2s[].access.$transport[].ports_to[]`:
-                <RPorts />
+                <RPorts type="to" />
             </li>
             <li>
                 `rules.s2s[].access.$transport[].ports_from[]`:
-                <RPorts />
+                <RPorts type="from" />
             </li>
             <li>
                 `rules.s2s[].access.$transport[].type[]`:
@@ -326,7 +326,7 @@ import {
                 <tr>
                     <td>items.$ruleName.transport</td>
                     <td>да</td>
-                    <td>TCP | UDP</td>
+                    <td>Enum("TCP", "UDP")</td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -398,7 +398,7 @@ import {
                 <tr>
                     <td>items.$ruleName.ip_v</td>
                     <td>да</td>
-                    <td>IPv4 | IPv6</td>
+                    <td>Enum("IPv4", "IPv6")</td>
                     <td></td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -436,11 +436,11 @@ import {
             </li>
             <li>
                 `items.$ruleName.ports[].s`:
-                <RPorts />
+                <RPorts type="from" />
             </li>
             <li>
                 `items.$ruleName.ports[].d`:
-                <RPorts />
+                <RPorts type="to" />
             </li>
             <li>
                 `items.$ruleName.type[]`:
@@ -529,10 +529,14 @@ import {
     </TabItem>
 
     <TabItem value="api">
-        <div class="paragraph">
+        <div class="text-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
+            Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_sg_rule)<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgRules`, `sgSgIcmpRules`.
         </div>
+
+        #### Входные параметры
+
         <ul>
             <li>`$node.rules[]` - <Rules description="short" /></li>
             <li>`$node.rules[].sgFrom` - <Sg description="short" /></li>
@@ -640,7 +644,7 @@ import {
                 <tr>
                     <td>$node.rules[].transport</td>
                     <td>нет</td>
-                    <td>TCP | UDP</td>
+                    <td>Enum("TCP", "UDP")</td>
                     <td>TCP</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -658,7 +662,7 @@ import {
                 <tr>
                     <td>$node.rules[].ICMP.IPv</td>
                     <td>да</td>
-                    <td>IPv4 | IPv6</td>
+                    <td>Enum("IPv4", "IPv6")</td>
                     <td></td>
                     <td class="green center"></td>
                     <td class="green center"></td>
@@ -676,7 +680,9 @@ import {
                 <tr>
                     <td>syncOp</td>
                     <td>да</td>
-                    <td>Delete | UpSert | FullSync</td>
+                    <td>
+                        <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
+                    </td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -698,17 +704,20 @@ import {
             </li>
             <li>
                 `sgSgRules.rules[].ports[].d`:
-                <RPorts />
+                <RPorts type="to" />
             </li>
             <li>
                 `sgSgRules.rules[].ports[].s`:
-                <RPorts />
+                <RPorts type="from" />
             </li>
             <li>
                 `sgSgRules.rules[].ICMP.Types[]`:
                 <RIcmpType />
             </li>
         </ul>
+
+        #### Пример использования
+
        <Tabs
             defaltValue = "tcp"
             values = {[
@@ -794,40 +803,26 @@ import {
             </TabItem>
         </Tabs>
 
-        <h4 class="custom-heading">Диаграмма последовательности</h4>
+        <h4 class="custom-heading">Выходные параметры</h4>
 
-        ```mermaid
-        sequenceDiagram
-        participant user as User
-        participant server as Server
-        participant db as Database
+        <table>
+            <thead>
+                <tr>
+                    <th>название</th>
+                    <th>тип данных</th>
+                    <th>описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>-</td>
+                    <td>Object</td>
+                    <td>в случае успеха возвращается пустое тело</td>
+                </tr>
+            </tbody>
+        </table>
 
-        user->>server: Добавить IE-SG-SG правило
-
-        alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
-        end
-
-        server->>db: Отправить запрос
-        db->>db: Проверка входящего запроса
-
-        alt Нет такого значения имени SG(sg и/или sg_local)
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        alt Пересечение значений source портов
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        db->>db: Сохранить данные о IE-SG-SG в БД
-
-        db-->>server: Ответ с успешно добавленным новым IE-SG-SG правилом
-        server-->>user: Успешно добавленное новое IE-SG-SG правило
-        ```
-
-        <h4 class="custom-heading">Возможные ошибки API</h4>
+<h4 class="custom-heading">Возможные ошибки API</h4>
 
         <Tabs
             defaltValue='tcp-udp'
@@ -941,6 +936,39 @@ import {
                 </details>
             </TabItem>
         </Tabs>
+
+        <h4 class="custom-heading">Диаграмма последовательности</h4>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить IE-SG-SG правило
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Нет такого значения имени SG(sg и/или sg_local)
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о IE-SG-SG в БД
+
+        db-->>server: Ответ с успешно добавленным новым IE-SG-SG правилом
+        server-->>user: Успешно добавленное новое IE-SG-SG правило
+        ```
     </TabItem>
 
     <TabItem value="nft">

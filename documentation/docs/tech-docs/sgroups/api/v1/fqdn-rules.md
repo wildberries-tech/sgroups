@@ -14,38 +14,32 @@ id: fqdn-rules
     <li>если указано некорректное тело в запросе, то получим ответ со всеми существующими fqdn правилами</li>
 </ul>
 
-
 ```json
 {
-  "sgFrom": [
-    "sg-0"
-  ]
+  "sgFrom": ["sg-0"]
 }
 ```
 
 ## **Ответ**
 
 ```json
- {
+{
   "rules": [
-     {
-     "FQDN": "google.com",
-     "logs": true,
-     "ports": [
+    {
+      "FQDN": "google.com",
+      "logs": true,
+      "ports": [
         {
-        "d": "7600-7700,7800",
-        "s": "4446"
-       } 
+          "d": "7600-7700,7800",
+          "s": "4446"
+        }
       ],
-     "sgFrom": "sg-0",
-     "transport": "TCP",
-     "protocols": [
-          "http",
-          "ssh"
-      ] 
-    } 
-   ] 
- }
+      "sgFrom": "sg-0",
+      "transport": "TCP",
+      "protocols": ["http", "ssh"]
+    }
+  ]
+}
 ```
 
 ## **Входные параметры**
@@ -175,26 +169,26 @@ id: fqdn-rules
 
 Код ошибки 400
 
-* Указано некорректное значение существующего параметра
+- Указано некорректное значение существующего параметра
 
 ```json
-   {
-    "code": 3,
-    "details":  [],
-    "message": "proto: syntax error (line __): unexpected token \"string\""
-   }
+{
+  "code": 3,
+  "details": [],
+  "message": "proto: syntax error (line __): unexpected token \"string\""
+}
 ```
 
 Код ошибки 404
 
-* Ошибка в запросе
+- Ошибка в запросе
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 ## **Описание интеграции**
@@ -208,7 +202,7 @@ participant db as Database
 user->>server: Отобразить FQDN правил
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

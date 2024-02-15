@@ -16,9 +16,7 @@ id: cidr-sg-rules
 
 ```json
 {
-  "sg": [
-    "sg-0"
-  ]
+  "sg": ["sg-0"]
 }
 ```
 
@@ -186,26 +184,26 @@ id: cidr-sg-rules
 
 Код ошибки 400
 
-* Указано некорректное значение существующего параметра
+- Указано некорректное значение существующего параметра
 
 ```json
-   {
-    "code": 3,
-    "details":  [],
-    "message": "proto: syntax error (line __): unexpected token \"string\""
-   }
+{
+  "code": 3,
+  "details": [],
+  "message": "proto: syntax error (line __): unexpected token \"string\""
+}
 ```
 
 Код ошибки 404
 
-* Ошибка в запросе
+- Ошибка в запросе
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
 ## **Описание интеграции**
@@ -216,10 +214,10 @@ participant user as User
 participant server as Server
 participant db as Database
 
-user->>server: Отобразить список CIDR-SG правил для входящего и исходящего траффика 
+user->>server: Отобразить список CIDR-SG правил для входящего и исходящего траффика
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

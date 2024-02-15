@@ -73,6 +73,11 @@ export const sgroups: any = [{
     },
     {
       type: 'doc',
+      label: 'POST v1/ie-sg-sg-icmp/rules',
+      id: 'tech-docs/sgroups/api/v1/ie-sg-sg-icmp-rules'
+    },
+    {
+      type: 'doc',
       label: 'GET /v1/sync/status',
       id: 'tech-docs/sgroups/api/v1/status'
     }]

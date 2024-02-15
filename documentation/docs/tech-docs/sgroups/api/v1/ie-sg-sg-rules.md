@@ -4,7 +4,7 @@ id: ie-sg-sg-rules
 
 # POST v1/ie-sg-sg/rules
 
-## **Запрос**
+## Запрос
 
 `POST v1/ie-sg-sg/rules`
 
@@ -17,39 +17,35 @@ id: ie-sg-sg-rules
 
 ```json
 {
-  "sg": [
-    "sg-1"
-  ],
-  "sg_local": [
-    "sg-2"
-  ]
+  "sg": ["sg-1"],
+  "sg_local": ["sg-2"]
 }
 ```
 
-## **Ответ**
+## Ответ
 
 ```json
 {
   "rules": [
     {
-        "sg": "sg-1",
-        "sg_local": "sg-2",
-        "logs": true,
-        "trace": true,
-        "ports": [
-          {
-            "d": "7800",
-            "s": "4446"
-          }
-        ],
-        "traffic": "Ingress",
-        "transport": "TCP"
-      }
+      "sg": "sg-1",
+      "sg_local": "sg-2",
+      "logs": true,
+      "trace": true,
+      "ports": [
+        {
+          "d": "7800",
+          "s": "4446"
+        }
+      ],
+      "traffic": "Ingress",
+      "transport": "TCP"
+    }
   ]
 }
 ```
 
-## **Входные параметры**
+## Входные параметры
 
 <table>
     <thead>
@@ -82,7 +78,7 @@ id: ie-sg-sg-rules
     </tbody>
 </table>
 
-## **Проверки**
+## Проверки
 
 <table>
     <thead>
@@ -103,9 +99,9 @@ id: ie-sg-sg-rules
     </tbody>
 </table>
 
-## **Выходные параметры**
+## Выходные параметры
 
-### **Положительный ответ**
+### Положительный ответ
 
 <table>
     <thead>
@@ -191,35 +187,35 @@ id: ie-sg-sg-rules
     </tbody>
 </table>
 
-### **Ответ с ошибками**
+### Ответ с ошибками
 
 Код ошибки 400
 
-* Если sg или sg_local были указаны некорректно:
+- Если sg или sg_local были указаны некорректно:
   \- ошибка, если значения были указаны не как массив, а как одно значение
   \- ошибка, если значение sg или sg_local не соответствует формату названия security group (длина значения не должна превышать 256 символов, значения должно начинаться и заканчиваться символами без пробелов, значение должно быть уникальным)
 
 ```json
-   {
-    "code": 3,
-    "details":  [],
-    "message": "proto: syntax error (line __): unexpected token \"string\""
-   }
+{
+  "code": 3,
+  "details": [],
+  "message": "proto: syntax error (line __): unexpected token \"string\""
+}
 ```
 
 Код ошибки 404
 
-* Опечатка в имени метода
+- Опечатка в имени метода
 
 ```json
- {
+{
   "code": 5,
-  "details":  [],
+  "details": [],
   "message": "Not Found"
- }
+}
 ```
 
-## **Описание интеграции**
+## Описание интеграции
 
 ```mermaid
 sequenceDiagram
@@ -227,10 +223,10 @@ participant user as User
 participant server as Server
 participant db as Database
 
-user->>server: Отобразить список IE-SG-SG правил для входящего и исходящего траффика 
+user->>server: Отобразить список IE-SG-SG правил для входящего и исходящего траффика
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе 
+    server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос

@@ -2,33 +2,40 @@
 id: security-groups
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 import {
-    Log, 
-    Trace,
-    Networks,
-    ICMPTypes,
-    SgLocal,
-    ApiIcmp,
-    ICMPV,
-    Rules,
-    Transport,
-    NftCounter,
-    NftRuleVerdict,
-    TerraformModule,
-    TerraformResource
-} from '../../dictionary.mdx';
+  Log,
+  Trace,
+  Networks,
+  SyncOp,
+  ICMPTypes,
+  SgLocal,
+  ApiIcmp,
+  ICMPV,
+  Rules,
+  Transport,
+  NftCounter,
+  NftRuleVerdict,
+  TerraformModule,
+  TerraformResource,
+} from "../../dictionary.mdx";
 
-import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restrictions.mdx';
+import {
+  RName,
+  RIcmpType,
+  RCidrSet,
+  RItems,
+  RCidr,
+} from "@site/docs/restrictions.mdx";
 
 # Security Groups
 
 <div class="paragraph">
- Ресурс `Groups` представляет собой введенную нами абстракцию, которая позволят объединить подсети в логические группы и применять к 
- ним единые правила сетевого взаимодействия.
+  Ресурс `Groups` представляет собой введенную нами абстракцию, которая позволят
+  объединить подсети в логические группы и применять к ним единые правила
+  сетевого взаимодействия.
 </div>
-
 
 <Tabs
     defaltValue = "terraform-m"
@@ -43,7 +50,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
     <TabItem value="terraform-m">
         <div class="paragraph">
             <TerraformModule description="full" />
-        </div>     
+        </div>
         <div class="paragraph">
             Далее везде в документе подразумевается что все места, содержащие переменную `$transport` подразумевается одно из двух значений: `icmp`, `icmp6`.
         </div>
@@ -129,7 +136,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
         </table>
 
         #### Ограничения
-		
+
         <ul>
             <li>
                 `name`:
@@ -147,13 +154,13 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 `default_rules.access.icmp6.type`:
                 <RIcmpType />
             </li>
-        </ul> 
+        </ul>
 
         #### Пример использования
 
         ```yaml
         name: sg-example
-        networks: 
+        networks:
             - 10.0.0.0/24
             - 11.0.0.0/24
         default_rules:
@@ -172,7 +179,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     logs:  true
                     trace: true
                     type:  [0,8]
-        ```       
+        ```
     </TabItem>
 
     <TabItem value="terraform-r">
@@ -202,8 +209,8 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>items.key</td>
                     <td>да</td>
                     <td>String</td>
-                    <td>Уникальный ключ блока items.</td>                    
-                </tr>                
+                    <td>Уникальный ключ блока items.</td>
+                </tr>
                 <tr>
                     <td>items.key.name</td>
                     <td>да</td>
@@ -215,7 +222,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>да</td>
                     <td>string</td>
                     <td>
-                        Список содержащий имена подсетей которые включены в указанную группу безопасности. Т.к. описывается имплементация 
+                        Список содержащий имена подсетей которые включены в указанную группу безопасности. Т.к. описывается имплементация
                         Terrafom module в Terraform resource то имя Networks совпадает с CIDR хотя им не является.
                     </td>
                 </tr>
@@ -234,7 +241,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 <tr>
                     <td>items.key.default_action</td>
                     <td>да</td>
-                    <td>DROP | ACCEPT</td>
+                    <td>Enum("DROP", "ACCEPT")</td>
                     <td>Определяет действие по умолчанию для пакетов, не соответствующих ни одному из установленных правил в цепочке.</td>
                 </tr>
                 <tr>
@@ -266,7 +273,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
 
         #### Ограничения
 
-		<ul>
+    	<ul>
             <li>
                 `items`:
                 <RItems />
@@ -287,7 +294,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 `items.key.icmp6.type`:
                 <RIcmpType />
             </li>
-        </ul>         
+        </ul>
 
         #### Пример использования
 
@@ -313,14 +320,21 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 }
             }
         }
-        ```                       
+        ```
     </TabItem>
 
     <TabItem value="api">
+        <div class="test-justify">
+            Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
+            Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_sg)
+        </div>
         <div class="paragraph">
             Приведеные ранее примеры создания Security Group c правилами по умолчанию для ICMP с использованием Terraform Module и Terraform Resource
             преобразуются в два API запроса.
         </div>
+
+        #### Входные параметры
+
         <ul>
             <li>`groups.grous[]` - Структура, содержащая описание создаваемых Security Group</li>
             <li>`groups.groups[].defaultAction` - представляет действие по умолчанию в конце цепочек для SG</li>
@@ -335,6 +349,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
             <li>`sgIcmpRules.rules[].Sg` - <SgLocal description="short" /></li>
             <li>`sgIcmpRules.rules[].logs` - <Log description="short" /></li>
             <li>`sgIcmpRules.rules[].trace` - <Trace description="short" /></li>
+            <li>`syncOp` - <SyncOp description="short" /></li>
         </ul>
 
         <table>
@@ -363,7 +378,9 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 <tr>
                     <td>groups.groups[].defaultAction</td>
                     <td>да</td>
-                    <td>ACCEPT | DROP</td>
+                    <td>
+                        <nobr>Enum("ACCEPT", "DROP")</nobr>
+                    </td>
                     <td></td>
                     <td class="green center">✔</td>
                     <td class="green center"></td>
@@ -419,7 +436,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 <tr>
                     <td>sgIcmpRules.rules[].ICMP.IPv</td>
                     <td>да</td>
-                    <td>IPv4 | IPv6</td>
+                    <td>Enum("IPv4", "IPv6")</td>
                     <td></td>
                     <td class="green center"></td>
                     <td class="green center">✔</td>
@@ -455,13 +472,23 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>false</td>
                     <td class="green center"></td>
                     <td class="green center">✔</td>
-                </tr>                          
+                </tr>
+                <tr>
+                    <td>syncOp</td>
+                    <td>да</td>
+                    <td>
+                        <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
+                    </td>
+                    <td></td>
+                    <td class="green center">✔</td>
+                    <td class="green center">✔</td>
+                </tr>
             </tbody>
         </table>
 
         <h4 class="custom-heading">Ограничения</h4>
 
-		<ul>
+    	<ul>
             <li>
                 `groups.groups[].name`:
                 <RName />
@@ -478,7 +505,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                 `$node.rules[].type[]`:
                 <RIcmpType />
             </li>
-        </ul>     
+        </ul>
 
         #### Пример использования
 
@@ -536,15 +563,117 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     },
                     "syncOp": "Upsert"
                 }'
-                ```            
+                ```
             </TabItem>
         </Tabs>
+
+        <h4 class="custom-heading">Выходные параметры</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>название</th>
+                    <th>тип данных</th>
+                    <th>описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>-</td>
+                    <td>Object</td>
+                    <td>в случае успеха возвращается пустое тело</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="custom-heading">Возможные ошибки API</h4>
+
+        <details>
+            <summary>Ошибка в запросе</summary>
+
+            ```json
+            {
+                "code": 5,
+                "details":  [],
+                "message": "Not Found"
+            }
+            ```
+        </details>
+
+        <details>
+            <summary>Добавление несуществующего Network</summary>
+
+            ```json
+            {
+                "code": 13,
+                "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)",
+                "details": []
+            }
+            ```
+        </details>
+
+        <details>
+            <summary>некорректное значение поля networks</summary>
+
+            ```json
+            {
+                "code": 3,
+                "message": "proto: syntax error (line 6:29): unexpected token \"nw-test-0\"",
+                "details": []
+            }
+            ```
+        </details>
+
+        <details>
+            <summary>некорректное значение поля defaultAction</summary>
+
+            ```json
+            {
+                "code": 3,
+                "message": "proto: (line 9:34): invalid value for enum type: \"QWERTY\"",
+                "details": []
+            }
+            ```
+        </details>
+
+        <h4 class="custom-heading">Диаграмма последовательности</h4>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить Security Group
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt SG c таким названием уже существует
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о SG в БД
+
+        db-->>server: Ответ с успешно добавленной новой SG
+        server-->>user: Успешно добавленная новая SG
+        ```
     </TabItem>
 
     <TabItem value="nft">
         <div class="paragraph">
             В этом разделе мы покажем, как ресурс `groups`, созданный с помощью Terraform/API, внедряется в настройки nftables.
-            В контексте HBF мы интерпретируем  ресурс groups как проекцию на ресурсы `IPSet` и `Chains` которые функционируют в рамках инструмента 
+            В контексте HBF мы интерпретируем  ресурс groups как проекцию на ресурсы `IPSet` и `Chains` которые функционируют в рамках инструмента
             nftables, обеспечивая более широкие возможности для управления подсетями и правилами.
         </div>
         <ul>
@@ -573,7 +702,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                         <ul>
                             <li><b>1</b> - трассировка включена</li>
                             <li><b>0</b> - трассировка выключена</li>
-                        </ul>            
+                        </ul>
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
@@ -600,7 +729,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>`level debug flags ip options`</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>                        
+                </tr>
                 <tr>
                     <td>$Counter</td>
                     <td>
@@ -609,7 +738,7 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                     <td>`packets 0 bytes 0`</td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>                        
+                </tr>
                 <tr>
                     <td>$Verdict</td>
                     <td>`Accept`</td>
@@ -617,15 +746,15 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
                         <div class="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>         
+                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
                     </td>
                     <td class="green center">✔</td>
                     <td class="green center">✔</td>
-                </tr>                        
+                </tr>
             </tbody>
         </table>
-        
-      
+
+
         #### Шаблон
 
         ```hcl
@@ -665,4 +794,5 @@ import { RName,RIcmpType, RCidrSet, RItems, RCidr } from '@site/docs/restriction
         }
         ```
     </TabItem>
+
 </Tabs>

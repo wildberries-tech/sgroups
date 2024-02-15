@@ -6,6 +6,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import {
   Cidr,
+  SyncOp,
   Networks,
   TerraformModule,
   TerraformResource,
@@ -164,10 +165,11 @@ import { RName, RCidrSet, RCidr, RItems } from "../../restrictions.mdx";
         #### Входные параметры
 
         <ul>
-            <li>networks[] - <Networks description="short" /></li>
-            <li>networks[].name - название подсети.</li>
-            <li>networks[].network - объект содержащий CIDR подсети</li>
-            <li>networks[].network.CIDR - <Cidr description="short" /></li>
+            <li>`networks[]` - <Networks description="short" /></li>
+            <li>`networks[].name` - название подсети.</li>
+            <li>`networks[].network` - объект содержащий CIDR подсети</li>
+            <li>`networks[].network.CIDR` - <Cidr description="short" /></li>
+            <li>`syncOp` - <SyncOp description="short" /></li>
         </ul>
 
         <table>
@@ -204,6 +206,12 @@ import { RName, RCidrSet, RCidr, RItems } from "../../restrictions.mdx";
                     <td>String</td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td>syncOp</td>
+                    <td>да</td>
+                    <td>Enum("Delete", "Upsert", "FullSync")</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
 
@@ -233,7 +241,8 @@ import { RName, RCidrSet, RCidr, RItems } from "../../restrictions.mdx";
                         "CIDR": "10.0.0.0/24"
                     }
                 }]
-            }
+            },
+            "syncOp": "Upsert"
         }'
         ```
 
