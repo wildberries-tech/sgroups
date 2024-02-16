@@ -1,0 +1,178 @@
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+
+#### Входные параметры
+
+<ul>
+  <li>`networks[]` - {DICTIONARY.networks.short}</li>
+  <li>`networks[].name` - название подсети.</li>
+  <li>`networks[].network` - объект содержащий CIDR подсети</li>
+  <li>`networks[].network.CIDR` - {DICTIONARY.cidr.short}</li>
+  <li>`syncOp` - {DICTIONARY.syncOp.short}</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>название</th>
+      <th>обязательность</th>
+      <th>тип данных</th>
+      <th>значение по умолчанию</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>networks[]</td>
+      <td>да</td>
+      <td>Object[]</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>networks[].name</td>
+      <td>да</td>
+      <td>String</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>networks[].network</td>
+      <td>да</td>
+      <td>Object</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>networks[].network.CIDR</td>
+      <td>да</td>
+      <td>String</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>syncOp</td>
+      <td>да</td>
+      <td>Enum("Delete", "Upsert", "FullSync")</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="custom-heading">Ограничения</h4>
+
+<ul>
+  <li>
+    `networks.networks[].name`:
+    <Restrictions data={RESTRICTIONS.name} />
+  </li>
+  <li>
+    `networks.networks[].network.CIDR`:
+    <Restrictions data={RESTRICTIONS.cidr} />
+  </li>
+</ul>
+
+<h4 class="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/sync' \
+--header 'Content-Type: application/json' \
+--data '{
+    "networks": {
+        "networks": [{
+            "name": "nw-1",
+            "network": {
+                "CIDR": "10.0.0.0/24"
+            }
+        }]
+    },
+    "syncOp": "Upsert"
+}'
+```
+
+<h4 class="custom-heading">Выходные параметры</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>название</th>
+      <th>тип данных</th>
+      <th>описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-</td>
+      <td>Object</td>
+      <td>в случае успеха возвращается пустое тело</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="custom-heading">Возможные ошибки API</h4>
+
+<details>
+    <summary>Ошибка в запросе</summary>
+
+    ```json
+    {
+        "code": 5,
+        "details":  [],
+        "message": "Not Found"
+    }
+    ```
+
+</details>
+<details>
+    <summary>Сеть с таким названием уже существует</summary>
+
+    ```json
+    {
+        "code": 13,
+        "details":  [],
+        "message": "ERROR: conflicting key value violates exclusion constraint \"prevent_networks_intersections\" (SQLSTATE 23P01)"
+    }
+    ```
+
+</details>
+<details>
+    <summary>Пересечение значений CIDR</summary>
+
+    ```json
+    {
+        "code": 3,
+        "details":  [],
+        "message": "the '200.150.0.225/28' seems just an IP address; the address of network is expected instead"
+    }
+    ```
+
+</details>
+
+<h4 class="custom-heading">Диаграмма последовательности</h4>
+
+```mermaid
+sequenceDiagram
+participant user as User
+participant server as Server
+participant db as Database
+
+user->>server: Добавить сеть
+
+alt Ошибка в запросе
+    server-->>user: Показать ошибку в запросе
+end
+
+server->>db: Отправить запрос
+db->>db: Проверка входящего запроса
+
+alt Сеть с таким названием уже существует
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+alt Пересечение значений CIDR
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+db->>db: Сохранить данные о сети в БД
+
+db-->>server: Ответ с успешно добавленной новой сетью
+server-->>user: Успешно добавленная новая сеть
+```
