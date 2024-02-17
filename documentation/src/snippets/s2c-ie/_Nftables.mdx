@@ -1,0 +1,333 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+
+<div class="paragraph">
+  В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки
+  nftables. Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
+</div>
+<ul>
+  <li>`$Trace` - {DICTIONARY.trace.short}</li>
+  <li>`$SrcSgroup` - {DICTIONARY.sg.short}</li>
+  <li>`$DstGroup` - {DICTIONARY.sg.short}</li>
+  <li>`$Transport` - {DICTIONARY.transport.short}</li>
+  <li>`$NftRuleType` - {DICTIONARY.nftRuleType.short}</li>
+  <li>`$IcmpTypeList` - {DICTIONARY.icmpTypes.short}</li>
+  <li class="text-justify">`$SrcPorts` - {DICTIONARY.srcPorts.short}</li>
+  <li class="text-justify">`$DstPorts` - {DICTIONARY.dstPorts.short}</li>
+  <li>`$NftCounter` - {DICTIONARY.nftCounter.short}</li>
+  <li>`$Log` - {DICTIONARY.log.short}</li>
+  <li>`$NftRuleVerdict` - {DICTIONARY.nftRuleVerdict.short}</li>
+</ul>
+
+<table>
+  <caption>Области применения полей относительно используемого протокола</caption>
+  <thead>
+    <tr>
+      <th rowspan="2">шаблон параметра</th>
+      <th rowspan="2">структура параметра</th>
+      <th rowspan="2">значения</th>
+      <th colspan="3">transport*</th>
+    </tr>
+    <tr>
+      <th>TCP</th>
+      <th>UDP</th>
+      <th>ICMP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>$Trace</td>
+      <td>`nftrace set`</td>
+      <td>
+        <ul>
+          <li>
+            <b>1</b> - трассировка включена
+          </li>
+          <li>
+            <b>0</b> - трассировка выключена
+          </li>
+        </ul>
+      </td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$SrcSgroup</td>
+      <td>
+        <nobr>`saddr`</nobr>
+      </td>
+      <td>`@${IPSet(sgName)}`</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$DstSgroup</td>
+      <td>
+        <nobr>`daddr`</nobr>
+      </td>
+      <td>`@${IPSet(sgName)}`</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$Transport</td>
+      <td>
+        <nobr>Enum("tcp", "udp", "icmp")</nobr>
+      </td>
+      <td></td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$NftRuleType</td>
+      <td>`ip`</td>
+      <td></td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$IcmpTypeList</td>
+      <td>`type {}`</td>
+      <td>Набор целочисленных значений от 0 до 255</td>
+      <td class="green center"></td>
+      <td class="green center"></td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$SrcPorts</td>
+      <td>`sport {}`</td>
+      <td>Набор целочисленных значений от 0 до 65535</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center"></td>
+    </tr>
+    <tr>
+      <td>$DstPorts</td>
+      <td>`dport {}`</td>
+      <td>Набор целочисленных значений от 0 до 65535</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center"></td>
+    </tr>
+    <tr>
+      <td>$NftCounter</td>
+      <td>
+        <nobr>`counter`</nobr>
+      </td>
+      <td>`packets 0 bytes 0`</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$Log</td>
+      <td>
+        <nobr>`log`</nobr>
+      </td>
+      <td>`level debug flags ip options`</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>$NftRuleVerdict</td>
+      <td>`Accept`</td>
+      <td>
+        <div class="text-justify">
+          <i>
+            * Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил
+            происходит только с помощью goto.
+          </i>
+        </div>
+        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+      </td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="custom-heading">Пример использования</h4>
+
+<Tabs
+    defaltValue = "tcp"
+    values = {[
+        { label: "TCP", value: "tcp" },
+        { label: "UDP", value: "udp" },
+        { label: "ICMP", value: "icmp" }
+    ]}
+>
+    <TabItem value="tcp">
+        <Tabs
+            defaltValue="ingress"
+            values={[
+                { label: "ingress", value: "ingress" },
+                { label: "egress", value: "egress" }
+            ]}
+        >
+            <TabItem value="ingress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-IN-sgName {
+                    # **********
+                    $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-IN-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+            <TabItem value="egress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-OUT-sgName {
+                    # **********
+                    $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-OUT-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+    <TabItem value="udp">
+        <Tabs
+            defaltValue="ingress"
+            values={[
+                { label: "ingress", value: "ingress" },
+                { label: "egress", value: "egress" }
+            ]}
+        >
+            <TabItem value="ingress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-IN-sgName {
+                    # **********
+                    $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-IN-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+            <TabItem value="egress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-OUT-sgName {
+                    # **********
+                    $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-OUT-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+    <TabItem value="icmp">
+        <Tabs
+            defaltValue="ingress"
+            values={[
+                { label: "ingress", value: "ingress" },
+                { label: "egress", value: "egress" }
+            ]}
+        >
+            <TabItem value="ingress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-IN-sgName {
+                    # **********
+                    $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
+                    # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-IN-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+            <TabItem value="egress">
+                #### Шаблон
+
+                ```hcl
+                chain FW-OUT-sgName {
+                    # **********
+                        $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
+                        # **********
+                }
+                ```
+
+                #### Пример использования
+
+                ```hcl
+                chain FW-OUT-sg-example-1 {
+                    # **********
+                    nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    # **********
+                }
+                ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+
+</Tabs>

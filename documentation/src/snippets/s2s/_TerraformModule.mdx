@@ -1,0 +1,225 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+
+<div class="paragraph">
+  <p>{DICTIONARY.terraformModule.full}</p>
+</div>
+<div class="paragraph">
+  Далее везде в документе подразумевается что все места, содержащие переменную `$transport` иогут принимать одно из
+  четырех значений: `tcp`, `udp`, `icmpIPv4`, `icmpIPv6`.
+</div>
+<ul>
+  <li class="text-justify">`rules` - {DICTIONARY.rules.short}</li>
+  <li class="text-justify">
+    `rules.s2s[]` - Список правил, описывающий сетевое взаимодействие текущей Security Group с внешней Security Group.
+  </li>
+  <li class="text-justify">`rules.s2s[].sgroupSet[]` - {DICTIONARY.sgroupSet.short}</li>
+  <li class="text-justify">`rules.s2s[].log` - {DICTIONARY.log.short}</li>
+  <li class="text-justify">`rules.s2s[].trace` - {DICTIONARY.trace.short}</li>
+  <li class="text-justify">`rules.s2s[].access.$transport[]` - {DICTIONARY.transport.short}</li>
+  <li class="text-justify">`rules.s2s[].access.$transport.description` - {DICTIONARY.description.short}</li>
+  <li class="text-justify">`rules.s2s[].access.$transport.ports_to[]` - {DICTIONARY.dstPorts.short}</li>
+  <li class="text-justify">`rules.s2s[].access.$transport.ports_from[]` - {DICTIONARY.srcPorts.short}</li>
+  <li class="text-justify">`rules.s2s[].access.$transport.type[]` - {DICTIONARY.icmpTypes.short}</li>
+</ul>
+
+<table>
+  <caption>Области применения полей относительно используемого протокола</caption>
+  <thead>
+    <tr>
+      <th rowspan="2">название параметра</th>
+      <th rowspan="2">тип данных</th>
+      <th rowspan="2">значение по умолчанию</th>
+      <th colspan="3">transport*</th>
+    </tr>
+    <tr>
+      <th>TCP</th>
+      <th>UDP</th>
+      <th>ICMP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rules</td>
+      <td>Object[]</td>
+      <td>[]</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s</td>
+      <td>Object</td>
+      <td></td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.sgroupSet[]</td>
+      <td>String[]</td>
+      <td></td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.log</td>
+      <td>Boolean</td>
+      <td>false</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.trace</td>
+      <td>Boolean</td>
+      <td>false</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.access.$transport[]</td>
+      <td>Object[]</td>
+      <td></td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.access.$transport[].description</td>
+      <td>String</td>
+      <td>&quot;&quot;</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+    </tr>
+    <tr>
+      <td>rules.s2s.access.$transport[].ports_to[]</td>
+      <td>Integer[]</td>
+      <td>null</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center"></td>
+    </tr>
+    <tr>
+      <td>rules.s2s.access.$transport[].ports_from[]</td>
+      <td>Integer[]</td>
+      <td>null</td>
+      <td class="green center">✔</td>
+      <td class="green center">✔</td>
+      <td class="green center"></td>
+    </tr>
+    <tr>
+      <td>rules.s2s[].access.$transport[].type[]</td>
+      <td>Integer[]</td>
+      <td>null</td>
+      <td class="green center"></td>
+      <td class="green center"></td>
+      <td class="green center">✔</td>
+    </tr>
+  </tbody>
+</table>
+<h4 class="custom-heading">Ограничения</h4>
+
+<ul>
+  <li>
+    `name`:
+    <Restrictions data={RESTRICTIONS.name} />
+  </li>
+  <li>
+    `rules.s2s[].sgroupSet`:
+    <Restrictions data={RESTRICTIONS.sgroupSet} />
+  </li>
+  <li>
+    `rules.s2s[].access.$transport[].ports_to[]`:
+    <Restrictions data={RESTRICTIONS.dstPorts} />
+  </li>
+  <li>
+    `rules.s2s[].access.$transport[].ports_from[]`:
+    <Restrictions data={RESTRICTIONS.srcPorts} />
+  </li>
+  <li>
+    `rules.s2s[].access.$transport[].type[]`:
+    <Restrictions data={RESTRICTIONS.icmpType} />
+  </li>
+</ul>
+
+<h4 class="custom-heading">Пример использования</h4>
+
+<Tabs
+    defaltValue = "tcp"
+    values = {[
+        { label: "TCP", value: "tcp" },
+        { label: "UDP", value: "udp" },
+        { label: "ICMP", value: "icmp" }
+    ]}
+>
+    <TabItem value="tcp">
+
+        ```yaml
+        name: sg-example-from
+        rules:
+            s2s:
+            - sgroupSet:
+                - sg-example-to
+                logs:  true
+                trace: true
+                access:
+                tcp:
+                - description: ""
+                    ports_from:
+                    - 64231
+                    ports_to:
+                    - 443
+                    - 80
+        ```
+    </TabItem>
+    <TabItem value="udp">
+
+        ```yaml
+        name: sg-example-from
+        rules:
+            s2s:
+            - sgroupSet:
+                - sg-example-to
+                logs:  true
+                trace: true
+                access:
+                udp:
+                - description: ""
+                    ports_from:
+                    - 64231
+                    ports_to:
+                    - 443
+                    - 80
+        ```
+    </TabItem>
+    <TabItem value="icmp">
+
+        ```yaml
+        name: sg-example-from
+        rules:
+            s2s:
+            - sgroupSet:
+                - sg-example-to
+                logs:  true
+                access:
+                    icmpIPv4:
+                    - description: ""
+                    Types:
+                        - 0
+                        - 8
+                icmpIPv6:
+                    - description: ""
+                    Types:
+                        - 0
+                        - 8
+        ```
+    </TabItem>
+
+</Tabs>
