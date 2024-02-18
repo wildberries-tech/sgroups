@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem'
 
 ### Описание
 
-<div class="paragraph">
+<div className="paragraph">
   [*nftables*](https://wiki.nftables.org/) представляет собой инструмент для управления сетевыми правилами, предоставляя
   гибкую и эффективную систему фильтрации трафика.
 </div>
@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem'
 
 ### Описание
 
-<div class="paragraph">
+<div className="paragraph">
   IPSet представляет собой структуру данных, позволяющую хранить и организовывать множество элементов для использования
   в правилах nftables. Он используется для обработки больших списков элементов с минимальными затратами на ресурсы. В
   нашем случае IPSet формируется для описания массива IP-адресов, относящихся к FQDN или Security Groups, для
@@ -91,7 +91,7 @@ set NetIPv4-${NAME} {
 
 ### Описание
 
-<div class="paragraph">
+<div className="paragraph">
   В нашей реализации структуры мы вводим для INPUT и OUTPUT понятие 3-х цепочек. *Первая* цепочка является точкой входа
   для пакетов из сетевого стека, в ней указывается хук (input, prerouting, postrouting) и приоритет выполнения. *Вторая*
   цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group.
@@ -177,7 +177,7 @@ set NetIPv4-${NAME} {
                     <td>
                         <div>Не параметризированный</div>
                         <br />
-                        <div class="text-justify">
+                        <div className="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
                         <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
@@ -275,7 +275,7 @@ set NetIPv4-${NAME} {
                     <td>
                         <div>Не параметризированный</div>
                         <br />
-                        <div class="text-justify">
+                        <div className="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
                         <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
@@ -410,7 +410,7 @@ chain INPUT {
                     <td>
                         <div>Не параметризированный</div>
                         <br />
-                        <div class="text-justify">
+                        <div className="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
                         <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
@@ -508,7 +508,7 @@ chain INPUT {
                     <td>
                         <div>Не параметризированный</div>
                         <br />
-                        <div class="text-justify">
+                        <div className="text-justify">
                             <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                         </div>
                         <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
@@ -579,14 +579,14 @@ chain POSTROUTING {
   <tbody>
     <tr>
       <td>accept</td>
-      <td class="text-justify">
+      <td className="text-justify">
         Терминирующие правило которое разрещает трафик, попавший под это условие, и завершает обработку пакета в текущей
         таблице.
       </td>
     </tr>
     <tr>
       <td>drop</td>
-      <td class="text-justify">
+      <td className="text-justify">
         Терминирующие правило которое запрещает трафик, попавший под это условие, и завершает обработку пакета в текущей
         таблице.
       </td>
@@ -595,7 +595,7 @@ chain POSTROUTING {
       <td>
         goto <i>chain</i>
       </td>
-      <td class="text-justify">
+      <td className="text-justify">
         Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке обратно в ту же
         цепочку трафик попасть не сможет.
       </td>
@@ -606,7 +606,7 @@ chain POSTROUTING {
           jump <i>chain</i>
         </nobr>
       </td>
-      <td class="text-justify">
+      <td className="text-justify">
         Переход на другую цепочку в рамках указанного правила. После завершения правил в этой цепочке трафик вернется в
         исходную цепочку.
       </td>

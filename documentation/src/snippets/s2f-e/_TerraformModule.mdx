@@ -4,10 +4,10 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
-<div class="paragraph">
+<div className="paragraph">
   <p>{DICTIONARY.terraformModule.full}</p>
 </div>
-<div class="paragraph">
+<div className="paragraph">
   Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять значениe:
   `Egress`. Аналогчично для `$transport` подразумевается одно из двух значений: `tcp`, `udp`.
 </div>
@@ -28,10 +28,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <caption>Области применения полей относительно используемого протокола</caption>
   <thead>
     <tr>
-      <th rowspan="2">название параметра</th>
-      <th rowspan="2">тип данных</th>
-      <th rowspan="2">значение по умолчанию</th>
-      <th colspan="3">transport*</th>
+      <th rowSpan="2">название параметра</th>
+      <th rowSpan="2">тип данных</th>
+      <th rowSpan="2">значение по умолчанию</th>
+      <th colSpan="3">transport*</th>
     </tr>
     <tr>
       <th>TCP</th>
@@ -43,64 +43,64 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td>rules</td>
       <td>Object[]</td>
       <td>[]</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[]</td>
       <td>Object[]</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].fqdnSet[]</td>
       <td>String[]</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].log</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].trace</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].access.$transport[]</td>
       <td>Object[]</td>
       <td>{}</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].access.$transport.description</td>
       <td>String</td>
       <td>&quot;&quot;</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].access.$transport.ports_to[]</td>
       <td>Integer[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic[].access.$transport.ports_from[]</td>
       <td>Integer[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>

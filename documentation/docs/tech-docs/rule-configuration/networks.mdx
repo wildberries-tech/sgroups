@@ -4,7 +4,6 @@ id: networks
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
-
 import TerraforModule from '@site/src/snippets/networks/_TerraformModule.mdx'
 import TerraforResource from '@site/src/snippets/networks/_TerraformResource.mdx'
 import Api from '@site/src/snippets/networks/_Api.mdx'
@@ -12,7 +11,7 @@ import Nftables from '@site/src/snippets/networks/_Nftables.mdx'
 
 # Networks
 
-<div class="paragraph">
+<div className="paragraph">
   Ресурс `Networks` представляет собой введенную нами абстракцию, которая позволяет определять группы IP-адресов или
   подсетей, доступных для управления Host Based Firewall. Эти подсети затем могут быть связаны с конкретными группами
   безопасности для логического разделения и использоваться в правилах для разрешения или блокирования доступа к
@@ -37,7 +36,7 @@ import Nftables from '@site/src/snippets/networks/_Nftables.mdx'
     </TabItem>
 
     <TabItem value='api'>
-        <div class="test-justify">
+        <div className="test-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).
             <br />
             Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_network)

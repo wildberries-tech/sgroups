@@ -4,7 +4,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
-<div class="paragraph">
+<div className="paragraph">
   <p>{DICTIONARY.terraformResource.full}</p>
 </div>
 <ul>
@@ -26,11 +26,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
     <thead>
         <tr>
-            <th rowspan="2">название</th>
-            <th rowspan="2">обязательность</th>
-            <th rowspan="2">тип данных</th>
-            <th rowspan="2">значение по умолчанию</th>
-            <th colspan="2">transport*</th>
+            <th rowSpan="2">название</th>
+            <th rowSpan="2">обязательность</th>
+            <th rowSpan="2">тип данных</th>
+            <th rowSpan="2">значение по умолчанию</th>
+            <th colSpan="2">transport*</th>
         </tr>
         <tr>
             <th>TCP</th>
@@ -43,88 +43,88 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
             <td>да</td>
             <td>Object</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>items.$ruleName</td>
             <td>да</td>
             <td>Object</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>transport</td>
             <td>да</td>
             <td>Enum("TCP", "UDP")</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>logs</td>
             <td>нет</td>
             <td>Boolean</td>
             <td>false</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>trace</td>
             <td>нет</td>
             <td>Boolean</td>
             <td>false</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>sg_from</td>
             <td>да</td>
             <td>String</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdn</td>
             <td>да</td>
             <td>String</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>protocols[]</td>
             <td>нет</td>
             <td>String[]</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>ports[]</td>
             <td>нет</td>
             <td>Object[]</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>ports[].s</td>
             <td>нет</td>
             <td>string</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>ports[].d</td>
             <td>нет</td>
             <td>string</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
     </tbody>
 

@@ -6,7 +6,7 @@ id: config-base-rules
 
 ## Описание
 
-<div class="paragraph">
+<div className="paragraph">
 Base Rules - набор правил, которые прописываются статично из конфиграционнного файла агента для того что бы всегда был доступ до высококритичных сервисов таких как HBF и DNS.
 </div>
 
@@ -42,7 +42,7 @@ Base Rules - набор правил, которые прописываются 
             <td>
                 <div>Не параметризированный</div>
                 <br />
-                <div class="text-justify">
+                <div className="text-justify">
                     <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                 </div>
                 <i>Подробнее: [Verdict statement](../rule-configuration/main.mdx#verdict-statement)</i>              
@@ -57,8 +57,8 @@ Base Rules - набор правил, которые прописываются 
 ```yaml
 base-rules:
   networks:
-    - "1.1.1.1"
-    - "2.2.2.2"
+    - '1.1.1.1'
+    - '2.2.2.2'
 ```
 
 ## Шаблон

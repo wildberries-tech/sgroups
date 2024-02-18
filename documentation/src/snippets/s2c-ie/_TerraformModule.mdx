@@ -5,26 +5,26 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
-<div class="paragraph">
+<div className="paragraph">
   <p>{DICTIONARY.terraformModule.full}</p>
 </div>
-<div class="paragraph">
+<div className="paragraph">
   Далее везде в документе подразумевается что все места, содержащие переменную `$traffic`, могут принять одно из двух
   значений: `Ingress` `Egress`. Аналогчично для `$transport` подразумевается одно из четырех значений: `tcp`, `udp`,
   `icmpIPv4`, `icmpIPv6`
 </div>
 
 <ul>
-    <li class="text-justify">`rules` - {DICTIONARY.rules.short}</li>
-    <li class="text-justify">`rules.$traffic[]` - {DICTIONARY.traffic.short}</li>
-    <li class="text-justify">`rules.$traffic[].cidrSet[]` - {DICTIONARY.cidrSet.short}</li>
-    <li class="text-justify">`rules.$traffic[].log` - {DICTIONARY.log.short}</li>
-    <li class="text-justify">`rules.$traffic[].trace` - {DICTIONARY.trace.short}</li>
-    <li class="text-justify">`rules.$traffic[].access.$transport[]` - {DICTIONARY.transport.short}</li>
-    <li class="text-justify">`rules.$traffic[].access.$transport[].description` - {DICTIONARY.description.short}</li>
-    <li class="text-justify">`rules.$traffic[].access.$transport[].ports_to[]` - {DICTIONARY.dstPorts.short}</li>
-    <li class="text-justify">`rules.$traffic[].access.$transport[].ports_from[]` - {DICTIONARY.srcPorts.short}</li>
-    <li class="text-justify">`rules.$traffic[].access.$transport[].type[]` - {DICTIONARY.icmpTypes.short}</li>
+    <li className="text-justify">`rules` - {DICTIONARY.rules.short}</li>
+    <li className="text-justify">`rules.$traffic[]` - {DICTIONARY.traffic.short}</li>
+    <li className="text-justify">`rules.$traffic[].cidrSet[]` - {DICTIONARY.cidrSet.short}</li>
+    <li className="text-justify">`rules.$traffic[].log` - {DICTIONARY.log.short}</li>
+    <li className="text-justify">`rules.$traffic[].trace` - {DICTIONARY.trace.short}</li>
+    <li className="text-justify">`rules.$traffic[].access.$transport[]` - {DICTIONARY.transport.short}</li>
+    <li className="text-justify">`rules.$traffic[].access.$transport[].description` - {DICTIONARY.description.short}</li>
+    <li className="text-justify">`rules.$traffic[].access.$transport[].ports_to[]` - {DICTIONARY.dstPorts.short}</li>
+    <li className="text-justify">`rules.$traffic[].access.$transport[].ports_from[]` - {DICTIONARY.srcPorts.short}</li>
+    <li className="text-justify">`rules.$traffic[].access.$transport[].type[]` - {DICTIONARY.icmpTypes.short}</li>
 
 </ul>
 
@@ -32,10 +32,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <caption>Области применения полей относительно используемого протокола</caption>
   <thead>
     <tr>
-      <th rowspan="2">название параметра</th>
-      <th rowspan="2">тип данных</th>
-      <th rowspan="2">значение по умолчанию</th>
-      <th colspan="3">transport*</th>
+      <th rowSpan="2">название параметра</th>
+      <th rowSpan="2">тип данных</th>
+      <th rowSpan="2">значение по умолчанию</th>
+      <th colSpan="3">transport*</th>
     </tr>
     <tr>
       <th>TCP</th>
@@ -48,86 +48,86 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td>rules</td>
       <td>Object[]</td>
       <td>[]</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic</td>
       <td>Object</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.cidrSet[]</td>
       <td>String[]</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.log</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.trace</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.access.$transport[]</td>
       <td>Object[]</td>
       <td>{}</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.access.$transport[].description</td>
       <td>String</td>
       <td>&quot;&quot;</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>rules.$traffic.access.$transport[].ports_to[]</td>
       <td>Integer[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>rules.$traffic.access.$transport[].ports_from[]</td>
       <td>Integer[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>rules.$traffic[].access.$transport[].type[]</td>
       <td>Integer[]</td>
       <td>null</td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>
 
-<h4 class="custom-heading">Ограничения</h4>
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
@@ -152,7 +152,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </li>
 </ul>
 
-<h4 class="custom-heading">Пример использования</h4>
+<h4 className="custom-heading">Пример использования</h4>
 
 <Tabs
   defaltValue="tcp"
@@ -163,9 +163,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   ]}
 >
   <TabItem value="tcp">
-    <div class="parent-div" style={{ height: '420px' }}>
-      <div class="child-block">
-        <h4 class="center">Ingress</h4>
+    <div className="parent-div" style={{ height: '420px' }}>
+      <div className="child-block">
+        <h4 className="center">Ingress</h4>
 
         ```yaml
         name: sg-example-1
@@ -186,8 +186,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
           ```
 
       </div>
-      <div class="child-block">
-        <h4 class="center">Egress</h4>
+      <div className="child-block">
+        <h4 className="center">Egress</h4>
 
         ```yaml
         name: sg-example-1
@@ -212,9 +212,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
   </TabItem>
   <TabItem value="udp">
-    <div class="parent-div">
-      <div class="child-block">
-        <h4 class="center">Ingress</h4>
+    <div className="parent-div">
+      <div className="child-block">
+        <h4 className="center">Ingress</h4>
 
         ```yaml
         name: sg-example-1
@@ -234,8 +234,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
           ```
 
       </div>
-      <div class="child-block">
-        <h4 class="center">Egress</h4>
+      <div className="child-block">
+        <h4 className="center">Egress</h4>
 
         ```yaml
         name: sg-example-1
@@ -259,9 +259,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
   </TabItem>
   <TabItem value="icmp">
-    <div class="parent-div">
-      <div class="child-block">
-        <h4 class="center">Ingress</h4>
+    <div className="parent-div">
+      <div className="child-block">
+        <h4 className="center">Ingress</h4>
         
         ```yaml 
         name: sg-example-1
@@ -281,8 +281,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
           ```
 
       </div>
-      <div class="child-block">
-        <h4 class="center">Egress</h4>
+      <div className="child-block">
+        <h4 className="center">Egress</h4>
 
         ```yaml
         name: sg-example-1

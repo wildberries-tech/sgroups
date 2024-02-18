@@ -4,7 +4,7 @@ id: monitoring
 
 # Мониторинг
 
-<div class="paragraph">
+<div className="paragraph">
 Информация о состоянии агента на различных узлах основывается по метрикам из [данной панели Grafana](https://grafana.wildberries.ru/d/fc958a44-ddb5-494e-9260-b3cc53a04ed9/hbf-server?orgId=1&from=now-6h&to=now). На ней также настроены уведомления, связанные с недоступностью или некорректной работой агента. Уведомления приходят в закрытый канал в Rocket.chat (#HBF_ALERTS). Таблица ниже описывает возможные для агента уведомления и причины их возникновения.
 </div>
 
@@ -15,7 +15,7 @@ id: monitoring
 
 ## **Метрики**
 
-<div class="paragraph">
+<div className="paragraph">
 Метрики по умолчанию доступны через порт **9650**. Для активации метрик следует установить параметр "metrics.enable" в конфигурационном файле в значение `true` ( по умолчанию файл конфигурации находится в */opt/swarm/etc/sgroups/config.yaml* ). Для проверки доступности метрик рекомендуется выполнить команду `curl 0.0.0.0:9650/metrics`.
 </div>
 
@@ -23,7 +23,7 @@ id: monitoring
 
 **Описание метрик**
 
-<span class="green"><b>Зеленым</b></span> цветом выделены ключевые метрики.
+<span className="green"><b>Зеленым</b></span> цветом выделены ключевые метрики.
 
 <table>
     <thead>
@@ -175,12 +175,12 @@ id: monitoring
             <td>Количество созданных ОС потоков</td>
         </tr>
         <tr>
-            <td class="green"><b>healthcheck</b></td>
+            <td className="green"><b>healthcheck</b></td>
             <td>gauge</td>
             <td>Индикатор проверки состояния процесса (0 или 1)</td>
         </tr>
         <tr>
-            <td class="green"><b>process_cpu_seconds_total</b></td>
+            <td className="green"><b>process_cpu_seconds_total</b></td>
             <td>counter</td>
             <td>Общее количество времени CPU пользователя и системы в секундах</td>
         </tr>
@@ -195,7 +195,7 @@ id: monitoring
             <td>Количество открытых дескрипторов файлов</td>
         </tr>
         <tr>
-            <td class="green"><b>process_resident_memory_bytes</b></td>
+            <td className="green"><b>process_resident_memory_bytes</b></td>
             <td>gauge</td>
             <td>Размер резидентной памяти в байтах</td>
         </tr>
@@ -215,12 +215,12 @@ id: monitoring
             <td>Максимальный объем доступной виртуальной памяти в байтах</td>
         </tr>
         <tr>
-            <td class="green"><b>promhttp_metric_handler_requests_in_flight</b></td>
+            <td className="green"><b>promhttp_metric_handler_requests_in_flight</b></td>
             <td>counter</td>
             <td>Общее количество выявленных запросов по коду состояния HTTP</td>
         </tr>
         <tr>
-            <td class="green"><b>server_grpc_connections</b></td>
+            <td className="green"><b>server_grpc_connections</b></td>
             <td>gauge</td>
             <td>Количество подключенных на данный момент агентов</td>
         </tr>

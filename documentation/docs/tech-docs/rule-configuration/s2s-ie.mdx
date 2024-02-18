@@ -2,10 +2,8 @@
 id: s2s-ie
 ---
 
-import React from 'react'
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
-
 import TerraforModule from '@site/src/snippets/s2s-ie/_TerraformModule.mdx'
 import TerraformResource from '@site/src/snippets/s2s-ie/_TerraformResource.mdx'
 import Nftables from '@site/src/snippets/s2s-ie/_Nftables.mdx'
@@ -15,7 +13,7 @@ import Api from '@site/src/snippets/s2s-ie/_APi.mdx'
 
 #### Описание
 
-<div class="paragraph">
+<div className="paragraph">
   Ресурс `Security Group to Security Group` представляет собой введенную нами абстракцию, которая обеспечивает гибкое
   управление и контроль сетевого трафика между разными группами безопасности, используя протоколы TCP, UDP и ICMP. Этот
   ресурс позволяет точно настраивать, какой трафик может передаваться между группами, обеспечивая таким образом высокий
@@ -40,7 +38,7 @@ import Api from '@site/src/snippets/s2s-ie/_APi.mdx'
     </TabItem>
 
     <TabItem value='api'>
-        <div class="text-justify">
+        <div className="text-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).
             <br />
             Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_ie_sg_sg_rule) и

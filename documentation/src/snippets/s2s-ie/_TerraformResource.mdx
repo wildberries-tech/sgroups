@@ -4,7 +4,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
-<div class="paragraph">
+<div className="paragraph">
   <p>{DICTIONARY.terraformResource.full}</p>
 </div>
 <ul>
@@ -27,11 +27,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <caption>Области применения полей относительно используемого протокола</caption>
   <thead>
     <tr>
-      <th rowspan="2">название</th>
-      <th rowspan="2">обязательность</th>
-      <th rowspan="2">тип данных</th>
-      <th rowspan="2">значение по умолчанию</th>
-      <th colspan="3">transport*</th>
+      <th rowSpan="2">название</th>
+      <th rowSpan="2">обязательность</th>
+      <th rowSpan="2">тип данных</th>
+      <th rowSpan="2">значение по умолчанию</th>
+      <th colSpan="3">transport*</th>
     </tr>
     <tr>
       <th>TCP</th>
@@ -45,18 +45,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td>да</td>
       <td>Object</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName</td>
       <td>да</td>
       <td>Object</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.traffic</td>
@@ -65,104 +65,104 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>Enum("ingress", "egress")</nobr>
       </td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.transport</td>
       <td>да</td>
       <td>Enum("TCP", "UDP")</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>items.$ruleName.sg</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.sg_local</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.ports</td>
       <td>нет</td>
       <td>Object[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>items.$ruleName.ports[].d</td>
       <td>нет</td>
       <td>String</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>items.$ruleName.ports[].s</td>
       <td>нет</td>
       <td>String</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>items.$ruleName.logs</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.trace</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.ip_v</td>
       <td>да</td>
       <td>Enum("IPv4", "IPv6")</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>items.$ruleName.type</td>
       <td>да</td>
       <td>Strng[]</td>
       <td>null</td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>
 
-<h4 class="custom-heading">Ограничения</h4>
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
@@ -195,7 +195,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </li>
 </ul>
 
-<h4 class="custom-heading">Пример использования</h4>
+<h4 className="custom-heading">Пример использования</h4>
 
 <Tabs
     defaltValue = "tcp"
@@ -206,9 +206,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     ]}
 >
     <TabItem value="tcp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
 
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
@@ -231,8 +231,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
 
 
                 ```hcl
@@ -260,9 +260,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     </TabItem>
 
     <TabItem value="udp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
 
 
                 ```hcl
@@ -286,8 +286,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
@@ -311,9 +311,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     </TabItem>
 
     <TabItem value="icmp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
 
                 ```hcl
                 resource "sgroups_icmp_rules" "rules" {
@@ -342,8 +342,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
 
 
                 ```hcl

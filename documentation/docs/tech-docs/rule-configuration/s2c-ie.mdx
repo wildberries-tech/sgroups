@@ -2,7 +2,6 @@
 id: s2c-ie
 ---
 
-import React from 'react'
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import TerraforModule from '@site/src/snippets/s2c-ie/_TerraformModule.mdx'
@@ -14,7 +13,7 @@ import Api from '@site/src/snippets/s2c-ie/_APi.mdx'
 
 #### Описание
 
-<div class="paragraph">
+<div className="paragraph">
   Правило `IE:S2C` (Ingress/Egress Security Group to CIDR) предоставляет возможность гибкого управления и контроля за
   сетевым трафиком между различными группами безопасности и подсетями, используя TCP, UDP и ICMP протоколы. Это правило
   дает возможность детально настроить, какой трафик разрешен к передаче между группами безопасности и определенными
@@ -39,7 +38,7 @@ import Api from '@site/src/snippets/s2c-ie/_APi.mdx'
     </TabItem>
 
     <TabItem value='api'>
-        <div class="text-justify">
+        <div className="text-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
             Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_cidr_sg_rule)<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `ieCidrSgRules` `ieCidrSgIcmpRules`.

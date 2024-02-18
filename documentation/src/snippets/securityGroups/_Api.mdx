@@ -26,11 +26,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 <table>
   <thead>
     <tr>
-      <th rowspan="2">название</th>
-      <th rowspan="2">обязательность</th>
-      <th rowspan="2">тип данных</th>
-      <th rowspan="2">Значение по умолчанию</th>
-      <th colspan="2">API request</th>
+      <th rowSpan="2">название</th>
+      <th rowSpan="2">обязательность</th>
+      <th rowSpan="2">тип данных</th>
+      <th rowSpan="2">Значение по умолчанию</th>
+      <th colSpan="2">API request</th>
     </tr>
     <tr>
       <th>groups</th>
@@ -43,8 +43,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td>да</td>
       <td>Object[]</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>groups.groups[].defaultAction</td>
@@ -53,96 +53,96 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>Enum("ACCEPT", "DROP")</nobr>
       </td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>groups.groups[].logs</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>groups.groups[].name</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>groups.groups[].networks</td>
       <td>нет</td>
       <td>String[]</td>
       <td>[]</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>groups.groups[].trace</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[]</td>
       <td>да</td>
       <td>Object[]</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].ICMP</td>
       <td>да</td>
       <td>Object</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].ICMP.IPv</td>
       <td>да</td>
       <td>Enum("IPv4", "IPv6")</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].ICMP.Types</td>
       <td>нет</td>
       <td>String[]</td>
       <td>[]</td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].Sg</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].logs</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>sgIcmpRules.rules[].trace</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>syncOp</td>
@@ -151,13 +151,13 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
       </td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>
 
-<h4 class="custom-heading">Ограничения</h4>
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
@@ -239,7 +239,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 </Tabs>
 
-<h4 class="custom-heading">Выходные параметры</h4>
+<h4 className="custom-heading">Выходные параметры</h4>
 
 <table>
   <thead>
@@ -258,7 +258,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </tbody>
 </table>
 
-<h4 class="custom-heading">Возможные ошибки API</h4>
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <details>
     <summary>Ошибка в запросе</summary>
@@ -312,7 +312,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 </details>
 
-<h4 class="custom-heading">Диаграмма последовательности</h4>
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 ```mermaid
 sequenceDiagram

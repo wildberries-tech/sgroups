@@ -4,7 +4,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
-<div class="paragraph">
+<div className="paragraph">
   В этом разделе мы покажем, как правила фильтрации трафика, созданные с помощью Terraform и API, внедряются в настройки
   nftables. Это позволяет легко интегрировать сложные правила безопасности прямо в вашу систему фильтрации трафика.
 </div>
@@ -15,8 +15,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`$Transport` - {DICTIONARY.transport.short}</li>
   <li>`$NftRuleType` - {DICTIONARY.nftRuleType.short}</li>
   <li>`$IcmpTypeList` - {DICTIONARY.icmpTypes.short}</li>
-  <li class="text-justify">`$SrcPorts` - {DICTIONARY.srcPorts.short}</li>
-  <li class="text-justify">`$DstPorts` - {DICTIONARY.dstPorts.short}</li>
+  <li className="text-justify">`$SrcPorts` - {DICTIONARY.srcPorts.short}</li>
+  <li className="text-justify">`$DstPorts` - {DICTIONARY.dstPorts.short}</li>
   <li>`$NftCounter` - {DICTIONARY.nftCounter.short}</li>
   <li>`$Log` - {DICTIONARY.log.short}</li>
   <li>`$NftRuleVerdict` - {DICTIONARY.nftRuleVerdict.short}</li>
@@ -26,10 +26,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <caption>Области применения полей относительно используемого протокола</caption>
   <thead>
     <tr>
-      <th rowspan="2">шаблон параметра</th>
-      <th rowspan="2">структура параметра</th>
-      <th rowspan="2">значения</th>
-      <th colspan="3">transport*</th>
+      <th rowSpan="2">шаблон параметра</th>
+      <th rowSpan="2">структура параметра</th>
+      <th rowSpan="2">значения</th>
+      <th colSpan="3">transport*</th>
     </tr>
     <tr>
       <th>TCP</th>
@@ -51,9 +51,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
           </li>
         </ul>
       </td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$SrcSgroup</td>
@@ -61,9 +61,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>`saddr`</nobr>
       </td>
       <td>`@${IPSet(sgName)}`</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$DstSgroup</td>
@@ -71,9 +71,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>`daddr`</nobr>
       </td>
       <td>`@${IPSet(sgName)}`</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$Transport</td>
@@ -81,41 +81,41 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>`tcp | udp | icmp`</nobr>
       </td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$NftRuleType</td>
       <td>`ip`</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$IcmpTypeList</td>
       <td>`type {}`</td>
       <td>Набор целочисленных значений от 0 до 255</td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$SrcPorts</td>
       <td>`sport {}`</td>
       <td>Набор целочисленных значений от 1 до 65535</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$DstPorts</td>
       <td>`dport {}`</td>
       <td>Набор целочисленных значений от 1 до 65535</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$NftCounter</td>
@@ -123,9 +123,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>`counter`</nobr>
       </td>
       <td>`packets 0 bytes 0`</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$Log</td>
@@ -133,30 +133,30 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>`log`</nobr>
       </td>
       <td>`level debug flags ip options`</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$NftRuleVerdict</td>
       <td>`Accept`</td>
       <td>
-        <div class="text-justify">
+        <div className="text-justify">
           <i>
             * Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил
             происходит только с помощью goto.
           </i>
         </div>
-        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+        <i>Подробнее: [Verdict statement](/tech-docs/rule-configuration/main#verdict-statement)</i>
       </td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>
 
-<h4 class="custom-heading">Пример использования</h4>
+<h4 className="custom-heading">Пример использования</h4>
 
 <Tabs
     defaltValue = "tcp"

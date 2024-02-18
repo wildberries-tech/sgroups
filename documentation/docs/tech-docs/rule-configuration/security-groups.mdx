@@ -4,7 +4,6 @@ id: security-groups
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
-
 import Api from '@site/src/snippets/securityGroups/_Api.mdx'
 import Nftables from '@site/src/snippets/securityGroups/_Nftables.mdx'
 import TerraforModule from '@site/src/snippets/securityGroups/_TerraformModule.mdx'
@@ -12,7 +11,7 @@ import TerraformResource from '@site/src/snippets/securityGroups/_TerraformResou
 
 # Security Groups
 
-<div class="paragraph">
+<div className="paragraph">
   Ресурс `Groups` представляет собой введенную нами абстракцию, которая позволят объединить подсети в логические группы
   и применять к ним единые правила сетевого взаимодействия.
 </div>
@@ -36,12 +35,12 @@ import TerraformResource from '@site/src/snippets/securityGroups/_TerraformResou
     </TabItem>
 
     <TabItem value="api">
-        <div class="test-justify">
+        <div className="test-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).
             <br />
             Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_sg)
         </div>
-        <div class="paragraph">
+        <div className="paragraph">
             Приведеные ранее примеры создания Security Group c правилами по умолчанию для ICMP с использованием Terraform Module и
             Terraform Resource преобразуются в два API запроса.
         </div>

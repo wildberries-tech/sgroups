@@ -24,11 +24,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
     <thead>
         <tr>
-            <th rowspan="2">название</th>
-            <th rowspan="2">обязательность</th>
-            <th rowspan="2">тип данных</th>
-            <th rowspan="2">значение по умолчанию</th>
-            <th colspan="2">transport*</th>
+            <th rowSpan="2">название</th>
+            <th rowSpan="2">обязательность</th>
+            <th rowSpan="2">тип данных</th>
+            <th rowSpan="2">значение по умолчанию</th>
+            <th colSpan="2">transport*</th>
         </tr>
         <tr>
             <th>TCP</th>
@@ -41,72 +41,72 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
             <td>да</td>
             <td>Object</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].FQDN</td>
             <td>да</td>
             <td>String</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].logs</td>
             <td>нет</td>
             <td>Boolean</td>
             <td>false</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].ports</td>
             <td>нет</td>
             <td>Object[]</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].ports[].d</td>
             <td>нет</td>
             <td>String</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].ports[].s</td>
             <td>нет</td>
             <td>String</td>
             <td>null</td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].sgFrom</td>
             <td>да</td>
             <td>String</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].transport</td>
             <td>да</td>
             <td>Enum("TCP", "UDP")</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>fqdnRules.rules[].protocols</td>
             <td>нет</td>
             <td>Object[]</td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
         <tr>
             <td>syncOp</td>
@@ -115,14 +115,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
             </td>
             <td></td>
-            <td class="green center">✔</td>
-            <td class="green center">✔</td>
+            <td className="green center">✔</td>
+            <td className="green center">✔</td>
         </tr>
     </tbody>
 
 </table>
 
-<h4 class="custom-heading">Ограничения</h4>
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
@@ -147,7 +147,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </li>
 </ul>
 
-<h4 class="custom-heading">Пример использования</h4>
+<h4 className="custom-heading">Пример использования</h4>
 
 <Tabs
     defaltValue="tcp"
@@ -204,7 +204,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 </Tabs>
 
-<h4 class="custom-heading">Выходные параметры</h4>
+<h4 className="custom-heading">Выходные параметры</h4>
 
 <table>
   <thead>
@@ -223,7 +223,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </tbody>
 </table>
 
-<h4 class="custom-heading">Возможные ошибки API</h4>
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <details>
     <summary>Ошибка в запросе</summary>
@@ -274,7 +274,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 </details>
 
-<h4 class="custom-heading">Диаграмма последовательности</h4>
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
     ```mermaid
 

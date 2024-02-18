@@ -27,11 +27,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <caption>Области применения полей относительно используемого протокола</caption>
   <thead>
     <tr>
-      <th rowspan="2">название</th>
-      <th rowspan="2">обязательность</th>
-      <th rowspan="2">тип данных</th>
-      <th rowspan="2">значение по умолчанию</th>
-      <th colspan="3">transport*</th>
+      <th rowSpan="2">название</th>
+      <th rowSpan="2">обязательность</th>
+      <th rowSpan="2">тип данных</th>
+      <th rowSpan="2">значение по умолчанию</th>
+      <th colSpan="3">transport*</th>
     </tr>
     <tr>
       <th>TCP</th>
@@ -45,117 +45,117 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td>да</td>
       <td>Object[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].sg</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].sg_local</td>
       <td>да</td>
       <td>String</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].logs</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].trace</td>
       <td>нет</td>
       <td>Boolean</td>
       <td>false</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].ports</td>
       <td>нет</td>
       <td>Object[]</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$node.rules[].ports[].d</td>
       <td>нет</td>
       <td>String</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$node.rules[].ports[].s</td>
       <td>нет</td>
       <td>String</td>
       <td>null</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$node.rules[].traffic</td>
       <td>да</td>
       <td>Enum("Ingress", "Egress")</td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].transport</td>
       <td>нет</td>
       <td>Enum("TCP", "UDP")</td>
       <td>TCP</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center"></td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center"></td>
     </tr>
     <tr>
       <td>$node.rules[].ICMP</td>
       <td>да</td>
       <td>Object</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].ICMP.IPv</td>
       <td>да</td>
       <td>Enum("IPv4", "IPv6")</td>
       <td></td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>$node.rules[].ICMP.Types</td>
       <td>нет</td>
       <td>String[]</td>
       <td>[]</td>
-      <td class="green center"></td>
-      <td class="green center"></td>
-      <td class="green center">✔</td>
+      <td className="green center"></td>
+      <td className="green center"></td>
+      <td className="green center">✔</td>
     </tr>
     <tr>
       <td>syncOp</td>
@@ -164,14 +164,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <nobr>Enum("Delete", "UpSert", "FullSync")</nobr>
       </td>
       <td></td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
-      <td class="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
+      <td className="green center">✔</td>
     </tr>
   </tbody>
 </table>
 
-<h4 class="custom-heading">Ограничения</h4>
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
@@ -196,7 +196,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </li>
 </ul>
 
-<h4 class="custom-heading">Пример использования</h4>
+<h4 className="custom-heading">Пример использования</h4>
 
 <Tabs
     defaltValue = "tcp"
@@ -207,9 +207,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     ]}
 >
     <TabItem value="tcp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
                     ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -234,8 +234,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 }'
                     ```
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
                     ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -263,9 +263,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         </div>
     </TabItem>
     <TabItem value="udp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
                     ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -290,8 +290,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 }'
                     ```
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
                     ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -319,9 +319,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         </div>
     </TabItem>
     <TabItem value="icmp">
-        <div class="parent-div">
-            <div class="child-block">
-                <h4 class="center">Ingress</h4>
+        <div className="parent-div">
+            <div className="child-block">
+                <h4 className="center">Ingress</h4>
                 ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -345,8 +345,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 }'
                 ```
             </div>
-            <div class="child-block">
-                <h4 class="center">Egress</h4>
+            <div className="child-block">
+                <h4 className="center">Egress</h4>
                 ```bash
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
@@ -374,7 +374,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     </TabItem>
 </Tabs>
 
-<h4 class="custom-heading">Выходные параметры</h4>
+<h4 className="custom-heading">Выходные параметры</h4>
 
 <table>
   <thead>
@@ -393,7 +393,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </tbody>
 </table>
 
-<h4 class="custom-heading">Возможные ошибки API</h4>
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Tabs
     defaltValue='tcp-udp'
@@ -509,7 +509,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 </Tabs>
 
-<h4 class="custom-heading">Диаграмма последовательности</h4>
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 ```mermaid
 sequenceDiagram

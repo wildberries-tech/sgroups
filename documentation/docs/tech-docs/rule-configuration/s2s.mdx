@@ -4,10 +4,6 @@ id: s2s
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { DICTIONARY } from '@site/src/constants/dictionary.ts'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
-
 import TerraforModule from '@site/src/snippets/s2s/_TerraformModule.mdx'
 import TerraformResource from '@site/src/snippets/s2s/_TerraformResource.mdx'
 import Nftables from '@site/src/snippets/s2s/_Nftables.mdx'
@@ -15,7 +11,7 @@ import Api from '@site/src/snippets/s2s/_APi.mdx'
 
 # Sgroup to Sgroup
 
-<div class="paragraph">
+<div className="paragraph">
   Данный тип правил управляет обменом данными между различными группами безопасности. Он автоматически создает два
   правила на хостах: одно для исходящего трафика от инициирующей стороны и другое для входящего трафика от группы
   безопасности, к которой предоставлен доступ.
@@ -39,7 +35,7 @@ import Api from '@site/src/snippets/s2s/_APi.mdx'
     </TabItem>
 
     <TabItem value="api">
-        <div class="text-justify">
+        <div className="text-justify">
             Более подробную документацию по API можно посмотреть [здесь](../sgroups/api/v1/sync.mdx).<br />
             Более подробно по организации БД можно посмотреть [здесь](../sgroups/database.md#tbl_sg_rule)<br />
             Далее везде в документе подразумевается что все места, содержащие переменную `$node`, могут принять одно из двух значений: `sgRules`, `sgSgIcmpRules`.
