@@ -2,6 +2,23 @@
   font-family: 'Roboto';
 }
 
+.navbar__inner {
+  @media (min-width: 1440px) {
+    margin: 0 auto;
+    width: var(--ifm-custom-container-width-xl);
+  }
+}
+
+.main-wrapper {
+  @media (min-width: 997px) {
+    max-width: var(--ifm-custom-container-width);
+    margin: 0 auto;
+  }
+  @media (min-width: 1440px) {
+    max-width: var(--ifm-custom-container-width-xl);
+  }
+}
+
 /*
   Выравнивание текста по ширине
 */
@@ -47,4 +64,8 @@ table {
   flex: 1;
   padding: 10px;
   border: 1px solid #000;
+}
+
+.paragraph {
+  text-indent: 0;
 }

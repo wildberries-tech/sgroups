@@ -58,6 +58,7 @@ body.header-not-at-top {
 
 .header-github-link {
   margin-left: 35px;
+  position: relative;
 
   @media (min-width: 997px) {
     margin-left: auto;
@@ -70,7 +71,7 @@ body.header-not-at-top {
 
 .header-github-link:before {
   position: absolute;
-  left: 15px;
+  left: -30px;
   display: flex;
   width: 24px;
   height: 24px;
@@ -79,8 +80,7 @@ body.header-not-at-top {
   content: '';
 
   @media (min-width: 997px) {
-    right: 155px;
-    left: auto;
+    left: -25px;
   }
 }
 

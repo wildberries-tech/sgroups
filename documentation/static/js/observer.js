@@ -17,4 +17,4 @@ window.onscroll = () =>
     } else {
       document.body.classList.remove('header-not-at-top')
     }
-  }, 300)
+  }, 100)
