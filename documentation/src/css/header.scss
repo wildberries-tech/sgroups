@@ -2,28 +2,30 @@
   transition: height 0.1s ease-out;
 }
 
-.navbar__brand {
-  margin-top: -3rem;
-  margin-left: 10px;
-  transition: all 0.1s ease-out;
-}
+@media (min-width: 997px) {
+  .navbar__brand {
+    margin-top: -3rem;
+    margin-left: 10px;
+    transition: all 0.1s ease-out;
+  }
 
-.navbar__items--right {
-  margin-top: -3rem;
-  transition: all 0.1s ease-out;
-}
+  .navbar__items--right {
+    margin-top: -3rem;
+    transition: all 0.1s ease-out;
+  }
 
-.navbar__title {
-  font-size: 24px;
-  transition: all 0.1s ease-out;
-}
+  .navbar__title {
+    font-size: 24px;
+    transition: all 0.1s ease-out;
+  }
 
-.navbar__item {
-  margin-top: 3.25rem;
-  transition: all 0.1s ease-out;
+  .navbar__item {
+    margin-top: 3.25rem;
+    transition: all 0.1s ease-out;
 
-  &:nth-child(3) {
-    margin-left: -160px;
+    &:nth-child(3) {
+      margin-left: -160px;
+    }
   }
 }
 
