@@ -106,6 +106,13 @@ const config: Config = {
       additionalLanguages: ['bash', 'hcl', 'json'],
     },
   } satisfies Preset.ThemeConfig,
+
+  scripts: [
+    {
+      src: '/swarm_doc/js/observer.js',
+      async: false,
+    },
+  ],
 }
 
 export default config
