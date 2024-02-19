@@ -26,3 +26,39 @@ li.theme-doc-sidebar-item-link-level-1:not(:first-child) {
 .menu__list-item-collapsible:hover {
   background: initial;
 }
+
+.menu__list-item-collapsible--active {
+  background: initial;
+}
+
+.theme-doc-sidebar-item-category-level-1 > div:has(.menu__link--sublist-caret) {
+  pointer-events: none;
+
+  .menu__link--sublist {
+    color: #959595;
+  }
+}
+
+.menu__link--active {
+  color: initial;
+}
+
+.menu__link--sublist {
+  font-weight: bold;
+}
+
+.menu__link--sublist-caret:after {
+  display: none;
+}
+
+.theme-doc-sidebar-item-category-level-2 .menu__link--sublist-caret:after {
+  display: block;
+}
+
+.theme-doc-sidebar-item-category-level-1 > div > button {
+  display: none;
+}
+
+.menu__list .menu__list {
+  padding-left: 0;
+}
