@@ -319,7 +319,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_cidr_icmp_rules" "rules" {
                     items = {
-                    "cidr(10.0.0.0/8)sg(sg-example)icmp4" = {
+                    "icmp4:cidr(10.0.0.0/8)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_name = sg-example-local
@@ -328,7 +328,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = ingress
                     }
-                    "cidr(10.0.0.0/8)sg(sg-example)icmp6" = {
+                    "icmp6:cidr(10.0.0.0/8)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_name = sg-example-local
@@ -350,7 +350,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_cidr_icmp_rules" "rules" {
                     items = {
-                    "sg(sg-example-local)sg(sg-example)icmp4" = {
+                    "icmp4:cidr(10.0.0.0/8)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_name = sg-example-local
@@ -359,7 +359,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = egress
                     }
-                    "sg(sg-example-local)sg(sg-example)icmp6" = {
+                    "icmp6:cidr(10.0.0.0/8)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_name = sg-example-local
