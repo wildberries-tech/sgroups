@@ -5,30 +5,33 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 <div className="paragraph">
   <p>{DICTIONARY.terraformModule.full}</p>
 </div>
-<table>
-  <thead>
-    <tr>
-      <th>название параметра</th>
-      <th>описание</th>
-      <th>тип данных</th>
-      <th>значение по умолчанию</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>name</td>
-      <td>Имя Security Group</td>
-      <td>String</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>cidrs[]</td>
-      <td>Список CIDR, связанных с Security Group</td>
-      <td>String[]</td>
-      <td>[]</td>
-    </tr>
-  </tbody>
-</table>
+
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название параметра</th>
+        <th>описание</th>
+        <th>тип данных</th>
+        <th>значение по умолчанию</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>name</td>
+        <td>Имя Security Group</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>cidrs[]</td>
+        <td>Список CIDR, связанных с Security Group</td>
+        <td>String[]</td>
+        <td>[]</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 #### Ограничения
 

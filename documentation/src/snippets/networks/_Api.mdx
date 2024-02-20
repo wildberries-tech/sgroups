@@ -12,48 +12,50 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`syncOp` - {DICTIONARY.syncOp.short}</li>
 </ul>
 
-<table>
-  <thead>
-    <tr>
-      <th>название</th>
-      <th>обязательность</th>
-      <th>тип данных</th>
-      <th>значение по умолчанию</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>networks[]</td>
-      <td>да</td>
-      <td>Object[]</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>networks[].name</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>networks[].network</td>
-      <td>да</td>
-      <td>Object</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>networks[].network.CIDR</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>syncOp</td>
-      <td>да</td>
-      <td>Enum("Delete", "Upsert", "FullSync")</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>обязательность</th>
+        <th>тип данных</th>
+        <th>значение по умолчанию</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>networks[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>networks[].name</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>networks[].network</td>
+        <td>да</td>
+        <td>Object</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>networks[].network.CIDR</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>syncOp</td>
+        <td>да</td>
+        <td>Enum("Delete", "Upsert", "FullSync")</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Ограничения</h4>
 
@@ -88,22 +90,24 @@ curl '127.0.0.1:9007/v1/sync' \
 
 <h4 className="custom-heading">Выходные параметры</h4>
 
-<table>
-  <thead>
-    <tr>
-      <th>название</th>
-      <th>тип данных</th>
-      <th>описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>-</td>
-      <td>Object</td>
-      <td>в случае успеха возвращается пустое тело</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>тип данных</th>
+        <th>описание</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>-</td>
+        <td>Object</td>
+        <td>в случае успеха возвращается пустое тело</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
