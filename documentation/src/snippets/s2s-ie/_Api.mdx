@@ -23,153 +23,155 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`syncOp` - {DICTIONARY.syncOp.short}</li>
 </ul>
 
-<table>
-  <caption>Области применения полей относительно используемого протокола</caption>
-  <thead>
-    <tr>
-      <th rowSpan="2">название</th>
-      <th rowSpan="2">обязательность</th>
-      <th rowSpan="2">тип данных</th>
-      <th rowSpan="2">значение по умолчанию</th>
-      <th colSpan="3">transport*</th>
-    </tr>
-    <tr>
-      <th>TCP</th>
-      <th>UDP</th>
-      <th>ICMP</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>$node.rules[]</td>
-      <td>да</td>
-      <td>Object[]</td>
-      <td>null</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].sg</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].sg_local</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].logs</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].trace</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ports</td>
-      <td>нет</td>
-      <td>Object[]</td>
-      <td>null</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ports[].d</td>
-      <td>нет</td>
-      <td>String</td>
-      <td>null</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ports[].s</td>
-      <td>нет</td>
-      <td>String</td>
-      <td>null</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$node.rules[].traffic</td>
-      <td>да</td>
-      <td>Enum("Ingress", "Egress")</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].transport</td>
-      <td>нет</td>
-      <td>Enum("TCP", "UDP")</td>
-      <td>TCP</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ICMP</td>
-      <td>да</td>
-      <td>Object</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ICMP.IPv</td>
-      <td>да</td>
-      <td>Enum("IPv4", "IPv6")</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$node.rules[].ICMP.Types</td>
-      <td>нет</td>
-      <td>String[]</td>
-      <td>[]</td>
-      <td className="green center"></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>syncOp</td>
-      <td>да</td>
-      <td>
-        <nobr>Enum("Delete", "UpSert", "FullSync")</nobr>
-      </td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <caption>Области применения полей относительно используемого протокола</caption>
+    <thead>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">значение по умолчанию</th>
+        <th colSpan="3">transport*</th>
+      </tr>
+      <tr>
+        <th>TCP</th>
+        <th>UDP</th>
+        <th>ICMP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$node.rules[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].sg</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].sg_local</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].logs</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].trace</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports</td>
+        <td>нет</td>
+        <td>Object[]</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports[].d</td>
+        <td>нет</td>
+        <td>String</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports[].s</td>
+        <td>нет</td>
+        <td>String</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$node.rules[].traffic</td>
+        <td>да</td>
+        <td>Enum("Ingress", "Egress")</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].transport</td>
+        <td>нет</td>
+        <td>Enum("TCP", "UDP")</td>
+        <td>TCP</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ICMP</td>
+        <td>да</td>
+        <td>Object</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ICMP.IPv</td>
+        <td>да</td>
+        <td>Enum("IPv4", "IPv6")</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ICMP.Types</td>
+        <td>нет</td>
+        <td>String[]</td>
+        <td>[]</td>
+        <td className="green center"></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>syncOp</td>
+        <td>да</td>
+        <td>
+          <nobr>Enum("Delete", "UpSert", "FullSync")</nobr>
+        </td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Ограничения</h4>
 
@@ -376,22 +378,24 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <h4 className="custom-heading">Выходные параметры</h4>
 
-<table>
-  <thead>
-    <tr>
-      <th>название</th>
-      <th>тип данных</th>
-      <th>описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>-</td>
-      <td>Object</td>
-      <td>в случае успеха возвращается пустое тело</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>тип данных</th>
+        <th>описание</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>-</td>
+        <td>Object</td>
+        <td>в случае успеха возвращается пустое тело</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
