@@ -8,8 +8,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <ul>
   <li>`$node.rules[]` - {DICTIONARY.rules.short}</li>
-  <li>`$node.rules[].sg` - {DICTIONARY.sg.short}</li>
-  <li>`$node.rules[].sg_local` - {DICTIONARY.sgLocal.short}</li>
+  <li>`$node.rules[].Sg` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].SgLocal` - {DICTIONARY.sgLocal.short}</li>
   <li>`$node.rules[].logs` - {DICTIONARY.log.short}</li>
   <li>`$node.rules[].trace` - {DICTIONARY.trace.short}</li>
   <li>`$node.rules[].ports` - {DICTIONARY.ports.short}</li>
@@ -51,7 +51,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td className="green center">✔</td>
       </tr>
       <tr>
-        <td>$node.rules[].sg</td>
+        <td>$node.rules[].Sg</td>
         <td>да</td>
         <td>String</td>
         <td></td>
@@ -60,7 +60,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td className="green center">✔</td>
       </tr>
       <tr>
-        <td>$node.rules[].sg_local</td>
+        <td>$node.rules[].SgLocal</td>
         <td>да</td>
         <td>String</td>
         <td></td>
@@ -162,7 +162,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td>syncOp</td>
         <td>да</td>
         <td>
-          <nobr>Enum("Delete", "UpSert", "FullSync")</nobr>
+          <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
         </td>
         <td></td>
         <td className="green center">✔</td>
@@ -219,8 +219,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "sgSgRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -245,8 +245,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "sgSgRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -275,8 +275,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "sgSgRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -301,8 +301,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "sgSgRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -328,11 +328,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
                 --data '{
-                    "ieSgSgIcmpRules": {
+                    "sgSgIcmpRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ICMP": {
@@ -353,11 +353,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
                 --data '{
-                    "ieSgSgIcmpRules": {
+                    "sgSgIcmpRules": {
                         "rules": [
                         {
-                            "sg": "sg-example",
-                            "sg_local": "sg-example-local",
+                            "Sg": "sg-example",
+                            "SgLocal": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ICMP": {
