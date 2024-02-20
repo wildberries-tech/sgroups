@@ -70,6 +70,15 @@ table {
   text-indent: 0;
 }
 
+/* others */
 pre span {
   font-family: 'Source Code Pro', monospace;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.scrollable-x {
+  overflow-x: auto;
 }

@@ -19,7 +19,6 @@ values = {[
 <TabItem value='docker'>
 
     ```bash title='bash'
-
     git clone https://github.com/H-BF/sgroups
     cd sgroups
 
@@ -206,45 +205,47 @@ server:
   graceful-shutdown: 30s
 ```
 
-<table>
-  <caption>Параметры файла config-server.yaml</caption>
-  <thead>
-    <tr>
-      <th>Параметр</th>
-      <th>Описание</th>
-      <th>Тип</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>`logger.level`</td>
-      <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
-      <td>String</td>
-    </tr>
-    <tr>
-      <td>`metrics.enable`</td>
-      <td>Включить/отключить возможность получения метрик приложения по "методу" `/metrics`</td>
-      <td>Boolean</td>
-    </tr>
-    <tr>
-      <td>`healthcheck.enable`</td>
-      <td>Включить/отключить возможность получения статуса о состоянии приложения по "методу" `/healthcheck`</td>
-      <td>Boolean</td>
-    </tr>
-    <tr>
-      <td>`server.endpoint`</td>
-      <td></td>
-      <td>String</td>
-    </tr>
-    <tr>
-      <td>`storage.type`</td>
-      <td>Тип базы данных. Допустимые значения: `internal`, `postgres`.</td>
-      <td>String</td>
-    </tr>
-    <tr>
-      <td>`storage.postgres.url`</td>
-      <td></td>
-      <td>String</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <caption>Параметры файла config-server.yaml</caption>
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Тип</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>`logger.level`</td>
+        <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`metrics.enable`</td>
+        <td>Включить/отключить возможность получения метрик приложения по "методу" `/metrics`</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>`healthcheck.enable`</td>
+        <td>Включить/отключить возможность получения статуса о состоянии приложения по "методу" `/healthcheck`</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>`server.endpoint`</td>
+        <td></td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`storage.type`</td>
+        <td>Тип базы данных. Допустимые значения: `internal`, `postgres`.</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`storage.postgres.url`</td>
+        <td></td>
+        <td>String</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
