@@ -27,55 +27,57 @@ import TabItem from '@theme/TabItem'
 
 ### Параметры
 
-<table>
-    <thead>
-        <tr>
-            <td>Наименование параметра</td>
-            <td>Описание</td>
-            <td>Значения</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>IPSet_Name</td>
-            <td>Наименование IPSet</td>
-            <td>
-                Должно соответствовать одному из шаблонов:
-                <ul>
-                    <li><b>NetIPv4-$\{NAME\}</b> - для описания массивов IP адресов типа v4</li>
-                    <li><b>NetIPv6-$\{NAME\}</b> - для описания массивов IP адресов типа v6</li>
-                </ul>            
-            </td>
-        </tr>
-        <tr>
-            <td>type</td>
-            <td>Описывает тип данных</td>
-            <td>
-                Могут быть установлены следующие значения:
-                <ul>
-                    <li><b>ipv4_addr</b> - для описания массивов IP адресов типа v4</li>
-                    <li><b>ipv6_addr</b> - для описания массивов IP адресов типа v6</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>flags</td>
-            <td>Описывает свойства IPSet</td>
-            <td>
-                Установлены следующие значения:
-                <ul>
-                    <li><b>constant</b> - флаг используется если значение элементов в множестве являются постоянными и не могут быть изменены</li>
-                    <li><b>interval</b> - флаг используется для создания диапазона элементов множества</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>elements</td>
-            <td>Указывает массив содержащихся в IPSet элементов подсетей (CIDR)</td>
-            <td>Значения CIDR, в случае нескольких значений перечисляются через запятую</td>
-        </tr>
-    </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+      <thead>
+          <tr>
+              <td>Наименование параметра</td>
+              <td>Описание</td>
+              <td>Значения</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>IPSet_Name</td>
+              <td>Наименование IPSet</td>
+              <td>
+                  Должно соответствовать одному из шаблонов:
+                  <ul>
+                      <li><b>NetIPv4-$\{NAME\}</b> - для описания массивов IP адресов типа v4</li>
+                      <li><b>NetIPv6-$\{NAME\}</b> - для описания массивов IP адресов типа v6</li>
+                  </ul>
+              </td>
+          </tr>
+          <tr>
+              <td>type</td>
+              <td>Описывает тип данных</td>
+              <td>
+                  Могут быть установлены следующие значения:
+                  <ul>
+                      <li><b>ipv4_addr</b> - для описания массивов IP адресов типа v4</li>
+                      <li><b>ipv6_addr</b> - для описания массивов IP адресов типа v6</li>
+                  </ul>
+              </td>
+          </tr>
+          <tr>
+              <td>flags</td>
+              <td>Описывает свойства IPSet</td>
+              <td>
+                  Установлены следующие значения:
+                  <ul>
+                      <li><b>constant</b> - флаг используется если значение элементов в множестве являются постоянными и не могут быть изменены</li>
+                      <li><b>interval</b> - флаг используется для создания диапазона элементов множества</li>
+                  </ul>
+              </td>
+          </tr>
+          <tr>
+              <td>elements</td>
+              <td>Указывает массив содержащихся в IPSet элементов подсетей (CIDR)</td>
+              <td>Значения CIDR, в случае нескольких значений перечисляются через запятую</td>
+          </tr>
+      </tbody>
+  </table>
+</div>
 
 ### Пример
 
@@ -145,59 +147,61 @@ set NetIPv4-${NAME} {
 
         #### Параметры
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значение</th>
-                    <th>Описание</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$\{Condition\}</td>
-                    <td>
-                        <nobr>`iifname != "lo"`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Проверка что трафик является входящим</td>
-                </tr>
-                <tr>
-                    <td>$\{Counter\}</td>
-                    <td>
-                        <nobr>`counter packets 0 bytes 0`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                </tr>
-                <tr>
-                    <td>$\{Verdict\}</td>
-                    <td>`goto`</td>
-                    <td>
-                        <div>Не параметризированный</div>
-                        <br />
-                        <div className="text-justify">
-                            <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                        </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                    </td>
-                    <td>Вердикт политики по пакетам данных</td>
-                </tr>
-                <tr>
-                    <td>$\{Hook\}</td>
-                    <td>`hook {Name}`</td>
-                    <td>input</td>
-                    <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
-                </tr>
-                        <tr>
-                    <td>$\{HookPriority\}</td>
-                    <td>`priority {IntValue}`</td>
-                    <td>0</td>
-                    <td>Приоритет выполнения цепочки одного типа</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="scrollable-x">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Шаблон параметра</th>
+                      <th>Структура параметра</th>
+                      <th>Значение</th>
+                      <th>Описание</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>$\{Condition\}</td>
+                      <td>
+                          <nobr>`iifname != "lo"`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Проверка что трафик является входящим</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Counter\}</td>
+                      <td>
+                          <nobr>`counter packets 0 bytes 0`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Verdict\}</td>
+                      <td>`goto`</td>
+                      <td>
+                          <div>Не параметризированный</div>
+                          <br />
+                          <div className="text-justify">
+                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                          </div>
+                          <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                      </td>
+                      <td>Вердикт политики по пакетам данных</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Hook\}</td>
+                      <td>`hook {Name}`</td>
+                      <td>input</td>
+                      <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
+                  </tr>
+                          <tr>
+                      <td>$\{HookPriority\}</td>
+                      <td>`priority {IntValue}`</td>
+                      <td>0</td>
+                      <td>Приоритет выполнения цепочки одного типа</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
 
         #### Шаблон
 
@@ -229,61 +233,63 @@ set NetIPv4-${NAME} {
 
         #### Параметры
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значение</th>
-                    <th>Описание</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$\{RuleType\}</td>
-                    <td>`ip`</td>
-                    <td></td>
-                    <td>Указатель на трафик типа IP</td>
-                </tr>
-                <tr>
-                    <td>$\{DstSgroup\}</td>
-                    <td>
-                        <nobr>`dst @${IPSet({sgName})}`</nobr>
-                    </td>
-                    <td>Наименование IPSet в котором описаны сети в Security Group</td>
-                    <td>Значение типа string, не должно содержать в себе пробелов</td>
-                </tr>
-                <tr>
-                    <td>$\{sgName\}</td>
-                    <td></td>
-                    <td></td>
-                    <td>Название Security Group</td>
-                </tr>
-                <tr>
-                    <td>$\{Counter\}</td>
-                    <td>
-                        <nobr>`counter packets 0 bytes 0`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                </tr>
-                <tr>
-                    <td>$\{Verdict\}</td>
-                    <td>
-                        <nobr>`goto {chainName}`</nobr>
-                    </td>
-                    <td>
-                        <div>Не параметризированный</div>
-                        <br />
-                        <div className="text-justify">
-                            <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                        </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                    </td>
-                    <td>Вердикт политики по пакетам данных</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="scrollable-x">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Шаблон параметра</th>
+                      <th>Структура параметра</th>
+                      <th>Значение</th>
+                      <th>Описание</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>$\{RuleType\}</td>
+                      <td>`ip`</td>
+                      <td></td>
+                      <td>Указатель на трафик типа IP</td>
+                  </tr>
+                  <tr>
+                      <td>$\{DstSgroup\}</td>
+                      <td>
+                          <nobr>`dst @${IPSet({sgName})}`</nobr>
+                      </td>
+                      <td>Наименование IPSet в котором описаны сети в Security Group</td>
+                      <td>Значение типа string, не должно содержать в себе пробелов</td>
+                  </tr>
+                  <tr>
+                      <td>$\{sgName\}</td>
+                      <td></td>
+                      <td></td>
+                      <td>Название Security Group</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Counter\}</td>
+                      <td>
+                          <nobr>`counter packets 0 bytes 0`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Verdict\}</td>
+                      <td>
+                          <nobr>`goto {chainName}`</nobr>
+                      </td>
+                      <td>
+                          <div>Не параметризированный</div>
+                          <br />
+                          <div className="text-justify">
+                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                          </div>
+                          <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                      </td>
+                      <td>Вердикт политики по пакетам данных</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
 
         #### Шаблон
 
@@ -378,59 +384,61 @@ chain INPUT {
 
         #### Параметры
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значение</th>
-                    <th>Описание</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$\{Condition\}</td>
-                    <td>
-                        <nobr>`oifname != "lo"`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Проверка что трафик является исходящим</td>
-                </tr>
-                <tr>
-                    <td>$\{Counter\}</td>
-                    <td>
-                        <nobr>`counter packets 0 bytes 0`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                </tr>
-                <tr>
-                    <td>$\{Verdict\}</td>
-                    <td>`goto`</td>
-                    <td>
-                        <div>Не параметризированный</div>
-                        <br />
-                        <div className="text-justify">
-                            <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                        </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                    </td>
-                    <td>Вердикт политики по пакетам данных</td>
-                </tr>
-                <tr>
-                    <td>$\{Hook\}</td>
-                    <td>`hook {Name}`</td>
-                    <td>input</td>
-                    <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
-                </tr>
-                        <tr>
-                    <td>$\{HookPriority\}</td>
-                    <td>`priority {IntValue}`</td>
-                    <td>0</td>
-                    <td>Приоритет выполнения цепочки одного типа</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="scrollable-x">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Шаблон параметра</th>
+                      <th>Структура параметра</th>
+                      <th>Значение</th>
+                      <th>Описание</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>$\{Condition\}</td>
+                      <td>
+                          <nobr>`oifname != "lo"`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Проверка что трафик является исходящим</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Counter\}</td>
+                      <td>
+                          <nobr>`counter packets 0 bytes 0`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Verdict\}</td>
+                      <td>`goto`</td>
+                      <td>
+                          <div>Не параметризированный</div>
+                          <br />
+                          <div className="text-justify">
+                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                          </div>
+                          <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                      </td>
+                      <td>Вердикт политики по пакетам данных</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Hook\}</td>
+                      <td>`hook {Name}`</td>
+                      <td>input</td>
+                      <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
+                  </tr>
+                          <tr>
+                      <td>$\{HookPriority\}</td>
+                      <td>`priority {IntValue}`</td>
+                      <td>0</td>
+                      <td>Приоритет выполнения цепочки одного типа</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
 
         #### Шаблон
 
@@ -462,61 +470,63 @@ chain INPUT {
 
         #### Параметры
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Шаблон параметра</th>
-                    <th>Структура параметра</th>
-                    <th>Значение</th>
-                    <th>Описание</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$\{RuleType\}</td>
-                    <td>`ip`</td>
-                    <td></td>
-                    <td>Описывает, что принимает трафик типа ip</td>
-                </tr>
-                <tr>
-                    <td>$\{SrcSgroup\}</td>
-                    <td>
-                        <nobr>`saddr @${IPSet({sgName})}`</nobr>
-                    </td>
-                    <td>Наименование IPSet в котором описаны сети от Security Group</td>
-                    <td>Значение типа string, не должно содержать в себе пробелов</td>
-                </tr>
-                <tr>
-                    <td>$\{sgName\}</td>
-                    <td></td>
-                    <td></td>
-                    <td>Название Security Group</td>
-                </tr>
-                <tr>
-                    <td>$\{Counter\}</td>
-                    <td>
-                        <nobr>`counter packets 0 bytes 0`</nobr>
-                    </td>
-                    <td>Не параметризированный</td>
-                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                </tr>
-                <tr>
-                    <td>$\{Verdict\}</td>
-                    <td>
-                        <nobr>`goto {chainName}`</nobr>
-                    </td>
-                    <td>
-                        <div>Не параметризированный</div>
-                        <br />
-                        <div className="text-justify">
-                            <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                        </div>
-                        <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                    </td>
-                    <td>Вердикт политики по пакетам данных</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="scrollable-x">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Шаблон параметра</th>
+                      <th>Структура параметра</th>
+                      <th>Значение</th>
+                      <th>Описание</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>$\{RuleType\}</td>
+                      <td>`ip`</td>
+                      <td></td>
+                      <td>Описывает, что принимает трафик типа ip</td>
+                  </tr>
+                  <tr>
+                      <td>$\{SrcSgroup\}</td>
+                      <td>
+                          <nobr>`saddr @${IPSet({sgName})}`</nobr>
+                      </td>
+                      <td>Наименование IPSet в котором описаны сети от Security Group</td>
+                      <td>Значение типа string, не должно содержать в себе пробелов</td>
+                  </tr>
+                  <tr>
+                      <td>$\{sgName\}</td>
+                      <td></td>
+                      <td></td>
+                      <td>Название Security Group</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Counter\}</td>
+                      <td>
+                          <nobr>`counter packets 0 bytes 0`</nobr>
+                      </td>
+                      <td>Не параметризированный</td>
+                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                  </tr>
+                  <tr>
+                      <td>$\{Verdict\}</td>
+                      <td>
+                          <nobr>`goto {chainName}`</nobr>
+                      </td>
+                      <td>
+                          <div>Не параметризированный</div>
+                          <br />
+                          <div className="text-justify">
+                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                          </div>
+                          <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
+                      </td>
+                      <td>Вердикт политики по пакетам данных</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
 
         #### Шаблон
 

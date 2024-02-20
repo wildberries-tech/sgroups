@@ -2,8 +2,8 @@
 id: installation-server
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
 
 # Установка
 
@@ -18,47 +18,79 @@ values = {[
 
 <TabItem value='docker'>
 
-```bash title='bash'
-export VERSION=1.0.4
-cat <<EOF > config-server.yaml
----
-logger:
-    # log level
-    level: INFO
+    ```bash title='bash'
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
 
-metrics:
-    # enable api metrics
-    enable: true
+    export VERSION=$(cat VERSION | cut -c2-)
+    cat <<EOF > config-server.yaml
+    ---
+    logger:
+        # log level
+        level: INFO
 
-healthcheck:
-    # enables|disables health check handler
-    enable: true
+    metrics:
+        # enable api metrics
+        enable: true
 
-server:
-    # server endpoint
-    endpoint: tcp://0.0.0.0:9650
-    # graceful shutdown period
-    graceful-shutdown: 30s
-EOF
+    healthcheck:
+        # enables|disables health check handler
+        enable: true
 
-docker run \
--d \
--v $(pwd)/config-server.yaml:/etc/hbf/server/config-server.yaml \
---name hbf-server \
---entrypoint "./bin/sgroups"
-fraima/hbf-server:$VERSION -config /etc/hbf/server/config-server.yaml
+    server:
+        # server endpoint
+        endpoint: tcp://0.0.0.0:9650
+        # graceful shutdown period
+        graceful-shutdown: 30s
+    EOF
+    ```
 
-```
+    ```docker
+    FROM golang:1.20-alpine3.17 as builder
+    WORKDIR /src
+    COPY . .
+    RUN apk upgrade && \
+        apk add make && \
+        make sg-service platform=linux/amd64
+
+    FROM alpine:3.17
+    RUN addgroup -g 101 app && \
+        adduser -H -u 101 -G app -s /bin/sh -D app && \
+        apk update && apk upgrade
+    WORKDIR /app/
+    RUN mkdir -p /app/bin
+    COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+    USER app
+    CMD ["/app/bin/sgroups"]
+    ```
+
+    ```bash
+    docker build --tag sgroups:v$(cat VERSION) .
+    ```
+
+    ```
+    docker run \
+    -d \
+    -v config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+    --name hbf-server \
+    --entrypoint "/app/bin/sgroups" \
+    sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+
+    ```
 
 </TabItem>
 <TabItem value='deb'>
 
+<dev>
+  Для установки deb-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
+  VERSION`.
+</dev>
+
 ```bash title='bash'
-export VERSION=1.0.4
-export ARCH=amd64
+export VERSION="1.9.1"
 export PACKAGE_TYPE=deb
-export URL=https://github.com/fraima/swarm/releases/download
-export RELEASE=$VERSION/sgroups_$VERSION-0_$ARCH.$PACKAGE_TYPE
+export URL=https://github.com/H-BF/sgroups/releases/download
+export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
 
 sudo wget -O /tmp/sgroups $URL/$RELEASE
 sudo dpkg -i /tmp/sgroups
@@ -69,75 +101,81 @@ systemctl start sgroups
 </TabItem>
 <TabItem value='rpm'>
 
-```bash title='bash'
-export VERSION=1.0.4
-export ARCH=x86_64
-export PACKAGE_TYPE=rpm
-export URL=https://github.com/fraima/swarm/releases/download
-export RELEASE=$VERSION/sgroups_$VERSION-0_$ARCH.$PACKAGE_TYPE
+    <dev>
+    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
+    VERSION`.
+    </dev>
 
-sudo wget -O /tmp/sgroups $URL/$RELEASE
-sudo dpkg -i /tmp/sgroups
-systemctl enable sgroups
-systemctl start sgroups
-```
+    ```bash title='bash'
+    export VERSION="1.9.1"
+    export PACKAGE_TYPE=rpm
+    export URL=https://github.com/H-BF/sgroups/releases/download
+    export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+
+    sudo wget -O /tmp/sgroups $URL/$RELEASE
+    sudo yum -i /tmp/sgroups
+    systemctl enable sgroups
+    systemctl start sgroups
+    ```
 
 </TabItem>
+
 <TabItem value='source'>
 
-```bash title='bash'
-## INSTALL SERVER
-git clone https://github.com/fraima/swarm.git
-cd sgroups
-make sg-service
-cp bin/sg-service /usr/bin/hbf-server
+    ```bash title='bash'
+    ## INSTALL SERVER
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
+    make sg-service
+    mkdir -p /opt/swarm/sbin
+    mkdir -p /opt/swarm/etc/sgroups
+    cp bin/sgroups /opt/swarm/sbin/sgroups
 
+    cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
+    ---
+    logger:
+        # log level
+        level: INFO
 
-cat <<EOF > /etc/hbf/config-server.yaml
----
-logger:
-    # log level
-    level: INFO
+    metrics:
+        # enable api metrics
+        enable: true
 
-metrics:
-    # enable api metrics
-    enable: true
+    healthcheck:
+        # enables|disables health check handler
+        enable: true
 
-healthcheck:
-    # enables|disables health check handler
-    enable: true
+    server:
+        # server endpoint
+        endpoint: tcp://0.0.0.0:9650
+        # graceful shutdown period
+        graceful-shutdown: 30s
+    EOF
 
-server:
-    # server endpoint
-    endpoint: tcp://0.0.0.0:9650
-    # graceful shutdown period
-    graceful-shutdown: 30s
-EOF
+    cat <<EOF > /etc/systemd/system/hbf-server.service
+    [Unit]
+    Description=sgroups
+    Documentation=TODO:
+    After=network.target
 
-cat <<EOF > /etc/systemd/system/hbf-server.service
-[Unit]
-Description=sgroups
-Documentation=https://docs.hbf.fraima.io
-After=network.target
+    [Service]
+    ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
+    Restart=always
+    RestartSec=5
+    Delegate=yes
+    KillMode=process
+    OOMScoreAdjust=-999
+    LimitNOFILE=1048576
+    LimitNPROC=infinity
+    LimitCORE=infinity
 
-[Service]
-ExecStart=/usr/bin/sgroups --config=/etc/hbf/server/config.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+    [Install]
+    WantedBy=multi-user.target
+    EOF
 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-systemctl enable hbf-server.service
-systemctl start hbf-server.service
-```
+    systemctl enable hbf-server.service
+    systemctl start hbf-server.service
+    ```
 
 </TabItem>
 </Tabs>
@@ -166,3 +204,48 @@ server:
   # graceful shutdown period
   graceful-shutdown: 30s
 ```
+
+<div class="scrollable-x">
+  <table>
+    <caption>Параметры файла config-server.yaml</caption>
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Тип</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>`logger.level`</td>
+        <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`metrics.enable`</td>
+        <td>Включить/отключить возможность получения метрик приложения по "методу" `/metrics`</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>`healthcheck.enable`</td>
+        <td>Включить/отключить возможность получения статуса о состоянии приложения по "методу" `/healthcheck`</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>`server.endpoint`</td>
+        <td></td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`storage.type`</td>
+        <td>Тип базы данных. Допустимые значения: `internal`, `postgres`.</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>`storage.postgres.url`</td>
+        <td></td>
+        <td>String</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

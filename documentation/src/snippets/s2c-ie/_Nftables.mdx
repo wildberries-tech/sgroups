@@ -23,139 +23,141 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`$NftRuleVerdict` - {DICTIONARY.nftRuleVerdict.short}</li>
 </ul>
 
-<table>
-  <caption>Области применения полей относительно используемого протокола</caption>
-  <thead>
-    <tr>
-      <th rowSpan="2">шаблон параметра</th>
-      <th rowSpan="2">структура параметра</th>
-      <th rowSpan="2">значения</th>
-      <th colSpan="3">transport*</th>
-    </tr>
-    <tr>
-      <th>TCP</th>
-      <th>UDP</th>
-      <th>ICMP</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>$Trace</td>
-      <td>`nftrace set`</td>
-      <td>
-        <ul>
-          <li>
-            <b>1</b> - трассировка включена
-          </li>
-          <li>
-            <b>0</b> - трассировка выключена
-          </li>
-        </ul>
-      </td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$SrcSgroup</td>
-      <td>
-        <nobr>`saddr`</nobr>
-      </td>
-      <td>`@${IPSet(sgName)}`</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$DstSgroup</td>
-      <td>
-        <nobr>`daddr`</nobr>
-      </td>
-      <td>`@${IPSet(sgName)}`</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$Transport</td>
-      <td>
-        <nobr>Enum("tcp", "udp", "icmp")</nobr>
-      </td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$NftRuleType</td>
-      <td>`ip`</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$IcmpTypeList</td>
-      <td>`type {}`</td>
-      <td>Набор целочисленных значений от 0 до 255</td>
-      <td className="green center"></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$SrcPorts</td>
-      <td>`sport {}`</td>
-      <td>Набор целочисленных значений от 0 до 65535</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$DstPorts</td>
-      <td>`dport {}`</td>
-      <td>Набор целочисленных значений от 0 до 65535</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>$NftCounter</td>
-      <td>
-        <nobr>`counter`</nobr>
-      </td>
-      <td>`packets 0 bytes 0`</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$Log</td>
-      <td>
-        <nobr>`log`</nobr>
-      </td>
-      <td>`level debug flags ip options`</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>$NftRuleVerdict</td>
-      <td>`Accept`</td>
-      <td>
-        <div className="text-justify">
-          <i>
-            * Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил
-            происходит только с помощью goto.
-          </i>
-        </div>
-        <i>Подробнее: [Verdict statement](/tech-docs/rule-configuration/main#verdict-statement)</i>
-      </td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <caption>Области применения полей относительно используемого протокола</caption>
+    <thead>
+      <tr>
+        <th rowSpan="2">шаблон параметра</th>
+        <th rowSpan="2">структура параметра</th>
+        <th rowSpan="2">значения</th>
+        <th colSpan="3">transport*</th>
+      </tr>
+      <tr>
+        <th>TCP</th>
+        <th>UDP</th>
+        <th>ICMP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$Trace</td>
+        <td>`nftrace set`</td>
+        <td>
+          <ul>
+            <li>
+              <b>1</b> - трассировка включена
+            </li>
+            <li>
+              <b>0</b> - трассировка выключена
+            </li>
+          </ul>
+        </td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$SrcSgroup</td>
+        <td>
+          <nobr>`saddr`</nobr>
+        </td>
+        <td>`@${IPSet(sgName)}`</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$DstSgroup</td>
+        <td>
+          <nobr>`daddr`</nobr>
+        </td>
+        <td>`@${IPSet(sgName)}`</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$Transport</td>
+        <td>
+          <nobr>Enum("tcp", "udp", "icmp")</nobr>
+        </td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$NftRuleType</td>
+        <td>`ip`</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$IcmpTypeList</td>
+        <td>`type {}`</td>
+        <td>Набор целочисленных значений от 0 до 255</td>
+        <td className="green center"></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$SrcPorts</td>
+        <td>`sport {}`</td>
+        <td>Набор целочисленных значений от 0 до 65535</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$DstPorts</td>
+        <td>`dport {}`</td>
+        <td>Набор целочисленных значений от 0 до 65535</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>$NftCounter</td>
+        <td>
+          <nobr>`counter`</nobr>
+        </td>
+        <td>`packets 0 bytes 0`</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$Log</td>
+        <td>
+          <nobr>`log`</nobr>
+        </td>
+        <td>`level debug flags ip options`</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>$NftRuleVerdict</td>
+        <td>`Accept`</td>
+        <td>
+          <div className="text-justify">
+            <i>
+              * Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил
+              происходит только с помощью goto.
+            </i>
+          </div>
+          <i>Подробнее: [Verdict statement](/tech-docs/rule-configuration/main#verdict-statement)</i>
+        </td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Пример использования</h4>
 

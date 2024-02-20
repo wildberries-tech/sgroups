@@ -1,0 +1,56 @@
+---
+id: ansible
+---
+
+# Ansible
+
+Перед началом работы необходимо склонировать репозиторий
+
+```bash
+git clone https://github.com/H-BF/ansible
+cd ansible
+```
+
+## Требования
+
+<div class="paragraph">
+  Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
+  linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
+</div>
+
+```bash
+apt search linux-headers-$(uname -r)
+```
+
+В случае, если такой пакет существует вывод будет следующим:
+
+```bash
+Sorting... Done
+Full Text Search... Done
+linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]
+    Header files for Linux 5.10.0-26-amd64
+```
+
+<div className="text-justify">
+  Сообщение `linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]` говорит о том, что необходимый
+  пакет заголовков найден. В противном случае необходимо обновить версию ядра до ближайшей версии имеющей пакет
+  `linux-headers-$(uname -r)`
+</div>
+
+## Использование
+
+<div className="text-justify">
+  Перед запуском плейбука убедитесь, что вы добавили необходимые хосты в `env/hosts`. Чтобы выполнить плейбук,
+  запустите:
+</div>
+
+```bash
+ansible-playbook main.py
+```
+
+## Удаление
+
+<div className="text-justify">
+    Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`. 
+    Если вы удаляете сам _hbf-agent_, все правила, созданные им в _nft_, будут автоматически удалены.
+</div>

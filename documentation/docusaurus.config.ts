@@ -62,6 +62,11 @@ const config: Config = {
       type: 'text/css',
       crossOrigin: 'anonymous',
     },
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap',
+      type: 'text/css',
+      crossOrigin: 'anonymous',
+    },
   ],
 
   themeConfig: {
@@ -84,6 +89,12 @@ const config: Config = {
           label: 'Техническая документация',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'anush',
+          position: 'left',
+          label: 'Ануш',
+        },
+        {
           href: 'https://github.com/H-BF/sgroups',
           position: 'right',
           label: 'H-BF/sgroups',
@@ -103,7 +114,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'hcl', 'json'],
+      additionalLanguages: ['bash', 'hcl', 'json', 'docker'],
     },
   } satisfies Preset.ThemeConfig,
 

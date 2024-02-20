@@ -19,108 +19,108 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`syncOp` - {DICTIONARY.syncOp.short}</li>
 </ul>
 
-<table>
+<div class="scrollable-x">
+  <table>
     <caption>Области применения полей относительно используемого протокола</caption>
-
     <thead>
-        <tr>
-            <th rowSpan="2">название</th>
-            <th rowSpan="2">обязательность</th>
-            <th rowSpan="2">тип данных</th>
-            <th rowSpan="2">значение по умолчанию</th>
-            <th colSpan="2">transport*</th>
-        </tr>
-        <tr>
-            <th>TCP</th>
-            <th>UDP</th>
-        </tr>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">значение по умолчанию</th>
+        <th colSpan="2">transport*</th>
+      </tr>
+      <tr>
+        <th>TCP</th>
+        <th>UDP</th>
+      </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>fqdnRules.rules</td>
-            <td>да</td>
-            <td>Object</td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].FQDN</td>
-            <td>да</td>
-            <td>String</td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].logs</td>
-            <td>нет</td>
-            <td>Boolean</td>
-            <td>false</td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].ports</td>
-            <td>нет</td>
-            <td>Object[]</td>
-            <td>null</td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].ports[].d</td>
-            <td>нет</td>
-            <td>String</td>
-            <td>null</td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].ports[].s</td>
-            <td>нет</td>
-            <td>String</td>
-            <td>null</td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].sgFrom</td>
-            <td>да</td>
-            <td>String</td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].transport</td>
-            <td>да</td>
-            <td>Enum("TCP", "UDP")</td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>fqdnRules.rules[].protocols</td>
-            <td>нет</td>
-            <td>Object[]</td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
-        <tr>
-            <td>syncOp</td>
-            <td>да</td>
-            <td>
-                <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
-            </td>
-            <td></td>
-            <td className="green center">✔</td>
-            <td className="green center">✔</td>
-        </tr>
+      <tr>
+        <td>fqdnRules.rules</td>
+        <td>да</td>
+        <td>Object</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].FQDN</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].logs</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].ports</td>
+        <td>нет</td>
+        <td>Object[]</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].ports[].d</td>
+        <td>нет</td>
+        <td>String</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].ports[].s</td>
+        <td>нет</td>
+        <td>String</td>
+        <td>null</td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].sgFrom</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].transport</td>
+        <td>да</td>
+        <td>Enum("TCP", "UDP")</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>fqdnRules.rules[].protocols</td>
+        <td>нет</td>
+        <td>Object[]</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>syncOp</td>
+        <td>да</td>
+        <td>
+          <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
+        </td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
     </tbody>
-
-</table>
+  </table>
+</div>
 
 <h4 className="custom-heading">Ограничения</h4>
 
@@ -206,22 +206,24 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <h4 className="custom-heading">Выходные параметры</h4>
 
-<table>
-  <thead>
-    <tr>
-      <th>название</th>
-      <th>тип данных</th>
-      <th>описание</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>-</td>
-      <td>Object</td>
-      <td>в случае успеха возвращается пустое тело</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>тип данных</th>
+        <th>описание</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>-</td>
+        <td>Object</td>
+        <td>в случае успеха возвращается пустое тело</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
