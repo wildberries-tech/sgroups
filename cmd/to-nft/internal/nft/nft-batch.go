@@ -64,11 +64,11 @@ type (
 	}
 
 	batch struct {
-		log        logger.TypeOfLogger
-		txProvider TxProvider
-		baseRules  BaseRules
-		data       cases.LocalData
-
+		log          logger.TypeOfLogger
+		txProvider   TxProvider
+		baseRules    BaseRules
+		data         cases.LocalData
+		dnsResolver  internal.DomainAddressQuerier
 		fqdnStrategy internal.FqdnRulesStrategy
 		table        *nftLib.Table
 		ruleDetails  di.HDict[string, *ruleDetails]
@@ -186,7 +186,6 @@ func (bt *batch) execute(ctx context.Context) error {
 		it  jobItem
 		tx  *Tx
 	)
-	bt.fqdnStrategy = internal.FqdnStrategy.MustValue(ctx)
 	defer func() {
 		if tx != nil {
 			_ = tx.Close()
@@ -462,11 +461,11 @@ func (bt *batch) addFQDNNetSets() {
 		})
 	}
 
-	bt.data.SG2FQDNRules.Resolved.A.Iterate(func(domain model.FQDN, a internal.DomainAddresses) bool {
+	bt.data.ResolvedFQDN.A.Iterate(func(domain model.FQDN, a internal.DomainAddresses) bool {
 		f(iplib.IP4Version, domain, a)
 		return true
 	})
-	bt.data.SG2FQDNRules.Resolved.AAAA.Iterate(func(domain model.FQDN, a internal.DomainAddresses) bool {
+	bt.data.ResolvedFQDN.AAAA.Iterate(func(domain model.FQDN, a internal.DomainAddresses) bool {
 		f(iplib.IP6Version, domain, a)
 		return true
 	})
@@ -749,7 +748,7 @@ func (bt *batch) populateInOutSgIeSgRules(dir direction, sg *cases.SG) {
 		for _, rule := range rules {
 			rule := rule
 			addrSetName := nameUtils{}.nameOfNetSet(
-				ipV, tern(isIN, rule.ID.Sg, rule.ID.SgLocal),
+				ipV, tern(isIN, rule.ID.SgLocal, rule.ID.Sg),
 			)
 			detailsName := nameUtils{}.nameSgIeSgRuleDetails(rule)
 			details := bt.ruleDetails.At(detailsName)
@@ -766,22 +765,13 @@ func (bt *batch) populateInOutSgIeSgRules(dir direction, sg *cases.SG) {
 					}
 					bt.log.Debugf("add '%s' rule for accports(%s) into '%s'/'%s'",
 						rule.ID, ports, bt.table.Name, targetSGchName)
+
 					rb := beginRule().metaNFTRACE(details.trace)
-					if isIN {
-						rb = ports.S(
-							ports.D(
-								rb.saddr(ipV).inSet(addrSet).
-									protoIP(rule.ID.Transport),
-							),
-						)
-					} else {
-						rb = ports.D(
-							ports.S(
-								rb.daddr(ipV).inSet(addrSet).
-									protoIP(rule.ID.Transport),
-							),
-						)
-					}
+					sd := tern(isIN, sli(ports.S, ports.D), sli(ports.D, ports.S))
+					rb = sd[0](sd[1](
+						tern(isIN, rb.saddr, rb.daddr)(ipV).inSet(addrSet).
+							protoIP(rule.ID.Transport),
+					)).counter()
 					if details.logs {
 						rb = rb.dlogs(nfte.LogFlagsIPOpt)
 					}
@@ -791,7 +781,6 @@ func (bt *batch) populateInOutSgIeSgRules(dir direction, sg *cases.SG) {
 			}
 		}
 	}
-
 }
 
 func (bt *batch) populateInOutCidrSgRules(dir direction, sg *cases.SG) {
