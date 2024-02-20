@@ -192,7 +192,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 >
     <TabItem value="tcp">
         ```hcl
-        resource "sgroups_ie_rules" "rules" {
+        resource "sgroups_rules" "rules" {
             items = {
                 "tcp:sg(sg-example-from)sg(sg-example-to)" = {
                     transport   = "tcp"
@@ -214,7 +214,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
     <TabItem value="udp">
         ```hcl
-        resource "sgroups_ie_rules" "rules" {
+        resource "sgroups_rules" "rules" {
             items = {
                 "udp:sg(sg-example-from)sg(sg-example-to)" = {
                     transport   = "udp"

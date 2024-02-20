@@ -213,7 +213,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg-local(sg_local_example)sg(sg_example)ingress" = {
+                    "tcp:sg_local(sg_local_example)sg(sg_example)ingress" = {
                         traffic     = "ingress"
                         transport   = "tcp"
                         sg          = "sg_example"
@@ -238,7 +238,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg-local(sg_local_example)sg(sg_example)egress" = {
+                    "tcp:sg_local(sg_local_example)sg(sg_example)egress" = {
                         traffic     = "egress"
                         transport   = "tcp"
                         sg          = "sg_example"
@@ -268,7 +268,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg-local(sg_local_example)sg(sg_example)ingress" = {
+                    "udp:sg_local(sg_local_example)sg(sg_example)ingress" = {
                         traffic     = "ingress"
                         transport   = "udp"
                         sg          = "sg_example"
@@ -291,7 +291,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg-local(sg_local_example)sg(sg_example)egress" = {
+                    "udp:sg_local(sg_local_example)sg(sg_example)egress" = {
                         traffic     = "egress"
                         transport   = "udp"
                         sg          = "sg_example"
@@ -318,7 +318,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_icmp_rules" "rules" {
                     items = {
-                    "icmp4:sg-local(sg-example-local)sg(sg-example)ingress" = {
+                    "icmp4:sg_local(sg-example-local)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -327,7 +327,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = ingress
                     }
-                    "icmp6:sg-local(sg-example-local)sg(sg-example)ingress" = {
+                    "icmp6:sg_local(sg-example-local)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -349,7 +349,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_icmp_rules" "rules" {
                     items = {
-                    "icmp4:sg-local(sg-example-local)sg(sg-example)egress" = {
+                    "icmp4:sg_local(sg-example-local)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -358,7 +358,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = egress
                     }
-                    "icmp6:sg-local(sg-example-local)sg(sg-example)egress" = {
+                    "icmp6:sg_local(sg-example-local)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
