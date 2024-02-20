@@ -62,6 +62,11 @@ const config: Config = {
       type: 'text/css',
       crossOrigin: 'anonymous',
     },
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap',
+      type: 'text/css',
+      crossOrigin: 'anonymous',
+    },
   ],
 
   themeConfig: {
@@ -87,7 +92,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'anush',
           position: 'left',
-          label: 'Ануш'
+          label: 'Ануш',
         },
         {
           href: 'https://github.com/H-BF/sgroups',

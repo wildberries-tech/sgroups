@@ -23,139 +23,141 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <li>`syncOp` - {DICTIONARY.syncOp.short}</li>
 </ul>
 
-<table>
-  <thead>
-    <tr>
-      <th rowSpan="2">название</th>
-      <th rowSpan="2">обязательность</th>
-      <th rowSpan="2">тип данных</th>
-      <th rowSpan="2">Значение по умолчанию</th>
-      <th colSpan="2">API request</th>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <th>sgIcmpRules</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>groups.groups[]</td>
-      <td>да</td>
-      <td>Object[]</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>groups.groups[].defaultAction</td>
-      <td>да</td>
-      <td>
-        <nobr>Enum("ACCEPT", "DROP")</nobr>
-      </td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>groups.groups[].logs</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>groups.groups[].name</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>groups.groups[].networks</td>
-      <td>нет</td>
-      <td>String[]</td>
-      <td>[]</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>groups.groups[].trace</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center">✔</td>
-      <td className="green center"></td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[]</td>
-      <td>да</td>
-      <td>Object[]</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].ICMP</td>
-      <td>да</td>
-      <td>Object</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].ICMP.IPv</td>
-      <td>да</td>
-      <td>Enum("IPv4", "IPv6")</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].ICMP.Types</td>
-      <td>нет</td>
-      <td>String[]</td>
-      <td>[]</td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].Sg</td>
-      <td>да</td>
-      <td>String</td>
-      <td></td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].logs</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>sgIcmpRules.rules[].trace</td>
-      <td>нет</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td className="green center"></td>
-      <td className="green center">✔</td>
-    </tr>
-    <tr>
-      <td>syncOp</td>
-      <td>да</td>
-      <td>
-        <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
-      </td>
-      <td></td>
-      <td className="green center">✔</td>
-      <td className="green center">✔</td>
-    </tr>
-  </tbody>
-</table>
+<div class="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
+        <th colSpan="2">API request</th>
+      </tr>
+      <tr>
+        <th>groups</th>
+        <th>sgIcmpRules</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>groups.groups[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>groups.groups[].defaultAction</td>
+        <td>да</td>
+        <td>
+          <nobr>Enum("ACCEPT", "DROP")</nobr>
+        </td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>groups.groups[].logs</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>groups.groups[].name</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>groups.groups[].networks</td>
+        <td>нет</td>
+        <td>String[]</td>
+        <td>[]</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>groups.groups[].trace</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center">✔</td>
+        <td className="green center"></td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].ICMP</td>
+        <td>да</td>
+        <td>Object</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].ICMP.IPv</td>
+        <td>да</td>
+        <td>Enum("IPv4", "IPv6")</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].ICMP.Types</td>
+        <td>нет</td>
+        <td>String[]</td>
+        <td>[]</td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].Sg</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].logs</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>sgIcmpRules.rules[].trace</td>
+        <td>нет</td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td className="green center"></td>
+        <td className="green center">✔</td>
+      </tr>
+      <tr>
+        <td>syncOp</td>
+        <td>да</td>
+        <td>
+          <nobr>Enum("Delete", "Upsert", "FullSync")</nobr>
+        </td>
+        <td></td>
+        <td className="green center">✔</td>
+        <td className="green center">✔</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h4 className="custom-heading">Ограничения</h4>
 
