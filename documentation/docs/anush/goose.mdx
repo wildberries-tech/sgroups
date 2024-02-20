@@ -1,0 +1,237 @@
+---
+id: goose
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Goose
+
+#### Описание
+
+<div className="paragraph">
+  <i>Goose</i> представляет собой инструмент для миграции баз данных. Обычно он используется перед запуском серверной
+  части приложения. Более подробную информацию о <i>goose</i> можно найти [здесь](https://github.com/pressly/goose).
+</div>
+
+<Tabs
+  defaltValue="bin"
+  values={[
+    { label: 'bin', value: 'bin' },
+    { label: 'docker', value: 'docker' },
+  ]}
+>
+  <TabItem value="bin">
+        #### Сборка
+        Перед сборкой необходимо склонировать репозиторий
+
+        ```bash
+        export TAG="v1.9.1"
+
+        git clone https://github.com/H-BF/sgroups
+        cd sgroups
+        git fetch --tags --all
+        git checkout tags/${TAG}
+        ```
+
+        <div className="paragraph">
+        Для сборки <i>goose</i> из корневой директории репозитория выполните команду: `make .install-goose`. После сборки,
+        скомпилированный бинарный файл будет доступен в папке `./bin/goose` в корне репозитория (не путать с `/bin`,
+        расположенным в корне файловой системы).
+        </div>
+
+        #### Настройка
+
+        Перед запуском необходимо установить переменную среды `SG_STORAGE_POSTGRES_URL` следующим скриптом:
+
+        ```bash
+        cat <<EOF > migration.sh
+        #!/bin/bash
+        SG_DB_USER="user"
+        SG_DB_PASSWORD="password"
+        SG_DB_URL="localhost:5432"
+        SG_DB_NAME="swarm"
+
+        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+
+        exec ./bin/goose postgres $SG_STORAGE_POSTGRES_URL up
+        EOF
+        ```
+
+        <div className="text-justify">
+        По умолчанию файлы миграции расположены в папке `./internal/registry/sgroups/pg/migrations`, но пользователь может
+        указать и другой путь, определив переменную окружения `PG_MIGRATIONS`.
+        </div>
+
+        <table>
+        <caption>Используемые переменные</caption>
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Значение по умолчанию</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>`SG_STORAGE_POSTGRES_URL`</td>
+                <td>Переменная необходимая для подключения к БД</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>`PG_MIGRATIONS`</td>
+                <td>Переменная, содержащая путь к файлам миграций</td>
+                <td>"./internal/registry/sgroups/pg/migrations"</td>
+            </tr>
+            <tr>
+                <td>`SG_DB_USER`</td>
+                <td>Имя пользователя БД</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>`SG_DB_PASSWORD`</td>
+                <td>Пароль пользователя БД</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>`SG_DB_URL`</td>
+                <td>Адрес базы данных (HOST:PORT)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>`SG_DB_NAME`</td>
+                <td>Имя БД</td>
+                <td>swarm</td>
+            </tr>
+        </tbody>
+        </table>
+
+        #### Запуск
+
+        Для выполнения миграции базы данных вручную пользователь может запустить следующую команду (рекомендуемый способ):
+
+        ```bash
+        sh migration.sh
+        ```
+
+  </TabItem>
+
+  <TabItem value="docker">
+        #### Сборка
+        Перед сборкой необходимо склонировать репозиторий
+
+        ```bash
+        git clone https://github.com/H-BF/sgroups
+        ```
+
+        <div className="paragraph">
+            Для сборки <i>goose</i> с помощью Docker можно воспользоваться файлом ниже.
+        </div>
+
+        ```docker
+        FROM golang:1.20-alpine3.17 as builder
+        WORKDIR /src
+        COPY . .
+        RUN apk upgrade && \
+            apk add make git && \
+            make .install-goose
+
+        FROM alpine:3.17
+        RUN addgroup -g 101 app && \
+            adduser -H -u 101 -G app -s /bin/sh -D app && \
+            apk update && apk upgrade
+        WORKDIR /app/
+        RUN mkdir -p /app/bin
+        COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+        COPY --from=builder --chown=app:app /src/internal/registry/sgroups/pg/migrations/ /app/
+        USER app
+        CMD ["/app/bin/goose"]
+        ```
+
+        ```bash
+        docker build --tag goose:v$(cat VERSION) .
+        ```
+
+        #### Настройка
+
+        Перед запуском необходимо установить переменную среды `SG_STORAGE_POSTGRES_URL` следующей командой:
+
+        ```bash
+        cat <<EOF > migration.sh
+        #!/bin/bash
+        SG_DB_USER="user"
+        SG_DB_PASSWORD="password"
+        SG_DB_URL="localhost:5432"
+        SG_DB_NAME="swarm"
+
+        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+
+        exec /app/bin/goose postgres $SG_STORAGE_POSTGRES_URL up
+        EOF
+        ```
+
+        <div className="text-justify">
+            По умолчанию файлы миграции расположены в папке `./internal/registry/sgroups/pg/migrations`, но пользователь может
+            указать и другой путь, определив переменную окружения `PG_MIGRATIONS`.
+        </div>
+
+        <table>
+            <caption>Используемые переменные</caption>
+            <thead>
+                <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Значение по умолчанию</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>`SG_STORAGE_POSTGRES_URL`</td>
+                    <td>Переменная необходимая для подключения к БД</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>`PG_MIGRATIONS`</td>
+                    <td>Переменная, содержащая путь к файлам миграций</td>
+                    <td>"./internal/registry/sgroups/pg/migrations"</td>
+                </tr>
+                <tr>
+                    <td>`SG_DB_USER`</td>
+                    <td>Имя пользователя БД</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>`SG_DB_PASSWORD`</td>
+                    <td>Пароль пользователя БД</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>`SG_DB_URL`</td>
+                    <td>Адрес базы данных (HOST:PORT)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>`SG_DB_NAME`</td>
+                    <td>Имя БД</td>
+                    <td>swarm</td>
+                </tr>
+            </tbody>
+        </table>
+
+        #### Запуск
+
+        Для выполнения миграции базы данных с помощью Docker пользователь может запустить следующую команду:
+
+        ```bash
+        docker run -d -t --name=goose-migration --rm \
+        -v "./migration.sh:/app/migration.sh" \
+        --entrypoint /app/migration.sh \
+        goose:$(cat VERSION)
+        ```
+
+  </TabItem>
+</Tabs>
