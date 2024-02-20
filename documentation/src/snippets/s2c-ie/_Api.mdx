@@ -10,7 +10,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 <ul>
   <li>`$node.rules[]` - {DICTIONARY.rules.short}</li>
   <li>`$node.rules[].cidr` - {DICTIONARY.cidrSet.short}</li>
-  <li>`$node.rules[].sg_name` - {DICTIONARY.sgLocal.short}</li>
+  <li>`$node.rules[].sg` - {DICTIONARY.sgLocal.short}</li>
   <li>`$node.rules[].logs` - {DICTIONARY.log.short}</li>
   <li>`$node.rules[].trace` - {DICTIONARY.trace.short}</li>
   <li>`$node.rules[].ports` - {DICTIONARY.ports.short}</li>
@@ -51,7 +51,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td className="green center">✔</td>
     </tr>
     <tr>
-      <td>$node.rules[].cidr</td>
+      <td>$node.rules[].CIDR</td>
       <td>да</td>
       <td>String</td>
       <td></td>
@@ -60,7 +60,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
       <td className="green center">✔</td>
     </tr>
     <tr>
-      <td>$node.rules[].sg_name</td>
+      <td>$node.rules[].SG</td>
       <td>да</td>
       <td>String</td>
       <td></td>
@@ -176,11 +176,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <ul>
   <li>
-    `$node.rules[].sg_name`:
+    `$node.rules[].SG`:
     <Restrictions data={RESTRICTIONS.name} />
   </li>
   <li>
-    `$node.rules[].cidr`:
+    `$node.rules[].CIDR`:
     <Restrictions data={RESTRICTIONS.cidr} />
   </li>
   <li>
@@ -218,8 +218,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "cidrSgRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -244,8 +244,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "cidrSgRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -274,8 +274,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "cidrSgRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -300,8 +300,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                     "cidrSgRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ports": [{
@@ -327,11 +327,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
                 --data '{
-                    "CidrSgIcmpRules": {
+                    "cidrSgIcmpRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ICMP": {
@@ -352,11 +352,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 curl '127.0.0.1:9007/v1/sync' \
                 --header 'Content-Type: application/json' \
                 --data '{
-                    "CidrSgIcmpRules": {
+                    "cidrSgIcmpRules": {
                         "rules": [
                         {
-                            "cidr": "10.0.0.0/8",
-                            "sg_name": "sg-example-local",
+                            "CIDR": "10.0.0.0/8",
+                            "SG": "sg-example-local",
                             "logs": true,
                             "trace": true,
                             "ICMP": {
@@ -518,7 +518,7 @@ participant user as User
 participant server as Server
 participant db as Database
 
-user->>server: Добавить IE-SG-SG правило
+user->>server: Добавить IE-CIDR-SG правило
 
 alt Ошибка в запросе
     server-->>user: Показать ошибку в запросе
@@ -527,7 +527,7 @@ end
 server->>db: Отправить запрос
 db->>db: Проверка входящего запроса
 
-alt Нет такого значения имени SG(sg и/или sg_name)
+alt Нет такого значения имени SG
     db-->>server: Ответ с ошибкой
     server-->>user: Показать ошибку в запросе
 end
@@ -537,8 +537,8 @@ alt Пересечение значений source портов
     server-->>user: Показать ошибку в запросе
 end
 
-db->>db: Сохранить данные о IE-SG-SG в БД
+db->>db: Сохранить данные о IE-CIDR-SG в БД
 
-db-->>server: Ответ с успешно добавленным новым IE-SG-SG правилом
-server-->>user: Успешно добавленное новое IE-SG-SG правило
+db-->>server: Ответ с успешно добавленным новым IE-CIDR-SG правилом
+server-->>user: Успешно добавленное новое IE-CIDR-SG правило
 ```

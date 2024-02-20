@@ -13,8 +13,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <ul>
   <li className="text-justify">
-    если в теле запроса указано одно или более значений в обоих массивах sg -> sg_local, то получим ответ всех
-    существующих комбинаций правил IE-SG-SG-ICMP каждого указанного значения sg с каждым указанным значением sg_local
+    если в теле запроса указано одно или более значений в обоих массивах Sg -> SgLocal, то получим ответ всех
+    существующих комбинаций правил IE-SG-SG-ICMP каждого указанного значения Sg с каждым указанным значением SgLocal
     (value-to-value)
   </li>
   <li className="text-justify">
@@ -23,7 +23,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     value-to-any)
   </li>
   <li className="text-justify">
-    если в теле запроса указаны пустые массивы sg -> sg_local, то получим ответ всех существующих комбинаций правил
+    если в теле запроса указаны пустые массивы Sg -> SgLocal, то получим ответ всех существующих комбинаций правил
     IE-SG-SG-ICMP (any-to-any)
   </li>
   <li className="text-justify">
@@ -34,8 +34,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 ```json
 {
-  "sg": ["sg-1"],
-  "sg_local": ["sg-2"]
+  "Sg": ["sg-1"],
+  "SgLocal": ["sg-2"]
 }
 ```
 
@@ -45,8 +45,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 {
   "rules": [
     {
-      "sg": "sg-1",
-      "sg_local": "sg-2",
+      "Sg": "sg-1",
+      "SgLocal": "sg-2",
       "logs": true,
       "trace": true,
       "traffic": "Ingress",
@@ -75,7 +75,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   <tbody>
     <tr>
       <td>1</td>
-      <td>sg</td>
+      <td>Sg</td>
       <td>String[]</td>
       <td>да</td>
       <td>массив из имен источников SG</td>
@@ -83,7 +83,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     </tr>
     <tr>
       <td>2</td>
-      <td>sg_local</td>
+      <td>SgLocal</td>
       <td>String[]</td>
       <td>да</td>
       <td>массив из имен источников SG</td>
@@ -103,13 +103,13 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </thead>
   <tbody>
     <tr>
-      <td>sg</td>
+      <td>Sg</td>
       <td>
         <Restrictions data={RESTRICTIONS.name} />
       </td>
     </tr>
     <tr>
-      <td>sg_local</td>
+      <td>SgLocal</td>
       <td>
         <Restrictions data={RESTRICTIONS.name} />
       </td>
@@ -141,14 +141,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     </tr>
     <tr>
       <td>1.2</td>
-      <td>rules[].sg</td>
+      <td>rules[].Sg</td>
       <td>String</td>
       <td>название Security group</td>
       <td>sg-0</td>
     </tr>
     <tr>
       <td>1.3</td>
-      <td>rules[].sg_local</td>
+      <td>rules[].SgLocal</td>
       <td>String</td>
       <td>название Security group</td>
       <td>sg-0</td>
@@ -204,9 +204,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 Код ошибки 400
 
-- Если sg или sg_local были указаны некорректно:
+- Если Sg или SgLocal были указаны некорректно:
   \- ошибка, если значения были указаны не как массив, а как одно значение
-  \- ошибка, если значение sg или sg_local не соответствует формату названия security group (длина значения не должна превышать 256 символов, значения должно начинаться и заканчиваться символами без пробелов, значение должно быть уникальным)
+  \- ошибка, если значение Sg или SgLocal не соответствует формату названия security group (длина значения не должна превышать 256 символов, значения должно начинаться и заканчиваться символами без пробелов, значение должно быть уникальным)
 
 ```json
 {
