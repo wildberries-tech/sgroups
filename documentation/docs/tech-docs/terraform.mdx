@@ -15,17 +15,22 @@ import TabItem from '@theme/TabItem'
 ]}>
 <TabItem value='bin'>
 
+    <dev>
+       Перед установкой убедитесь, что вы корректно указали версию, 
+       установив переменную `VERSION` без символа 'v', а также переменные `OS` и `ARCH`. 
+    </dev>
+
+
 ```bash title='bash'
-export VERSION=1.0.4
+export VERSION=1.9.1
 export OS=linux
 export ARCH=amd64
-export GIT=https://github.com/fraima/swarm/releases/download/${VERSION}
+export GIT=https://github.com/H-BF/sgroups/releases/download/v${VERSION}
 export RELEASE_NAME=terraform-provider-sgroups
-export RELEASE_POSTFIX=${RELEASE_NAME}-${VERSION}-${OS}-${ARCH}.tar.gz
-export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/fraima/swarm
+export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/hbf/swarm
 
 mkdir -p $PLUGIN_PATH/$VERSION/${OS}_${ARCH}
-wget -O ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION} ${GIT}/${RELEASE_POSTFIX}
+wget -O ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION} ${GIT}/${RELEASE_NAME}
 
 chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
 
@@ -38,16 +43,21 @@ EOF
 </TabItem>
 <TabItem value='source'>
 
+    <dev>
+       Перед установкой убедитесь, что вы корректно указали версию, 
+       установив переменную `VERSION` без символа 'v', а также переменные `OS` и `ARCH`. 
+    </dev>
+
 ```bash title='bash'
-export VERSION=1.0.4
+export VERSION=1.9.1
 export OS=linux
 export ARCH=amd64
 export RELEASE_NAME=terraform-provider-sgroups
-export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/fraima/swarm
+export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/hbf/swarm
 
 git clone https://github.com/fraima/swarm.git
 cd sgroups
-make sgroups-tf
+make sgroups-tf-v2
 cp bin/${RELEASE_NAME} ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
 mkdir -p $PLUGIN_PATH/$VERSION/${OS}_${ARCH}
 chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
