@@ -175,7 +175,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
     <TabItem value="tcp">
         ```hcl
-        resource "sgroups_ie_rules" "rules" {
+        resource "sgroups_fqdn_rules" "rules" {
             items = {
                 "tcp:sg(sg-example-1)fqdn(example.com)" = {
                     transport   = "tcp"
@@ -198,7 +198,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
     <TabItem value="udp">
         ```hcl
-        resource "sgroups_ie_rules" "rules" {
+        resource "sgroups_fqdn_rules" "rules" {
             items = {
                 "udp:sg(sg-example-1)fqdn(example.com)" = {
                     transport   = "udp"
