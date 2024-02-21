@@ -13,155 +13,615 @@ values = {[
     { label: 'docker', value: 'docker' },
     { label: 'deb', value: 'deb' },
     { label: 'rpm', value: 'rpm' },
-    { label: 'source', value: 'source' }
+    { label: 'source', value: 'source' },
+    { label: 'ansible', value: 'ansible' }
 ]}>
 
 <TabItem value='docker'>
 
-```bash title='bash'
-export VERSION=1.0.4
-export HBF_SERVER=example.com:80
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    ```
+    
+    ```bash title='Git setup'
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
+    git checkout tags/v${VERSION}
+    ```
 
-cat <<EOF > config-agent.yaml
----
-server:
+    ```bash title='Configuration file setup'
+    cat <<EOF > config-agent.yaml
+    ---
     graceful-shutdown: 10s
+
     logger:
-    # log level [optional]
-    level: INFO
+      level: DEBUG
+
+    fqdn-rules:
+      strategy: dns
+
     extapi:
-    svc:
-        # default dial duraton to conect a service [optional]
+      svc:
         def-daial-duration: 10s
         sgroups:
-        # sgroups service dial duration [optional]
-        dial-duration: 3s
-        # service address [mandatory]
-        address: tcp://${HBF_SERVER}
-        # interval(duration) backend sync-status check [mandatory]
-        check-sync-status: 15s
+          dial-duration: 3s
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+          sync-status:
+            interval: 3s #mandatory
+            push: true
 
-EOF
+    netlink:
+      watcher: #netlink watcher
+        linger: 1s
 
-docker run \
--d \
--v $(pwd)/config-agent.yaml:/etc/hbf/agent/config-agent.yaml \
---name hbf-agent \
---entrypoint "./bin/sgroups"
-fraima/hbf-client:$VERSION -config /etc/hbf/agent/config-agent.yaml
+    base-rules:
+      networks: ['${HBF_SERVER}/32']
 
-```
+    dns:
+      nameservers: ${DNS_SERVER}
+      proto: tcp
+      port: 53
+      dial-duration: 3s
+      read-duration: 5s #default 
+      write-duration: 5s #default 5s
+      retries: 5 #default 1
+      retry-timeout: 3s #default 1s
 
+    telemetry:
+      useragent: "string"
+      endpoint: 0.0.0.0:9660
+      metrics:
+        enable: true
+      healthcheck:
+        enable: true
+    EOF
+    ```
+
+  ```bash title='Dockerfile setup'
+  cat <<EOF > Dockerfile.agent
+  FROM golang:1.20-alpine3.17 as builder
+
+  WORKDIR /src
+  COPY . .
+
+  RUN apk upgrade && \
+      apk add make && \
+      make to-nft platform=linux/amd64
+
+  FROM alpine:3.17
+  RUN addgroup -g 101 app && \
+      adduser -H -u 101 -G app -s /bin/sh -D app && \
+      apk update && apk upgrade
+
+  WORKDIR /app/
+  COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+
+  USER app
+
+  CMD ["/app/bin/to-nft"]
+  EOF
+  ```
+
+  ```bash
+  docker build -f Dockerfile.agent --tag to-nft:v${VERSION} .
+  ```
+
+  ```bash
+  docker run \
+  -d \
+  -v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
+  --name hbf-agent \
+  --entrypoint "/app/bin/to-nft" \
+  --privileged \
+  --user=0 \
+  to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
+  ```
 </TabItem>
+
 <TabItem value='deb'>
 
-```bash title='bash'
-export VERSION=1.0.4
-export ARCH=amd64
-export PACKAGE_TYPE=deb
-export URL=https://github.com/fraima/swarm/releases/download
-export RELEASE=$VERSION/to-nft_$VERSION-0_$ARCH.$PACKAGE_TYPE
+    <dev>
+    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
+    VERSION`.
+    </dev>
 
-sudo wget -O /tmp/to-nft $URL/$RELEASE
-sudo dpkg -i /tmp/to-nft
-systemctl enable to-nft
-systemctl start to-nft
-```
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    export PACKAGE_TYPE=deb
+    export URL=https://github.com/H-BF/sgroups/releases/download
+    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+    ```
 
-</TabItem>
-<TabItem value='rpm'>
-
-```bash title='bash'
-export VERSION=1.0.4
-export ARCH=x86_64
-export PACKAGE_TYPE=rpm
-export URL=https://github.com/fraima/swarm/releases/download
-export RELEASE=$VERSION/to-nft_$VERSION-0_$ARCH.$PACKAGE_TYPE
-
-sudo wget -O /tmp/to-nft $URL/$RELEASE
-sudo dpkg -i /tmp/to-nft
-systemctl enable to-nft
-systemctl start to-nft
-```
-
-</TabItem>
-<TabItem value='source'>
-
-```bash title='bash'
-export VERSION=1.0.4
-export HBF_SERVER=example.com:80
-
-## INSTALL SERVER
-git clone https://github.com/fraima/swarm.git
-cd sgroups
-make to-nft
-cp bin/to-nft /usr/bin/to-nft
-
-mkdir -p /etc/hbf/agent/
-cat <<EOF > /etc/hbf/agent/config-agent.yaml
----
-server:
+    ```bash title='Configuration file setup'
+    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+    ---
     graceful-shutdown: 10s
+
     logger:
-    level: INFO
+      level: DEBUG
+
+    fqdn-rules:
+      strategy: dns
 
     extapi:
-    svc:
+      svc:
         def-daial-duration: 10s
         sgroups:
-        dial-duration: 3s
-        address: tcp://${HBF_SERVER}
-        check-sync-status: 15s
-EOF
+          dial-duration: 3s
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+          sync-status:
+            interval: 3s #mandatory
+            push: true
 
-cat <<EOF > /etc/systemd/system/hbf-agent.service
-[Unit]
-Description=hbf agent
-Documentation=https://docs.fraima.io
-After=network.target
+    netlink:
+      watcher: #netlink watcher
+        linger: 1s
 
-[Service]
-ExecStart=/usr/bin/hbf-agent --config=/etc/hbf/agent/config.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+    base-rules:
+      networks: ['${HBF_SERVER}/32']
 
-[Install]
-WantedBy=multi-user.target
-EOF
+    dns:
+      nameservers: ${DNS_SERVER}
+      proto: tcp
+      port: 53
+      dial-duration: 3s
+      read-duration: 5s #default 
+      write-duration: 5s #default 5s
+      retries: 5 #default 1
+      retry-timeout: 3s #default 1s
 
-systemctl enable hbf-agent.service
-systemctl start  hbf-agent.service
-```
+    telemetry:
+      useragent: "string"
+      endpoint: 0.0.0.0:9660
+      metrics:
+        enable: true
+      healthcheck:
+        enable: true
+    EOF
+    ```
 
+    ```bash title='Install deb package'
+    sudo wget -O /tmp/to-nft.deb $URL/$RELEASE
+    sudo dpkg -i /tmp/to-nft.deb
+    ```
+
+    ```bash title='Agent service start'
+    systemctl enable hbf-agent.service
+    systemctl start hbf-agent.service
+    ```
 </TabItem>
+
+<TabItem value='rpm'>
+
+    <dev>
+    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
+    VERSION`.
+    </dev>
+
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    export PACKAGE_TYPE=rpm
+    export URL=https://github.com/H-BF/sgroups/releases/download
+    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+    ```
+
+    ```bash title='Configuration file setup'
+    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+    ---
+    graceful-shutdown: 10s
+
+    logger:
+      level: DEBUG
+
+    fqdn-rules:
+      strategy: dns
+
+    extapi:
+      svc:
+        def-daial-duration: 10s
+        sgroups:
+          dial-duration: 3s
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+          sync-status:
+            interval: 3s #mandatory
+            push: true
+
+    netlink:
+      watcher: #netlink watcher
+        linger: 1s
+
+    base-rules:
+      networks: ['${HBF_SERVER}/32']
+
+    dns:
+      nameservers: ${DNS_SERVER}
+      proto: tcp
+      port: 53
+      dial-duration: 3s
+      read-duration: 5s #default 
+      write-duration: 5s #default 5s
+      retries: 5 #default 1
+      retry-timeout: 3s #default 1s
+
+    telemetry:
+      useragent: "string"
+      endpoint: 0.0.0.0:9660
+      metrics:
+        enable: true
+      healthcheck:
+        enable: true
+    EOF
+    ```
+
+    ```bash title='Install rpm package'
+    sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
+    sudo yum localinstall /tmp/to-nft.rpm
+    ```
+    
+    ```bash title='Agent service start'
+    systemctl enable hbf-agent.service
+    systemctl start hbf-agent.service
+    ```
+</TabItem>
+
+<TabItem value='source'>
+
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    mkdir -p /opt/swarm/sbin
+    mkdir -p /opt/swarm/etc/to-nft
+    ```
+    
+    ```bash title='Git setup'
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
+    git checkout tags/v${VERSION}
+    make to-nft platform=linux/amd64
+    cp bin/to-nft /opt/swarm/sbin/hbf-agent
+    ```
+
+    ```bash title='Configuration file setup'
+    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+    ---
+    graceful-shutdown: 10s
+
+    logger:
+      level: DEBUG
+
+    fqdn-rules:
+      strategy: dns
+
+    extapi:
+      svc:
+        def-daial-duration: 10s
+        sgroups:
+          dial-duration: 3s
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+          sync-status:
+            interval: 3s #mandatory
+            push: true
+
+    netlink:
+      watcher: #netlink watcher
+        linger: 1s
+
+    base-rules:
+      networks: ['${HBF_SERVER}/32']
+
+    dns:
+      nameservers: ${DNS_SERVER}
+      proto: tcp
+      port: 53
+      dial-duration: 3s
+      read-duration: 5s #default 
+      write-duration: 5s #default 5s
+      retries: 5 #default 1
+      retry-timeout: 3s #default 1s
+
+    telemetry:
+      useragent: "string"
+      endpoint: 0.0.0.0:9660
+      metrics:
+        enable: true
+      healthcheck:
+        enable: true
+    EOF
+    ```
+
+    ```bash title='Agent service setup'
+    cat <<EOF > /etc/systemd/system/hbf-agent.service
+    [Unit]
+    Description=hbf agent
+    After=network.target
+
+    [Service]
+    ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
+    Restart=always
+    RestartSec=5
+    Delegate=yes
+    KillMode=process
+    OOMScoreAdjust=-999
+    LimitNOFILE=1048576
+    LimitNPROC=infinity
+    LimitCORE=infinity
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+    ```
+
+    ```bash title='Agent service start'
+    systemctl enable hbf-agent.service
+    systemctl start  hbf-agent.service
+    ```
+</TabItem>
+
+<TabItem value='ansible'>
+  Перед началом работы необходимо склонировать репозиторий
+
+  ```bash
+  git clone https://github.com/H-BF/ansible
+  cd ansible
+  ```
+
+  ## Требования
+
+  <div class="paragraph">
+    Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
+    linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
+  </div>
+
+  ```bash
+  apt search linux-headers-$(uname -r)
+  ```
+
+  В случае, если такой пакет существует вывод будет следующим:
+
+  ```bash
+  Sorting... Done
+  Full Text Search... Done
+  linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]
+      Header files for Linux 5.10.0-26-amd64
+  ```
+
+  <div className="text-justify">
+    Сообщение `linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]` говорит о том, что необходимый
+    пакет заголовков найден. В противном случае необходимо обновить версию ядра до ближайшей версии имеющей пакет
+    `linux-headers-$(uname -r)`
+  </div>
+
+  ## Использование
+
+  <div className="text-justify">
+    Перед запуском плейбука убедитесь, что вы добавили необходимые хосты в `env/hosts`. Чтобы выполнить плейбук,
+    запустите:
+  </div>
+
+  ```bash
+  ansible-playbook main.yaml
+  ```
+
+  ## Удаление
+
+  <div className="text-justify">
+      Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`. 
+      Если вы удаляете сам _hbf-agent_, все правила, созданные им в _nft_, будут автоматически удалены.
+  </div>
+</TabItem>
+
 </Tabs>
 
 ## Настройка
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
-```yaml title='YAML'
----
-server:
-  graceful-shutdown: 10s
-  logger:
-    # log level [optional]
-    level: INFO
-  extapi:
-    svc:
-      # default dial duraton to conect a service [optional]
-      def-daial-duration: 10s
-      sgroups:
-        # sgroups service dial duration [optional]
-        dial-duration: 3s
-        # service address [mandatory]
-        address: tcp://${hbf_server}:9000
-        # interval(duration) backend sync-status check [mandatory]
-        check-sync-status: 15s
-```
+<div class="scrollable-x">
+  <table>
+    <caption>Параметры файла config-agent.yaml</caption>
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Тип</th>
+        <th>Обязательный параметр</th>
+        <th>Переменная среды</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>`exit-on-success`</td>
+        <td>Завершение процесса, если успешно применилась конфигурация для nft. Значение по умолчанию: `false`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_EXIT_ON_SUCCESS</td>
+      </tr>
+      <tr>
+        <td>`continue-on-failure`</td>
+        <td>В случае ошибки на уровне job, агент не завершает свою работу (идет на цикл перезапуска своих job). Значение по умолчанию: `true`</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_CONTINUE_ON_FAILURE</td>
+      </tr>
+      <tr>
+        <td>`logger.level`</td>
+        <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_LOGGER_LEVEL</td>
+      </tr>
+      <tr>
+        <td>`graceful-shutdown`</td>
+        <td>Определяет период времени, в течение которого процесс агента должен корректно завершиться. По истечению периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_GRACEFUL_SHUTDOWN</td>
+      </tr>
+      <tr>
+        <td>`netns`</td>
+        <td>Имя сетевого namespac'a.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_NETNS</td>
+      </tr>
+      <tr>
+        <td>`netlink.watcher.linger`</td>
+        <td>Время, в течение которого из netlink'а ожидаются события. Минимальное значение: `1s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>NFT_NETLINK_WATCHER_LINGER</td>
+      </tr>
+      <tr>
+        <td>`base-rules.networks`</td>
+        <td>Список IP адресов, к которым всегда должен egress быть доступ. Не рекомендуется устанавливать в качестве значения пустой список.</td>
+        <td>List</td>
+        <td>Да</td>
+        <td>NFT_BASE_RULES_NETWORKS</td>
+      </tr>
+      <tr>
+        <td>`fqdn-rules.strategy`</td>
+        <td>Способ обработки fqdn-правил. Значение по умолчанию: `dns`. Допустимые значения: `dns`, `ndpi`, `combine`. </td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_FQDN_RULES_STRATEGY</td>
+      </tr>
+      <tr>
+        <td>`dns.nameservers`</td>
+        <td>Список доверенных IP-адресов DNS серверов.</td>
+        <td>List</td>
+        <td>Да</td>
+        <td>NFT_DNS_NAMESERVERS</td>
+      </tr>
+      <tr>
+        <td>`dns.proto`</td>
+        <td>Протокол L4, используемый DNS сервером. Значение по умолчанию: `udp`. Допустимые значения: `udp`, `tcp`.</td>
+        <td>String</td>
+        <td>Да</td>
+        <td>NFT_DNS_PROTO</td>
+      </tr>
+      <tr>
+        <td>`dns.port`</td>
+        <td>Порт, используемый DNS сервером. Значение по умолчанию: `53`.</td>
+        <td>Int</td>
+        <td>Да</td>
+        <td>NFT_DNS_PORT</td>
+      </tr>
+      <tr>
+        <td>`dns.retries`</td>
+        <td>Количество повторных запросов к DNS серверу при сбое. Значение по умолчанию: `3`.</td>
+        <td>Int</td>
+        <td>Нет</td>
+        <td>NFT_DNS_RETRIES</td>
+      </tr>
+      <tr>
+        <td>`dns.retry-timeout`</td>
+        <td>Период между повторным запросом DNS сервера при сбое. Значение по умолчанию: `1s`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_DNS_RETRY_TIMEOUT</td>
+      </tr>
+      <tr>
+        <td>`dns.dial-duration`</td>
+        <td>Период времени подключения к DNS серверу. Значение по умолчанию: `3s`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_DNS_DIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`dns.write-duration`</td>
+        <td>Максимальное временя ожидания ответа от DNS сервера при запросе резолва FQDN. Значение по умолчанию: `5s`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_DNS_WRITE_DURATION</td>
+      </tr>
+      <tr>
+        <td>`dns.read-duration`</td>
+        <td>Максимальное временя ожидания ответа от DNS сервера. Значение по умолчанию: `5s`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_DNS_READ_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.def-dial-duration`</td>
+        <td>Длительность ожидания подключения к службе.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_EXTAPI_SVC_DEF_DIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.address`</td>
+        <td>IP адрес hbf-сервера.</td>
+        <td>String</td>
+        <td>Да</td>
+        <td>NFT_EXTAPI_SVC_SGROUPS_ADDRESS</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.dial-duration`</td>
+        <td>Продолжительность ожидания подключения к hbf-серверу.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_EXTAPI_SVC_SGROUPS_DIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.sync-status.interval`</td>
+        <td>Период синхронизации с hbf-сервером. Значение по умолчанию: `10s`.</td>
+        <td>String</td>
+        <td>Да</td>
+        <td>NFT_EXTAPI_SVC_SGROUPS_SYNC_STATUS_INTERVAL</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.sync-status.push`</td>
+        <td>Использовать push модель для синхронизации с hbf-сервером. Значение по умолчанию: `false`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_EXTAPI_SVC_SGROUPS_SYNC_STATUS_PUSH</td>
+      </tr>
+      <tr>
+        <td>`telemetry.endpoint`</td>
+        <td>IP адрес и порт, для доступа к метрикам. Рекомендуемое значение: `0.0.0.0:9660`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_ENDPOINT</td>
+      </tr>
+      <tr>
+        <td>`telemetry.metrics.enable`</td>
+        <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`). Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_METRICS_ENABLE</td>
+      </tr>
+      <tr>
+        <td>`telemetry.healthcheck.enable`</td>
+        <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`. Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_HEALTHCHECK_ENABLE</td>
+      </tr>
+      <tr>
+        <td>`telemetry.useragent`</td>
+        <td>Позволяет устанавливать метку в параметры метрик</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_USERAGENT</td>
+      </tr>
+      <tr>
+        <td>`telemetry.profile.enable`</td>
+        <td>Позволяет получать профиль агента по `/debug/pprof/index`. Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_PROFILE_ENABLE</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
