@@ -632,7 +632,7 @@ ansible-playbook main.yaml
       <tr>
         <td>`telemetry.healthcheck.enable`</td>
         <td>
-          Включить/Отключить возможность получения информации о статусе hbf-агента. Значение по умолчанию: `true`. Пример получения метрик: `curl 0.0.0.0:9660/healthcheck`.
+          Включить/Отключить возможность получения информации о статусе hbf-агента. Значение по умолчанию: `true`. Пример получения статуса: `curl 0.0.0.0:9660/healthcheck`.
         </td>
         <td>Boolean</td>
         <td>Нет</td>
@@ -647,7 +647,7 @@ ansible-playbook main.yaml
       </tr>
       <tr>
         <td>`telemetry.profile.enable`</td>
-        <td>Включить/Отключить возможность получения профиля hbf-агента. Значение по умолчанию: `true`. Пример получения метрик: `curl 0.0.0.0:9660/debug/pprof/goroutine?debug=2`.</td>
+        <td>Включить/Отключить возможность получения профиля hbf-агента. Значение по умолчанию: `true`. Пример получения профиля: `curl 0.0.0.0:9660/debug/pprof/goroutine?debug=2`.</td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_PROFILE_ENABLE</td>
