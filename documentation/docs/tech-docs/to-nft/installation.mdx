@@ -18,11 +18,20 @@ values = {[
 
 <TabItem value='docker'>
 
-    ```bash title='bash'
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    ```
+    
+    ```bash title='Git setup'
     git clone https://github.com/H-BF/sgroups
     cd sgroups
+    git checkout tags/v${VERSION}
+    ```
 
-    export VERSION=$(cat VERSION | cut -c2-)
+    ```bash title='Configuration file setup'
     cat <<EOF > config-agent.yaml
     ---
     graceful-shutdown: 10s
@@ -38,7 +47,7 @@ values = {[
         def-daial-duration: 10s
         sgroups:
           dial-duration: 3s
-          address: 'tcp://<HBF_SERVER>:HBF_SERVER_PORT'
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
           sync-status:
             interval: 3s #mandatory
             push: true
@@ -48,9 +57,10 @@ values = {[
         linger: 1s
 
     base-rules:
-      networks: ['<HBF_SERVER>:HBF_SERVER_PORT/32']
+      networks: ['${HBF_SERVER}/32']
+
     dns:
-      nameservers: <DNS_SERVER>
+      nameservers: ${DNS_SERVER}
       proto: tcp
       port: 53
       dial-duration: 3s
@@ -66,11 +76,11 @@ values = {[
         enable: true
       healthcheck:
         enable: true
+    EOF
+    ```
 
-  EOF
-  ```
-
-  ```docker
+  ```bash title='Dockerfile setup'
+  cat <<EOF > Dockerfile.agent
   FROM golang:1.20-alpine3.17 as builder
 
   WORKDIR /src
@@ -86,24 +96,25 @@ values = {[
       apk update && apk upgrade
 
   WORKDIR /app/
-  COPY --from=builder --chown=app:app /src/ .
+  COPY --from=builder --chown=app:app /src/bin/ /app/bin/
 
   USER app
 
   CMD ["/app/bin/to-nft"]
+  EOF
   ```
 
   ```bash
-  docker build --tag to-nft:v$(cat VERSION) .
+  docker build -f Dockerfile.agent --tag to-nft:v${VERSION} .
   ```
 
   ```bash
   docker run \
   -d \
-  -v config.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
+  -v config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
   --name hbf-agent \
   --entrypoint "/app/bin/to-nft"
-  to-nft:v$(cat VERSION) -config /opt/swarm/etc/to-nft/config-agent.yaml
+  to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
   ```
 
 </TabItem>
@@ -121,7 +132,7 @@ values = {[
     export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
 
     sudo wget -O /tmp/to-nft $URL/$RELEASE
-    sudo yum -i /tmp/to-nft
+    sudo dpkg -i /tmp/to-nft
     systemctl enable hbf-agent.service
     systemctl start hbf-agent.service
 ```
@@ -149,54 +160,97 @@ values = {[
 </TabItem>
 <TabItem value='source'>
 
-```bash title='bash'
-## INSTALL SERVER
-git clone https://github.com/fraima/swarm.git
-cd sgroups
-make to-nft
-mkdir -p /opt/swarm/sbin
-mkdir -p /opt/swarm/etc/to-nft
-cp bin/to-nft /opt/swarm/sbin/to-nft
+    ```bash title='Environment setup'
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
+    mkdir -p /opt/swarm/sbin
+    mkdir -p /opt/swarm/etc/to-nft
+    ```
+    
+    ```bash title='Git setup'
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
+    git checkout tags/v${VERSION}
+    make to-nft platform=linux/amd64
+    cp bin/to-nft /opt/swarm/sbin/hbf-agent
+    ```
 
-cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
----
-server:
+    ```bash title='Configuration file setup'
+    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+    ---
     graceful-shutdown: 10s
+
     logger:
-    level: INFO
+      level: DEBUG
+
+    fqdn-rules:
+      strategy: dns
 
     extapi:
-    svc:
+      svc:
         def-daial-duration: 10s
         sgroups:
-        dial-duration: 3s
-        address: tcp://${HBF_SERVER}
-        check-sync-status: 15s
-EOF
+          dial-duration: 3s
+          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+          sync-status:
+            interval: 3s #mandatory
+            push: true
 
-cat <<EOF > /etc/systemd/system/hbf-agent.service
-[Unit]
-Description=hbf agent
-After=network.target
+    netlink:
+      watcher: #netlink watcher
+        linger: 1s
 
-[Service]
-ExecStart=/opt/swarm/sbin/to-nft --config=/opt/swarm/etc/to-nft/config-agent.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+    base-rules:
+      networks: ['${HBF_SERVER}/32']
 
-[Install]
-WantedBy=multi-user.target
-EOF
+    dns:
+      nameservers: ${DNS_SERVER}
+      proto: tcp
+      port: 53
+      dial-duration: 3s
+      read-duration: 5s #default 
+      write-duration: 5s #default 5s
+      retries: 5 #default 1
+      retry-timeout: 3s #default 1s
 
-systemctl enable hbf-agent.service
-systemctl start  hbf-agent.service
-```
+    telemetry:
+      useragent: "string"
+      endpoint: 0.0.0.0:9660
+      metrics:
+        enable: true
+      healthcheck:
+        enable: true
+    EOF
+    ```
+
+    ```bash title='Agent service setup'
+    cat <<EOF > /etc/systemd/system/hbf-agent.service
+    [Unit]
+    Description=hbf agent
+    After=network.target
+
+    [Service]
+    ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
+    Restart=always
+    RestartSec=5
+    Delegate=yes
+    KillMode=process
+    OOMScoreAdjust=-999
+    LimitNOFILE=1048576
+    LimitNPROC=infinity
+    LimitCORE=infinity
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+    ```
+
+    ```bash title='Agent service start'
+    systemctl enable hbf-agent.service
+    systemctl start  hbf-agent.service
+    ```
 
 </TabItem>
 </Tabs>
@@ -207,20 +261,46 @@ systemctl start  hbf-agent.service
 
 ```yaml title='YAML'
 ---
-server:
-  graceful-shutdown: 10s
-  logger:
-    # log level [optional]
-    level: INFO
-  extapi:
-    svc:
-      # default dial duraton to conect a service [optional]
-      def-daial-duration: 10s
-      sgroups:
-        # sgroups service dial duration [optional]
-        dial-duration: 3s
-        # service address [mandatory]
-        address: tcp://<HBF_SERVER>:<HBF_SERVER_PORT>
-        # interval(duration) backend sync-status check [mandatory]
-        check-sync-status: 15s
+graceful-shutdown: 10s
+
+logger:
+  level: DEBUG
+
+fqdn-rules:
+  strategy: dns
+
+extapi:
+  svc:
+    def-daial-duration: 10s
+    sgroups:
+      dial-duration: 3s
+      address: 'tcp://<HBF_SERVER>:<HBF_SERVER_PORT>'
+      sync-status:
+        interval: 3s #mandatory
+        push: true
+
+netlink:
+  watcher: #netlink watcher
+    linger: 5s
+
+base-rules:
+  networks: []
+
+dns:
+  nameservers: ['10.15.12.100', '10.15.12.200']
+  proto: tcp
+  port: 53
+  dial-duration: 3s
+  read-duration: 5s #default 
+  write-duration: 5s #default 5s
+  retries: 5 #default 1
+  retry-timeout: 3s #default 1s
+
+telemetry:
+  useragent: "string"
+  endpoint: 0.0.0.0:9660
+  metrics:
+    enable: true
+  healthcheck:
+    enable: true
 ```

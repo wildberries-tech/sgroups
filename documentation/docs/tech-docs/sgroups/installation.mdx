@@ -18,10 +18,20 @@ values = {[
 
 <TabItem value='docker'>
 
-    ```bash title='bash'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-
+    ```bash title='Environment setup'
+      export HBF_SERVER=10.0.0.0
+      export HBF_SERVER_PORT=9650
+      export DNS_SERVER=[\'8.8.8.8\']
+      export VERSION=1.9.1
+    ```
+    
+    ```bash title='Git setup'
+      git clone https://github.com/H-BF/sgroups
+      cd sgroups
+      git checkout tags/v${VERSION}
+    ```
+    
+    ```bash title='Configuration file setup'
     export VERSION=$(cat VERSION | cut -c2-)
     cat <<EOF > config-server.yaml
     ---
@@ -124,9 +134,11 @@ systemctl start sgroups
 
     ```bash title='bash'
     ## INSTALL SERVER
+    export VERSION=v1.9.1
     git clone https://github.com/H-BF/sgroups
     cd sgroups
-    make sg-service
+    git checkout tags/${VERSION}
+    make sg-service platform=linux/amd64
     mkdir -p /opt/swarm/sbin
     mkdir -p /opt/swarm/etc/sgroups
     cp bin/sgroups /opt/swarm/sbin/sgroups
