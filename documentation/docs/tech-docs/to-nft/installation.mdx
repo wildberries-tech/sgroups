@@ -444,14 +444,14 @@ values = {[
         <td>`exit-on-success`</td>
         <td>Завершение процесса, если успешно применилась конфигурация для nft. Значение по умолчанию: `false`.</td>
         <td>Boolean</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_EXIT_ON_SUCCESS</td>
       </tr>
       <tr>
         <td>`continue-on-failure`</td>
-        <td></td>
+        <td>В случае ошибки на уровне job, агент не завершает свою работу (идет на цикл перезапуска своих job). Значение по умолчанию: `true`</td>
         <td>Boolean</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_CONTINUE_ON_FAILURE</td>
       </tr>
       <tr>
@@ -463,7 +463,7 @@ values = {[
       </tr>
       <tr>
         <td>`graceful-shutdown`</td>
-        <td></td>
+        <td>Определяет период времени, в течение которого процесс агента должен корректно завершиться. По истечению периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`</td>
         <td>String</td>
         <td>Нет</td>
         <td>NFT_GRACEFUL_SHUTDOWN</td>
@@ -477,7 +477,7 @@ values = {[
       </tr>
       <tr>
         <td>`netlink.watcher.linger`</td>
-        <td>Время ожидания между событиями в netlink'e. Минимальное значение: `1s`.</td>
+        <td>Время, в течение которого из netlink'а ожидаются события. Минимальное значение: `1s`.</td>
         <td>String</td>
         <td></td>
         <td>NFT_NETLINK_WATCHER_LINGER</td>
@@ -491,16 +491,16 @@ values = {[
       </tr>
       <tr>
         <td>`fqdn-rules.strategy`</td>
-        <td>Способ обработки fqdn-правил. Допустимые значения: `dns`, `ndpi`, `combine`.</td>
+        <td>Способ обработки fqdn-правил. Значение по умолчанию: `dns`. Допустимые значения: `dns`, `ndpi`, `combine`. </td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_FQDN_RULES_STRATEGY</td>
       </tr>
       <tr>
         <td>`dns.nameservers`</td>
         <td>Список доверенных IP-адресов DNS серверов.</td>
         <td>List</td>
-        <td></td>
+        <td>Да</td>
         <td>NFT_DNS_NAMESERVERS</td>
       </tr>
       <tr>
@@ -514,50 +514,50 @@ values = {[
         <td>`dns.port`</td>
         <td>Порт, используемый DNS сервером. Значение по умолчанию: `53`.</td>
         <td>Int</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_PORT</td>
       </tr>
       <tr>
         <td>`dns.retries`</td>
         <td>Количество повторных запросов к DNS серверу при сбое. Значение по умолчанию: `3`.</td>
         <td>Int</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_RETRIES</td>
       </tr>
       <tr>
         <td>`dns.retry-timeout`</td>
         <td>Период между повторным запросом DNS сервера при сбое. Значение по умолчанию: `1s`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_RETRY_TIMEOUT</td>
       </tr>
       <tr>
         <td>`dns.dial-duration`</td>
-        <td>. Значение по умолчанию: `3s`.</td>
+        <td>Период времени подключения к DNS серверу. Значение по умолчанию: `3s`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_DIAL_DURATION</td>
       </tr>
       <tr>
         <td>`dns.write-duration`</td>
-        <td>. Значение по умолчанию: `5s`.</td>
+        <td>Максимальное временя ожидания ответа от DNS сервера при запросе резолва FQDN. Значение по умолчанию: `5s`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_WRITE_DURATION</td>
       </tr>
       <tr>
         <td>`dns.read-duration`</td>
-        <td>. Значение по умолчанию: `5s`.</td>
+        <td>Максимальное временя ожидания ответа от DNS сервера. Значение по умолчанию: `5s`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_DNS_READ_DURATION</td>
       </tr>
       <tr>
-        <td>`extapi.svc.def-daial-duration`</td>
-        <td>Длительность ожидания для подключения службе. ЕЩВЩ </td>
+        <td>`extapi.svc.def-dial-duration`</td>
+        <td>Длительность ожидания подключения к службе.</td>
         <td>String</td>
         <td>Нет</td>
-        <td>NFT_EXTAPI_SVC_DEF_DAIAL_DURATION</td>
+        <td>NFT_EXTAPI_SVC_DEF_DIAL_DURATION</td>
       </tr>
       <tr>
         <td>`extapi.svc.sgroups.address`</td>
