@@ -190,7 +190,7 @@ values = {[
 
 <TabItem value='source'>
 
-  ```bash title='bash'
+  ```bash title='Environment setup & build'
   export VERSION=v1.9.1
   git clone https://github.com/H-BF/sgroups
   cd sgroups
@@ -198,7 +198,7 @@ values = {[
   make sg-service platform=linux/amd64
   mkdir -p /opt/swarm/sbin
   mkdir -p /opt/swarm/etc/sgroups
-  cp bin/sgroups /opt/swarm/sbin/sgroups
+  cp bin/sgroups /opt/swarm/sbin/hbf-server
   ```
 
   ```bash title='Configuration file setup'
@@ -232,7 +232,7 @@ values = {[
   After=network.target
 
   [Service]
-  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
+  ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
   Restart=always
   RestartSec=5
   Delegate=yes
