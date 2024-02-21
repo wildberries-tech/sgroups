@@ -96,14 +96,14 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 #### Шаблон
 
 ```hcl
-chain FW-IN-sgName {
+chain FW-IN-INPUT-sgName {
     # **********
     $Trace $Transport $TypeList $Counter $Log $Verdict    //ICMP
     # **********
     $Trace $Counter $Log $Verdict                         //Общие
 }
 
-chain FW-OUT-sgName {
+chain FW-OUT-POSTROUTING-sgName {
     # **********
     $Trace $Transport $TypeList $Counter $Log $Verdict    //ICMP
     # **********
@@ -114,7 +114,7 @@ chain FW-OUT-sgName {
 #### Пример использования
 
 ```hcl
-chain FW-IN-sg-example {
+chain FW-IN-INPUT-sg-example {
     # **********
     nftrace set 1 icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept  //ICMP
     nftrace set 1 icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept  //ICMP
@@ -123,7 +123,7 @@ chain FW-IN-sg-example {
 }
 
 
-chain FW-OUT-sg-example {
+chain FW-OUT-POSTROUTING-sg-example {
     # **********
     nftrace set 1 icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept  //ICMP
     nftrace set 1 icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept  //ICMP

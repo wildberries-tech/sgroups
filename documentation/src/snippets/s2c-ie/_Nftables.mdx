@@ -181,7 +181,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-IN-sgName {
+                chain FW-IN-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -191,7 +191,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-sg-example-1 {
+                chain FW-IN-INPUT-sg-example-1 {
                     # **********
                     nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -203,7 +203,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-OUT-sgName {
+                chain FW-OUT-POSTROUTING-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -213,7 +213,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-sg-example-1 {
+                chain FW-OUT-POSTROUTING-sg-example-1 {
                     # **********
                     nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -235,7 +235,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-IN-sgName {
+                chain FW-IN-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -245,7 +245,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-sg-example-1 {
+                chain FW-IN-INPUT-sg-example-1 {
                     # **********
                     nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -257,7 +257,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-OUT-sgName {
+                chain FW-OUT-POSTROUTING-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -267,7 +267,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-sg-example-1 {
+                chain FW-OUT-POSTROUTING-sg-example-1 {
                     # **********
                     nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -289,7 +289,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-IN-sgName {
+                chain FW-IN-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -299,7 +299,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-sg-example-1 {
+                chain FW-IN-INPUT-sg-example-1 {
                     # **********
                     nftrace set 1 ip saddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -311,17 +311,17 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Шаблон
 
                 ```hcl
-                chain FW-OUT-sgName {
+                chain FW-OUT-POSTROUTING-sgName {
                     # **********
-                        $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
-                        # **********
+                    $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
+                    # **********
                 }
                 ```
 
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-sg-example-1 {
+                chain FW-OUT-POSTROUTING-sg-example-1 {
                     # **********
                     nftrace set 1 ip daddr NetIPv4-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr NetIPv6-"10.0.0.0/8" icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept

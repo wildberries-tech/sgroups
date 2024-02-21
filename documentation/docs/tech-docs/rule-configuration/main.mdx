@@ -94,10 +94,10 @@ set NetIPv4-${NAME} {
 ### Описание
 
 <div className="paragraph">
-  В нашей реализации структуры мы вводим для INPUT и OUTPUT понятие 3-х цепочек. *Первая* цепочка является точкой входа
-  для пакетов из сетевого стека, в ней указывается хук (input, prerouting, postrouting) и приоритет выполнения. *Вторая*
-  цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group.
-  Последняя цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
+  В нашей реализации структуры мы вводим для INPUT и OUTPUT понятие 2-х цепочек. *Первая* цепочка является точкой входа 
+  для пакетов из сетевого стека, в ней указывается хук (input, prerouting, postrouting) и приоритет выполнения, так же эта 
+  цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной Security Group. *Вторая* 
+  цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
 </div>
 
 <table>
@@ -110,40 +110,33 @@ set NetIPv4-${NAME} {
   </thead>
   <tbody>
     <tr>
-      <td>INPUT</td>
+      <td>FW-IN-INPUT</td>
       <td>
-        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и
-        приоритет выполнения 0 (filter)
+        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и 
+        приоритет выполнения 0 (filter). Так же используется для маршрутизации в последующие цепочки по принадлежности 
+        к той или иной Security Group.
       </td>
     </tr>
     <tr>
-      <td>FW-IN</td>
+      <td>FW-IN-INPUT-sgName (Security Group name)</td>
       <td>
-        <i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной
-        Security Group
-      </td>
-    </tr>
-    <tr>
-      <td>FW-IN-sgName (Security Group name)</td>
-      <td>
-        <i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
+        <i>Вторая</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
       </td>
     </tr>
   </tbody>
 </table>
 
 <Tabs
-    defaltValue="input"
+    defaltValue="fw-in-input"
     values= {[
-        { label: "INPUT", value: "input" },
-        { label: "FW-IN", value: "fw-in" }
+        { label: "FW-IN-INPUT", value: "fw-in-input" },
     ]}
 >
 
-    <TabItem value="input">
+    <TabItem value="fw-in-input">
         #### Описание
 
-        Правило перехода в цепочку FW-IN с проверкой что трафик является входящим.
+        Правило перехода в цепочку FW-IN-INPUT-sgNAME с проверкой что трафик является входящим и предназначен для указанной Security Group.
 
         #### Параметры
 
@@ -159,45 +152,53 @@ set NetIPv4-${NAME} {
               </thead>
               <tbody>
                   <tr>
-                      <td>$\{Condition\}</td>
-                      <td>
-                          <nobr>`iifname != "lo"`</nobr>
-                      </td>
-                      <td>Не параметризированный</td>
-                      <td>Проверка что трафик является входящим</td>
+                    <td>$RuleType</td>
+                    <td>`ip`</td>
+                    <td></td>
+                    <td>Указатель на трафик типа IP</td>
                   </tr>
                   <tr>
-                      <td>$\{Counter\}</td>
-                      <td>
-                          <nobr>`counter packets 0 bytes 0`</nobr>
-                      </td>
-                      <td>Не параметризированный</td>
-                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                    <td>$DstSgroup</td>
+                    <td>`dst @${IPSet({sgName})}`</td>
+                    <td>Наименование IPSet в котором описаны сети в Security Group</td>
+                    <td>Значение типа string, не должно содержать в себе пробелов</td>
                   </tr>
                   <tr>
-                      <td>$\{Verdict\}</td>
-                      <td>`goto`</td>
-                      <td>
-                          <div>Не параметризированный</div>
+                    <td>$\{sgName\}</td>
+                    <td></td>
+                    <td></td>
+                    <td>Название Security Group</td>
+                  </tr>
+                  <tr>
+                    <td>$\{Counter\}</td>
+                    <td>`counter packets 0 bytes 0`</td>
+                    <td>Не параметризированный</td>
+                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                  </tr>
+                  <tr>
+                    <td>$\{Verdict\}</td>
+                    <td>`goto {chainName}`</td>
+                    <td>
+                      <div>Не параметризированный</div>
                           <br />
                           <div className="text-justify">
                               <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
                           </div>
                           <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                      </td>
-                      <td>Вердикт политики по пакетам данных</td>
+                    </td>
+                    <td>Вердикт политики по пакетам данных</td>
                   </tr>
                   <tr>
-                      <td>$\{Hook\}</td>
-                      <td>`hook {Name}`</td>
-                      <td>input</td>
-                      <td>Приоритет выполнения цепочки характерезующий стадию прохождения трафика</td>
+                    <td>$\{Hook\}</td>
+                    <td>`hook {Name}`</td>
+                    <td>input</td>
+                    <td>Приоритет выполнения цепочки характеризующий стадию прохождения трафика</td>
                   </tr>
-                          <tr>
-                      <td>$\{HookPriority\}</td>
-                      <td>`priority {IntValue}`</td>
-                      <td>0</td>
-                      <td>Приоритет выполнения цепочки одного типа</td>
+                  <tr>
+                    <td>$\{HookPriority\}</td>
+                    <td>`priority {IntValue}`</td>
+                    <td>0</td>
+                    <td>Приоритет выполнения цепочки одного типа</td>
                   </tr>
               </tbody>
           </table>
@@ -206,95 +207,8 @@ set NetIPv4-${NAME} {
         #### Шаблон
 
         ```hcl
-        chain INPUT {
+        chain FW-IN-INPUT{  
             type filter ${Hook} ${HookPriority}; policy accept;
-            # **********
-            ${Condition} ${Counter} ${Verdict} FW-IN
-            # **********
-        }
-        ```
-
-        #### Пример использования
-
-        ```hcl
-        chain INPUT {
-            type filter hook input priority 0; policy accept;
-            # **********
-            iifname != "lo" counter packets 0 bytes 0 goto FW-IN
-            # **********
-        }
-        ```
-    </TabItem>
-
-    <TabItem value="fw-in">
-        #### Описание
-
-        Правило перехода в цепочку FW-IN-sgName с проверкой что трафик предназначен для указанной Security Group.
-
-        #### Параметры
-
-        <div class="scrollable-x">
-          <table>
-              <thead>
-                  <tr>
-                      <th>Шаблон параметра</th>
-                      <th>Структура параметра</th>
-                      <th>Значение</th>
-                      <th>Описание</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>$\{RuleType\}</td>
-                      <td>`ip`</td>
-                      <td></td>
-                      <td>Указатель на трафик типа IP</td>
-                  </tr>
-                  <tr>
-                      <td>$\{DstSgroup\}</td>
-                      <td>
-                          <nobr>`dst @${IPSet({sgName})}`</nobr>
-                      </td>
-                      <td>Наименование IPSet в котором описаны сети в Security Group</td>
-                      <td>Значение типа string, не должно содержать в себе пробелов</td>
-                  </tr>
-                  <tr>
-                      <td>$\{sgName\}</td>
-                      <td></td>
-                      <td></td>
-                      <td>Название Security Group</td>
-                  </tr>
-                  <tr>
-                      <td>$\{Counter\}</td>
-                      <td>
-                          <nobr>`counter packets 0 bytes 0`</nobr>
-                      </td>
-                      <td>Не параметризированный</td>
-                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
-                  </tr>
-                  <tr>
-                      <td>$\{Verdict\}</td>
-                      <td>
-                          <nobr>`goto {chainName}`</nobr>
-                      </td>
-                      <td>
-                          <div>Не параметризированный</div>
-                          <br />
-                          <div className="text-justify">
-                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
-                          </div>
-                          <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
-                      </td>
-                      <td>Вердикт политики по пакетам данных</td>
-                  </tr>
-              </tbody>
-          </table>
-        </div>
-
-        #### Шаблон
-
-        ```hcl
-        chain FW-IN {
             # **********
             ${RuleType} ${DstSgroup} ${Counter} ${Verdict} FW-IN-${sgName}
             # **********
@@ -304,11 +218,12 @@ set NetIPv4-${NAME} {
         #### Пример использования
 
         ```hcl
-        chain FW-IN {
+        chain FW-IN-INPUT{
+            type filter hook input priority 0; policy accept;
             # **********
-            ip daddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
-            ip daddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-IN-sgName_example
+            ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
             # **********
+            drop
         }
         ```
     </TabItem>
@@ -320,21 +235,26 @@ set NetIPv4-${NAME} {
 ```hcl
 table inet main-1705582480 {
 
-chain FW-IN-exampleSG {
+chain FW-IN-INPUT {
+    type filter hook input priority filter; policy accept;
+    # ******
+    ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto FW-IN-INPUT-no-routed
+    ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
+    drop
+  }
+  
+chain FW-IN-INPUT-no-routed {
+    ct state established,related counter packets 0 bytes 0 accept
     # ******
     counter packets 0 bytes 0 accept
-}
+}  
 
-chain FW-IN {
+chain FW-IN-INPUT-exampleSG {
+    ct state established,related counter packets 0 bytes 0 accept
     # ******
-    ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-exampleSG
-    # ******
+    counter packets 0 bytes 0 accept
   }
 
-chain INPUT {
-    type filter hook input priority 0; policy accept;
-    ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN
-  }
 }
 ```
 
@@ -348,21 +268,22 @@ chain INPUT {
   </thead>
   <tbody>
     <tr>
-      <td>POSTROUTING</td>
+      <td>FW-OUT-POSTROUTING</td>
       <td>
-        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) и
-        приоритет выполнения 300
+        <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) 
+        и приоритет выполнения 300. Так же используется для маршрутизации в последующие цепочки по принадлежности к той 
+        или иной Security Group.
       </td>
     </tr>
     <tr>
-      <td>FW-OUT</td>
+      <td>FW-OUT-POSTROUTING-DPI-$sgName (Security Group name)</td>
       <td>
-        <i>Вторая</i> цепочка используется для маршрутизации в последующие цепочки по принадлежности к той или иной
-        Security Group
+        <i>Вторая</i> цепочка содержит набор s2f правил при включённом режиме "DPI" и данные правила относятся только 
+        к конкретной Security Group
       </td>
     </tr>
     <tr>
-      <td>FW-OUT-sgName (Security Group name)</td>
+      <td>FW-OUT-POSTROUTING-$sgNAME (Security Group name)</td>
       <td>
         <i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
       </td>
@@ -371,16 +292,16 @@ chain INPUT {
 </table>
 
 <Tabs
-    defaltValue="postrouting"
+    defaltValue="fw-out-postrouting-dns"
     values= {[
-        { label: "POSTROUTING", value: "postrouting" },
-        { label: "FW-OUT", value: "fw-out" }
+        { label: "FW-OUT-POSTROUTING (DNS)", value: "fw-out-postrouting-dns" },
+        { label: "FW-OUT-POSTROUTING (DPI)", value: "fw-out-postrouting-dpi" }
     ]}
 >
-    <TabItem value="postrouting">
+    <TabItem value="fw-out-postrouting-dns">
         #### Описание
 
-        Правило перехода в цепочку FW-OUT с проверкой что трафик является исходящим.
+        Правило перехода в цепочку FW-OUT-POSTROUTING-$sgName с проверкой что трафик является исходящим и предназначен для указанной Security Group.
 
         #### Параметры
 
@@ -396,20 +317,28 @@ chain INPUT {
               </thead>
               <tbody>
                   <tr>
-                      <td>$\{Condition\}</td>
-                      <td>
-                          <nobr>`oifname != "lo"`</nobr>
-                      </td>
-                      <td>Не параметризированный</td>
-                      <td>Проверка что трафик является исходящим</td>
+                    <td>$\{RuleType\}</td>
+                    <td>`ip`</td>
+                    <td></td>
+                    <td>Указатель на трафик типа IP</td>
                   </tr>
                   <tr>
-                      <td>$\{Counter\}</td>
-                      <td>
-                          <nobr>`counter packets 0 bytes 0`</nobr>
-                      </td>
-                      <td>Не параметризированный</td>
-                      <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
+                    <td>$\{SrcSgroup\}</td>
+                    <td>`saddr @${IPSet({sgName})}`</td>
+                    <td>Наименование IPSet в котором описаны сети в Security Group</td>
+                    <td>Значение типа string, не должно содержать в себе пробелов</td>
+                  </tr>
+                  <tr>
+                    <td>$\{sgName\}</td>
+                    <td></td>
+                    <td></td>
+                    <td>Название Security Group</td>
+                  </tr>
+                  <tr>
+                    <td>$\{Counter\}</td>
+                    <td>`counter packets 0 bytes 0`</td>
+                    <td>Не параметризированный</td>
+                    <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
                   </tr>
                   <tr>
                       <td>$\{Verdict\}</td>
@@ -443,30 +372,53 @@ chain INPUT {
         #### Шаблон
 
         ```hcl
-        chain FW-IN {
+        chain FW-OUT-POSTROUTING {
             type filter ${Hook} ${HookPriority}; policy accept;
             # **********
-            ${Condition} ${Counter} ${Verdict} FW-OUT
+            ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-POSTROUTING-${sgName}
             # **********
+            ${Counter}
         }
         ```
 
         #### Пример использования
 
         ```hcl
-        chain POSTROUTING {
+        chain FW-OUT-POSTROUTING {
             type filter hook postrouting priority 300; policy accept;
             # **********
-            oifname != "lo" counter packets 0 bytes 0 goto FW-OUT
+            ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
             # **********
+            counter packets 0 bytes 0 drop
         }
         ```
+        ---
+
+        ```hcl
+          table inet main-1705582480 {
+
+          chain FW-OUT-POSTROUTING {
+              type filter hook postrouting priority 300; policy accept;
+              # **********
+              ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
+              drop
+          }
+
+          chain FW-OUT-POSTROUTING-exampleSG {
+              ct state established,related counter packets 0 bytes 0 accept
+              # ******
+              counter packets 0 bytes 0 accept
+          }
+        ```
+        ---        
     </TabItem>
 
-    <TabItem value="fw-out">
+    <TabItem value="fw-out-postrouting-dpi">
         #### Описание
 
-        Правило перехода в цепочку FW-OUT-sgName с проверкой что трафик от указанной Security Group.
+        Правило перехода в цепочку FW-OUT-POSTROUTING-DPI-$sgName при включённом режиме "DPI" для Egress 
+        Security Group to FQDN правила и в цепочку FW-OUT-POSTROUTING-$sgName для всех остальных правил с 
+        проверкой что трафик является исходящим и предназначен для указанной Security Group.
 
         #### Параметры
 
@@ -512,17 +464,25 @@ chain INPUT {
                   <tr>
                       <td>$\{Verdict\}</td>
                       <td>
-                          <nobr>`goto {chainName}`</nobr>
+                          <nobr>`goto {chainName} | jump {chainName}`</nobr>
                       </td>
                       <td>
                           <div>Не параметризированный</div>
                           <br />
                           <div className="text-justify">
-                              <i>* Так как данное правило используется для проверки типа трафика то переход на другую цепочку правил происходит только с помощью goto.</i>
+                              <i>* При включённом режиме "DPI" для Egress Security Group to FQDN переход происходит с помощью jump. Для всех остальных правил переход на другую цепочку правил происходит с помощью goto.</i>
                           </div>
                           <i>Подробнее: [Verdict statement](./main.mdx#verdict-statement)</i>
                       </td>
                       <td>Вердикт политики по пакетам данных</td>
+                  </tr>
+                  <tr>
+                      <td>$\{HookPriority\}</td>
+                      <td>
+                          <nobr>`priority {IntValue}`</nobr>
+                      </td>
+                      <td>0</td>
+                      <td>Приоритет выполнения цепочки одного типа</td>
                   </tr>
               </tbody>
           </table>
@@ -531,51 +491,56 @@ chain INPUT {
         #### Шаблон
 
         ```hcl
-        chain FW-OUT {
+        chain FW-OUT-POSTROUTING {
+            type filter ${Hook} ${HookPriority}; policy accept;
             # **********
-            ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-${sgName}
+            ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-POSTROUTING-DPI-${sgName}
+            ${RuleType} ${SrcSgroup} ${Counter} ${Verdict} FW-OUT-POSTROUTING-${sgName}
             # **********
+            ${Counter}
         }
         ```
 
         #### Пример использования
 
-        ```nft
-        chain FW-OUT {
+        ```hcl
+        chain FW-OUT-POSTROUTING {
+            type filter hook postrouting priority 300; policy accept;
             # **********
-            ip saddr NetIPv4-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
-            ip saddr NetIPv6-sgName_example counter packets 0 bytes 0 goto FW-OUT-sgName_example
+            ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 jump FW-OUT-POSTROUTING-DPI-exampleSG
+            ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
             # **********
+            counter packets 0 bytes 0 drop
         }
         ```
+        ---
+
+        ```hcl
+          table inet main-1705582480 {
+
+          chain FW-OUT-POSTROUTING {
+              type filter hook postrouting priority 300; policy accept;
+              # **********
+              ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
+              drop
+          }
+
+          chain FW-OUT-POSTROUTING-DPI-exampleSG {
+              # **********
+          }
+
+          chain FW-OUT-POSTROUTING-exampleSG {
+              ct state established,related counter packets 0 bytes 0 accept
+              # ******
+              counter packets 0 bytes 0 accept
+          }
+        ```
+
+        ---
     </TabItem>
 
 </Tabs>
 
----
-
-```hcl
-table inet main-1705582480 {
-
-chain FW-OUT-exampleSG {
-    # ******
-    counter packets 0 bytes 0 accept
-}
-
-chain FW-OUT {
-    # ******
-    ip saddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-OUT-exampleSG
-    # ******
-  }
-
-chain POSTROUTING {
-    type filter hook input priority 0; policy accept;
-    ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-OUT
-  }
-}
-```
-
----
 
 ## Verdict statement
 

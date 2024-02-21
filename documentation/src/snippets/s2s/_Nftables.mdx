@@ -172,13 +172,13 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     <TabItem value="tcp">
         #### Шаблон
         ```hcl
-        chain FW-IN-sgName {
+        chain FW-IN-INPUT-sgName {
             # **********
             ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
             # **********
         }
 
-        chain FW-OUT-sgName {
+        chain FW-OUT-POSTROUTING-sgName {
             # **********
             ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
             # **********
@@ -188,14 +188,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         #### Пример использования
 
         ```hcl
-        chain FW-IN-sg-example-to {
+        chain FW-IN-INPUT-sg-example-to {
             # **********
             nftrace set 1 ip saddr NetIPv4-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip saddr NetIPv6-sg-example-from tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             # **********
         }
 
-        chain FW-OUT-sg-example-from {
+        chain FW-OUT-POSTROUTING-sg-example-from {
             # **********
             nftrace set 1 ip daddr NetIPv4-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip daddr NetIPv6-sg-example-to tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -207,13 +207,13 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     <TabItem value="udp">
         #### Шаблон
         ```hcl
-        chain FW-IN-sgName {
+        chain FW-IN-INPUT-sgName {
             # **********
             ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
             # **********
         }
 
-        chain FW-OUT-sgName {
+        chain FW-OUT-POSTROUTING-sgName {
             # **********
             ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${SrcPorts} ${DstPorts} ${Counter} ${Log} ${Verdict}
             # **********
@@ -223,14 +223,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         #### Пример использования
 
         ```hcl
-        chain FW-IN-sg-example-to {
+        chain FW-IN-INPUT-sg-example-to {
             # **********
             nftrace set 1 ip saddr NetIPv4-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip saddr NetIPv6-sg-example-from udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             # **********
         }
 
-        chain FW-OUT-sg-example-from {
+        chain FW-OUT-POSTROUTING-sg-example-from {
             # **********
             nftrace set 1 ip daddr NetIPv4-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip daddr NetIPv6-sg-example-to udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -243,13 +243,13 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         #### Шаблон
 
         ```hcl
-        chain FW-IN-sgName {
+        chain FW-IN-INPUT-sgName {
             # **********
             ${Trace} ${RuleType} ${SrcSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
             # **********
         }
 
-        chain FW-OUT-sgName {
+        chain FW-OUT-POSTROUTING-sgName {
             # **********
             ${Trace} ${RuleType} ${DstSgroup} ${Transport} ${TypeList} ${Counter} ${Log} ${Verdict}
             # **********
@@ -259,14 +259,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         #### Пример использования
 
         ```hcl
-        chain FW-IN-sg-example-to {
+        chain FW-IN-INPUT-sg-example-to {
             # **********
             nftrace set 1 ip saddr NetIPv4-v4-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip saddr NetIPv6-v6-sg-example-from icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
             # **********
         }
 
-        chain FW-OUT-sg-example-from {
+        chain FW-OUT-POSTROUTING-sg-example-from {
             # **********
             nftrace set 1 ip daddr NetIPv4-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
             nftrace set 1 ip daddr NetIPv6-sg-example-to icmp type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
