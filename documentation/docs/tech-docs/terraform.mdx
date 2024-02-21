@@ -27,13 +27,14 @@ export OS=linux
 export ARCH=amd64
 export GIT=https://github.com/H-BF/sgroups/releases/download/v${VERSION}
 export RELEASE_NAME=terraform-provider-sgroups
-export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/hbf/swarm
-mkdir -p $PLUGIN_PATH/$VERSION/${OS}_${ARCH}
+export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/sgroups
+export PROVIDER_PATH=${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
+mkdir -p ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}
 ```
 
 ```bash title='Install provider'
-wget -O ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION} ${GIT}/${RELEASE_NAME}
-chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
+wget -O ${PROVIDER_PATH} ${GIT}/${RELEASE_NAME}
+chmod +x ${PROVIDER_PATH}
 ```
 
 ```bash title='Terraform setup'
@@ -56,14 +57,15 @@ export VERSION=1.9.1
 export OS=linux
 export ARCH=amd64
 export RELEASE_NAME=terraform-provider-sgroups
-export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/hbf/swarm
+export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/sgroups
+export PROVIDER_PATH=${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
+mkdir -p ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}
 
 git clone https://github.com/fraima/swarm.git
 cd sgroups
 make sgroups-tf-v2
-cp bin/${RELEASE_NAME} ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
-mkdir -p $PLUGIN_PATH/$VERSION/${OS}_${ARCH}
-chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
+cp bin/${RELEASE_NAME} ${PROVIDER_PATH}
+chmod +x ${PROVIDER_PATH}
 
 cat <<EOF >> ~/.terraformrc
 plugin_cache_dir = "${HOME}/.terraform.d/plugin-cache"
