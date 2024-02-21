@@ -36,7 +36,7 @@ wget -O ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION} ${GI
 chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
 ```
 
-```bash title='Terraform directory setup'
+```bash title='Terraform setup'
 cat <<EOF >> ~/.terraformrc
 plugin_cache_dir = "${HOME}/.terraform.d/plugin-cache"
 disable_checkpoint = true

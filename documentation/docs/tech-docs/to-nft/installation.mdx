@@ -13,7 +13,8 @@ values = {[
     { label: 'docker', value: 'docker' },
     { label: 'deb', value: 'deb' },
     { label: 'rpm', value: 'rpm' },
-    { label: 'source', value: 'source' }
+    { label: 'source', value: 'source' },
+    { label: 'ansible', value: 'ansible' }
 ]}>
 
 <TabItem value='docker'>
@@ -118,8 +119,8 @@ values = {[
   --user=0 \
   to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
   ```
-
 </TabItem>
+
 <TabItem value='deb'>
 
     <dev>
@@ -194,8 +195,8 @@ values = {[
     systemctl enable hbf-agent.service
     systemctl start hbf-agent.service
     ```
-
 </TabItem>
+
 <TabItem value='rpm'>
 
     <dev>
@@ -270,8 +271,8 @@ values = {[
     systemctl enable hbf-agent.service
     systemctl start hbf-agent.service
     ```
-
 </TabItem>
+
 <TabItem value='source'>
 
     ```bash title='Environment setup'
@@ -365,56 +366,255 @@ values = {[
     systemctl enable hbf-agent.service
     systemctl start  hbf-agent.service
     ```
-
 </TabItem>
+
+<TabItem value='ansible'>
+  Перед началом работы необходимо склонировать репозиторий
+
+  ```bash
+  git clone https://github.com/H-BF/ansible
+  cd ansible
+  ```
+
+  ## Требования
+
+  <div class="paragraph">
+    Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
+    linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
+  </div>
+
+  ```bash
+  apt search linux-headers-$(uname -r)
+  ```
+
+  В случае, если такой пакет существует вывод будет следующим:
+
+  ```bash
+  Sorting... Done
+  Full Text Search... Done
+  linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]
+      Header files for Linux 5.10.0-26-amd64
+  ```
+
+  <div className="text-justify">
+    Сообщение `linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]` говорит о том, что необходимый
+    пакет заголовков найден. В противном случае необходимо обновить версию ядра до ближайшей версии имеющей пакет
+    `linux-headers-$(uname -r)`
+  </div>
+
+  ## Использование
+
+  <div className="text-justify">
+    Перед запуском плейбука убедитесь, что вы добавили необходимые хосты в `env/hosts`. Чтобы выполнить плейбук,
+    запустите:
+  </div>
+
+  ```bash
+  ansible-playbook main.py
+  ```
+
+  ## Удаление
+
+  <div className="text-justify">
+      Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`. 
+      Если вы удаляете сам _hbf-agent_, все правила, созданные им в _nft_, будут автоматически удалены.
+  </div>
+</TabItem>
+
 </Tabs>
 
 ## Настройка
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
-```yaml title='YAML'
----
-graceful-shutdown: 10s
-
-logger:
-  level: DEBUG
-
-fqdn-rules:
-  strategy: dns
-
-extapi:
-  svc:
-    def-daial-duration: 10s
-    sgroups:
-      dial-duration: 3s
-      address: 'tcp://<HBF_SERVER>:<HBF_SERVER_PORT>'
-      sync-status:
-        interval: 3s #mandatory
-        push: true
-
-netlink:
-  watcher: #netlink watcher
-    linger: 5s
-
-base-rules:
-  networks: []
-
-dns:
-  nameservers: ['10.15.12.100', '10.15.12.200']
-  proto: tcp
-  port: 53
-  dial-duration: 3s
-  read-duration: 5s #default 
-  write-duration: 5s #default 5s
-  retries: 5 #default 1
-  retry-timeout: 3s #default 1s
-
-telemetry:
-  useragent: "string"
-  endpoint: 0.0.0.0:9660
-  metrics:
-    enable: true
-  healthcheck:
-    enable: true
-```
+<div class="scrollable-x">
+  <table>
+    <caption>Параметры файла config-agent.yaml</caption>
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Описание</th>
+        <th>Тип</th>
+        <th>Обязательный параметр</th>
+        <th>Переменная среды</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>`exit-on-success`</td>
+        <td>Завершение процесса, если успешно применилась конфигурация для nft. Значение по умолчанию: `false`.</td>
+        <td>Boolean</td>
+        <td></td>
+        <td>SG_EXIT_ON_SUCCESS</td>
+      </tr>
+      <tr>
+        <td>`continue-on-failure`</td>
+        <td></td>
+        <td>Boolean</td>
+        <td></td>
+        <td>SG_CONTINUE_ON_FAILURE</td>
+      </tr>
+      <tr>
+        <td>`logger.level`</td>
+        <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>SG_LOGGER_LEVEL</td>
+      </tr>
+      <tr>
+        <td>`graceful-shutdown`</td>
+        <td></td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>SG_GRACEFUL_SHUTDOWN</td>
+      </tr>
+      <tr>
+        <td>`netns`</td>
+        <td>Имя сетевого namespac'a.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>SG_NETNS</td>
+      </tr>
+      <tr>
+        <td>`netlink.watcher.linger`</td>
+        <td>. Минимальное значение: `1s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_NETLINK_WATCHER_LINGER</td>
+      </tr>
+      <tr>
+        <td>`base-rules.networks`</td>
+        <td>Список IP адресов, к которым всегда должен быть доступ.</td>
+        <td>List</td>
+        <td></td>
+        <td>SG_BASE_RULES_NETWORKS</td>
+      </tr>
+      <tr>
+        <td>`fqdn-rules.strategy`</td>
+        <td>Способ обработки fqdn-правил. Возможные значения: `dns`, `ndpi`, `combine`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_FQDN_RULES_STRATEGY</td>
+      </tr>
+      <tr>
+        <td>`dns.nameservers`</td>
+        <td>Список доверенных IP-адресов DNS серверов.</td>
+        <td>List</td>
+        <td></td>
+        <td>SG_DNS_NAMESERVERS</td>
+      </tr>
+      <tr>
+        <td>`dns.proto`</td>
+        <td>Протокол L4, используемый DNS сервером. Значение по умолчанию: `udp`. Возможные значения: `udp`, `tcp`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_DNS_PROTO</td>
+      </tr>
+      <tr>
+        <td>`dns.port`</td>
+        <td>Порт, используемый DNS сервером. Значение по умолчанию: `53`.</td>
+        <td>Int</td>
+        <td></td>
+        <td>SG_DNS_PORT</td>
+      </tr>
+      <tr>
+        <td>`dns.retries`</td>
+        <td>Количество повторений при сбое. Значение по умолчанию: `3`.</td>
+        <td>Int</td>
+        <td></td>
+        <td>SG_DNS_RETRIES</td>
+      </tr>
+      <tr>
+        <td>`dns.retry-timeout`</td>
+        <td>Период между повторным запросом DNS сервера. Значение по умолчанию: `1s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_DNS_RETRY_TIMEOUT</td>
+      </tr>
+      <tr>
+        <td>`dns.dial-duration`</td>
+        <td>. Значение по умолчанию: `3s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_DNS_DIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`dns.write-duration`</td>
+        <td>. Значение по умолчанию: `5s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_DNS_WRITE_DURATION</td>
+      </tr>
+      <tr>
+        <td>`dns.read-duration`</td>
+        <td>. Значение по умолчанию: `5s`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_DNS_READ_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.def-daial-duration`</td>
+        <td>Длительность ожидания для подключения службе.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>SG_EXTAPI_SVC_DEF_DAIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.address`</td>
+        <td>IP адрес hbf-сервера.</td>
+        <td>String</td>
+        <td>Да</td>
+        <td>SG_EXTAPI_SVC_SGROUPS_ADDRESS</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.dial-duration`</td>
+        <td>Продолжительность ожидания подключения к hbf-серверу.</td>
+        <td>String</td>
+        <td>Нет</td>
+        <td>SG_EXTAPI_SVC_SGROUPS_DIAL_DURATION</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.sync-status.interval`</td>
+        <td>Период синхронизации с hbf-сервером.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_EXTAPI_SVC_SGROUPS_SYNC_STATUS_INTERVAL</td>
+      </tr>
+      <tr>
+        <td>`extapi.svc.sgroups.sync-status.push`</td>
+        <td>Использовать push модель для синхронизации с hbf-сервером.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_EXTAPI_SVC_SGROUPS_SYNC_STATUS_PUSH</td>
+      </tr>
+      <tr>
+        <td>`telemetry.endpoint`</td>
+        <td>IP адрес и порт, для доступа к метрикам. Рекомендуемое значение: `0.0.0.0:9660`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_TELEMETRY_ENDPOINT</td>
+      </tr>
+      <tr>
+        <td>`telemetry.metrics.enable`</td>
+        <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`).</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_TELEMETRY_METRICS_ENABLE</td>
+      </tr>
+      <tr>
+        <td>`telemetry.healthcheck.enable`</td>
+        <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`.</td>
+        <td>String</td>
+        <td></td>
+        <td>SG_TELEMETRY_HEALTHCHECK_ENABLE</td>
+      </tr>
+      <tr>
+        <td>`telemetry.useragent`</td>
+        <td></td>
+        <td>String</td>
+        <td></td>
+        <td>SG_TELEMETRY_USERAGENT</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
