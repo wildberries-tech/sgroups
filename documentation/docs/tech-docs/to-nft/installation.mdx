@@ -568,51 +568,51 @@ values = {[
       </tr>
       <tr>
         <td>`extapi.svc.sgroups.dial-duration`</td>
-        <td>Продолжительность ожидания подключения к hbf-серверу. ЕЩВЩ</td>
+        <td>Продолжительность ожидания подключения к hbf-серверу.</td>
         <td>String</td>
         <td>Нет</td>
         <td>NFT_EXTAPI_SVC_SGROUPS_DIAL_DURATION</td>
       </tr>
       <tr>
         <td>`extapi.svc.sgroups.sync-status.interval`</td>
-        <td>Период синхронизации с hbf-сервером.</td>
+        <td>Период синхронизации с hbf-сервером. Значение по умолчанию: `10s`.</td>
         <td>String</td>
-        <td></td>
+        <td>Да</td>
         <td>NFT_EXTAPI_SVC_SGROUPS_SYNC_STATUS_INTERVAL</td>
       </tr>
       <tr>
         <td>`extapi.svc.sgroups.sync-status.push`</td>
-        <td>Использовать push модель для синхронизации с hbf-сервером.</td>
-        <td>String</td>
-        <td></td>
+        <td>Использовать push модель для синхронизации с hbf-сервером. Значение по умолчанию: `false`</td>
+        <td>Boolean</td>
+        <td>Нет</td>
         <td>NFT_EXTAPI_SVC_SGROUPS_SYNC_STATUS_PUSH</td>
       </tr>
       <tr>
         <td>`telemetry.endpoint`</td>
         <td>IP адрес и порт, для доступа к метрикам. Рекомендуемое значение: `0.0.0.0:9660`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_TELEMETRY_ENDPOINT</td>
       </tr>
       <tr>
         <td>`telemetry.metrics.enable`</td>
         <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`).</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_TELEMETRY_METRICS_ENABLE</td>
       </tr>
       <tr>
         <td>`telemetry.healthcheck.enable`</td>
         <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`.</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_TELEMETRY_HEALTHCHECK_ENABLE</td>
       </tr>
       <tr>
         <td>`telemetry.useragent`</td>
-        <td></td>
+        <td>Позволяет устанавливать метку в параметры метрик</td>
         <td>String</td>
-        <td></td>
+        <td>Нет</td>
         <td>NFT_TELEMETRY_USERAGENT</td>
       </tr>
     </tbody>
