@@ -19,43 +19,43 @@ values = {[
 <TabItem value='docker'>
 
     ```bash title='Environment setup'
-      export HBF_SERVER=10.0.0.0
-      export HBF_SERVER_PORT=9650
-      export DNS_SERVER=[\'8.8.8.8\']
-      export VERSION=1.9.1
+    export HBF_SERVER=10.0.0.0
+    export HBF_SERVER_PORT=9650
+    export DNS_SERVER=[\'8.8.8.8\']
+    export VERSION=1.9.1
     ```
     
     ```bash title='Git setup'
-      git clone https://github.com/H-BF/sgroups
-      cd sgroups
-      git checkout tags/v${VERSION}
+    git clone https://github.com/H-BF/sgroups
+    cd sgroups
+    git checkout tags/v${VERSION}
     ```
     
     ```bash title='Configuration file setup'
-    export VERSION=$(cat VERSION | cut -c2-)
     cat <<EOF > config-server.yaml
     ---
     logger:
-        # log level
-        level: INFO
+      # log level
+      level: INFO
 
     metrics:
-        # enable api metrics
-        enable: true
+      # enable api metrics
+      enable: true
 
     healthcheck:
-        # enables|disables health check handler
-        enable: true
+      # enables|disables health check handler
+      enable: true
 
     server:
-        # server endpoint
-        endpoint: tcp://0.0.0.0:9650
-        # graceful shutdown period
-        graceful-shutdown: 30s
+      # server endpoint
+      endpoint: tcp://0.0.0.0:9650
+      # graceful shutdown period
+      graceful-shutdown: 30s
     EOF
     ```
 
-    ```docker
+    ```bash title='Dockerfile setup'
+    cat <<EOF > Dockerfile.server
     FROM golang:1.20-alpine3.17 as builder
     WORKDIR /src
     COPY . .
@@ -75,119 +75,181 @@ values = {[
     ```
 
     ```bash
-    docker build --tag sgroups:v$(cat VERSION) .
+    docker build -f Dockerfile.server --tag sgroups:v$(cat VERSION) .
     ```
 
-    ```
+    ```bash
     docker run \
     -d \
-    -v config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+    -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
     --name hbf-server \
     --entrypoint "/app/bin/sgroups" \
+    --privileged \
+    --user=0 \
     sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
-
     ```
 
 </TabItem>
 <TabItem value='deb'>
 
-<dev>
-  Для установки deb-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-  VERSION`.
-</dev>
+  <dev>
+    Перед установкой убедитесь, что вы корректно указали версию, 
+    установив переменную `VERSION` без символа 'v'.
+  </dev>
 
-```bash title='bash'
-export VERSION="1.9.1"
-export PACKAGE_TYPE=deb
-export URL=https://github.com/H-BF/sgroups/releases/download
-export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```bash title='Environment setup'
+  export VERSION="1.9.1"
+  export PACKAGE_TYPE=deb
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-sudo wget -O /tmp/sgroups $URL/$RELEASE
-sudo dpkg -i /tmp/sgroups
-systemctl enable sgroups
-systemctl start sgroups
-```
+  ```bash title='Install deb package'
+  sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
+  sudo dpkg -i /tmp/sgroups.deb
+  ```
+
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
+
+  [Service]
+  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
+
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 <TabItem value='rpm'>
 
-    <dev>
-    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-    VERSION`.
-    </dev>
+  <dev>
+    Перед установкой убедитесь, что вы корректно указали версию, 
+    установив переменную `VERSION` без символа 'v'.
+  </dev>
 
-    ```bash title='bash'
-    export VERSION="1.9.1"
-    export PACKAGE_TYPE=rpm
-    export URL=https://github.com/H-BF/sgroups/releases/download
-    export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```bash title='bash'
+  export VERSION="1.9.1"
+  export PACKAGE_TYPE=rpm
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-    sudo wget -O /tmp/sgroups $URL/$RELEASE
-    sudo yum -i /tmp/sgroups
-    systemctl enable sgroups
-    systemctl start sgroups
-    ```
+  ```bash title='Install rpm package'
+  sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
+  sudo yum localinstall -i /tmp/sgroups.rpm
+  ```
+
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
+
+  [Service]
+  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
+
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 
 <TabItem value='source'>
 
-    ```bash title='bash'
-    ## INSTALL SERVER
-    export VERSION=v1.9.1
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git checkout tags/${VERSION}
-    make sg-service platform=linux/amd64
-    mkdir -p /opt/swarm/sbin
-    mkdir -p /opt/swarm/etc/sgroups
-    cp bin/sgroups /opt/swarm/sbin/sgroups
+  ```bash title='bash'
+  export VERSION=v1.9.1
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git checkout tags/${VERSION}
+  make sg-service platform=linux/amd64
+  mkdir -p /opt/swarm/sbin
+  mkdir -p /opt/swarm/etc/sgroups
+  cp bin/sgroups /opt/swarm/sbin/sgroups
+  ```
 
-    cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
-    ---
-    logger:
-        # log level
-        level: INFO
+  ```bash title='Configuration file setup'
+  cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
+  ---
+  logger:
+      # log level
+      level: INFO
 
-    metrics:
-        # enable api metrics
-        enable: true
+  metrics:
+      # enable api metrics
+      enable: true
 
-    healthcheck:
-        # enables|disables health check handler
-        enable: true
+  healthcheck:
+      # enables|disables health check handler
+      enable: true
 
-    server:
-        # server endpoint
-        endpoint: tcp://0.0.0.0:9650
-        # graceful shutdown period
-        graceful-shutdown: 30s
-    EOF
+  server:
+      # server endpoint
+      endpoint: tcp://0.0.0.0:9650
+      # graceful shutdown period
+      graceful-shutdown: 30s
+  EOF
+  ```
 
-    cat <<EOF > /etc/systemd/system/hbf-server.service
-    [Unit]
-    Description=sgroups
-    Documentation=TODO:
-    After=network.target
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
 
-    [Service]
-    ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
-    Restart=always
-    RestartSec=5
-    Delegate=yes
-    KillMode=process
-    OOMScoreAdjust=-999
-    LimitNOFILE=1048576
-    LimitNPROC=infinity
-    LimitCORE=infinity
+  [Service]
+  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config-server.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
 
-    [Install]
-    WantedBy=multi-user.target
-    EOF
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
 
-    systemctl enable hbf-server.service
-    systemctl start hbf-server.service
-    ```
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 </Tabs>
