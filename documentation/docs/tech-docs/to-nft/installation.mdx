@@ -507,14 +507,14 @@ values = {[
         <td>`dns.proto`</td>
         <td>Протокол L4, используемый DNS сервером. Значение по умолчанию: `udp`. Допустимые значения: `udp`, `tcp`.</td>
         <td>String</td>
-        <td></td>
+        <td>Да</td>
         <td>NFT_DNS_PROTO</td>
       </tr>
       <tr>
         <td>`dns.port`</td>
         <td>Порт, используемый DNS сервером. Значение по умолчанию: `53`.</td>
         <td>Int</td>
-        <td>Нет</td>
+        <td>Да</td>
         <td>NFT_DNS_PORT</td>
       </tr>
       <tr>
@@ -596,15 +596,15 @@ values = {[
       </tr>
       <tr>
         <td>`telemetry.metrics.enable`</td>
-        <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`).</td>
-        <td>String</td>
+        <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`). Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_METRICS_ENABLE</td>
       </tr>
       <tr>
         <td>`telemetry.healthcheck.enable`</td>
-        <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`.</td>
-        <td>String</td>
+        <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`. Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_HEALTHCHECK_ENABLE</td>
       </tr>
@@ -614,6 +614,13 @@ values = {[
         <td>String</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_USERAGENT</td>
+      </tr>
+      <tr>
+        <td>`telemetry.profile.enable`</td>
+        <td>Позволяет получать профиль агента по `/debug/pprof/index`. Значение по умолчанию: `true`.</td>
+        <td>Boolean</td>
+        <td>Нет</td>
+        <td>NFT_TELEMETRY_PROFILE_ENABLE</td>
       </tr>
     </tbody>
   </table>
