@@ -96,6 +96,8 @@ values = {[
   </dev>
 
   ```bash title='Environment setup'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
   export VERSION="1.9.1"
   export PACKAGE_TYPE=deb
   export URL=https://github.com/H-BF/sgroups/releases/download
@@ -130,8 +132,9 @@ values = {[
   EOF
   ```
 
-  ```
+  ```bash title='Setup server service'
   cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+  ---
   logger:
     # log level
     level: INFO
@@ -146,7 +149,7 @@ values = {[
 
   server:
     # server endpoint
-    endpoint: tcp://0.0.0.0:9650
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
     # graceful shutdown period
     graceful-shutdown: 30s
   EOF
@@ -166,6 +169,8 @@ values = {[
   </dev>
 
   ```bash title='bash'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
   export VERSION="1.9.1"
   export PACKAGE_TYPE=rpm
   export URL=https://github.com/H-BF/sgroups/releases/download
@@ -175,6 +180,29 @@ values = {[
   ```bash title='Install rpm package'
   sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
   sudo yum localinstall -i /tmp/sgroups.rpm
+  ```
+
+  ```bash title='Setup server service'
+  cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+  ---
+  logger:
+    # log level
+    level: INFO
+
+  metrics:
+    # enable api metrics
+    enable: true
+
+  healthcheck:
+    # enables|disables health check handler
+    enable: true
+
+  server:
+    # server endpoint
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+    # graceful shutdown period
+    graceful-shutdown: 30s
+  EOF
   ```
 
   ```bash title='Server service setup'
@@ -209,8 +237,13 @@ values = {[
 
 <TabItem value='source'>
 
-  ```bash title='Environment setup & build'
+  ```bash title='Environment setup'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
   export VERSION=v1.9.1
+  ```
+
+  ```bash title='Git setup'
   git clone https://github.com/H-BF/sgroups
   cd sgroups
   git checkout tags/${VERSION}
@@ -237,7 +270,7 @@ values = {[
 
   server:
       # server endpoint
-      endpoint: tcp://0.0.0.0:9650
+      endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
       # graceful shutdown period
       graceful-shutdown: 30s
   EOF
