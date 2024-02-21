@@ -21,19 +21,22 @@ import TabItem from '@theme/TabItem'
     </dev>
 
 
-```bash title='bash'
+```bash title='Environment setup'
 export VERSION=1.9.1
 export OS=linux
 export ARCH=amd64
 export GIT=https://github.com/H-BF/sgroups/releases/download/v${VERSION}
 export RELEASE_NAME=terraform-provider-sgroups
 export PLUGIN_PATH=~/.terraform.d/plugins/registry.terraform.io/hbf/swarm
-
 mkdir -p $PLUGIN_PATH/$VERSION/${OS}_${ARCH}
+```
+
+```bash title='Install provider'
 wget -O ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION} ${GIT}/${RELEASE_NAME}
-
 chmod +x ${PLUGIN_PATH}/${VERSION}/${OS}_${ARCH}/${RELEASE_NAME}_v${VERSION}
+```
 
+```bash title='Terraform directory setup'
 cat <<EOF >> ~/.terraformrc
 plugin_cache_dir = "${HOME}/.terraform.d/plugin-cache"
 disable_checkpoint = true
