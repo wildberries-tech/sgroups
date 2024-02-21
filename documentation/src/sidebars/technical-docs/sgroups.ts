@@ -6,6 +6,11 @@ export const sgroups = [
   },
   {
     type: 'doc',
+    label: 'Миграции',
+    id: 'tech-docs/sgroups/goose'
+  },
+  {
+    type: 'doc',
     label: 'Мониторинг',
     id: 'tech-docs/sgroups/monitoring',
   },

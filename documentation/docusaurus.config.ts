@@ -89,12 +89,6 @@ const config: Config = {
           label: 'Техническая документация',
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'anush',
-          position: 'left',
-          label: 'Ануш',
-        },
-        {
           href: 'https://github.com/H-BF/sgroups',
           position: 'right',
           label: 'H-BF/sgroups',

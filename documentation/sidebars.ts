@@ -59,26 +59,7 @@ const sidebars = {
       label: 'Terraform провайдер',
       id: 'tech-docs/installation-terraform',
     },
-  ],
-
-  anush: [{
-    type: 'category',
-    label: 'ansible',
-    link: {
-      type: 'doc',
-      id: 'anush/ansible'
-    },
-    items: [{
-      type: 'doc',
-      label: 'role: HBF',
-      id: 'anush/role-hbf'
-    }]
-  },
-  {
-    type: 'doc',
-    label: 'goose',
-    id: 'anush/goose'
-  }]
+  ]
 }
 
 export default sidebars

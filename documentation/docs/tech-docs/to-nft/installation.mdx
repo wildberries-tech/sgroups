@@ -2,8 +2,8 @@
 id: installation-agent
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
 
 # Установка
 
@@ -25,7 +25,7 @@ values = {[
     export DNS_SERVER=[\'8.8.8.8\']
     export VERSION=1.9.1
     ```
-    
+
     ```bash title='Git setup'
     git clone https://github.com/H-BF/sgroups
     cd sgroups
@@ -65,7 +65,7 @@ values = {[
       proto: tcp
       port: 53
       dial-duration: 3s
-      read-duration: 5s #default 
+      read-duration: 5s #default
       write-duration: 5s #default 5s
       retries: 5 #default 1
       retry-timeout: 3s #default 1s
@@ -80,45 +80,46 @@ values = {[
     EOF
     ```
 
-  ```bash title='Dockerfile setup'
-  cat <<EOF > Dockerfile.agent
-  FROM golang:1.20-alpine3.17 as builder
+```bash title='Dockerfile setup'
+cat <<EOF > Dockerfile.agent
+FROM golang:1.20-alpine3.17 as builder
 
-  WORKDIR /src
-  COPY . .
+WORKDIR /src
+COPY . .
 
-  RUN apk upgrade && \
-      apk add make && \
-      make to-nft platform=linux/amd64
+RUN apk upgrade && \
+    apk add make && \
+    make to-nft platform=linux/amd64
 
-  FROM alpine:3.17
-  RUN addgroup -g 101 app && \
-      adduser -H -u 101 -G app -s /bin/sh -D app && \
-      apk update && apk upgrade
+FROM alpine:3.17
+RUN addgroup -g 101 app && \
+    adduser -H -u 101 -G app -s /bin/sh -D app && \
+    apk update && apk upgrade
 
-  WORKDIR /app/
-  COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+WORKDIR /app/
+COPY --from=builder --chown=app:app /src/bin/ /app/bin/
 
-  USER app
+USER app
 
-  CMD ["/app/bin/to-nft"]
-  EOF
-  ```
+CMD ["/app/bin/to-nft"]
+EOF
+```
 
-  ```bash
-  docker build -f Dockerfile.agent --tag to-nft:v${VERSION} .
-  ```
+```bash
+docker build -f Dockerfile.agent --tag to-nft:v${VERSION} .
+```
 
-  ```bash
-  docker run \
-  -d \
-  -v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
-  --name hbf-agent \
-  --entrypoint "/app/bin/to-nft" \
-  --privileged \
-  --user=0 \
-  to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
-  ```
+```bash
+docker run \
+-d \
+-v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
+--name hbf-agent \
+--entrypoint "/app/bin/to-nft" \
+--privileged \
+--user=0 \
+to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
+```
+
 </TabItem>
 
 <TabItem value='deb'>
@@ -171,7 +172,7 @@ values = {[
       proto: tcp
       port: 53
       dial-duration: 3s
-      read-duration: 5s #default 
+      read-duration: 5s #default
       write-duration: 5s #default 5s
       retries: 5 #default 1
       retry-timeout: 3s #default 1s
@@ -195,6 +196,7 @@ values = {[
     systemctl enable hbf-agent.service
     systemctl start hbf-agent.service
     ```
+
 </TabItem>
 
 <TabItem value='rpm'>
@@ -247,7 +249,7 @@ values = {[
       proto: tcp
       port: 53
       dial-duration: 3s
-      read-duration: 5s #default 
+      read-duration: 5s #default
       write-duration: 5s #default 5s
       retries: 5 #default 1
       retry-timeout: 3s #default 1s
@@ -266,11 +268,12 @@ values = {[
     sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
     sudo yum localinstall /tmp/to-nft.rpm
     ```
-    
+
     ```bash title='Agent service start'
     systemctl enable hbf-agent.service
     systemctl start hbf-agent.service
     ```
+
 </TabItem>
 
 <TabItem value='source'>
@@ -283,7 +286,7 @@ values = {[
     mkdir -p /opt/swarm/sbin
     mkdir -p /opt/swarm/etc/to-nft
     ```
-    
+
     ```bash title='Git setup'
     git clone https://github.com/H-BF/sgroups
     cd sgroups
@@ -325,7 +328,7 @@ values = {[
       proto: tcp
       port: 53
       dial-duration: 3s
-      read-duration: 5s #default 
+      read-duration: 5s #default
       write-duration: 5s #default 5s
       retries: 5 #default 1
       retry-timeout: 3s #default 1s
@@ -366,54 +369,61 @@ values = {[
     systemctl enable hbf-agent.service
     systemctl start  hbf-agent.service
     ```
+
 </TabItem>
 
 <TabItem value='ansible'>
   Перед началом работы необходимо склонировать репозиторий
 
-  ```bash
-  git clone https://github.com/H-BF/ansible
-  cd ansible
-  ```
+```bash
+git clone https://github.com/H-BF/ansible
+cd ansible
+```
 
-  ## Требования
+#### Требования
 
-  <div class="paragraph">
-    Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
-    linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
-  </div>
+{' '}
 
-  ```bash
-  apt search linux-headers-$(uname -r)
-  ```
+<div class="paragraph">
+  Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
+  linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
+</div>
 
-  В случае, если такой пакет существует вывод будет следующим:
+```bash
+apt search linux-headers-$(uname -r)
+```
 
-  ```bash
-  Sorting... Done
-  Full Text Search... Done
-  linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]
-      Header files for Linux 5.10.0-26-amd64
-  ```
+В случае, если такой пакет существует вывод будет следующим:
 
-  <div className="text-justify">
-    Сообщение `linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]` говорит о том, что необходимый
-    пакет заголовков найден. В противном случае необходимо обновить версию ядра до ближайшей версии имеющей пакет
-    `linux-headers-$(uname -r)`
-  </div>
+```bash
+Sorting... Done
+Full Text Search... Done
+linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]
+    Header files for Linux 5.10.0-26-amd64
+```
 
-  ## Использование
+{' '}
 
-  <div className="text-justify">
-    Перед запуском плейбука убедитесь, что вы добавили необходимые хосты в `env/hosts`. Чтобы выполнить плейбук,
-    запустите:
-  </div>
+<div className="text-justify">
+  Сообщение `linux-headers-5.10.0-26-amd64/oldstable, now 5.10.197-1 amd64 [installed]` говорит о том, что необходимый
+  пакет заголовков найден. В противном случае необходимо обновить версию ядра до ближайшей версии имеющей пакет
+  `linux-headers-$(uname -r)`
+</div>
 
-  ```bash
-  ansible-playbook main.yaml
-  ```
+#### Использование
 
-  ## Удаление
+{' '}
+
+<div className="text-justify">
+  Перед запуском плейбука убедитесь, что вы добавили необходимые хосты в `env/hosts`. Чтобы выполнить плейбук,
+  запустите:
+</div>
+
+```bash
+ansible-playbook main.yaml
+```
+
+#### Удаление
 
   <div className="text-justify">
       Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`. 
@@ -423,7 +433,7 @@ values = {[
 
 </Tabs>
 
-## Настройка
+#### Настройка
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
@@ -449,7 +459,10 @@ values = {[
       </tr>
       <tr>
         <td>`continue-on-failure`</td>
-        <td>В случае ошибки на уровне job, агент не завершает свою работу (идет на цикл перезапуска своих job). Значение по умолчанию: `true`</td>
+        <td>
+          В случае ошибки на уровне job, агент не завершает свою работу (идет на цикл перезапуска своих job). Значение
+          по умолчанию: `true`
+        </td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_CONTINUE_ON_FAILURE</td>
@@ -463,7 +476,10 @@ values = {[
       </tr>
       <tr>
         <td>`graceful-shutdown`</td>
-        <td>Определяет период времени, в течение которого процесс агента должен корректно завершиться. По истечению периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`</td>
+        <td>
+          Определяет период времени, в течение которого процесс агента должен корректно завершиться. По истечению
+          периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`
+        </td>
         <td>String</td>
         <td>Нет</td>
         <td>NFT_GRACEFUL_SHUTDOWN</td>
@@ -484,14 +500,20 @@ values = {[
       </tr>
       <tr>
         <td>`base-rules.networks`</td>
-        <td>Список IP адресов, к которым всегда должен egress быть доступ. Не рекомендуется устанавливать в качестве значения пустой список.</td>
+        <td>
+          Список IP адресов, к которым всегда должен egress быть доступ. Не рекомендуется устанавливать в качестве
+          значения пустой список.
+        </td>
         <td>List</td>
         <td>Да</td>
         <td>NFT_BASE_RULES_NETWORKS</td>
       </tr>
       <tr>
         <td>`fqdn-rules.strategy`</td>
-        <td>Способ обработки fqdn-правил. Значение по умолчанию: `dns`. Допустимые значения: `dns`, `ndpi`, `combine`. </td>
+        <td>
+          Способ обработки fqdn-правил. Значение по умолчанию: `dns`. Допустимые значения: `dns`, `ndpi`,
+          `combine`.{' '}
+        </td>
         <td>String</td>
         <td>Нет</td>
         <td>NFT_FQDN_RULES_STRATEGY</td>
@@ -505,7 +527,9 @@ values = {[
       </tr>
       <tr>
         <td>`dns.proto`</td>
-        <td>Протокол L4, используемый DNS сервером. Значение по умолчанию: `udp`. Допустимые значения: `udp`, `tcp`.</td>
+        <td>
+          Протокол L4, используемый DNS сервером. Значение по умолчанию: `udp`. Допустимые значения: `udp`, `tcp`.
+        </td>
         <td>String</td>
         <td>Да</td>
         <td>NFT_DNS_PROTO</td>
@@ -540,7 +564,9 @@ values = {[
       </tr>
       <tr>
         <td>`dns.write-duration`</td>
-        <td>Максимальное временя ожидания ответа от DNS сервера при запросе резолва FQDN. Значение по умолчанию: `5s`.</td>
+        <td>
+          Максимальное временя ожидания ответа от DNS сервера при запросе резолва FQDN. Значение по умолчанию: `5s`.
+        </td>
         <td>String</td>
         <td>Нет</td>
         <td>NFT_DNS_WRITE_DURATION</td>
@@ -596,14 +622,20 @@ values = {[
       </tr>
       <tr>
         <td>`telemetry.metrics.enable`</td>
-        <td>Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`). Значение по умолчанию: `true`.</td>
+        <td>
+          Включить/Отключить возможность получения метрик (метрики доступны по `/metrics`). Значение по умолчанию:
+          `true`.
+        </td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_METRICS_ENABLE</td>
       </tr>
       <tr>
         <td>`telemetry.healthcheck.enable`</td>
-        <td>Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`. Значение по умолчанию: `true`.</td>
+        <td>
+          Включить/Отключить возможность получения информации о статусе hbf-агента по `/healthcheck`. Значение по
+          умолчанию: `true`.
+        </td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>NFT_TELEMETRY_HEALTHCHECK_ENABLE</td>
