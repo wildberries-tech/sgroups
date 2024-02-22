@@ -164,6 +164,7 @@ values = {[
   -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
   --name hbf-server \
   --entrypoint "/app/bin/sgroups" \
+  --env SG_STORAGE_TYPE \
   --env SG_STORAGE_POSTGRES_URL \
   sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
   ```
@@ -250,7 +251,7 @@ values = {[
   mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  export SG_STORAGE_TYPE=internal
+  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
   EOF
   ```
   <dev>
@@ -258,15 +259,11 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
-  export SG_DB_USER="user"
-  export SG_DB_PASSWORD="password"
-  export SG_DB_URL="localhost:5432"
-  export SG_DB_NAME="swarm"
   mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  SG_STORAGE_TYPE=postgres
-  SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
   EOF
   ```
 
@@ -354,6 +351,7 @@ values = {[
     graceful-shutdown: 30s
   EOF
   ```
+
   <dev>
     В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
   </dev>
@@ -362,7 +360,7 @@ values = {[
   mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  export SG_STORAGE_TYPE=internal
+  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
   EOF
   ```
   <dev>
@@ -370,15 +368,11 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
-  export SG_DB_USER="user"
-  export SG_DB_PASSWORD="password"
-  export SG_DB_URL="localhost:5432"
-  export SG_DB_NAME="swarm"
   mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  SG_STORAGE_TYPE=postgres
-  SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
   EOF
   ```
 
@@ -470,7 +464,7 @@ values = {[
   ```bash title="Environment file setup"
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  export SG_STORAGE_TYPE=internal
+  export SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
   EOF
   ```
   <dev>
@@ -478,14 +472,10 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
-  export SG_DB_USER="user"
-  export SG_DB_PASSWORD="password"
-  export SG_DB_URL="localhost:5432"
-  export SG_DB_NAME="swarm"
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
-  SG_STORAGE_TYPE=postgres
-  SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
   EOF
   ```
 
