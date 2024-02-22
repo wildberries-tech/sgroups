@@ -6,7 +6,7 @@ export const sgroups = [
   },
   {
     type: 'doc',
-    label: 'Миграции',
+    label: 'Миграция',
     id: 'tech-docs/sgroups/goose'
   },
   {

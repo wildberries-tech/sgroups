@@ -151,7 +151,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
   </li>
 </ul>
 
-<h4 className="custom-heading">Пример использования</h4>
+<h4 className="custom-heading"> Пример использования </h4>
 
 <Tabs
     defaltValue = "tcp"
@@ -164,10 +164,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     <TabItem value="tcp">
         <div className="parent-div" style={{height: "420px"}}>
             <div className="child-block">
-                <h4 className="center">Ingress</h4>
+                <h4 className="center"><a href='https://github.com/H-BF/swarm-spec-template/blob/master/spec/sg-local-example.yaml#L144'>Ingress</a></h4>
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     ingress:
                       - sgroupSet:
@@ -185,15 +185,15 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```
             </div>
             <div className="child-block">
-                <h4 className="center">Egress</h4>
+                <h4 className="center"><a href='https://github.com/H-BF/swarm-spec-template/blob/master/spec/sg-local-example.yaml#L60'>Egress</a></h4>
 
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     egress:
-                      - sgroupSet:
-                          - sg_example
+                        - sgroupSet:
+                            - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -215,11 +215,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     ingress:
-                      - sgroupSet:
-                          - sg_example
+                        - sgroupSet:
+                            - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -237,11 +237,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     egress:
-                      - sgroupSet:
-                          - sg_example
+                        - sgroupSet:
+                            - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -263,11 +263,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     ingress:
-                      - sgroupSet:
-                          - sg_example
+                        - sgroupSet:
+                            - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -284,11 +284,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 
                 ```yaml
-                name: sg_local_example
+                name: sg-local-example
                 rules:
                     egress:
-                      - sgroupSet:
-                          - sg_example
+                        - sgroupSet:
+                            - sg_example
                         logs:  true
                         trace: true
                         access:

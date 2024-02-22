@@ -215,11 +215,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg_local(sg_local_example)sg(sg_example)ingress" = {
+                    "tcp:sg_local(sg-local-example)sg(sg-example)ingress" = {
                         traffic     = "ingress"
                         transport   = "tcp"
-                        sg          = "sg_example"
-                        sg_local    = "sg_local_example"
+                        sg          = "sg-example"
+                        sg_local    = "sg-local-example"
                         ports = [{
                         d = "80"
                         s = ""
@@ -240,11 +240,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg_local(sg_local_example)sg(sg_example)egress" = {
+                    "tcp:sg_local(sg-local-example)sg(sg-example)egress" = {
                         traffic     = "egress"
                         transport   = "tcp"
-                        sg          = "sg_example"
-                        sg_local    = "sg_local_example"
+                        sg          = "sg-example"
+                        sg_local    = "sg-local-example"
                         ports = [{
                         d = "80"
                         s = ""
@@ -270,11 +270,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg_local(sg_local_example)sg(sg_example)ingress" = {
+                    "udp:sg_local(sg-local-example)sg(sg-example)ingress" = {
                         traffic     = "ingress"
                         transport   = "udp"
-                        sg          = "sg_example"
-                        sg_local    = "sg_local_example"
+                        sg          = "sg-example"
+                        sg_local    = "sg-local-example"
                         ports = [{
                         d = "80"
                         s = ""
@@ -293,11 +293,11 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg_local(sg_local_example)sg(sg_example)egress" = {
+                    "udp:sg_local(sg-local-example)sg(sg-example)egress" = {
                         traffic     = "egress"
                         transport   = "udp"
-                        sg          = "sg_example"
-                        sg_local    = "sg_local_example"
+                        sg          = "sg-example"
+                        sg_local    = "sg-local-example"
                         ports = [{
                         d = "80"
                         s = ""

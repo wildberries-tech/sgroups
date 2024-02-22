@@ -104,7 +104,7 @@ chain FW-OUT-sgName {
 #### Пример использования
 
 ```hcl
-chain FW-OUT-sg-example-1 {
+chain FW-OUT-sg-local-example {
     # **********
     nftrace set 1 ip daddr @NetIPv4-fqdn-example.com tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
     nftrace set 1 ip daddr @NetIPv6-fqdn-example.com tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept

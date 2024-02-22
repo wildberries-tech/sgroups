@@ -177,9 +177,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         ```hcl
         resource "sgroups_fqdn_rules" "rules" {
             items = {
-                "tcp:sg(sg-example-1)fqdn(example.com)" = {
+                "tcp:sg(sg-local-example)fqdn(example.com)" = {
                     transport   = "tcp"
-                    sg_from     = "sg-example-1"
+                    sg_from     = "sg-local-example"
                     fqdn        = "example.com"
                     protocols   = ["http", "dns"]
                     ports = [
@@ -200,9 +200,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         ```hcl
         resource "sgroups_fqdn_rules" "rules" {
             items = {
-                "udp:sg(sg-example-1)fqdn(example.com)" = {
+                "udp:sg(sg-local-example)fqdn(example.com)" = {
                     transport   = "udp"
-                    sg_from     = "sg-example-1"
+                    sg_from     = "sg-local-example"
                     fqdn        = "example.com"
                     protocols   = ["http", "dns"]
                     ports = [
