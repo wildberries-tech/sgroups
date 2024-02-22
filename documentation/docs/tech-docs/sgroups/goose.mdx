@@ -12,6 +12,27 @@ import TabItem from '@theme/TabItem'
   перед началом работы hbf-server'a. Более подробную информацию о <i>goose</i> можно найти [здесь](https://github.com/pressly/goose).
 </div>
 
+    <div className="paragraph">
+        Перед запуском *goose* необходимо установить переменную среды `SG_STORAGE_POSTGRES_URL` командой:
+    </div>
+
+    ```bash
+    cat <<EOF > migration.sh
+    #!/bin/bash
+    SG_DB_USER="user"
+    SG_DB_PASSWORD="password"
+    SG_DB_URL="localhost:5432"
+    SG_DB_NAME="swarm"
+
+    SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+    export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+
+    exec ./bin/goose postgres $SG_STORAGE_POSTGRES_URL up
+    EOF
+    sh migration.sh
+    ```
+
 <Tabs
   defaltValue="source"
   values={[
@@ -33,33 +54,14 @@ import TabItem from '@theme/TabItem'
         ```
 
         <div className="paragraph">
-        После сборки, скомпилированный бинарный файл будет доступен в папке `./bin/goose` в корне репозитория (не путать с `/bin`,
-        расположенным в корне файловой системы).
+            После сборки, скомпилированный бинарный файл будет доступен в папке `./bin/goose` в корне репозитория (не путать с `/bin`,
+            расположенным в корне файловой системы).
         </div>
 
-        #### Настройка
-
-        Перед запуском необходимо установить переменную среды `SG_STORAGE_POSTGRES_URL` следующим скриптом:
-
-        ```bash
-        cat <<EOF > migration.sh
-        #!/bin/bash
-        SG_DB_USER="user"
-        SG_DB_PASSWORD="password"
-        SG_DB_URL="localhost:5432"
-        SG_DB_NAME="swarm"
-
-        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
-
-        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
-
-        exec ./bin/goose postgres $SG_STORAGE_POSTGRES_URL up
-        EOF
-        ```
 
         <div className="text-justify">
-        По умолчанию файлы миграции расположены в папке `./internal/registry/sgroups/pg/migrations`, но пользователь может
-        указать и другой путь, определив переменную окружения `PG_MIGRATIONS`.
+            По умолчанию файлы миграции расположены в папке `./internal/registry/sgroups/pg/migrations`, но пользователь может
+            указать и другой путь, определив переменную окружения `PG_MIGRATIONS`.
         </div>
 
         <table>
