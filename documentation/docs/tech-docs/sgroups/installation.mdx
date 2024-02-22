@@ -102,6 +102,7 @@ values = {[
   ```bash title='Git setup'
   git clone https://github.com/H-BF/sgroups
   cd sgroups
+  git fetch --tags --all
   git checkout tags/v${VERSION}
   ```
   <dev>
@@ -396,6 +397,7 @@ values = {[
   ```bash title='Git setup'
   git clone https://github.com/H-BF/sgroups
   cd sgroups
+  git fetch --tags --all
   git checkout tags/v${VERSION}
   make sg-service platform=linux/amd64
   mkdir -p /opt/swarm/sbin
