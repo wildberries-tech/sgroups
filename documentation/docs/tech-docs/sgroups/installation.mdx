@@ -34,13 +34,28 @@ values = {[
     Перед клонированием репозитория необходимо настроить следующие переменные окружения:
     <ul>
       <li>
-          <p>`HBF_SERVER` - IP-адрес hbf-server.</p>
+          <p>
+            `HBF_SERVER` - IP-адрес hbf-server.
+            ```bash title='Setup HBF_SERVER'
+            export HBF_SERVER=0.0.0.0
+            ```
+          </p>
       </li>
       <li>
-          <p>`HBF_SERVER_PORT` - порт, используемый hbf-server.</p>
+          <p>
+            `HBF_SERVER_PORT` - порт, используемый hbf-server.
+            ```bash title='Setup HBF_SERVER_PORT'
+            export HBF_SERVER_PORT=9650
+            ```
+          </p>
       </li>
       <li>
-          <p>`VERSION` - версия агента, которую пользователь хочет установить.</p>
+          <p>
+            `VERSION` - версия агента, которую пользователь хочет установить.
+            ```bash title='Setup VERSION'
+            export VERSION=1.9.1
+            ```
+          </p>
       </li>
       <li>
         <p>
@@ -60,7 +75,7 @@ values = {[
         <p>
           `SG_STORAGE_POSTGRES_URL` - URL для подключения к Postgres базе данных. Для корректного формирования 
           воспользуйтесь командой ниже:
-          ```bash
+          ```bash title='Setup SG_STORAGE_POSTGRES_URL'
           cat <<EOF > setup.sh
           #!/bin/bash
           SG_DB_USER="user"
@@ -78,13 +93,6 @@ values = {[
       </li>
     </ul>
   </dev>
-
-
-  ```bash title='Environment setup'
-  export HBF_SERVER=0.0.0.0
-  export HBF_SERVER_PORT=9650
-  export VERSION=1.9.1
-  ```
 
   <dev>
     Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии.
@@ -127,36 +135,34 @@ values = {[
   docker build -f docker/Dockerfile.server --tag sgroups:v$(cat VERSION) .
   ```
 
-    <dev>
-        В случае запуска в режиме "In Memory" выполните команду:
-    </dev>
+  <dev>
+      В случае запуска в режиме "In Memory" выполните команду:
+  </dev>
 
-    ```bash
-    docker run \
-    -d \
-    -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
-    --name hbf-server \
-    --entrypoint "/app/bin/sgroups" \
-    sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
-    ```
+  ```bash
+  docker run \
+  -d \
+  -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+  --name hbf-server \
+  --entrypoint "/app/bin/sgroups" \
+  --env SG_STORAGE_TYPE \
+  sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+  ```
 
-    <dev>
-        В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` командой:
-    </dev>
+  <dev>
+      В случае запуска в режиме "Postgres" выполните команду::
+  </dev>
 
-    <dev>
-        Далее запустите запустите hbf-server командой:
-    </dev>
-    ```bash
-    sh setup.sh
-    docker run \
-    -d \
-    -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
-    --name hbf-server \
-    --entrypoint "/app/bin/sgroups" \
-    --env SG_STORAGE_POSTGRES_URL \
-    sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
-    ```
+  ```bash
+  sh setup.sh
+  docker run \
+  -d \
+  -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+  --name hbf-server \
+  --entrypoint "/app/bin/sgroups" \
+  --env SG_STORAGE_POSTGRES_URL \
+  sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+  ```
 
 </TabItem>
 <TabItem value='deb'>
