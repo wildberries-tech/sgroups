@@ -384,8 +384,13 @@ to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
 
 <TabItem value='ansible'>
     <dev>
-      Перед установкой убедитесь, что вы корректно указали версию,
-      установив переменную `VERSION` без символа 'v'. Далее необходимо склонировать репозиторий.
+      Перед установкой убедитесь, чтоу у вас установлен [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html):
+
+      ```bash
+      ansible-playbook --version
+      ```
+      Далее убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'. 
+      Следующим шагом склонируйте репозиторий:
     </dev>
 
 ```bash
