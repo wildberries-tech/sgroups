@@ -7,6 +7,17 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
+Перед установкой пользователь должен решить, где hbf-server будет хранить данные. Существует два вариата: 
+<ul>
+    <li>
+      In Memory: пользователю не надо дополнительно ничего настраивать.
+    </li>
+    <li>
+      Postgres: пользователю необходимо перед запуском сервера выполнить миграцию базы данных. Также необходимо убедиться,
+      что переменная окружения `SG_STORAGE_POSTGRES_URL` установлена.
+    </li>
+</ul> 
+
 <Tabs
 defaltValue = 'docker'
 values = {[
@@ -78,6 +89,10 @@ values = {[
     docker build -f Dockerfile.server --tag sgroups:v$(cat VERSION) .
     ```
 
+    <dev>
+        В случае запуска в режиме "In Memory" выполните команду:
+    </dev>
+
     ```bash
     docker run \
     -d \
@@ -87,218 +102,264 @@ values = {[
     sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
     ```
 
+    <dev>
+        В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` и только после этого запустите 
+        hbf-server командой:
+    </dev>
+
+    ```bash
+    docker run \
+    -d \
+    -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+    --name hbf-server \
+    --entrypoint "/app/bin/sgroups" \
+    --env SG_STORAGE_POSTGRES_URL \
+    sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+    ```
+
 </TabItem>
 <TabItem value='deb'>
 
 {' '}
-<dev>Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.</dev>
+  <dev>
+    Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
+  </dev>
 
-```bash title='Environment setup'
-export HBF_SERVER=0.0.0.0
-export HBF_SERVER_PORT=9650
-export VERSION="1.9.1"
-export PACKAGE_TYPE=deb
-export URL=https://github.com/H-BF/sgroups/releases/download
-export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
-```
+  ```bash title='Environment setup'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
+  export VERSION=1.9.1
+  export PACKAGE_TYPE=deb
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-```bash title='Install deb package'
-sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
-sudo dpkg -i /tmp/sgroups.deb
-```
+  ```bash title='Install deb package'
+  sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
+  sudo dpkg -i /tmp/sgroups.deb
+  ```
 
-```bash title='Server service setup'
-cat <<EOF > /etc/systemd/system/hbf-server.service
-[Unit]
-Description=sgroups
-Documentation=TODO:
-After=network.target
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
 
-[Service]
-ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+  [Service]
+  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
 
-[Install]
-WantedBy=multi-user.target
-EOF
-```
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
 
-```bash title='Setup server service'
-cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
----
-logger:
-  # log level
-  level: INFO
+  ```bash title='Setup server service'
+  cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+  ---
+  logger:
+    # log level
+    level: INFO
 
-metrics:
-  # enable api metrics
-  enable: true
+  metrics:
+    # enable api metrics
+    enable: true
 
-healthcheck:
-  # enables|disables health check handler
-  enable: true
+  healthcheck:
+    # enables|disables health check handler
+    enable: true
 
-server:
-  # server endpoint
-  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-  # graceful shutdown period
-  graceful-shutdown: 30s
-EOF
-```
+  server:
+    # server endpoint
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+    # graceful shutdown period
+    graceful-shutdown: 30s
+  EOF
+  ```
 
-```bash title='Server service start'
-systemctl enable hbf-server.service
-systemctl start hbf-server.service
-```
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL`.
+  </dev>
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 <TabItem value='rpm'>
 
 {' '}
-<dev>Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.</dev>
+  <dev>
+    Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
+  </dev>
 
-```bash title='bash'
-export HBF_SERVER=0.0.0.0
-export HBF_SERVER_PORT=9650
-export VERSION="1.9.1"
-export PACKAGE_TYPE=rpm
-export URL=https://github.com/H-BF/sgroups/releases/download
-export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
-```
+  ```bash title='bash'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
+  export VERSION=1.9.1
+  export PACKAGE_TYPE=rpm
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-```bash title='Install rpm package'
-sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
-sudo yum localinstall -i /tmp/sgroups.rpm
-```
+  ```bash title='Install rpm package'
+  sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
+  sudo yum localinstall -i /tmp/sgroups.rpm
+  ```
 
-```bash title='Setup server service'
-cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
----
-logger:
-  # log level
-  level: INFO
+  ```bash title='Setup server service'
+  cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+  ---
+  logger:
+    # log level
+    level: INFO
 
-metrics:
-  # enable api metrics
-  enable: true
+  metrics:
+    # enable api metrics
+    enable: true
 
-healthcheck:
-  # enables|disables health check handler
-  enable: true
+  healthcheck:
+    # enables|disables health check handler
+    enable: true
 
-server:
-  # server endpoint
-  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-  # graceful shutdown period
-  graceful-shutdown: 30s
-EOF
-```
+  server:
+    # server endpoint
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+    # graceful shutdown period
+    graceful-shutdown: 30s
+  EOF
+  ```
 
-```bash title='Server service setup'
-cat <<EOF > /etc/systemd/system/hbf-server.service
-[Unit]
-Description=sgroups
-Documentation=TODO:
-After=network.target
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
 
-[Service]
-ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+  [Service]
+  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
 
-[Install]
-WantedBy=multi-user.target
-EOF
-```
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
 
-```bash title='Server service start'
-systemctl enable hbf-server.service
-systemctl start hbf-server.service
-```
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL` командой:
+  </dev>
+
+  ```bash
+  export SG_STORAGE_POSTGRES_URL=""
+  ```
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 
 <TabItem value='source'>
 
-```bash title='Environment setup'
-export HBF_SERVER=0.0.0.0
-export HBF_SERVER_PORT=9650
-export VERSION=v1.9.1
-```
+  Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
 
-```bash title='Git setup'
-git clone https://github.com/H-BF/sgroups
-cd sgroups
-git checkout tags/${VERSION}
-make sg-service platform=linux/amd64
-mkdir -p /opt/swarm/sbin
-mkdir -p /opt/swarm/etc/sgroups
-cp bin/sgroups /opt/swarm/sbin/hbf-server
-```
+  ```bash title='Environment setup'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
+  export VERSION=1.9.1
+  ```
 
-```bash title='Configuration file setup'
-cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
----
-logger:
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git checkout tags/v${VERSION}
+  make sg-service platform=linux/amd64
+  mkdir -p /opt/swarm/sbin
+  mkdir -p /opt/swarm/etc/sgroups
+  cp bin/sgroups /opt/swarm/sbin/hbf-server
+  ```
+
+  ```bash title='Configuration file setup'
+  cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
+  ---
+  logger:
     # log level
     level: INFO
 
-metrics:
+  metrics:
     # enable api metrics
     enable: true
 
-healthcheck:
+  healthcheck:
     # enables|disables health check handler
     enable: true
 
-server:
+  server:
     # server endpoint
     endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
     # graceful shutdown period
     graceful-shutdown: 30s
-EOF
-```
+  EOF
+  ```
 
-```bash title='Server service setup'
-cat <<EOF > /etc/systemd/system/hbf-server.service
-[Unit]
-Description=sgroups
-Documentation=TODO:
-After=network.target
+  ```bash title='Server service setup'
+  cat <<EOF > /etc/systemd/system/hbf-server.service
+  [Unit]
+  Description=sgroups
+  Documentation=TODO:
+  After=network.target
 
-[Service]
-ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
-Restart=always
-RestartSec=5
-Delegate=yes
-KillMode=process
-OOMScoreAdjust=-999
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
+  [Service]
+  ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
 
-[Install]
-WantedBy=multi-user.target
-EOF
-```
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
 
-```bash title='Server service start'
-systemctl enable hbf-server.service
-systemctl start hbf-server.service
-```
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL`.
+  </dev>
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
+  ```bash title='Server service start'
+  systemctl enable hbf-server.service
+  systemctl start hbf-server.service
+  ```
 
 </TabItem>
 </Tabs>
