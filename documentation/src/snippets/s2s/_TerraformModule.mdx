@@ -168,18 +168,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         name: sg-example-from
         rules:
             s2s:
-            - sgroupSet:
-                - sg-example-to
+              - sgroupSet:
+                  - sg-example-to
                 logs:  true
                 trace: true
                 access:
-                tcp:
-                - description: ""
-                    ports_from:
-                    - 64231
-                    ports_to:
-                    - 443
-                    - 80
+                  tcp:
+                    - description: ""
+                      ports_from:
+                        - 64231
+                      ports_to:
+                        - 443
+                        - 80
         ```
     </TabItem>
     <TabItem value="udp">
@@ -188,18 +188,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         name: sg-example-from
         rules:
             s2s:
-            - sgroupSet:
-                - sg-example-to
+              - sgroupSet:
+                  - sg-example-to
                 logs:  true
                 trace: true
                 access:
-                udp:
-                - description: ""
-                    ports_from:
-                    - 64231
-                    ports_to:
-                    - 443
-                    - 80
+                  udp:
+                    - description: ""
+                      ports_from:
+                        - 64231
+                      ports_to:
+                        - 443
+                        - 80
         ```
     </TabItem>
     <TabItem value="icmp">
@@ -208,18 +208,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         name: sg-example-from
         rules:
             s2s:
-            - sgroupSet:
-                - sg-example-to
+              - sgroupSet:
+                  - sg-example-to
                 logs:  true
                 access:
-                    icmpIPv4:
+                  icmpIPv4:
                     - description: ""
-                    Types:
+                      Types:
                         - 0
                         - 8
-                icmpIPv6:
+                  icmpIPv6:
                     - description: ""
-                    Types:
+                      Types:
                         - 0
                         - 8
         ```

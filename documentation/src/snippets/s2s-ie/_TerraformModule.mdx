@@ -170,18 +170,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     ingress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            tcp:
-                                - description: "example"
-                                ports_from:
-                                    - 64231
-                                ports_to:
-                                    - 443
-                                    - 80
+                          tcp:
+                            - description: "example"
+                              ports_from:
+                                - 64231
+                              ports_to:
+                                - 443
+                                - 80
                 ```
             </div>
             <div className="child-block">
@@ -192,18 +192,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            tcp:
-                                - description: "example"
-                                ports_from:
-                                    - 64231
-                                ports_to:
-                                    - 443
-                                    - 80
+                          tcp:
+                            - description: "example"
+                              ports_from:
+                                - 64231
+                              ports_to:
+                                - 443
+                                - 80
                 ```
             </div>
         </div>
@@ -218,18 +218,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     ingress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            udp:
-                                - description: "example"
-                                ports_from:
-                                    - 64231
-                                ports_to:
-                                    - 443
-                                    - 80
+                          udp:
+                            - description: "example"
+                              ports_from:
+                                - 64231
+                              ports_to:
+                                - 443
+                                - 80
                 ```
             </div>
             <div className="child-block">
@@ -240,18 +240,18 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            udp:
-                                - description: "example"
-                                ports_from:
-                                    - 64231
-                                ports_to:
-                                    - 443
-                                    - 80
+                          udp:
+                            - description: "example"
+                              ports_from:
+                                - 64231
+                              ports_to:
+                                - 443
+                                - 80
                 ```
             </div>
         </div>
@@ -266,17 +266,17 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     ingress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            icmpIPv4:
-                                - description: "example"
-                                type: [0, 8]
-                            icmpIPv6:
-                                - description: "example"
-                                type: [0, 8]
+                          icmpIPv4:
+                            - description: "example"
+                              type: [0, 8]
+                          icmpIPv6:
+                            - description: "example"
+                              type: [0, 8]
                 ```
             </div>
             <div className="child-block">
@@ -287,17 +287,17 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg_local_example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
-                            icmpIPv4:
+                          icmpIPv4:
                             - description: "example"
-                                type: [0, 8]
-                            icmpIPv6:
+                              type: [0, 8]
+                          icmpIPv6:
                             - description: "example"
-                                type: [0, 8]
+                              type: [0, 8]
                 ```
             </div>
         </div>
