@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem'
 
 
 <dev>
-  В не зависимости от выбраного вида установки hbf-server необходимо настроить общие переменные окружения:
+  В не зависимости от выбраного вида установки hbf-server, необходимо настроить общие переменные окружения:
   <ul>
     <li>
         <p>
@@ -247,6 +247,7 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
+  mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
   export SG_STORAGE_TYPE=internal
@@ -261,6 +262,7 @@ values = {[
   export SG_DB_PASSWORD="password"
   export SG_DB_URL="localhost:5432"
   export SG_DB_NAME="swarm"
+  mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
   SG_STORAGE_TYPE=postgres
@@ -357,6 +359,7 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
+  mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
   export SG_STORAGE_TYPE=internal
@@ -371,6 +374,7 @@ values = {[
   export SG_DB_PASSWORD="password"
   export SG_DB_URL="localhost:5432"
   export SG_DB_NAME="swarm"
+  mkdir -p /opt/swarm/etc/sgroups
   cat <<EOF > /opt/swarm/etc/sgroups/env
   #!/bin/bash
   SG_STORAGE_TYPE=postgres
