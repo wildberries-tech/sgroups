@@ -7,21 +7,19 @@ import TabItem from '@theme/TabItem'
 
 # Миграция
 
-#### Описание
-
 <div className="paragraph">
-  <i>Goose</i> представляет собой инструмент для миграции баз данных. Обычно он используется перед запуском серверной
+  В качестве инструмента для миграции базы данных использует <i>goose</i>. Обычно он запускается перед запуском серверной
   части приложения. Более подробную информацию о <i>goose</i> можно найти [здесь](https://github.com/pressly/goose).
 </div>
 
 <Tabs
-  defaltValue="bin"
+  defaltValue="source"
   values={[
-    { label: 'bin', value: 'bin' },
+    { label: 'source', value: 'source' },
     { label: 'docker', value: 'docker' },
   ]}
 >
-  <TabItem value="bin">
+  <TabItem value="source">
         #### Сборка
         Перед сборкой необходимо склонировать репозиторий
 
@@ -32,11 +30,11 @@ import TabItem from '@theme/TabItem'
         cd sgroups
         git fetch --tags --all
         git checkout tags/${TAG}
+        make .install-goose
         ```
 
         <div className="paragraph">
-        Для сборки <i>goose</i> из корневой директории репозитория выполните команду: `make .install-goose`. После сборки,
-        скомпилированный бинарный файл будет доступен в папке `./bin/goose` в корне репозитория (не путать с `/bin`,
+        После сборки, скомпилированный бинарный файл будет доступен в папке `./bin/goose` в корне репозитория (не путать с `/bin`,
         расположенным в корне файловой системы).
         </div>
 
