@@ -128,31 +128,11 @@ import TabItem from '@theme/TabItem'
         ```
 
         <div className="paragraph">
-            Для сборки <i>goose</i> с помощью Docker можно воспользоваться файлом ниже.
+            Собираем образ *goose* командой:
         </div>
 
-        ```docker
-        FROM golang:1.20-alpine3.17 as builder
-        WORKDIR /src
-        COPY . .
-        RUN apk upgrade && \
-            apk add make git && \
-            make .install-goose
-
-        FROM alpine:3.17
-        RUN addgroup -g 101 app && \
-            adduser -H -u 101 -G app -s /bin/sh -D app && \
-            apk update && apk upgrade
-        WORKDIR /app/
-        RUN mkdir -p /app/bin
-        COPY --from=builder --chown=app:app /src/bin/ /app/bin/
-        COPY --from=builder --chown=app:app /src/internal/registry/sgroups/pg/migrations/ /app/
-        USER app
-        CMD ["/app/bin/goose"]
-        ```
-
         ```bash
-        docker build --tag goose:v$(cat VERSION) .
+        docker build -f docker/Dockerfile.goose --tag goose:v$(cat VERSION) .
         ```
 
         #### Настройка
