@@ -375,6 +375,7 @@ values = {[
   After=network.target
 
   [Service]
+  EnvironmentFile=/opt/swarm/etc/sgroups/env
   ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
   Restart=always
   RestartSec=5
@@ -391,8 +392,22 @@ values = {[
   ```
 
   <dev>
-    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL`.
+    В случае запуска в режиме "Postgres" установите переменную `SG_STORAGE_POSTGRES_URL` командой:
   </dev>
+
+    ```bash title="Environment setup"
+    export SG_DB_USER="user"
+    export SG_DB_PASSWORD="password"
+    export SG_DB_URL="localhost:5432"
+    export SG_DB_NAME="swarm"
+    ```
+
+    ```bash title="Environment file setup"
+    cat <<EOF > /opt/swarm/etc/sgroups/env
+    #!/bin/bash
+    SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+    EOF
+    ```
 
   <dev>
     Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
