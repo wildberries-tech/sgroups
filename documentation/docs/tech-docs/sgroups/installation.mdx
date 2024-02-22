@@ -96,7 +96,7 @@ values = {[
 <TabItem value='docker'>
 
   <dev>
-    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии.
+    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:
   </dev>
 
   ```bash title='Git setup'
@@ -104,6 +104,9 @@ values = {[
   cd sgroups
   git checkout tags/v${VERSION}
   ```
+  <dev>
+    Создаем конфигурационный файл для hbf-server командой:
+  </dev>
 
   ```bash title='Configuration file setup'
   cat <<EOF > config-server.yaml
@@ -129,7 +132,7 @@ values = {[
   ```
   
   <dev>
-    Собираем образ hbf-server воспользовавшись уже готовым Dockerfile.
+    Собираем образ hbf-server воспользовавшись уже готовым Dockerfile командой:
   </dev>
 
   ```bash
@@ -137,7 +140,7 @@ values = {[
   ```
 
   <dev>
-      В случае запуска в режиме "In Memory" выполните команду:
+    В случае выбора типа хранилища "In Memory" запустите hbf-server командой:
   </dev>
 
   ```bash
@@ -151,7 +154,7 @@ values = {[
   ```
 
   <dev>
-      В случае запуска в режиме "Postgres" выполните команду::
+    В случае выбора типа хранилища "Postgres" запустите hbf-server командой:
   </dev>
 
   ```bash
@@ -169,20 +172,26 @@ values = {[
 <TabItem value='deb'>
 
 {' '}
+  <dev>
+    Настроим необходимые переменные окружения командой:
+  </dev>
 
   ```bash title='Environment setup'
-  export HBF_SERVER=0.0.0.0
-  export HBF_SERVER_PORT=9650
-  export VERSION=1.9.1
   export PACKAGE_TYPE=deb
   export URL=https://github.com/H-BF/sgroups/releases/download
   export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
   ```
+  <dev>
+    Скачиваем и устанавливаем deb-пакет командой:
+  </dev>
 
   ```bash title='Install deb package'
   sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
   sudo dpkg -i /tmp/sgroups.deb
   ```
+  <dev>
+    Создаем конфигурационный файл для hbf-server.service командой:
+  </dev>
 
   ```bash title='Server service setup'
   cat <<EOF > /etc/systemd/system/hbf-server.service
@@ -207,6 +216,9 @@ values = {[
   WantedBy=multi-user.target
   EOF
   ```
+  <dev>
+    Создаем конфигурационный файл для hbf-server командой:
+  </dev>
 
   ```bash title='Setup server service'
   cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
@@ -235,26 +247,31 @@ values = {[
   </dev>
 
   ```bash title="Environment file setup"
+  cat <<EOF > /opt/swarm/etc/sgroups/env
+  #!/bin/bash
   export SG_STORAGE_TYPE=internal
+  EOF
   ```
   <dev>
     В случае запуска в режиме "Postgres" установите переменную `SG_STORAGE_POSTGRES_URL` командой:
   </dev>
 
-    ```bash title="Environment file setup"
-    export SG_DB_USER="user"
-    export SG_DB_PASSWORD="password"
-    export SG_DB_URL="localhost:5432"
-    export SG_DB_NAME="swarm"
-    cat <<EOF > /opt/swarm/etc/sgroups/env
-    #!/bin/bash
-    SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
-    EOF
-    ```
+  ```bash title="Environment file setup"
+  export SG_DB_USER="user"
+  export SG_DB_PASSWORD="password"
+  export SG_DB_URL="localhost:5432"
+  export SG_DB_NAME="swarm"
+  cat <<EOF > /opt/swarm/etc/sgroups/env
+  #!/bin/bash
+  SG_STORAGE_TYPE=postgres
+  SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+  EOF
+  ```
 
   <dev>
     Далее запустите сервис hbf-server.service командой:
   </dev>
+
   ```bash title='Server service start'
   systemctl enable hbf-server.service
   systemctl start hbf-server.service
@@ -269,9 +286,6 @@ values = {[
   </dev>
 
   ```bash title='bash'
-  export HBF_SERVER=0.0.0.0
-  export HBF_SERVER_PORT=9650
-  export VERSION=1.9.1
   export PACKAGE_TYPE=rpm
   export URL=https://github.com/H-BF/sgroups/releases/download
   export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
@@ -453,7 +467,7 @@ values = {[
 </TabItem>
 </Tabs>
 
-## Настройка
+## Параметры конфигурационного файла
 
 Для настройки сервера требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
