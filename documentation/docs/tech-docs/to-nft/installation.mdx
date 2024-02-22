@@ -7,6 +7,44 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
+<dev>
+  В не зависимости от выбраного вида установки hbf-server, необходимо настроить общие переменные окружения:
+  <ul>
+    <li>
+        <p>
+          `HBF_SERVER` - IP-адрес hbf-server.
+          ```bash title='Setup HBF_SERVER'
+          export HBF_SERVER=0.0.0.0
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `HBF_SERVER_PORT` - порт, используемый hbf-server.
+          ```bash title='Setup HBF_SERVER_PORT'
+          export HBF_SERVER_PORT=9650
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `DNS_SERVER` - Список доверенных IP-адресов DNS серверов.
+          ```bash title='Setup DNS_SERVER'
+          export DNS_SERVER=[\'8.8.8.8\']
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `VERSION` - версия агента, которую пользователь хочет установить.
+          ```bash title='Setup VERSION'
+          export VERSION=1.9.1
+          ```
+        </p>
+    </li>
+  </ul>
+</dev>
+
 <Tabs
 defaltValue = 'docker'
 values = {[
@@ -19,88 +57,86 @@ values = {[
 
 <TabItem value='docker'>
 
-    <dev>
-      Перед установкой убедитесь, что вы корректно указали версию,
-      установив переменную `VERSION` без символа 'v'.
-    </dev>
+  <dev>
+    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:
+  </dev>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    ```
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git fetch --tags --all
+  git checkout tags/v${VERSION}
+  ```
 
-    ```bash title='Git setup'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git fetch --tags --all
-    git checkout tags/v${VERSION}
-    ```
+  <dev>
+    Создаем конфигурационный файл для hbf-agent командой:
+  </dev>
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  ```bash title='Configuration file setup'
+  cat <<EOF > config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    logger:
-      level: DEBUG
+  logger:
+    level: DEBUG
 
-    fqdn-rules:
-      strategy: dns
+  fqdn-rules:
+    strategy: dns
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
+  <dev>
+    Собираем образ hbf-agent командой:
+  </dev>
 
+  ```bash
+  docker build -f docker/Dockerfile.agent --tag to-nft:v${VERSION} .
+  ```
 
-```bash
-docker build -f docker/Dockerfile.agent --tag to-nft:v${VERSION} .
-```
-
-```bash
-docker run \
--d \
--v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
---name hbf-agent \
---entrypoint "/app/bin/to-nft" \
---privileged \
---user=0 \
-to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
-```
+  ```bash
+  docker run \
+  -d \
+  -v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
+  --name hbf-agent \
+  --entrypoint "/app/bin/to-nft" \
+  --privileged \
+  --user=0 \
+  to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
+  ```
 
 </TabItem>
 
