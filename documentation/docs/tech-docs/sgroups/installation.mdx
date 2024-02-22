@@ -103,8 +103,7 @@ values = {[
     ```
 
     <dev>
-        В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` и только после этого запустите 
-        hbf-server командой:
+        В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` командой:
     </dev>
 
     ```bash
@@ -120,7 +119,9 @@ values = {[
     export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
     EOF
     ```
-
+    <dev>
+      Далее запустите запустите hbf-server командой:
+    </dev>
     ```bash
     sh setup.sh
     docker run \

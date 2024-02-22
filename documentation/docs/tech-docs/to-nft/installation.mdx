@@ -19,6 +19,11 @@ values = {[
 
 <TabItem value='docker'>
 
+    <dev>
+      Перед установкой убедитесь, что вы корректно указали версию,
+      установив переменную `VERSION` без символа 'v'.
+    </dev>
+
     ```bash title='Environment setup'
     export HBF_SERVER=10.0.0.0
     export HBF_SERVER_PORT=9650
@@ -125,8 +130,8 @@ to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
 <TabItem value='deb'>
 
     <dev>
-    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-    VERSION`.
+      Перед установкой убедитесь, что вы корректно указали версию,
+      установив переменную `VERSION` без символа 'v'.
     </dev>
 
     ```bash title='Environment setup'
@@ -278,6 +283,11 @@ to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
 
 <TabItem value='source'>
 
+    <dev>
+      Перед установкой убедитесь, что вы корректно указали версию,
+      установив переменную `VERSION` без символа 'v'.
+    </dev>
+
     ```bash title='Environment setup'
     export HBF_SERVER=10.0.0.0
     export HBF_SERVER_PORT=9650
@@ -373,11 +383,16 @@ to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
 </TabItem>
 
 <TabItem value='ansible'>
-  Перед началом работы необходимо склонировать репозиторий
+    <dev>
+      Перед установкой убедитесь, что вы корректно указали версию,
+      установив переменную `VERSION` без символа 'v'. Далее необходимо склонировать репозиторий.
+    </dev>
 
 ```bash
+export VERSION=1.9.1
 git clone https://github.com/H-BF/ansible
 cd ansible
+git checkout tags/v${VERSION}
 ```
 
 #### Требования
