@@ -45,6 +45,12 @@ table {
 
 .parent-div {
   display: flex;
+  overflow-x: auto;
+  flex-flow: column;
+
+  @media (min-width: 1024px) {
+    flex-flow: row;
+  }
 }
 
 .child-block {
