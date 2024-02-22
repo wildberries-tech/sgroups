@@ -190,10 +190,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-INPUT-sg_local_example {
+                chain FW-IN-INPUT-sg-local-example {
                     # **********
-                    nftrace set 1 ip saddr @NetIPv4-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv4-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv6-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
@@ -212,10 +212,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-POSTROUTING-sg_local_example {
+                chain FW-OUT-POSTROUTING-sg-local-example {
                     # **********
-                    nftrace set 1 ip daddr @NetIPv4-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip daddr @NetIPv6-sg_example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv4-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv6-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
@@ -244,10 +244,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-INPUT-sg_local_example {
+                chain FW-IN-INPUT-sg-local-example {
                     # **********
-                    nftrace set 1 ip saddr @NetIPv4-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv4-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv6-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
@@ -266,10 +266,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-POSTROUTING-sg_local_example {
+                chain FW-OUT-POSTROUTING-sg-local-example {
                     # **********
-                    nftrace set 1 ip daddr @NetIPv4-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip daddr @NetIPv6-sg_example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv4-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv6-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
@@ -298,10 +298,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-IN-INPUT-sg_local_example {
+                chain FW-IN-INPUT-sg-local-example {
                     # **********
-                    nftrace set 1 ip saddr @NetIPv4-sg_example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip saddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv4-sg-example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip saddr @NetIPv6-sg-example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
@@ -320,10 +320,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 #### Пример использования
 
                 ```hcl
-                chain FW-OUT-POSTROUTING-sg_local_example {
+                chain FW-OUT-POSTROUTING-sg-local-example {
                     # **********
-                    nftrace set 1 ip daddr @NetIPv4-sg_example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
-                    nftrace set 1 ip daddr @NetIPv6-sg_example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv4-sg-example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
+                    nftrace set 1 ip daddr @NetIPv6-sg-example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     # **********
                 }
                 ```
