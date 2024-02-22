@@ -1,10 +1,10 @@
 export const terraform = [{
         type: 'doc',
-        label: 'Provider',
+        label: 'Установка',
         id: 'tech-docs/terraform/provider-terraform'
     },
     {
         type: 'doc',
-        label: 'Настройка сервера',
+        label: 'Запуск',
         id: 'tech-docs/terraform/spec-terraform'
 }]
