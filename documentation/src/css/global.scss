@@ -45,6 +45,12 @@ table {
 
 .parent-div {
   display: flex;
+  overflow-x: auto;
+  flex-flow: column;
+
+  @media (min-width: 1024px) {
+    flex-flow: row;
+  }
 }
 
 .child-block {
@@ -65,4 +71,10 @@ table {
 
 .scrollable-x {
   overflow-x: auto;
+}
+
+.react-transform-component .docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

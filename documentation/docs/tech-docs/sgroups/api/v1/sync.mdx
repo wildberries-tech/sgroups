@@ -4,6 +4,7 @@ id: sync
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 
 # POST /v1/sync
 
@@ -900,6 +901,8 @@ values = {[
 
 <TabItem value='nw'>
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -909,27 +912,30 @@ participant db as Database
 user->>server: Добавить сеть
 
 alt Ошибка в запросе
-    server-->>user: Показать ошибку в запросе
+server-->>user: Показать ошибку в запросе
 end
 
 server->>db: Отправить запрос
 db->>db: Проверка входящего запроса
 
 alt Сеть с таким названием уже существует
-    db-->>server: Ответ с ошибкой
-    server-->>user: Показать ошибку в запросе
+db-->>server: Ответ с ошибкой
+server-->>user: Показать ошибку в запросе
 end
 
 alt Пересечение значений CIDR
-    db-->>server: Ответ с ошибкой
-    server-->>user: Показать ошибку в запросе
+db-->>server: Ответ с ошибкой
+server-->>user: Показать ошибку в запросе
 end
 
 db->>db: Сохранить данные о сети в БД
 
 db-->>server: Ответ с успешно добавленной новой сетью
 server-->>user: Успешно добавленная новая сеть
+
 ```
+
+</FancyboxDiagram>
 
 </TabItem>
 <TabItem value='sg'>
