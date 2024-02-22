@@ -231,78 +231,74 @@ values = {[
 
 <TabItem value='rpm'>
 
-    <dev>
-    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-    VERSION`.
-    </dev>
+  <dev>
+    Установите необходимые переменные окружения командой:
+  </dev>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    export PACKAGE_TYPE=rpm
-    export URL=https://github.com/H-BF/sgroups/releases/download
-    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
-    ```
+  ```bash title='Environment setup'
+  export PACKAGE_TYPE=rpm
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  ```bash title='Configuration file setup'
+  mkdir -p /opt/swarm/etc/to-nft
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    logger:
-      level: DEBUG
+  logger:
+    level: DEBUG
 
-    fqdn-rules:
-      strategy: dns
+  fqdn-rules:
+    strategy: dns
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
 
-    ```bash title='Install rpm package'
-    sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
-    sudo yum localinstall /tmp/to-nft.rpm
-    ```
+  ```bash title='Install rpm package'
+  sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
+  sudo yum localinstall /tmp/to-nft.rpm
+  ```
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start hbf-agent.service
-    ```
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
