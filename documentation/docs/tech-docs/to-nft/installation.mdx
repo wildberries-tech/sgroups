@@ -142,78 +142,86 @@ values = {[
 
 <TabItem value='deb'>
 
-    <dev>
-      Перед установкой убедитесь, что вы корректно указали версию,
-      установив переменную `VERSION` без символа 'v'.
-    </dev>
+  <dev>
+    Настроим необходимые переменные окружения командой:
+  </dev>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    export PACKAGE_TYPE=deb
-    export URL=https://github.com/H-BF/sgroups/releases/download
-    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
-    ```
+  ```bash title='Environment setup'
+  export PACKAGE_TYPE=deb
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  <dev>
+    Скачиваем и устанавливаем deb-пакет командой:
+  </dev>
 
-    logger:
-      level: DEBUG
+  ```bash title='Install deb package'
+  sudo wget -O /tmp/to-nft.deb $URL/$RELEASE
+  sudo dpkg -i /tmp/to-nft.deb
+  ```
 
-    fqdn-rules:
-      strategy: dns
+  <dev>
+    Создаем конфигурационный файл для hbf-agent командой:
+  </dev>
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  ```bash title='Configuration file setup'
+  mkdir -p /opt/swarm/etc/to-nft
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  logger:
+    level: DEBUG
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  fqdn-rules:
+    strategy: dns
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    ```bash title='Install deb package'
-    sudo wget -O /tmp/to-nft.deb $URL/$RELEASE
-    sudo dpkg -i /tmp/to-nft.deb
-    ```
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start hbf-agent.service
-    ```
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
+
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
+
+  <dev>
+    Далее запустите сервис hbf-server.service командой:
+  </dev>
+
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
