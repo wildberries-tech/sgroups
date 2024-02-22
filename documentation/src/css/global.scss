@@ -72,3 +72,9 @@ table {
 .scrollable-x {
   overflow-x: auto;
 }
+
+.react-transform-component .docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

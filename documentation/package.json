@@ -21,13 +21,15 @@
     "@docusaurus/core": "3.1.1",
     "@docusaurus/preset-classic": "3.1.1",
     "@docusaurus/theme-mermaid": "3.1.1",
+    "@fancyapps/ui": "5.0.33",
     "@mdx-js/react": "3.0.1",
     "astroturf": "1.2.0",
     "clsx": "2.1.0",
     "prism-react-renderer": "2.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stylelint-scss": "^6.1.0",
+    "react-zoom-pan-pinch": "3.4.2",
+    "stylelint-scss": "6.1.0",
     "swagger-ui-react": "5.11.6"
   },
   "devDependencies": {
