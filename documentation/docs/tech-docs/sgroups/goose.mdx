@@ -136,26 +136,6 @@ import TabItem from '@theme/TabItem'
         docker build -f docker/Dockerfile.goose --tag goose:v$(cat VERSION) .
         ```
 
-        #### Настройка
-
-        Перед запуском необходимо установить переменную среды `SG_STORAGE_POSTGRES_URL` следующей командой:
-
-        ```bash
-        cat <<EOF > migration.sh
-        #!/bin/bash
-        SG_DB_USER="user"
-        SG_DB_PASSWORD="password"
-        SG_DB_URL="localhost:5432"
-        SG_DB_NAME="swarm"
-
-        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
-
-        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
-
-        exec /app/bin/goose postgres $SG_STORAGE_POSTGRES_URL up
-        EOF
-        ```
-
         <div className="text-justify">
             По умолчанию файлы миграции расположены в папке `./internal/registry/sgroups/pg/migrations`, но пользователь может
             указать и другой путь, определив переменную окружения `PG_MIGRATIONS`.
@@ -206,7 +186,7 @@ import TabItem from '@theme/TabItem'
 
         #### Запуск
 
-        Для выполнения миграции базы данных с помощью Docker пользователь может запустить следующую команду:
+        Для выполнения миграции базы данных с помощью Docker необходимо выполнить команду:
 
         ```bash
         docker run -d -t --name=goose-migration --rm \
