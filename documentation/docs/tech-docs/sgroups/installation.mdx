@@ -7,17 +7,6 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
-Перед установкой пользователь должен решить, где hbf-server будет хранить данные. Существует два вариата: 
-<ul>
-    <li>
-      In Memory: пользователю не надо дополнительно ничего настраивать.
-    </li>
-    <li>
-      Postgres: пользователю необходимо перед запуском сервера выполнить [миграцию базы данных](./goose.mdx). Также необходимо убедиться,
-      что переменная окружения `SG_STORAGE_POSTGRES_URL` установлена.
-    </li>
-</ul> 
-
 <Tabs
 defaltValue = 'docker'
 values = {[
@@ -29,65 +18,114 @@ values = {[
 
 <TabItem value='docker'>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=0.0.0.0
-    export HBF_SERVER_PORT=9650
-    export VERSION=1.9.1
-    ```
+  <dev>
+    Перед установкой пользователь должен решить, где hbf-server будет хранить данные. Существует два вариата: 
+    <ul>
+        <li>
+          In Memory.
+        </li>
+        <li>
+          Postgres: пользователю необходимо перед запуском hbf-server выполнить [миграцию базы данных](./goose.mdx).
+        </li>
+    </ul>
+  </dev>
 
-    ```bash title='Git setup'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git checkout tags/v${VERSION}
-    ```
+  <dev>
+    Перед клонированием репозитория необходимо настроить следующие переменные окружения:
+    <ul>
+      <li>
+          <p>`HBF_SERVER` - IP-адрес hbf-server.</p>
+      </li>
+      <li>
+          <p>`HBF_SERVER_PORT` - порт, используемый hbf-server.</p>
+      </li>
+      <li>
+          <p>`VERSION` - версия агента, которую пользователь хочет установить.</p>
+      </li>
+      <li>
+        <p>
+          `SG_STORAGE_TYPE` - указать тип хранилища для hbf-agent. Допустимые значени: internal или postgres.
+          
+          В случае выбора типа хранилища "In Memory" установите переменную окружения командой:
+          ```bash title='Setup SG_STORAGE_TYPE'
+          export SG_STORAGE_TYPE="internal"
+          ```
+          В случае выбора типа хранилища "Postgres" установите переменную окружения командой:
+          ```bash title='Setup SG_STORAGE_TYPE'
+          export SG_STORAGE_TYPE="postgres"
+          ```
+        </p>
+      </li>
+      <li>
+        <p>
+          `SG_STORAGE_POSTGRES_URL` - URL для подключения к Postgres базе данных. Для корректного формирования 
+          воспользуйтесь командой ниже:
+          ```bash
+          cat <<EOF > setup.sh
+          #!/bin/bash
+          SG_DB_USER="user"
+          SG_DB_PASSWORD="password"
+          SG_DB_URL="localhost:5432"
+          SG_DB_NAME="swarm"
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > config-server.yaml
-    ---
-    logger:
-      # log level
-      level: INFO
+          SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
 
-    metrics:
-      # enable api metrics
-      enable: true
+          export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+          EOF
+          sh setup.sh
+          ```
+        </p>
+      </li>
+    </ul>
+  </dev>
 
-    healthcheck:
-      # enables|disables health check handler
-      enable: true
 
-    server:
-      # server endpoint
-      endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-      # graceful shutdown period
-      graceful-shutdown: 30s
-    EOF
-    ```
+  ```bash title='Environment setup'
+  export HBF_SERVER=0.0.0.0
+  export HBF_SERVER_PORT=9650
+  export VERSION=1.9.1
+  ```
 
-    ```bash title='Dockerfile setup'
-    cat <<EOF > Dockerfile.server
-    FROM golang:1.20-alpine3.17 as builder
-    WORKDIR /src
-    COPY . .
-    RUN apk upgrade && \
-        apk add make && \
-        make sg-service platform=linux/amd64
+  <dev>
+    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии.
+  </dev>
 
-    FROM alpine:3.17
-    RUN addgroup -g 101 app && \
-        adduser -H -u 101 -G app -s /bin/sh -D app && \
-        apk update && apk upgrade
-    WORKDIR /app/
-    RUN mkdir -p /app/bin
-    COPY --from=builder --chown=app:app /src/bin/ /app/bin/
-    USER app
-    CMD ["/app/bin/sgroups"]
-    EOF
-    ```
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git checkout tags/v${VERSION}
+  ```
 
-    ```bash
-    docker build -f Dockerfile.server --tag sgroups:v$(cat VERSION) .
-    ```
+  ```bash title='Configuration file setup'
+  cat <<EOF > config-server.yaml
+  ---
+  logger:
+    # log level
+    level: INFO
+
+  metrics:
+    # enable api metrics
+    enable: true
+
+  healthcheck:
+    # enables|disables health check handler
+    enable: true
+
+  server:
+    # server endpoint
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+    # graceful shutdown period
+    graceful-shutdown: 30s
+  EOF
+  ```
+  
+  <dev>
+    Собираем образ hbf-server воспользовавшись уже готовым Dockerfile.
+  </dev>
+
+  ```bash
+  docker build -f docker/Dockerfile.server --tag sgroups:v$(cat VERSION) .
+  ```
 
     <dev>
         В случае запуска в режиме "In Memory" выполните команду:
@@ -106,19 +144,6 @@ values = {[
         В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` командой:
     </dev>
 
-    ```bash
-    cat <<EOF > setup.sh
-    #!/bin/bash
-    SG_DB_USER="user"
-    SG_DB_PASSWORD="password"
-    SG_DB_URL="localhost:5432"
-    SG_DB_NAME="swarm"
-
-    SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
-
-    export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
-    EOF
-    ```
     <dev>
         Далее запустите запустите hbf-server командой:
     </dev>
