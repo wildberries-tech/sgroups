@@ -58,7 +58,7 @@ values = {[
 <TabItem value='docker'>
 
   <dev>
-    Убедимся, что docker установлен командой:
+    Перед развертыванием убедитесь, что у вас установлен [docker](https://docs.docker.com/engine/install/):
   </dev>
 
   ```bash title='Get docker version'
@@ -77,7 +77,7 @@ values = {[
   ```
 
   <dev>
-    Создаем конфигурационный файл для hbf-agent командой:
+    Создайте конфигурационный файл для hbf-agent командой:
   </dev>
 
   ```bash title='Configuration file setup'
@@ -174,7 +174,7 @@ values = {[
   ```
 
   <dev>
-    Создаем конфигурационный файл для hbf-agent командой:
+    Создайте конфигурационный файл для hbf-agent командой:
   </dev>
 
   ```bash title='Configuration file setup'
@@ -227,7 +227,7 @@ values = {[
   ```
 
   <dev>
-    Далее запустите сервис hbf-server.service командой:
+    Запустите сервис hbf-server.service командой:
   </dev>
 
   ```bash title='Agent service start'
@@ -312,107 +312,127 @@ values = {[
 
 <TabItem value='source'>
 
-    ```bash title='Environment setup'
-    mkdir -p /opt/swarm/sbin
-    mkdir -p /opt/swarm/etc/to-nft
-    ```
+  <p>
+    Перед развертыванием, необходимо создать директории для хранения бинарного файла и файлов конфигурации командой:
+  </p>
 
-    ```bash title='Git setup'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git fetch --tags --all
-    git checkout tags/v${VERSION}
-    make to-nft platform=linux/amd64
-    cp bin/to-nft /opt/swarm/sbin/hbf-agent
-    ```
+  ```bash title='Environment setup'
+  mkdir -p /opt/swarm/sbin
+  mkdir -p /opt/swarm/etc/to-nft
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  <p>
+    Клонируем репозиторий, переходим в директорию репозитория, переключаемся на тег необходимой версии и Создайте необходимые директории командой:
+  </p>
 
-    logger:
-      level: DEBUG
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git fetch --tags --all
+  git checkout tags/v${VERSION}
+  make to-nft platform=linux/amd64
+  cp bin/to-nft /opt/swarm/sbin/hbf-agent
+  ```
 
-    fqdn-rules:
-      strategy: dns
+  <p>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </p>
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  ```bash title='Configuration file setup'
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  logger:
+    level: DEBUG
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  fqdn-rules:
+    strategy: dns
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    ```bash title='Agent service setup'
-    cat <<EOF > /etc/systemd/system/hbf-agent.service
-    [Unit]
-    Description=hbf agent
-    After=network.target
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    [Service]
-    ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
-    Restart=always
-    RestartSec=5
-    Delegate=yes
-    KillMode=process
-    OOMScoreAdjust=-999
-    LimitNOFILE=1048576
-    LimitNPROC=infinity
-    LimitCORE=infinity
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-    [Install]
-    WantedBy=multi-user.target
-    EOF
-    ```
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start  hbf-agent.service
-    ```
+  <p>
+    Создайте конфигурационный файл для hbf-server.agent командой:
+  </p>
+
+  ```bash title='Agent service setup'
+  cat <<EOF > /etc/systemd/system/hbf-agent.service
+  [Unit]
+  Description=hbf agent
+  After=network.target
+
+  [Service]
+  ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
+
+  <dev>
+    Запустите сервис hbf-server.service командой:
+  </dev>
+
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
 <TabItem value='ansible'>
-    <dev>
-      Перед установкой убедитесь, что у вас установлен [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html):
+  <dev>
+    Перед развертыванием убедитесь, что у вас установлен [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html):
 
-      ```bash
-      ansible-playbook --version
-      ```
-      Далее убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'. 
-      Следующим шагом склонируйте репозиторий:
-    </dev>
+    ```bash
+    ansible-playbook --version
+    ```
+    Далее убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'. 
+    Следующим шагом склонируйте репозиторий:
+  </dev>
 
 ```bash
 git clone https://github.com/H-BF/ansible
@@ -474,7 +494,7 @@ ansible-playbook main.yaml
 
 </Tabs>
 
-#### Настройка
+### Параметры конфигурационного файла
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 
