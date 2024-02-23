@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem'
 # Установка
 
 <dev>
-  Перед установкой пользователь должен решить, где hbf-server будет хранить данные. Существует два вариата: 
+  Перед развертыванием, пользователь должен решить, где hbf-server будет хранить данные. Предоставляется два варианта для выбора: 
   <ul>
       <li>
         In Memory.
@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem'
 
 
 <dev>
-  В не зависимости от выбраного вида установки hbf-server, необходимо настроить общие переменные окружения:
+  Независимо от выбранного метода установки hbf-server, необходимо сконфигурировать следующие переменные окружения:
   <ul>
     <li>
         <p>
@@ -41,7 +41,7 @@ import TabItem from '@theme/TabItem'
     </li>
     <li>
         <p>
-          `VERSION` - версия агента, которую пользователь хочет установить.
+          `VERSION` - версия hbf-server.
           ```bash title='Setup VERSION'
           export VERSION=1.9.1
           ```
@@ -49,7 +49,7 @@ import TabItem from '@theme/TabItem'
     </li>
     <li>
       <p>
-        `SG_STORAGE_TYPE` - указать тип хранилища для hbf-agent. Допустимые значени: `internal` или `postgres`.
+        `SG_STORAGE_TYPE` - тип хранилища для hbf-server. Допустимые значени: `internal` или `postgres`.
         
         В случае выбора типа хранилища "In Memory" установите переменную окружения командой:
         ```bash title='Setup SG_STORAGE_TYPE'
