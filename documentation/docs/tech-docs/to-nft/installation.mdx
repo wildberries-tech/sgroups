@@ -238,9 +238,8 @@ values = {[
 </TabItem>
 
 <TabItem value='rpm'>
-
   <dev>
-    Установите необходимые переменные окружения командой:
+    Настроим необходимые переменные окружения командой:
   </dev>
 
   ```bash title='Environment setup'
@@ -248,6 +247,10 @@ values = {[
   export URL=https://github.com/H-BF/sgroups/releases/download
   export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
   ```
+
+  <dev>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </dev>
 
   ```bash title='Configuration file setup'
   mkdir -p /opt/swarm/etc/to-nft
@@ -298,10 +301,18 @@ values = {[
   EOF
   ```
 
+  <dev>
+    Скачиваем и устанавливаем rpm-пакет командой:
+  </dev>
+
   ```bash title='Install rpm package'
   sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
   sudo yum localinstall /tmp/to-nft.rpm
   ```
+
+  <dev>
+    Запустите сервис hbf-agent.service командой:
+  </dev>
 
   ```bash title='Agent service start'
   systemctl enable hbf-agent.service
