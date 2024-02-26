@@ -36,7 +36,7 @@ variables:
 
   JOB_ID: "$CI_JOB_ID"
 
-  CI_TMPL_HELM_CHARTS: "oci://harbor.wildberries.ru/devops/helm/charts/common-deploy@v4.2.0, oci://harbor.wildberries.ru/devops/helm/charts/common-job@v1.0.2"
+  CI_TMPL_HELM_CHARTS: "oci://harbor.wildberries.ru/devops/helm/charts/common-deploy@v4.2.0,oci://harbor.wildberries.ru/devops/helm/charts/common-job@v1.0.2"
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
   CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
