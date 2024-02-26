@@ -2,6 +2,8 @@
 id: address-sg
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # GET /v1/\{address\}/sg
 
 ## **Запрос**
@@ -159,6 +161,8 @@ id: address-sg
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -182,3 +186,5 @@ end
 db-->>server: Ответ с SG по указаному IP или CIDR соответствующий запросу
 server-->>user: Список доступных сетей связанных с SG соответствующий запросу
 ```
+
+</FancyboxDiagram>

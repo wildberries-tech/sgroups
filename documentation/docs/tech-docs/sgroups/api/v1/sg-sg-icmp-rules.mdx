@@ -2,6 +2,8 @@
 id: sg-sg-icmp-rules
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # POST /v1/sg-sg-icmp/rules
 
 ## **Запрос**
@@ -225,6 +227,8 @@ id: sg-sg-icmp-rules
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -248,3 +252,5 @@ end
 db-->>server: Ответ со списком правил SG-SG:ICMP ограниченных по типу SG from>to соответствующий запросу
 server-->>user: Список правил SG-SG:ICMP ограниченных по типу SG from>to соответствующий запросу
 ```
+
+</FancyboxDiagram>

@@ -2,6 +2,8 @@
 id: fqdn-rules
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # POST /v1/fqdn/rules
 
 ## **Запрос**
@@ -206,6 +208,8 @@ id: fqdn-rules
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -229,3 +233,5 @@ end
 db-->>server: Ответ со списком FQDN правил соответствующий запросу
 server-->>user: Список FQDN правил соответствующий запросу
 ```
+
+</FancyboxDiagram>
