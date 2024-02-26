@@ -263,6 +263,14 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
+<Tabs
+    defaltValue='sg'
+    values={[
+        { label: "Security Groups", value: "sg"},
+        { label: "ICMP", value: "icmp" }
+    ]}
+>
+<TabItem value="sg">
 <details>
     <summary>Ошибка в запросе</summary>
 
@@ -351,3 +359,106 @@ server-->>user: Успешно добавленная новая SG
 ```
 
 </FancyboxDiagram>
+</TabItem>
+<TabItem value="icmp">
+<details>
+    <summary>Ошибка в запросе</summary>
+
+    ```json
+    {
+        "code": 5,
+        "details":  [],
+        "message": "Not Found"
+    }
+    ```
+
+</details>
+
+<details>
+            <summary>Нет такого значения имени SG</summary>
+
+            ```json
+            {
+                "code": 13,
+                "details":  [],
+                "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
+            }
+            ```
+        </details>
+        <details>
+            <summary>Добавление несуществующего SG к правилу</summary>
+
+            ```json
+            {
+                "code": 13,
+                "details":  [],
+                "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
+            }
+            ```
+        </details>
+        <details>
+            <summary>Некорректное значение кода ICMP</summary>
+
+            ```json
+            {
+                "code": 3,
+                "details":  [],
+                "message": "ICMP type(s) must be in [0-255] but we got (256)"
+            }
+            ```
+        </details>
+        <details>
+        <summary>Некорректное значение IPv</summary>
+
+            ```json
+            {
+                "code": 3,
+                "details":  [],
+                "message": "proto: (line 6:27): invalid value for enum type: \"IPv10\""
+            }
+            ```
+        </details>
+
+<h4 className="custom-heading">Диаграмма последовательности</h4>
+
+<FancyboxDiagram>
+
+```mermaid
+sequenceDiagram
+participant user as User
+participant server as Server
+participant db as Database
+
+user->>server: Добавить Security Group
+
+alt Ошибка в запросе
+    server-->>user: Показать ошибку в запросе
+end
+
+server->>db: Отправить запрос
+db->>db: Проверка входящего запроса
+
+alt SG c таким названием уже существует
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+alt Некорректное значение кода ICMP
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+alt Некорректное значение IPv
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+db->>db: Сохранить данные о SG в БД
+
+db-->>server: Ответ с успешно добавленной новой SG
+server-->>user: Успешно добавленная новая SG
+```
+
+</FancyboxDiagram>
+</TabItem>
+</Tabs>
