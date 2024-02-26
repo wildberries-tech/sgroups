@@ -78,3 +78,7 @@ table {
   justify-content: center;
   align-items: center;
 }
+
+.markdown li > p {
+  margin-bottom: 0;
+}
