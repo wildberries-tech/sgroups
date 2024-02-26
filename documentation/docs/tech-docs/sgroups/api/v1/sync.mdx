@@ -4,7 +4,6 @@ id: sync
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
-import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import ApiNetworks from '@site/src/snippets/networks/_Api.mdx'
 import ApiSg from '@site/src/snippets/securityGroups/_Api.mdx'
 import ApiS2sie from '@site/src/snippets/s2s-ie/_Api.mdx'
@@ -12,21 +11,19 @@ import ApiS2s from '@site/src/snippets/s2s/_Api.mdx'
 import ApiS2f from '@site/src/snippets/s2f-e/_Api.mdx'
 import ApiS2c from '@site/src/snippets/s2c-ie/_Api.mdx'
 
-
 # POST /v1/sync
 
 ## **Описание**
 
 <ul>
   <li className="text-justify">
-  Этот метод позволяет добавить или удалить сеть (network), Security Group и правила взаимодействия между Security Group, FQDN или CIDR. 
+    Этот метод позволяет добавить или удалить сеть (network), Security Group и правила взаимодействия между Security
+    Group, FQDN или CIDR.
   </li>
   <li className="text-justify">
-  При удалении сети все принадлежащие ей Security Group и правила так же будут удалены.
+    При удалении сети все принадлежащие ей Security Group и правила так же будут удалены.
   </li>
-  <li className="text-justify">
-  При удалении Security Group все принадлежащие ей правила так же будут удалены.
-  </li>
+  <li className="text-justify">При удалении Security Group все принадлежащие ей правила так же будут удалены.</li>
 </ul>
 
 <Tabs
@@ -55,6 +52,7 @@ import ApiS2c from '@site/src/snippets/s2c-ie/_Api.mdx'
           {label: 'Sgroup to CIDR (I/E)', value: 's2c'},
           {label: 'Sgroup to FQDN (E)', value: 's2f'},
         ]}
+
 >
 
     <TabItem value='s2s'>
@@ -71,4 +69,5 @@ import ApiS2c from '@site/src/snippets/s2c-ie/_Api.mdx'
     </TabItem>
     </Tabs>
     </TabItem>
-</Tabs>    
+
+</Tabs>
