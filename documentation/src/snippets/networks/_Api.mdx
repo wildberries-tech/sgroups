@@ -1,6 +1,7 @@
 import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 
 #### Входные параметры
 
@@ -150,6 +151,8 @@ curl '127.0.0.1:9007/v1/sync' \
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -180,3 +183,5 @@ db->>db: Сохранить данные о сети в БД
 db-->>server: Ответ с успешно добавленной новой сетью
 server-->>user: Успешно добавленная новая сеть
 ```
+
+</FancyboxDiagram>

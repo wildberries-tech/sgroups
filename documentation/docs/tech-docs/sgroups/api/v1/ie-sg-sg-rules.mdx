@@ -4,6 +4,7 @@ id: ie-sg-sg-rules
 
 import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 
 # POST v1/ie-sg-sg/rules
 
@@ -243,6 +244,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 ## Описание интеграции
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -266,3 +269,5 @@ end
 db-->>server: Ответ со списком IE-SG-SG правил входящего и исходящего траффика соответствующий запросу
 server-->>user: Список IE-SG-SG правил входящего и исходящего траффика соответствующий запросу
 ```
+
+</FancyboxDiagram>

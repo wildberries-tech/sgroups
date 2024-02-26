@@ -3,6 +3,7 @@ import TabItem from '@theme/TabItem'
 import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 
 #### Входные параметры
 
@@ -316,6 +317,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -346,3 +349,5 @@ db->>db: Сохранить данные о SG в БД
 db-->>server: Ответ с успешно добавленной новой SG
 server-->>user: Успешно добавленная новая SG
 ```
+
+</FancyboxDiagram>

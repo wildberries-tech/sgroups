@@ -2,6 +2,8 @@
 id: subnets
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # GET /v1/sg/\{sgName\}/subnets
 
 ## **Запрос**
@@ -143,6 +145,8 @@ id: subnets
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -166,3 +170,5 @@ end
 db-->>server: Ответ со списком доступных сетей связанных с SG соответствующий запросу
 server-->>user: Список доступных сетей связанных с SG соответствующий запросу
 ```
+
+</FancyboxDiagram>

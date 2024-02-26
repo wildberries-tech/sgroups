@@ -2,6 +2,8 @@
 id: networks
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # POST /v1/list/networks
 
 ## **Запрос**
@@ -164,6 +166,8 @@ id: networks
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -187,3 +191,5 @@ end
 db-->>server: Ответ со списком доступных сетей соответствующий запросу
 server-->>user: Список доступных сетей соответствующий запросу
 ```
+
+</FancyboxDiagram>

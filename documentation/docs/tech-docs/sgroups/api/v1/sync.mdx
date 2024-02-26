@@ -940,6 +940,8 @@ server-->>user: Успешно добавленная новая сеть
 </TabItem>
 <TabItem value='sg'>
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -971,6 +973,8 @@ db-->>server: Ответ с успешно добавленной новой SG
 server-->>user: Успешно добавленная новая SG
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='rules'>
 
@@ -987,6 +991,8 @@ values = {[
 >
 
 <TabItem value='fqdn'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1019,8 +1025,12 @@ db-->>server: Ответ с успешно добавленным новым FQD
 server-->>user: Успешно добавленное новое FQDN правило
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='ie-sg-sg'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1053,8 +1063,12 @@ db-->>server: Ответ с успешно добавленным новым IE-
 server-->>user: Успешно добавленное новое IE-SG-SG правило
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='cidr-sg'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1087,8 +1101,12 @@ db-->>server: Ответ с успешно добавленным новым CID
 server-->>user: Успешно добавленное новое CIDR-SG правило
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='sg-icmp'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1116,8 +1134,12 @@ db-->>server: Ответ с успешно добавленным новым SG:
 server-->>user: Успешно добавленное новое SG:ICMP правило
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='sg-sg-icmp'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1145,8 +1167,12 @@ db-->>server: Ответ с успешно добавленным новым SG-
 server-->>user: Успешно добавленное новое SG-SG:ICMP правило
 ```
 
+</FancyboxDiagram>
+
 </TabItem>
 <TabItem value='rsg'>
+
+<FancyboxDiagram>
 
 ```mermaid
 sequenceDiagram
@@ -1178,6 +1204,8 @@ db->>db: Сохранить данные о SG в БД
 db-->>server: Ответ с успешно добавленным новым SG правилом
 server-->>user: Успешно добавленное новое SG правило
 ```
+
+</FancyboxDiagram>
 
 </TabItem>
 </Tabs>

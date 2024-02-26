@@ -2,6 +2,8 @@
 id: status
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # GET /v1/sync/status
 
 ## **Запрос**
@@ -59,6 +61,8 @@ id: status
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -77,3 +81,5 @@ db->>db: Проверка входящего запроса
 db-->>server: Ответ с датой последнего успешного обновления БД
 server-->>user: Дата последнего успешного обновления БД
 ```
+
+</FancyboxDiagram>
