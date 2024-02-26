@@ -2,6 +2,8 @@
 id: security-groups
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # POST /v1/list/security-groups
 
 ## **Запрос**
@@ -175,6 +177,8 @@ id: security-groups
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -198,3 +202,5 @@ end
 db-->>server: Ответ со списком Security Group соответствующий запросу
 server-->>user: Список доступных сетей соответствующий запросу
 ```
+
+</FancyboxDiagram>

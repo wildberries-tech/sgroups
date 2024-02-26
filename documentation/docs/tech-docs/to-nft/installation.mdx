@@ -7,6 +7,44 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
+<dev>
+  В не зависимости от выбраного вида установки hbf-server, необходимо настроить общие переменные окружения:
+  <ul>
+    <li>
+        <p>
+          `HBF_SERVER` - IP-адрес hbf-server.
+          ```bash title='Setup HBF_SERVER'
+          export HBF_SERVER=0.0.0.0
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `HBF_SERVER_PORT` - порт, используемый hbf-server.
+          ```bash title='Setup HBF_SERVER_PORT'
+          export HBF_SERVER_PORT=9650
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `DNS_SERVER` - Список доверенных IP-адресов DNS серверов.
+          ```bash title='Setup DNS_SERVER'
+          export DNS_SERVER=[\'8.8.8.8\']
+          ```
+        </p>
+    </li>
+    <li>
+        <p>
+          `VERSION` - версия агента, которую пользователь хочет установить.
+          ```bash title='Setup VERSION'
+          export VERSION=1.9.1
+          ```
+        </p>
+    </li>
+  </ul>
+</dev>
+
 <Tabs
 defaltValue = 'docker'
 values = {[
@@ -19,365 +57,399 @@ values = {[
 
 <TabItem value='docker'>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    ```
+  <dev>
+    Перед развертыванием убедитесь, что у вас установлен [docker](https://docs.docker.com/engine/install/):
+  </dev>
 
-    ```bash title='Git setup'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git checkout tags/v${VERSION}
-    ```
+  ```bash title='Get docker version'
+  docker -v
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  <dev>
+    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:
+  </dev>
 
-    logger:
-      level: DEBUG
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git fetch --tags --all
+  git checkout tags/v${VERSION}
+  ```
 
-    fqdn-rules:
-      strategy: dns
+  <dev>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </dev>
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  ```bash title='Configuration file setup'
+  cat <<EOF > config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  logger:
+    level: DEBUG
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  fqdn-rules:
+    strategy: dns
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-```bash title='Dockerfile setup'
-cat <<EOF > Dockerfile.agent
-FROM golang:1.20-alpine3.17 as builder
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-WORKDIR /src
-COPY . .
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-RUN apk upgrade && \
-    apk add make && \
-    make to-nft platform=linux/amd64
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
+  <dev>
+    Собираем образ hbf-agent командой:
+  </dev>
 
-FROM alpine:3.17
-RUN addgroup -g 101 app && \
-    adduser -H -u 101 -G app -s /bin/sh -D app && \
-    apk update && apk upgrade
+  ```bash
+  docker build -f docker/Dockerfile.agent --tag to-nft:v${VERSION} .
+  ```
 
-WORKDIR /app/
-COPY --from=builder --chown=app:app /src/bin/ /app/bin/
+  <dev>
+    Запускаем hbf-agent командой:
+  </dev>
 
-USER app
-
-CMD ["/app/bin/to-nft"]
-EOF
-```
-
-```bash
-docker build -f Dockerfile.agent --tag to-nft:v${VERSION} .
-```
-
-```bash
-docker run \
--d \
--v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
---name hbf-agent \
---entrypoint "/app/bin/to-nft" \
---privileged \
---user=0 \
-to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
-```
+  ```bash
+  docker run \
+  -d \
+  -v ./config-agent.yaml:/opt/swarm/etc/to-nft/config-agent.yaml \
+  --name hbf-agent \
+  --entrypoint "/app/bin/to-nft" \
+  --privileged \
+  --user=0 \
+  to-nft:v${VERSION} -config /opt/swarm/etc/to-nft/config-agent.yaml
+  ```
 
 </TabItem>
 
 <TabItem value='deb'>
 
-    <dev>
-    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-    VERSION`.
-    </dev>
+  <dev>
+    Настроим необходимые переменные окружения командой:
+  </dev>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    export PACKAGE_TYPE=deb
-    export URL=https://github.com/H-BF/sgroups/releases/download
-    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
-    ```
+  ```bash title='Environment setup'
+  export PACKAGE_TYPE=deb
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  <dev>
+    Скачиваем и устанавливаем deb-пакет командой:
+  </dev>
 
-    logger:
-      level: DEBUG
+  ```bash title='Install deb package'
+  sudo wget -O /tmp/to-nft.deb $URL/$RELEASE
+  sudo dpkg -i /tmp/to-nft.deb
+  ```
 
-    fqdn-rules:
-      strategy: dns
+  <dev>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </dev>
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  ```bash title='Configuration file setup'
+  mkdir -p /opt/swarm/etc/to-nft
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  logger:
+    level: DEBUG
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  fqdn-rules:
+    strategy: dns
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    ```bash title='Install deb package'
-    sudo wget -O /tmp/to-nft.deb $URL/$RELEASE
-    sudo dpkg -i /tmp/to-nft.deb
-    ```
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start hbf-agent.service
-    ```
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
+
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
+
+  <dev>
+    Запустите сервис hbf-server.service командой:
+  </dev>
+
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
 <TabItem value='rpm'>
+  <dev>
+    Настроим необходимые переменные окружения командой:
+  </dev>
 
-    <dev>
-    Для установки rpm-пакета необходимо воспользоваться скриптом ниже с указанием необходимой версии в строке `export
-    VERSION`.
-    </dev>
+  ```bash title='Environment setup'
+  export PACKAGE_TYPE=rpm
+  export URL=https://github.com/H-BF/sgroups/releases/download
+  export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
+  ```
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    export PACKAGE_TYPE=rpm
-    export URL=https://github.com/H-BF/sgroups/releases/download
-    export RELEASE=v$VERSION/to-nft-$VERSION-any.$PACKAGE_TYPE
-    ```
+  <dev>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </dev>
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  ```bash title='Configuration file setup'
+  mkdir -p /opt/swarm/etc/to-nft
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    logger:
-      level: DEBUG
+  logger:
+    level: DEBUG
 
-    fqdn-rules:
-      strategy: dns
+  fqdn-rules:
+    strategy: dns
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
 
-    ```bash title='Install rpm package'
-    sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
-    sudo yum localinstall /tmp/to-nft.rpm
-    ```
+  <dev>
+    Скачиваем и устанавливаем rpm-пакет командой:
+  </dev>
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start hbf-agent.service
-    ```
+  ```bash title='Install rpm package'
+  sudo wget -O /tmp/to-nft.rpm $URL/$RELEASE
+  sudo yum localinstall /tmp/to-nft.rpm
+  ```
+
+  <dev>
+    Запустите сервис hbf-agent.service командой:
+  </dev>
+
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
 <TabItem value='source'>
 
-    ```bash title='Environment setup'
-    export HBF_SERVER=10.0.0.0
-    export HBF_SERVER_PORT=9650
-    export DNS_SERVER=[\'8.8.8.8\']
-    export VERSION=1.9.1
-    mkdir -p /opt/swarm/sbin
-    mkdir -p /opt/swarm/etc/to-nft
-    ```
+  <p>
+    Перед развертыванием, необходимо создать директории для хранения бинарного файла и файлов конфигурации командой:
+  </p>
 
-    ```bash title='Git setup'
-    git clone https://github.com/H-BF/sgroups
-    cd sgroups
-    git checkout tags/v${VERSION}
-    make to-nft platform=linux/amd64
-    cp bin/to-nft /opt/swarm/sbin/hbf-agent
-    ```
+  ```bash title='Environment setup'
+  mkdir -p /opt/swarm/sbin
+  mkdir -p /opt/swarm/etc/to-nft
+  ```
 
-    ```bash title='Configuration file setup'
-    cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
-    ---
-    graceful-shutdown: 10s
+  <p>
+    Клонируем репозиторий, переходим в директорию репозитория, переключаемся на тег необходимой версии и Создайте необходимые директории командой:
+  </p>
 
-    logger:
-      level: DEBUG
+  ```bash title='Git setup'
+  git clone https://github.com/H-BF/sgroups
+  cd sgroups
+  git fetch --tags --all
+  git checkout tags/v${VERSION}
+  make to-nft platform=linux/amd64
+  cp bin/to-nft /opt/swarm/sbin/hbf-agent
+  ```
 
-    fqdn-rules:
-      strategy: dns
+  <p>
+    Создайте конфигурационный файл для hbf-agent командой:
+  </p>
 
-    extapi:
-      svc:
-        def-daial-duration: 10s
-        sgroups:
-          dial-duration: 3s
-          address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
-          sync-status:
-            interval: 3s #mandatory
-            push: true
+  ```bash title='Configuration file setup'
+  cat <<EOF > /opt/swarm/etc/to-nft/config-agent.yaml
+  ---
+  graceful-shutdown: 10s
 
-    netlink:
-      watcher: #netlink watcher
-        linger: 1s
+  logger:
+    level: DEBUG
 
-    base-rules:
-      networks: ['${HBF_SERVER}/32']
+  fqdn-rules:
+    strategy: dns
 
-    dns:
-      nameservers: ${DNS_SERVER}
-      proto: tcp
-      port: 53
-      dial-duration: 3s
-      read-duration: 5s #default
-      write-duration: 5s #default 5s
-      retries: 5 #default 1
-      retry-timeout: 3s #default 1s
+  extapi:
+    svc:
+      def-daial-duration: 10s
+      sgroups:
+        dial-duration: 3s
+        address: 'tcp://${HBF_SERVER}:${HBF_SERVER_PORT}'
+        sync-status:
+          interval: 3s #mandatory
+          push: true
 
-    telemetry:
-      useragent: "string"
-      endpoint: 0.0.0.0:9660
-      metrics:
-        enable: true
-      healthcheck:
-        enable: true
-    EOF
-    ```
+  netlink:
+    watcher: #netlink watcher
+      linger: 1s
 
-    ```bash title='Agent service setup'
-    cat <<EOF > /etc/systemd/system/hbf-agent.service
-    [Unit]
-    Description=hbf agent
-    After=network.target
+  base-rules:
+    networks: ['${HBF_SERVER}/32']
 
-    [Service]
-    ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
-    Restart=always
-    RestartSec=5
-    Delegate=yes
-    KillMode=process
-    OOMScoreAdjust=-999
-    LimitNOFILE=1048576
-    LimitNPROC=infinity
-    LimitCORE=infinity
+  dns:
+    nameservers: ${DNS_SERVER}
+    proto: tcp
+    port: 53
+    dial-duration: 3s
+    read-duration: 5s #default
+    write-duration: 5s #default 5s
+    retries: 5 #default 1
+    retry-timeout: 3s #default 1s
 
-    [Install]
-    WantedBy=multi-user.target
-    EOF
-    ```
+  telemetry:
+    useragent: "string"
+    endpoint: 0.0.0.0:9660
+    metrics:
+      enable: true
+    healthcheck:
+      enable: true
+  EOF
+  ```
 
-    ```bash title='Agent service start'
-    systemctl enable hbf-agent.service
-    systemctl start  hbf-agent.service
-    ```
+  <p>
+    Создайте конфигурационный файл для hbf-server.agent командой:
+  </p>
+
+  ```bash title='Agent service setup'
+  cat <<EOF > /etc/systemd/system/hbf-agent.service
+  [Unit]
+  Description=hbf agent
+  After=network.target
+
+  [Service]
+  ExecStart=/opt/swarm/sbin/hbf-agent --config=/opt/swarm/etc/to-nft/config-agent.yaml
+  Restart=always
+  RestartSec=5
+  Delegate=yes
+  KillMode=process
+  OOMScoreAdjust=-999
+  LimitNOFILE=1048576
+  LimitNPROC=infinity
+  LimitCORE=infinity
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  ```
+
+  <dev>
+    Запустите сервис hbf-server.service командой:
+  </dev>
+
+  ```bash title='Agent service start'
+  systemctl enable hbf-agent.service
+  systemctl start hbf-agent.service
+  ```
 
 </TabItem>
 
 <TabItem value='ansible'>
-  Перед началом работы необходимо склонировать репозиторий
+  <dev>
+    Перед развертыванием убедитесь, что у вас установлен [ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html):
+
+    ```bash
+    ansible-playbook --version
+    ```
+    Далее убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'. 
+    Следующим шагом склонируйте репозиторий:
+  </dev>
 
 ```bash
 git clone https://github.com/H-BF/ansible
 cd ansible
+git fetch --tags --all
+git checkout tags/v${VERSION}
 ```
 
 #### Требования
@@ -433,7 +505,7 @@ ansible-playbook main.yaml
 
 </Tabs>
 
-#### Настройка
+### Параметры конфигурационного файла
 
 Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
 

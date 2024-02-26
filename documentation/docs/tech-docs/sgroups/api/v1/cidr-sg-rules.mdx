@@ -2,6 +2,8 @@
 id: cidr-sg-rules
 ---
 
+import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+
 # POST /v1/cidr-sg/rules
 
 ## **Запрос**
@@ -214,6 +216,8 @@ id: cidr-sg-rules
 
 ## **Описание интеграции**
 
+<FancyboxDiagram>
+
 ```mermaid
 sequenceDiagram
 participant user as User
@@ -237,3 +241,5 @@ end
 db-->>server: Ответ со списком CIDR-SG правил соответствующий запросу
 server-->>user: Список CIDR-SG правил соответствующий запросу
 ```
+
+</FancyboxDiagram>

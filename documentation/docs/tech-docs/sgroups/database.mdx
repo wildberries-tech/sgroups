@@ -2,7 +2,7 @@
 id: database
 ---
 
-import { Fancybox } from '@site/src/components/commonBlocks/Fancybox'
+import { FancyboxImage } from '@site/src/components/commonBlocks/FancyboxImage'
 
 # Описание базы данных
 
@@ -16,17 +16,7 @@ HBF-Server поддерживает PostgreSQL версии 14.8
 
 На диаграмме ниже представлен визуальный обзор базы данных HBF-Server и связей между таблицами. В приведенном ниже Обзоре Таблиц, содержатся дополнительные сведения о таблицах и столбцах базы данных.
 
-<Fancybox
-  options={{
-    Carousel: {
-      infinite: false,
-    },
-  }}
->
-  <a data-fancybox="gallery" href="/swarm_doc/img/sgroups.database.erd.svg">
-    <img src="/swarm_doc/img/sgroups.database.erd.svg" />
-  </a>
-</Fancybox>
+<FancyboxImage src="/swarm_doc/img/sgroups.database.erd.svg" />
 
 ## **Обзор таблиц (сущности)**
 

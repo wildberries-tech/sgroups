@@ -1,6 +1,6 @@
 export const terraform = [{
         type: 'doc',
-        label: 'Установка',
+        label: 'Установка провайдера',
         id: 'tech-docs/terraform/provider-terraform'
     },
     {
