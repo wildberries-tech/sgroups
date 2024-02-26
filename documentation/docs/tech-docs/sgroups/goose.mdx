@@ -8,8 +8,9 @@ import TabItem from '@theme/TabItem'
 # Миграция
 
 <div className="paragraph">
-  В качестве инструмента для миграции базы данных использует <i>goose</i>. Когда в качестве хранилища используется Postgres, goose запускается
-  перед началом работы hbf-server'a. Более подробную информацию о <i>goose</i> можно найти [здесь](https://github.com/pressly/goose).
+  В качестве инструмента для миграции базы данных использует <i>goose</i>. Когда в качестве хранилища используется
+  Postgres, goose запускается перед началом работы hbf-server'a. Более подробную информацию о <i>goose</i> можно найти
+  [здесь](https://github.com/pressly/goose).
 </div>
 
     <div className="paragraph">
@@ -119,18 +120,18 @@ import TabItem from '@theme/TabItem'
   <TabItem value="docker">
     #### Сборка
 
-		<dev>
-			Перед развертыванием убедитесь, что у вас установлен [docker](https://docs.docker.com/engine/install/):
-		</dev>
+    	<div>
+    		Перед развертыванием убедитесь, что у вас установлен [docker](https://docs.docker.com/engine/install/):
+    	</div>
 
     ```bash title='Get docker version'
     docker -v
     ```
 
-    <dev>
+    <div>
         Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:
-    </dev>
-    
+    </div>
+
     ```bash
     export VERSION=1.9.1
     git clone https://github.com/H-BF/sgroups
@@ -196,9 +197,9 @@ import TabItem from '@theme/TabItem'
     </table>
 
     #### Запуск
-    <dev>
+    <div>
         Для выполнения миграции базы данных с помощью Docker необходимо выполнить команду:
-    </dev>
+    </div>
 
     ```bash
     docker run -d -t --name=goose-migration --rm \

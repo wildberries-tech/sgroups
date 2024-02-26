@@ -7,82 +7,81 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
-<dev>
-  Перед развертыванием, пользователь должен решить, где hbf-server будет хранить данные. Предоставляется два варианта для выбора: 
+<div>
+  Перед развертыванием, пользователь должен решить, где hbf-server будет хранить данные. Предоставляется два варианта
+  для выбора:
   <ul>
-      <li>
-        In Memory.
-      </li>
-      <li>
-        Postgres: В этом случае пользователю необходимо перед запуском hbf-server выполнить [миграцию базы данных](./goose.mdx).
-      </li>
+    <li>In Memory.</li>
+    <li>
+      Postgres: В этом случае пользователю необходимо перед запуском hbf-server выполнить [миграцию базы
+      данных](./goose.mdx).
+    </li>
   </ul>
-</dev>
+</div>
 
-
-<dev>
+<div>
   Независимо от выбранного метода установки hbf-server, необходимо сконфигурировать следующие переменные окружения:
-  <ul>
-    <li>
-        <p>
-          `HBF_SERVER` - IP-адрес hbf-server.
-          ```bash title='Setup HBF_SERVER'
-          export HBF_SERVER=0.0.0.0
-          ```
-        </p>
-    </li>
-    <li>
-        <p>
-          `HBF_SERVER_PORT` - порт, используемый hbf-server.
-          ```bash title='Setup HBF_SERVER_PORT'
-          export HBF_SERVER_PORT=9650
-          ```
-        </p>
-    </li>
-    <li>
-        <p>
-          `VERSION` - версия hbf-server.
-          ```bash title='Setup VERSION'
-          export VERSION=1.9.1
-          ```
-        </p>
-    </li>
-    <li>
-      <p>
-        `SG_STORAGE_TYPE` - тип хранилища для hbf-server. Допустимые значени: `internal` или `postgres`.
-        
-        В случае выбора типа хранилища "In Memory" установите переменную окружения командой:
-        ```bash title='Setup SG_STORAGE_TYPE'
-        export SG_STORAGE_TYPE=internal
-        ```
-        В случае выбора типа хранилища "Postgres" установите переменную окружения командой:
-        ```bash title='Setup SG_STORAGE_TYPE'
-        export SG_STORAGE_TYPE=postgres
-        ```
-      </p>
-    </li>
-    <li>
-      <p>
-        `SG_STORAGE_POSTGRES_URL` - URL для подключения к Postgres базе данных. Для корректного формирования 
-        воспользуйтесь командой:
-        ```bash title='Setup SG_STORAGE_POSTGRES_URL'
-        cat <<EOF > setup.sh
-        #!/bin/bash
-        SG_DB_USER="user"
-        SG_DB_PASSWORD="password"
-        SG_DB_URL="localhost:5432"
-        SG_DB_NAME="swarm"
+  <p>`HBF_SERVER` - IP-адрес hbf-server.</p>
+            
+  ```bash title='Setup HBF_SERVER'
+  export HBF_SERVER=0.0.0.0
+  ```
 
-        SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+{' '}
 
-        export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
-        EOF
-        sh setup.sh
-        ```
-      </p>
-    </li>
-  </ul>
-</dev>
+<p>`HBF_SERVER_PORT` - порт, используемый hbf-server.</p>
+
+```bash title='Setup HBF_SERVER_PORT'
+export HBF_SERVER_PORT=9650
+```
+
+{' '}
+
+<p>`VERSION` - версия hbf-server.</p>
+
+```bash title='Setup VERSION'
+export VERSION=1.9.1
+```
+
+{' '}
+
+<p>`SG_STORAGE_TYPE` - тип хранилища для hbf-server. Допустимые значени: `internal` или `postgres`.</p>
+
+В случае выбора типа хранилища "In Memory" установите переменную окружения командой:
+
+```bash title='Setup SG_STORAGE_TYPE'
+export SG_STORAGE_TYPE=internal
+```
+
+В случае выбора типа хранилища "Postgres" установите переменную окружения командой:
+
+```bash title='Setup SG_STORAGE_TYPE'
+export SG_STORAGE_TYPE=postgres
+```
+
+{' '}
+
+<p>
+  `SG_STORAGE_POSTGRES_URL` - URL для подключения к Postgres базе данных. Для корректного формирования воспользуйтесь
+  командой:
+</p>
+
+```bash title='Setup SG_STORAGE_POSTGRES_URL'
+cat <<EOF > setup.sh
+#!/bin/bash
+SG_DB_USER="user"
+SG_DB_PASSWORD="password"
+SG_DB_URL="localhost:5432"
+SG_DB_NAME="swarm"
+
+SG_STORAGE_POSTGRES_URL="postgres://${SG_DB_USER}:${SG_DB_PASSWORD}@${SG_DB_URL}/${SG_DB_NAME}?sslmode=disable"
+
+export SG_STORAGE_POSTGRES_URL=$SG_STORAGE_POSTGRES_URL
+EOF
+sh setup.sh
+```
+
+</div>
 
 <Tabs
 defaltValue = 'docker'
@@ -94,424 +93,443 @@ values = {[
 ]}>
 
 <TabItem value='docker'>
-  <dev>
+  <div>
     Перед развертыванием убедитесь, что у вас установлен [docker](https://docs.docker.com/engine/install/):
-  </dev>
+  </div>
 
-  ```bash title='Get docker version'
-  docker -v
-  ```
+```bash title='Get docker version'
+docker -v
+```
 
-  <dev>
-    Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:
-  </dev>
+{' '}
 
-  ```bash title='Git setup'
-  git clone https://github.com/H-BF/sgroups
-  cd sgroups
-  git fetch --tags --all
-  git checkout tags/v${VERSION}
-  ```
+<div>Клонируем репозиторий, переходим в директорию репозитория и переключаемся на тег необходимой версии командой:</div>
 
-  <dev>
-    Создайте конфигурационный файл для hbf-server командой:
-  </dev>
+```bash title='Git setup'
+git clone https://github.com/H-BF/sgroups
+cd sgroups
+git fetch --tags --all
+git checkout tags/v${VERSION}
+```
 
-  ```bash title='Configuration file setup'
-  cat <<EOF > config-server.yaml
-  ---
-  logger:
-    # log level
-    level: INFO
+{' '}
 
-  metrics:
-    # enable api metrics
-    enable: true
+<div>Создайте конфигурационный файл для hbf-server командой:</div>
 
-  healthcheck:
-    # enables|disables health check handler
-    enable: true
+```bash title='Configuration file setup'
+cat <<EOF > config-server.yaml
+---
+logger:
+  # log level
+  level: INFO
 
-  server:
-    # server endpoint
-    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-    # graceful shutdown period
-    graceful-shutdown: 30s
-  EOF
-  ```
-  
-  <dev>
-    Собираем образ hbf-server командой:
-  </dev>
+metrics:
+  # enable api metrics
+  enable: true
 
-  ```bash
-  docker build -f docker/Dockerfile.server --tag sgroups:v$(cat VERSION) .
-  ```
+healthcheck:
+  # enables|disables health check handler
+  enable: true
 
-  <dev>
-    В случае выбора типа хранилища "In Memory" запустите hbf-server командой:
-  </dev>
+server:
+  # server endpoint
+  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+  # graceful shutdown period
+  graceful-shutdown: 30s
+EOF
+```
 
-  ```bash
-  docker run \
-  -d \
-  -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
-  --name hbf-server \
-  --entrypoint "/app/bin/sgroups" \
-  --env SG_STORAGE_TYPE \
-  sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
-  ```
+{' '}
 
-  <dev>
-    В случае выбора типа хранилища "Postgres" запустите hbf-server командой:
-  </dev>
+<div>Собираем образ hbf-server командой:</div>
 
-  ```bash
-  sh setup.sh
-  docker run \
-  -d \
-  -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
-  --name hbf-server \
-  --entrypoint "/app/bin/sgroups" \
-  --env SG_STORAGE_TYPE \
-  --env SG_STORAGE_POSTGRES_URL \
-  sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
-  ```
+```bash
+docker build -f docker/Dockerfile.server --tag sgroups:v$(cat VERSION) .
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "In Memory" запустите hbf-server командой:</div>
+
+```bash
+docker run \
+-d \
+-v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+--name hbf-server \
+--entrypoint "/app/bin/sgroups" \
+--env SG_STORAGE_TYPE \
+sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "Postgres" запустите hbf-server командой:</div>
+
+```bash
+sh setup.sh
+docker run \
+-d \
+-v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+--name hbf-server \
+--entrypoint "/app/bin/sgroups" \
+--env SG_STORAGE_TYPE \
+--env SG_STORAGE_POSTGRES_URL \
+sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+```
 
 </TabItem>
 <TabItem value='deb'>
 
 {' '}
-  <dev>
-    Устанавливаем дополнительные переменные окружения командой:
-  </dev>
 
-  ```bash title='Environment setup'
-  export PACKAGE_TYPE=deb
-  export URL=https://github.com/H-BF/sgroups/releases/download
-  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
-  ```
-  <dev>
-    Скачиваем и устанавливаем deb-пакет командой:
-  </dev>
+{' '}
 
-  ```bash title='Install deb package'
-  sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
-  sudo dpkg -i /tmp/sgroups.deb
-  ```
-  <dev>
-    Создайте конфигурационный файл для hbf-server.service командой:
-  </dev>
+<div>Устанавливаем дополнительные переменные окружения командой:</div>
 
-  ```bash title='Server service setup'
-  cat <<EOF > /etc/systemd/system/hbf-server.service
-  [Unit]
-  Description=sgroups
-  Documentation=TODO:
-  After=network.target
+```bash title='Environment setup'
+export PACKAGE_TYPE=deb
+export URL=https://github.com/H-BF/sgroups/releases/download
+export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+```
 
-  [Service]
-  EnvironmentFile=/opt/swarm/etc/sgroups/env
-  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
-  Restart=always
-  RestartSec=5
-  Delegate=yes
-  KillMode=process
-  OOMScoreAdjust=-999
-  LimitNOFILE=1048576
-  LimitNPROC=infinity
-  LimitCORE=infinity
+{' '}
 
-  [Install]
-  WantedBy=multi-user.target
-  EOF
-  ```
-  <dev>
-    Создайте конфигурационный файл для hbf-server командой:
-  </dev>
+<div>Скачиваем и устанавливаем deb-пакет командой:</div>
 
-  ```bash title='Setup server service'
-  cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
-  ---
-  logger:
-    # log level
-    level: INFO
+```bash title='Install deb package'
+sudo wget -O /tmp/sgroups.deb $URL/$RELEASE
+sudo dpkg -i /tmp/sgroups.deb
+```
 
-  metrics:
-    # enable api metrics
-    enable: true
+{' '}
 
-  healthcheck:
-    # enables|disables health check handler
-    enable: true
+<div>Создайте конфигурационный файл для hbf-server.service командой:</div>
 
-  server:
-    # server endpoint
-    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-    # graceful shutdown period
-    graceful-shutdown: 30s
-  EOF
-  ```
+```bash title='Server service setup'
+cat <<EOF > /etc/systemd/system/hbf-server.service
+[Unit]
+Description=sgroups
+Documentation=TODO:
+After=network.target
 
-  <dev>
-    В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+[Service]
+EnvironmentFile=/opt/swarm/etc/sgroups/env
+ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
+Restart=always
+RestartSec=5
+Delegate=yes
+KillMode=process
+OOMScoreAdjust=-999
+LimitNOFILE=1048576
+LimitNPROC=infinity
+LimitCORE=infinity
 
-  ```bash title="Environment file setup"
-  mkdir -p /opt/swarm/etc/sgroups
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  EOF
-  ```
+[Install]
+WantedBy=multi-user.target
+EOF
+```
 
-  <dev>
-    В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+{' '}
 
-  ```bash title="Environment file setup"
-  mkdir -p /opt/swarm/etc/sgroups
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
-  EOF
-  ```
+<div>Создайте конфигурационный файл для hbf-server командой:</div>
 
-  <dev>
-    Запустите сервис hbf-server.service командой:
-  </dev>
+```bash title='Setup server service'
+cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+---
+logger:
+  # log level
+  level: INFO
 
-  ```bash title='Server service start'
-  systemctl enable hbf-server.service
-  systemctl start hbf-server.service
-  ```
+metrics:
+  # enable api metrics
+  enable: true
+
+healthcheck:
+  # enables|disables health check handler
+  enable: true
+
+server:
+  # server endpoint
+  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+  # graceful shutdown period
+  graceful-shutdown: 30s
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+mkdir -p /opt/swarm/etc/sgroups
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+mkdir -p /opt/swarm/etc/sgroups
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
+EOF
+```
+
+{' '}
+
+<div>Запустите сервис hbf-server.service командой:</div>
+
+```bash title='Server service start'
+systemctl enable hbf-server.service
+systemctl start hbf-server.service
+```
 
 </TabItem>
 <TabItem value='rpm'>
 
 {' '}
-  <dev>
-    Настроим необходимые переменные окружения командой:
-  </dev>
 
-  ```bash title='bash'
-  export PACKAGE_TYPE=rpm
-  export URL=https://github.com/H-BF/sgroups/releases/download
-  export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
-  ```
+{' '}
 
-  <dev>
-    Скачиваем и устанавливаем rpm-пакет командой:
-  </dev>
+<div>Настроим необходимые переменные окружения командой:</div>
 
-  ```bash title='Install rpm package'
-  sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
-  sudo yum localinstall -i /tmp/sgroups.rpm
-  ```
-  <dev>
-    Создайте конфигурационный файл для hbf-server.service командой:
-  </dev>
+```bash title='bash'
+export PACKAGE_TYPE=rpm
+export URL=https://github.com/H-BF/sgroups/releases/download
+export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
+```
 
-  ```bash title='Server service setup'
-  cat <<EOF > /etc/systemd/system/hbf-server.service
-  [Unit]
-  Description=sgroups
-  Documentation=TODO:
-  After=network.target
+{' '}
 
-  [Service]
-  EnvironmentFile=/opt/swarm/etc/sgroups/env
-  ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
-  Restart=always
-  RestartSec=5
-  Delegate=yes
-  KillMode=process
-  OOMScoreAdjust=-999
-  LimitNOFILE=1048576
-  LimitNPROC=infinity
-  LimitCORE=infinity
+<div>Скачиваем и устанавливаем rpm-пакет командой:</div>
 
-  [Install]
-  WantedBy=multi-user.target
-  EOF
-  ```
-  <dev>
-    Создайте конфигурационный файл для hbf-server командой:
-  </dev>
+```bash title='Install rpm package'
+sudo wget -O /tmp/sgroups.rpm $URL/$RELEASE
+sudo yum localinstall -i /tmp/sgroups.rpm
+```
 
-  ```bash title='Setup server service'
-  cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
-  ---
-  logger:
-    # log level
-    level: INFO
+{' '}
 
-  metrics:
-    # enable api metrics
-    enable: true
+<div>Создайте конфигурационный файл для hbf-server.service командой:</div>
 
-  healthcheck:
-    # enables|disables health check handler
-    enable: true
+```bash title='Server service setup'
+cat <<EOF > /etc/systemd/system/hbf-server.service
+[Unit]
+Description=sgroups
+Documentation=TODO:
+After=network.target
 
-  server:
-    # server endpoint
-    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-    # graceful shutdown period
-    graceful-shutdown: 30s
-  EOF
-  ```
+[Service]
+EnvironmentFile=/opt/swarm/etc/sgroups/env
+ExecStart=/opt/swarm/sbin/sgroups --config=/opt/swarm/etc/sgroups/config.yaml
+Restart=always
+RestartSec=5
+Delegate=yes
+KillMode=process
+OOMScoreAdjust=-999
+LimitNOFILE=1048576
+LimitNPROC=infinity
+LimitCORE=infinity
 
-  <dev>
-    В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+[Install]
+WantedBy=multi-user.target
+EOF
+```
 
-  ```bash title="Environment file setup"
-  mkdir -p /opt/swarm/etc/sgroups
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  EOF
-  ```
-  <dev>
-    В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+{' '}
 
-  ```bash title="Environment file setup"
-  mkdir -p /opt/swarm/etc/sgroups
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
-  EOF
-  ```
+<div>Создайте конфигурационный файл для hbf-server командой:</div>
 
-  <dev>
-    Запустите сервис hbf-server.service командой:
-  </dev>
+```bash title='Setup server service'
+cat <<EOF > /opt/swarm/etc/sgroups/config.yaml
+---
+logger:
+  # log level
+  level: INFO
 
-  ```bash title='Server service start'
-  systemctl enable hbf-server.service
-  systemctl start hbf-server.service
-  ```
+metrics:
+  # enable api metrics
+  enable: true
+
+healthcheck:
+  # enables|disables health check handler
+  enable: true
+
+server:
+  # server endpoint
+  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+  # graceful shutdown period
+  graceful-shutdown: 30s
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+mkdir -p /opt/swarm/etc/sgroups
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+mkdir -p /opt/swarm/etc/sgroups
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
+EOF
+```
+
+{' '}
+
+<div>Запустите сервис hbf-server.service командой:</div>
+
+```bash title='Server service start'
+systemctl enable hbf-server.service
+systemctl start hbf-server.service
+```
 
 </TabItem>
 
 <TabItem value='source'>
 
-  <p>
-    Перед развертыванием, необходимо создать директории для хранения бинарного файла и файлов конфигурации командой:
-  </p>
+{' '}
 
-  ```bash title='Environment setup'
-  mkdir -p /opt/swarm/sbin
-  mkdir -p /opt/swarm/etc/to-nft
-  ```
+<p>Перед развертыванием, необходимо создать директории для хранения бинарного файла и файлов конфигурации командой:</p>
 
-  <p>
-    Клонируем репозиторий, переходим в директорию репозитория, переключаемся на тег необходимой версии и Создайте необходимые директории командой:
-  </p>
+```bash title='Environment setup'
+mkdir -p /opt/swarm/sbin
+mkdir -p /opt/swarm/etc/to-nft
+```
 
-  ```bash title='Git setup'
-  git clone https://github.com/H-BF/sgroups
-  cd sgroups
-  git fetch --tags --all
-  git checkout tags/v${VERSION}
-  make sg-service platform=linux/amd64
-  cp bin/sgroups /opt/swarm/sbin/hbf-server
-  ```
-  <p>
-    Создайте конфигурационный файл для hbf-server командой:
-  </p>
+{' '}
 
-  ```bash title='Configuration file setup'
-  cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
-  ---
-  logger:
-    # log level
-    level: INFO
+<p>
+  Клонируем репозиторий, переходим в директорию репозитория, переключаемся на тег необходимой версии и Создайте
+  необходимые директории командой:
+</p>
 
-  metrics:
-    # enable api metrics
-    enable: true
+```bash title='Git setup'
+git clone https://github.com/H-BF/sgroups
+cd sgroups
+git fetch --tags --all
+git checkout tags/v${VERSION}
+make sg-service platform=linux/amd64
+cp bin/sgroups /opt/swarm/sbin/hbf-server
+```
 
-  healthcheck:
-    # enables|disables health check handler
-    enable: true
+{' '}
 
-  server:
-    # server endpoint
-    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-    # graceful shutdown period
-    graceful-shutdown: 30s
-  EOF
-  ```
+<p>Создайте конфигурационный файл для hbf-server командой:</p>
 
-  <p>
-    Создайте конфигурационный файл для hbf-server.service командой:
-  </p>
+```bash title='Configuration file setup'
+cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
+---
+logger:
+  # log level
+  level: INFO
 
-  ```bash title='Server service setup'
-  cat <<EOF > /etc/systemd/system/hbf-server.service
-  [Unit]
-  Description=sgroups
-  Documentation=TODO:
-  After=network.target
+metrics:
+  # enable api metrics
+  enable: true
 
-  [Service]
-  EnvironmentFile=/opt/swarm/etc/sgroups/env
-  ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
-  Restart=always
-  RestartSec=5
-  Delegate=yes
-  KillMode=process
-  OOMScoreAdjust=-999
-  LimitNOFILE=1048576
-  LimitNPROC=infinity
-  LimitCORE=infinity
+healthcheck:
+  # enables|disables health check handler
+  enable: true
 
-  [Install]
-  WantedBy=multi-user.target
-  EOF
-  ```
+server:
+  # server endpoint
+  endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+  # graceful shutdown period
+  graceful-shutdown: 30s
+EOF
+```
 
-  <dev>
-    В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+{' '}
 
-  ```bash title="Environment file setup"
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  export SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  EOF
-  ```
-  <dev>
-    В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:
-  </dev>
+<p>Создайте конфигурационный файл для hbf-server.service командой:</p>
 
-  ```bash title="Environment file setup"
-  cat <<EOF > /opt/swarm/etc/sgroups/env
-  #!/bin/bash
-  SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
-  SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
-  EOF
-  ```
+```bash title='Server service setup'
+cat <<EOF > /etc/systemd/system/hbf-server.service
+[Unit]
+Description=sgroups
+Documentation=TODO:
+After=network.target
 
-  <dev>
-    Запустите сервис hbf-server.service командой:
-  </dev>
+[Service]
+EnvironmentFile=/opt/swarm/etc/sgroups/env
+ExecStart=/opt/swarm/sbin/hbf-server --config=/opt/swarm/etc/sgroups/config-server.yaml
+Restart=always
+RestartSec=5
+Delegate=yes
+KillMode=process
+OOMScoreAdjust=-999
+LimitNOFILE=1048576
+LimitNPROC=infinity
+LimitCORE=infinity
 
-  ```bash title='Server service start'
-  systemctl enable hbf-server.service
-  systemctl start hbf-server.service
-  ```
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "In Memory" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+export SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+EOF
+```
+
+{' '}
+
+<div>В случае выбора типа хранилища "Postgres" необходимо настроить файл */opt/swarm/etc/sgroups/env* командой:</div>
+
+```bash title="Environment file setup"
+cat <<EOF > /opt/swarm/etc/sgroups/env
+#!/bin/bash
+SG_STORAGE_TYPE=${SG_STORAGE_TYPE}
+SG_STORAGE_POSTGRES_URL=${SG_STORAGE_POSTGRES_URL}
+EOF
+```
+
+{' '}
+
+<div>Запустите сервис hbf-server.service командой:</div>
+
+```bash title='Server service start'
+systemctl enable hbf-server.service
+systemctl start hbf-server.service
+```
+
 </TabItem>
 </Tabs>
 
-### Параметры конфигурационного файла
+#### Параметры конфигурационного файла
 
-Для настройки сервера требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать параметры в соответствии с потребностями пользователей.
+<div className="text-justify">
+  Для настройки агентов требуется использовать конфигурационный файл, который содержит поля, позволяющие настраивать
+  параметры в соответствии с потребностями пользователей. Так же есть алтьтернативный способ - переменные окружения.
+  Обратите внимание, что переменные окружения являются более приоритетными, чем параметры из файла. Так же часть
+  параметров можно настроить через файл, а часть через переменные окружения.
+</div>
 
 <div class="scrollable-x">
   <table>
@@ -521,73 +539,86 @@ values = {[
         <th>Параметр</th>
         <th>Описание</th>
         <th>Тип</th>
-        <th>Обязательный параметр</th>
-        <th>Переменная среды</th>
+        <th>Обязательно</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>`logger.level`</td>
+        <td>
+          <p className="p-without-margin">`logger.level`</p>
+          <p className="p-without-margin">`SG_LOGGER_LEVEL`</p>
+        </td>
         <td>Уровень логгирования. Допустимые значения: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, `PANIC`.</td>
         <td>String</td>
         <td>Нет</td>
-        <td>SG_LOGGER_LEVEL</td>
       </tr>
       <tr>
-        <td>`server.endpoint`</td>
+        <td>
+          <p className="p-without-margin">`server.endpoint`</p>
+          <p className="p-without-margin">`SG_SERVER_ENDPOINT`</p>
+        </td>
         <td>IP адрес и порт hbf-сервер. Рекомендуемое значение: `0.0.0.0:9650`.</td>
         <td>String</td>
         <td>Да</td>
-        <td>SG_SERVER_ENDPOINT</td>
       </tr>
       <tr>
-        <td>`server.graceful-shutdow`</td>
+        <td>
+          <p className="p-without-margin">`server.graceful-shutdow`</p>
+          <p className="p-without-margin">`SG_SERVER_GRACEFUL_SHUTDOW`</p>
+        </td>
         <td>
           Определяет период времени, в течение которого процесс сервера должен корректно завершиться. По истечению
           периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`
         </td>
         <td>String</td>
         <td>Нет</td>
-        <td>SG_SERVER_GRACEFUL_SHUTDOW</td>
       </tr>
       <tr>
-        <td>`telemetry.metrics.enable`</td>
+        <td>
+          <p className="p-without-margin">`telemetry.metrics.enable`</p>
+          <p className="p-without-margin">`SG_METRICS_ENABLE`</p>
+        </td>
         <td>
           Включить/Отключить возможность получения метрик. Значение по умолчанию: `true`. Пример получения метрик: `curl
           0.0.0.0:9650/metrics`.
         </td>
         <td>Boolean</td>
         <td>Нет</td>
-        <td>SG_METRICS_ENABLE</td>
       </tr>
       <tr>
-        <td>`healthcheck.enable`</td>
+        <td>
+          <p className="p-without-margin">`healthcheck.enable`</p>
+          <p className="p-without-margin">`SG_HEALTHCHECK_ENABLE`</p>
+        </td>
         <td>
           Включить/Отключить возможность получения информации о статусе hbf-сервера. Значение по умолчанию: `true`.
           Пример получения статуса: `curl 0.0.0.0:9650/healthcheck`.
         </td>
         <td>Boolean</td>
         <td>Нет</td>
-        <td>SG_HEALTHCHECK_ENABLE</td>
       </tr>
       <tr>
-        <td>`storage.type`</td>
+        <td>
+          <p className="p-without-margin">`storage.type`</p>
+          <p className="p-without-margin">`SG_STORAGE_TYPE`</p>
+        </td>
         <td>
           Подключаемый тип базы данных. Значение по умолчанию: `internal`. Допустимые значения: `internal`, `postgres`.
         </td>
         <td>String</td>
         <td>Нет</td>
-        <td>SG_STORAGE_TYPE</td>
       </tr>
       <tr>
-        <td>`storage.postgres.url`</td>
-        <td>URL для подключения к базе данных Postgres.</td>
-        <td>String</td>
         <td>
-          При использовании `storage.type:postgres`, данный параметр должен иметь корректный URL подключения. В ином
-          случае, параметр необязательный для заполнения.
+          <p className="p-without-margin">`storage.postgres.url`</p>
+          <p className="p-without-margin">`SG_STORAGE_POSTGRES_URL`</p>
         </td>
-        <td>SG_STORAGE_POSTGRES_URL</td>
+        <td>
+          URL для подключения к базе данных Postgres. При использовании `storage.type:postgres`, данный параметр должен
+          иметь корректный URL подключения. В ином случае, в параметре нет необходимости.
+        </td>
+        <td>String</td>
+        <td>Нет</td>
       </tr>
     </tbody>
   </table>
