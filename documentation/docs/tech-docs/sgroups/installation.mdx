@@ -7,6 +7,17 @@ import TabItem from '@theme/TabItem'
 
 # Установка
 
+Перед установкой пользователь должен решить, где hbf-server будет хранить данные. Существует два вариата: 
+<ul>
+    <li>
+      In Memory: пользователю не надо дополнительно ничего настраивать.
+    </li>
+    <li>
+      Postgres: пользователю необходимо перед запуском сервера выполнить миграцию базы данных. Также необходимо убедиться,
+      что переменная окружения `SG_STORAGE_POSTGRES_URL` установлена.
+    </li>
+</ul> 
+
 <Tabs
 defaltValue = 'docker'
 values = {[
@@ -23,13 +34,13 @@ values = {[
     export HBF_SERVER_PORT=9650
     export VERSION=1.9.1
     ```
-    
+
     ```bash title='Git setup'
     git clone https://github.com/H-BF/sgroups
     cd sgroups
     git checkout tags/v${VERSION}
     ```
-    
+
     ```bash title='Configuration file setup'
     cat <<EOF > config-server.yaml
     ---
@@ -78,6 +89,10 @@ values = {[
     docker build -f Dockerfile.server --tag sgroups:v$(cat VERSION) .
     ```
 
+    <dev>
+        В случае запуска в режиме "In Memory" выполните команду:
+    </dev>
+
     ```bash
     docker run \
     -d \
@@ -87,18 +102,33 @@ values = {[
     sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
     ```
 
+    <dev>
+        В случае запуска в режиме "Postgres" корректно установите переменную окружения `SG_STORAGE_POSTGRES_URL` и только после этого запустите 
+        hbf-server командой:
+    </dev>
+
+    ```bash
+    docker run \
+    -d \
+    -v ./config-server.yaml:/opt/swarm/etc/sgroups/config-server.yaml \
+    --name hbf-server \
+    --entrypoint "/app/bin/sgroups" \
+    --env SG_STORAGE_POSTGRES_URL \
+    sgroups:v$(cat VERSION) -config /opt/swarm/etc/sgroups/config-server.yaml
+    ```
+
 </TabItem>
 <TabItem value='deb'>
 
+{' '}
   <dev>
-    Перед установкой убедитесь, что вы корректно указали версию, 
-    установив переменную `VERSION` без символа 'v'.
+    Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
   </dev>
 
   ```bash title='Environment setup'
   export HBF_SERVER=0.0.0.0
   export HBF_SERVER_PORT=9650
-  export VERSION="1.9.1"
+  export VERSION=1.9.1
   export PACKAGE_TYPE=deb
   export URL=https://github.com/H-BF/sgroups/releases/download
   export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
@@ -155,6 +185,13 @@ values = {[
   EOF
   ```
 
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL`.
+  </dev>
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
   ```bash title='Server service start'
   systemctl enable hbf-server.service
   systemctl start hbf-server.service
@@ -163,15 +200,15 @@ values = {[
 </TabItem>
 <TabItem value='rpm'>
 
+{' '}
   <dev>
-    Перед установкой убедитесь, что вы корректно указали версию, 
-    установив переменную `VERSION` без символа 'v'.
+    Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
   </dev>
 
   ```bash title='bash'
   export HBF_SERVER=0.0.0.0
   export HBF_SERVER_PORT=9650
-  export VERSION="1.9.1"
+  export VERSION=1.9.1
   export PACKAGE_TYPE=rpm
   export URL=https://github.com/H-BF/sgroups/releases/download
   export RELEASE=v$VERSION/sgroups-$VERSION-any.$PACKAGE_TYPE
@@ -228,6 +265,17 @@ values = {[
   EOF
   ```
 
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL` командой:
+  </dev>
+
+  ```bash
+  export SG_STORAGE_POSTGRES_URL=""
+  ```
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
   ```bash title='Server service start'
   systemctl enable hbf-server.service
   systemctl start hbf-server.service
@@ -237,16 +285,18 @@ values = {[
 
 <TabItem value='source'>
 
+  Перед установкой убедитесь, что вы корректно указали версию, установив переменную `VERSION` без символа 'v'.
+
   ```bash title='Environment setup'
   export HBF_SERVER=0.0.0.0
   export HBF_SERVER_PORT=9650
-  export VERSION=v1.9.1
+  export VERSION=1.9.1
   ```
 
   ```bash title='Git setup'
   git clone https://github.com/H-BF/sgroups
   cd sgroups
-  git checkout tags/${VERSION}
+  git checkout tags/v${VERSION}
   make sg-service platform=linux/amd64
   mkdir -p /opt/swarm/sbin
   mkdir -p /opt/swarm/etc/sgroups
@@ -257,22 +307,22 @@ values = {[
   cat <<EOF > /opt/swarm/etc/sgroups/config-server.yaml
   ---
   logger:
-      # log level
-      level: INFO
+    # log level
+    level: INFO
 
   metrics:
-      # enable api metrics
-      enable: true
+    # enable api metrics
+    enable: true
 
   healthcheck:
-      # enables|disables health check handler
-      enable: true
+    # enables|disables health check handler
+    enable: true
 
   server:
-      # server endpoint
-      endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
-      # graceful shutdown period
-      graceful-shutdown: 30s
+    # server endpoint
+    endpoint: tcp://${HBF_SERVER}:${HBF_SERVER_PORT}
+    # graceful shutdown period
+    graceful-shutdown: 30s
   EOF
   ```
 
@@ -299,6 +349,13 @@ values = {[
   EOF
   ```
 
+  <dev>
+    В случае запуска в режиме "Postgres" корректно установите переменную `SG_STORAGE_POSTGRES_URL`.
+  </dev>
+
+  <dev>
+    Далее, независимо от выбраного режима хранения данных, запустите сервис hbf-server.service командой:
+  </dev>
   ```bash title='Server service start'
   systemctl enable hbf-server.service
   systemctl start hbf-server.service
@@ -332,36 +389,47 @@ values = {[
         <td>SG_LOGGER_LEVEL</td>
       </tr>
       <tr>
-        <td>`server/endpoint`</td>
+        <td>`server.endpoint`</td>
         <td>IP адрес и порт hbf-сервер. Рекомендуемое значение: `0.0.0.0:9650`.</td>
         <td>String</td>
         <td>Да</td>
         <td>SG_SERVER_ENDPOINT</td>
       </tr>
       <tr>
-        <td>`server/graceful-shutdow`</td>
-        <td>Определяет период времени, в течение которого процесс сервера должен корректно завершиться. По истечению периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`</td>
+        <td>`server.graceful-shutdow`</td>
+        <td>
+          Определяет период времени, в течение которого процесс сервера должен корректно завершиться. По истечению
+          периода, процесс завершиться с кодом 1. Значение по умолчанию: `10s`
+        </td>
         <td>String</td>
         <td>Нет</td>
         <td>SG_SERVER_GRACEFUL_SHUTDOW</td>
       </tr>
       <tr>
         <td>`telemetry.metrics.enable`</td>
-        <td>Включить/Отключить возможность получения метрик. Значение по умолчанию: `true`. Пример получения метрик: `curl 0.0.0.0:9650/metrics`.</td>
+        <td>
+          Включить/Отключить возможность получения метрик. Значение по умолчанию: `true`. Пример получения метрик: `curl
+          0.0.0.0:9650/metrics`.
+        </td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>SG_METRICS_ENABLE</td>
       </tr>
       <tr>
         <td>`healthcheck.enable`</td>
-        <td>Включить/Отключить возможность получения информации о статусе hbf-сервера. Значение по умолчанию: `true`. Пример получения статуса: `curl 0.0.0.0:9650/healthcheck`.</td>
+        <td>
+          Включить/Отключить возможность получения информации о статусе hbf-сервера. Значение по умолчанию: `true`.
+          Пример получения статуса: `curl 0.0.0.0:9650/healthcheck`.
+        </td>
         <td>Boolean</td>
         <td>Нет</td>
         <td>SG_HEALTHCHECK_ENABLE</td>
       </tr>
       <tr>
         <td>`storage.type`</td>
-        <td>Подключаемый тип базы данных. Значение по умолчанию: `internal`. Допустимые значения: `internal`, `postgres`.</td>
+        <td>
+          Подключаемый тип базы данных. Значение по умолчанию: `internal`. Допустимые значения: `internal`, `postgres`.
+        </td>
         <td>String</td>
         <td>Нет</td>
         <td>SG_STORAGE_TYPE</td>
@@ -370,7 +438,10 @@ values = {[
         <td>`storage.postgres.url`</td>
         <td>URL для подключения к базе данных Postgres.</td>
         <td>String</td>
-        <td>При использовании `storage.type:postgres`, данный параметр должен иметь корректный URL подключения. В ином случае, параметр необязательный для заполнения.</td>
+        <td>
+          При использовании `storage.type:postgres`, данный параметр должен иметь корректный URL подключения. В ином
+          случае, параметр необязательный для заполнения.
+        </td>
         <td>SG_STORAGE_POSTGRES_URL</td>
       </tr>
     </tbody>

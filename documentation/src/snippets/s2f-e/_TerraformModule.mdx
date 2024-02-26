@@ -147,21 +147,21 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         name: sg-local-example
         rules:
             egress:
-                - fqdnSet:
-                    - example.com
+              - fqdnSet:
+                  - example.com
                 logs:  true
                 trace: true
                 protocols:
-                    - "http"
-                    - "dns"
+                  - "http"
+                  - "dns"
                 access:
-                    tcp:
-                        - description: "example"
-                        ports_from:
-                            - 64231
-                        ports_to:
-                            - 443
-                            - 80
+                  tcp:
+                    - description: "example"
+                      ports_from:
+                        - 64231
+                      ports_to:
+                        - 443
+                        - 80
         ```
     </TabItem>
 
@@ -170,21 +170,21 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         name: sg-local-example
         rules:
             egress:
-                - fqdnSet:
-                    - example.com
+              - fqdnSet:
+                  - example.com
                 logs:  true
                 trace: true
                 protocols:
-                    - "http"
-                    - "dns"
+                  - "http"
+                  - "dns"
                 access:
-                    udp:
-                        - description: "example"
-                        ports_from:
-                            - 64231
-                        ports_to:
-                            - 443
-                            - 80
+                  udp:
+                    - description: "example"
+                      ports_from:
+                        - 64231
+                      ports_to:
+                        - 443
+                        - 80
         ```
     </TabItem>
 

@@ -28,10 +28,10 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td></td>
       </tr>
       <tr>
-        <td>networks</td>
-        <td>{DICTIONARY.networks.short}</td>
+        <td>cidrs[]</td>
+        <td>Список CIDR, связанных с Security Group</td>
         <td>String[]</td>
-        <td></td>
+        <td>[]</td>
       </tr>
       <tr>
         <td>default_rules</td>
@@ -112,7 +112,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
     <Restrictions data={RESTRICTIONS.name} />
   </li>
   <li>
-    `networks`:
+    `cidrs[]`:
     <Restrictions data={RESTRICTIONS.cidrSet} />
   </li>
   <li>
