@@ -3,6 +3,8 @@ id: sg-icmp-rules
 ---
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+
 
 # POST /v1/sg-icmp/rules
 
@@ -166,6 +168,9 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 ### **Ответ с ошибками**
+
+{RESPOND_CODES.internal.grpcCode}
+{RESPOND_CODES.not_found.grpcCode}
 
 Код ошибки 400
 

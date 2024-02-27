@@ -3,6 +3,8 @@ id: status
 ---
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+
 
 # GET /v1/sync/status
 
@@ -48,6 +50,8 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 ### **Ответ с ошибками**
 
 Код ошибки 404
+
+{RESPOND_CODES.not_found.grpcCode}
 
 - Ошибка в запросе
 

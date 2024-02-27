@@ -4,7 +4,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
-import { ERRORCODES } from '@site/src/constants/errorCodes.tsx'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 #### Входные параметры
 
@@ -272,35 +272,9 @@ import { ERRORCODES } from '@site/src/constants/errorCodes.tsx'
     ]}
 >
 <TabItem value="sg">
-<details>
-  <summary>{ERRORCODES.apiTypo.summary}</summary>
 
-  {ERRORCODES.apiTypo.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.sgNotExist.summary}</summary>
-
-  {ERRORCODES.sgNotExist.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.sgTypo.summary}</summary>
-
-  {ERRORCODES.sgTypo.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.sPortsIntersection.summary}</summary>
-
-  {ERRORCODES.sPortsIntersection.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.syncopTypo.summary}</summary>
-
-  {ERRORCODES.syncopTypo.body}
-</details>
+{RESPOND_CODES.invalid_argument.grpcCode}
+{RESPOND_CODES.not_found.grpcCode}
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
@@ -345,11 +319,6 @@ server-->>user: Успешно добавленная новая SG
 </FancyboxDiagram>
 </TabItem>
 <TabItem value="icmp">
-<details>
-  <summary>{ERRORCODES.apiTypo.summary}</summary>
-
-  {ERRORCODES.apiTypo.body}
-</details>
 
 <details>
             <summary>Нет такого значения имени SG</summary>

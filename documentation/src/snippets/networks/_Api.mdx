@@ -2,7 +2,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
-import { ERRORCODES } from '@site/src/constants/errorCodes.tsx'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 #### Входные параметры
 
@@ -113,29 +113,9 @@ curl '127.0.0.1:9007/v1/sync' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<details>
-  <summary>{ERRORCODES.apiTypo.summary}</summary>
+{RESPOND_CODES.invalid_argument.grpcCode}
 
-  {ERRORCODES.apiTypo.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.networkExist.summary}</summary>
-
-  {ERRORCODES.networkExist.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.CIDRIntersection.summary}</summary>
-
-  {ERRORCODES.CIDRIntersection.body}
-</details>
-
-<details>
-  <summary>{ERRORCODES.syncopTypo.summary}</summary>
-
-  {ERRORCODES.syncopTypo.body}
-</details>
+{RESPOND_CODES.not_found.grpcCode}
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 

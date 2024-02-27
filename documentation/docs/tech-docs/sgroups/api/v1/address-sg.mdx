@@ -3,6 +3,7 @@ id: address-sg
 ---
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 # GET /v1/\{address\}/sg
 
@@ -124,6 +125,9 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 ### **Ответ с ошибками**
+
+{RESPOND_CODES.invalid_argument.grpcCode}
+{RESPOND_CODES.not_found.grpcCode}
 
 Код ошибки 400
 

@@ -3,6 +3,8 @@ id: subnets
 ---
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+
 
 # GET /v1/sg/\{sgName\}/subnets
 
@@ -11,6 +13,7 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 `GET /v1/sg/{sgName}/subnets`
 
 ## **Ответ**
+
 
 ```json
 {
@@ -120,6 +123,10 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 ### **Ответ с ошибками**
+
+
+{RESPOND_CODES.internal.grpcCode}
+{RESPOND_CODES.not_found.grpcCode}
 
 Код ошибки 404
 

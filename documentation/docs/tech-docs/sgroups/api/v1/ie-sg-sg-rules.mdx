@@ -5,6 +5,8 @@ id: ie-sg-sg-rules
 import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+
 
 # POST v1/ie-sg-sg/rules
 
@@ -215,6 +217,8 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 ### Ответ с ошибками
+
+{RESPOND_CODES.not_found.grpcCode}
 
 Код ошибки 400
 

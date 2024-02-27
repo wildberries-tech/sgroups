@@ -3,6 +3,8 @@ id: security-groups
 ---
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+
 
 # POST /v1/list/security-groups
 
@@ -153,6 +155,8 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 ### **Ответ с ошибками**
+
+{RESPOND_CODES.not_found.grpcCode}
 
 <div class="scrollable-x">
   <table>

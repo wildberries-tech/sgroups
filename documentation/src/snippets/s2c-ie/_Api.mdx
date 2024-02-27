@@ -5,6 +5,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 #### Входные параметры
 
@@ -400,6 +401,10 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 </div>
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
+
+{RESPOND_CODES.invalid_argument.grpcCode}
+
+{RESPOND_CODES.not_found.grpcCode}
 
 <Tabs
     defaltValue='tcp-udp'

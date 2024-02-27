@@ -1,310 +1,111 @@
 import React from "react";
-import { TErrorCodes } from "../customTypes/errorCodes";
+import { TRespondsCodes } from "../customTypes/errorCodes";
 
-export const ERRORCODES: TErrorCodes = {
+export const RESPOND_CODES: TRespondsCodes = {
 
-    apiTypo: {
-        summary: "Ошибка в запросе",
-        body:
-       <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>404</td>
-                <td>5</td>
-                <td>NOT_FOUND</td>
-                <td>Ошибка в запросе</td>
-            </tr>
-        </table>
+    ok:{
+        grpcCode: "OK",
+        httpCode: "",
+        grpcNumber: "0",
+        description: "Успешный ответ"
     },
-    
-    networkExist: {
-        summary: "Сеть с таким названием уже существует",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>13</td>
-                <td>INTERNAL</td>
-                <td>Сеть с таким названием уже существует</td>
-            </tr>
-        </table>
+    cancelled:{
+        grpcCode: "CANCELLED",
+        httpCode: "",
+        grpcNumber: "1",
+        description: "Операция была отменена"
     },
 
-    networkNotExist: {
-        summary: "Добавление несуществующей сети",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>13</td>
-                <td>INTERNAL</td>
-                <td>Добавление несуществующей сети</td>
-            </tr>
-        </table>
+    unknown: {
+        grpcCode: "UNKNOWN",
+        httpCode: "",
+        grpcNumber: "2",
+        description: "Неизвественая ошибка"
     },
 
-    networkTypo: {
-        summary: "Некорректное значение поля Networks",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля Networks</td>
-            </tr>
-        </table>
+    invalid_argument: {
+        grpcCode: "INVALID_ARGUMENT",
+        httpCode: "400",
+        grpcNumber: "3",
+        description: "Пользователь указал некорректные значения агрументов"
     },
-
-    sgExist: {
-        summary: "Security Group с таким названием уже существует",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>13</td>
-                <td>INTERNAL</td>
-                <td>Security Group с таким названием уже существует</td>
-            </tr>
-        </table>
+    deadline_exceeded: {
+        grpcCode: "DEADLINE_EXCEEDED",
+        httpCode: "",
+        grpcNumber: "4",
+        description: "Запрос не успел вовремя обработать информацию"
     },
-    
-    sgNotExist: {
-        summary: "Security Group с таким названием не существует",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>13</td>
-                <td>INTERNAL</td>
-                <td>Security Group с таким названием не существует</td>
-            </tr>
-        </table>
+    not_found: {
+        grpcCode: "NOT_FOUND",
+        httpCode: "404",
+        grpcNumber: "5",
+        description: "Не найден метод"
     },
-
-    sgTypo: {
-        summary: "Некорректное значение поля SG",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля SG</td>
-            </tr>
-        </table>
+    already_exists: {
+        grpcCode: "ALREADY_EXISTS",
+        httpCode: "",
+        grpcNumber: "6",
+        description: "Данный объект уже существует"
     },
-
-    CIDRIntersection: {
-        summary: "Пересечение значений CIDR",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Пересечение значений CIDR</td>
-            </tr>
-        </table>
+    permition_denied: {
+        grpcCode: "PERMISSION_DENIED",
+        httpCode: "",
+        grpcNumber: "7",
+        description: "Доступ запрещен"
     },
-
-    defaultActionTypo: {
-        summary: "Некорректное значение поля defaultAction",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля defaultAction</td>
-            </tr>
-        </table>
+    resource_exhausted: {
+        grpcCode: "RESOURCE_EXHAUSTED",
+        httpCode: "",
+        grpcNumber: "8",
+        description: "Недостаточно места для добавления информации"
     },
-
-    ICMP: {
-        summary: "Некорректное значение кода ICMP",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение кода ICMP</td>
-            </tr>
-        </table>
+    failed_precondition: {
+        grpcCode: "FAILED_PRECONDITION",
+        httpCode: "",
+        grpcNumber: "9",
+        description: "Не выболнены усполовия предварительного запроса"
     },
-
-    IPv: {
-        summary: "Некорректное значение поля IPv",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля IPv</td>
-            </tr>
-        </table>
+    aborted: {
+        grpcCode: "ABORTED",
+        httpCode: "",
+        grpcNumber: "10",
+        description: "Операция была отменена"
     },
-
-    sPortsIntersection: {
-        summary: "Пересечение значений source портов",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>13</td>
-                <td>INTERNAL</td>
-                <td>Пересечение значений source портов</td>
-            </tr>
-        </table>
+    out_of_range: {
+        grpcCode: "OUT_OF_RANGE",
+        httpCode: "",
+        grpcNumber: "11",
+        description: "Операция превысила допустимое значение"
     },
-
-    portsTypo: {
-        summary: "Некорректное значение порта",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение порта</td>
-            </tr>
-        </table>
+    unimplemented: {
+        grpcCode: "UNIMPLEMENTED",
+        httpCode: "",
+        grpcNumber: "12",
+        description: "Данная операциия не поддерживается или не была реализована"
     },
-
-    transportTypo: {
-        summary: "Некорректное значение протокола",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение протокола</td>
-            </tr>
-        </table>
+    internal: {
+        grpcCode: "INTERNAL",
+        httpCode: "500",
+        grpcNumber: "13",
+        description: "Ошибка в указанных данных"
     },
-
-    trafficTypo: {
-        summary: "Некорректное значение поля направления траффика",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля направления траффика</td>
-            </tr>
-        </table>
+    unavailable: {
+        grpcCode: "UNAVAILABLE",
+        httpCode: "",
+        grpcNumber: "14",
+        description: "Сервис временно недоступен"
     },
-
-    syncopTypo: {
-        summary: "Некорректное значение поля определяющее действие с данными из запроса",
-        body:
-        <table>
-            <tr>
-                <td>HTTP status code</td>
-                <td>gRPC number</td>
-                <td>gRPC code</td>
-                <td>Описание</td>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>3</td>
-                <td>INVALID_ARGUMENT</td>
-                <td>Некорректное значение поля определяющее действие с данными из запроса</td>
-            </tr>
-        </table>
-    }
-
+    data_loss: {
+        grpcCode: "NOT_FDATA_LOSSOUND",
+        httpCode: "",
+        grpcNumber: "15",
+        description: "Данные были повреждены или утеряны"
+    },
+    unauthenticated: {
+        grpcCode: "UNAUTHENTICATED",
+        httpCode: "",
+        grpcNumber: "16",
+        description: "У пользователя недостаточно прав для использования этого метода"
+    },
+   
 }

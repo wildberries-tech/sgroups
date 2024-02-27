@@ -1,6 +1,8 @@
-export type TErrorCodesItems = {
-    summary: string
-    body: string | React.JSX.Element
+export type TRespondsCodesItems = {
+    grpcCode: string
+    grpcNumber: string 
+    httpCode: string
+    description: string | React.JSX.Element
 }
 
-export type TErrorCodes = Record<string, TErrorCodesItems>
+export type TRespondsCodes = Record<string, TRespondsCodesItems>
