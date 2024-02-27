@@ -1,3 +1,6 @@
-export type TerrorCodesItems = (string | React.JSX.Element)[]
+export type TErrorCodesItems = {
+    summary: string
+    body: string | React.JSX.Element
+}
 
-export type TerrorCodes = Record<string, TerrorCodesItems>
+export type TErrorCodes = Record<string, TErrorCodesItems>

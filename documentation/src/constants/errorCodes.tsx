@@ -1,12 +1,12 @@
 import React from "react";
-import { TerrorCodes } from "../customTypes/errorCodes";
+import { TErrorCodes } from "../customTypes/errorCodes";
 
-export const ERRORCODES: TerrorCodes = {
+export const ERRORCODES: TErrorCodes = {
 
-    apiTypo: [
-        <details>
-            <summary>Ошибка в запросе</summary>
-        <table>
+    apiTypo: {
+        summary: "Ошибка в запросе",
+        body:
+       <table>
             <tr>
                 <td>HTTP status code</td>
                 <td>gRPC number</td>
@@ -20,12 +20,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Ошибка в запросе</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
     
-    networkExist: [
-        <details>
-            <summary>Сеть с таким названием уже существует</summary>
+    networkExist: {
+        summary: "Сеть с таким названием уже существует",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -40,12 +39,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Сеть с таким названием уже существует</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    networkNotExist: [
-        <details>
-            <summary>Добавление несуществующей сети</summary>
+    networkNotExist: {
+        summary: "Добавление несуществующей сети",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -60,12 +58,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Добавление несуществующей сети</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    networkTypo: [
-        <details>
-            <summary>Некорректное значение поля Networks</summary>
+    networkTypo: {
+        summary: "Некорректное значение поля Networks",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -80,12 +77,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля Networks</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    sgExist: [
-        <details>
-            <summary>Security Group с таким названием уже существует</summary>
+    sgExist: {
+        summary: "Security Group с таким названием уже существует",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -100,12 +96,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Security Group с таким названием уже существует</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
     
-    sgNotExist: [
-        <details>
-            <summary>Security Group с таким названием не существует</summary>
+    sgNotExist: {
+        summary: "Security Group с таким названием не существует",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -120,12 +115,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Security Group с таким названием не существует</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    sgTypo: [
-        <details>
-            <summary>Некорректное значение поля SG</summary>
+    sgTypo: {
+        summary: "Некорректное значение поля SG",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -140,12 +134,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля SG</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    CIDRIntersection: [
-        <details>
-            <summary>Пересечение значений CIDR</summary>
+    CIDRIntersection: {
+        summary: "Пересечение значений CIDR",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -160,12 +153,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Пересечение значений CIDR</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    defaultActionTypo: [
-        <details>
-            <summary>Некорректное значение поля defaultAction</summary>
+    defaultActionTypo: {
+        summary: "Некорректное значение поля defaultAction",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -180,12 +172,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля defaultAction</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    ICMP: [
-        <details>
-            <summary>Некорректное значение кода ICMP</summary>
+    ICMP: {
+        summary: "Некорректное значение кода ICMP",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -200,12 +191,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение кода ICMP</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    IPv: [
-        <details>
-            <summary>Некорректное значение поля IPv</summary>
+    IPv: {
+        summary: "Некорректное значение поля IPv",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -220,12 +210,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля IPv</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    sPortsIntersection: [
-        <details>
-            <summary>Пересечение значений source портов</summary>
+    sPortsIntersection: {
+        summary: "Пересечение значений source портов",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -240,12 +229,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Пересечение значений source портов</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    portsTypo: [
-        <details>
-            <summary>Некорректное значение порта</summary>
+    portsTypo: {
+        summary: "Некорректное значение порта",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -260,12 +248,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение порта</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    transportTypo: [
-        <details>
-            <summary>Некорректное значение протокола</summary>
+    transportTypo: {
+        summary: "Некорректное значение протокола",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -280,12 +267,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение протокола</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    trafficTypo: [
-        <details>
-            <summary>Некорректное значение поля направления траффика</summary>
+    trafficTypo: {
+        summary: "Некорректное значение поля направления траффика",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -300,12 +286,11 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля направления траффика</td>
             </tr>
         </table>
-        </details>
-    ],
+    },
 
-    syncopTypo: [
-        <details>
-            <summary>Некорректное значение поля определяющее действие с данными из запроса</summary>
+    syncopTypo: {
+        summary: "Некорректное значение поля определяющее действие с данными из запроса",
+        body:
         <table>
             <tr>
                 <td>HTTP status code</td>
@@ -320,7 +305,6 @@ export const ERRORCODES: TerrorCodes = {
                 <td>Некорректное значение поля определяющее действие с данными из запроса</td>
             </tr>
         </table>
-        </details>
-    ]
+    }
 
 }

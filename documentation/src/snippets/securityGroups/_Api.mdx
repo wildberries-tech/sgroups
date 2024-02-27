@@ -4,6 +4,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { ERRORCODES } from '@site/src/constants/errorCodes.tsx'
 
 #### Входные параметры
 
@@ -272,55 +273,33 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 >
 <TabItem value="sg">
 <details>
-    <summary>Ошибка в запросе</summary>
+  <summary>{ERRORCODES.apiTypo.summary}</summary>
 
-    ```json
-    {
-        "code": 5,
-        "details":  [],
-        "message": "Not Found"
-    }
-    ```
-
+  {ERRORCODES.apiTypo.body}
 </details>
 
 <details>
-    <summary>Добавление несуществующего Network</summary>
+  <summary>{ERRORCODES.sgNotExist.summary}</summary>
 
-    ```json
-    {
-        "code": 13,
-        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)",
-        "details": []
-    }
-    ```
-
+  {ERRORCODES.sgNotExist.body}
 </details>
 
 <details>
-    <summary>некорректное значение поля networks</summary>
+  <summary>{ERRORCODES.sgTypo.summary}</summary>
 
-    ```json
-    {
-        "code": 3,
-        "message": "proto: syntax error (line 6:29): unexpected token \"nw-test-0\"",
-        "details": []
-    }
-    ```
-
+  {ERRORCODES.sgTypo.body}
 </details>
 
 <details>
-    <summary>некорректное значение поля defaultAction</summary>
+  <summary>{ERRORCODES.sPortsIntersection.summary}</summary>
 
-    ```json
-    {
-        "code": 3,
-        "message": "proto: (line 9:34): invalid value for enum type: \"QWERTY\"",
-        "details": []
-    }
-    ```
+  {ERRORCODES.sPortsIntersection.body}
+</details>
 
+<details>
+  <summary>{ERRORCODES.syncopTypo.summary}</summary>
+
+  {ERRORCODES.syncopTypo.body}
 </details>
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
@@ -352,6 +331,11 @@ alt Пересечение значений source портов
     server-->>user: Показать ошибку в запросе
 end
 
+alt Некорректное значение поля определяющее действие с данными из запроса
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
 db->>db: Сохранить данные о SG в БД
 
 db-->>server: Ответ с успешно добавленной новой SG
@@ -362,16 +346,9 @@ server-->>user: Успешно добавленная новая SG
 </TabItem>
 <TabItem value="icmp">
 <details>
-    <summary>Ошибка в запросе</summary>
+  <summary>{ERRORCODES.apiTypo.summary}</summary>
 
-    ```json
-    {
-        "code": 5,
-        "details":  [],
-        "message": "Not Found"
-    }
-    ```
-
+  {ERRORCODES.apiTypo.body}
 </details>
 
 <details>

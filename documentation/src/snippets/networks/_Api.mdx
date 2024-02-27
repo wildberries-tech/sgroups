@@ -2,6 +2,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
+import { ERRORCODES } from '@site/src/constants/errorCodes.tsx'
 
 #### Входные параметры
 
@@ -113,40 +114,27 @@ curl '127.0.0.1:9007/v1/sync' \
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
 <details>
-    <summary>Ошибка в запросе</summary>
+  <summary>{ERRORCODES.apiTypo.summary}</summary>
 
-    ```json
-    {
-        "code": 5,
-        "details":  [],
-        "message": "Not Found"
-    }
-    ```
-
+  {ERRORCODES.apiTypo.body}
 </details>
+
 <details>
-    <summary>Сеть с таким названием уже существует</summary>
+  <summary>{ERRORCODES.networkExist.summary}</summary>
 
-    ```json
-    {
-        "code": 13,
-        "details":  [],
-        "message": "ERROR: conflicting key value violates exclusion constraint \"prevent_networks_intersections\" (SQLSTATE 23P01)"
-    }
-    ```
-
+  {ERRORCODES.networkExist.body}
 </details>
+
 <details>
-    <summary>Пересечение значений CIDR</summary>
+  <summary>{ERRORCODES.CIDRIntersection.summary}</summary>
 
-    ```json
-    {
-        "code": 3,
-        "details":  [],
-        "message": "the '200.150.0.225/28' seems just an IP address; the address of network is expected instead"
-    }
-    ```
+  {ERRORCODES.CIDRIntersection.body}
+</details>
 
+<details>
+  <summary>{ERRORCODES.syncopTypo.summary}</summary>
+
+  {ERRORCODES.syncopTypo.body}
 </details>
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
@@ -174,6 +162,11 @@ alt Сеть с таким названием уже существует
 end
 
 alt Пересечение значений CIDR
+    db-->>server: Ответ с ошибкой
+    server-->>user: Показать ошибку в запросе
+end
+
+alt Некорректное значение поля определяющее действие с данными из запроса
     db-->>server: Ответ с ошибкой
     server-->>user: Показать ошибку в запросе
 end
