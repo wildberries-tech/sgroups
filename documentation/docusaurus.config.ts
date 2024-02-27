@@ -88,13 +88,6 @@ const config: Config = {
           position: 'left',
           label: 'Техническая документация',
         },
-        {
-          href: 'https://github.com/H-BF/sgroups',
-          position: 'right',
-          label: 'H-BF/sgroups',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
-        },
       ],
     },
     colorMode: {
