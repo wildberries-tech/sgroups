@@ -36,8 +36,7 @@ variables:
 
   JOB_ID: "$CI_JOB_ID"
 
-  CI_TMPL_HELM_CHARTS: "common-deploy@v4.2.0,common-job"
-  CI_TMPL_HELM_CHART_COMMON_JOB_VERSION: 1.0.2
+  CI_TMPL_HELM_CHARTS: "oci://harbor.wildberries.ru/devops/helm/charts/common-deploy@v4.2.0,oci://harbor.wildberries.ru/devops/helm/charts/common-job@v1.0.2"
   CI_TMPL_HELM_RELEASE_NAMESPACE: swarm
   # List of clusters for deploy
   CI_TMPL_KUBE_CLUSTERS_DEV: "k8s.hbf-bm"
@@ -130,20 +129,24 @@ to-nft-deb:
 
 generate build:
   rules:
+    - if: $CI_COMMIT_BRANCH =~ /^release-docs-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "documentation"
+        
     - if: $CI_COMMIT_BRANCH =~ /^(feature|fix)-.*$/ || $CI_COMMIT_BRANCH =~ /^dev$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2"
 
-    - if: "$CI_COMMIT_BRANCH =~ /^release-.*$/ || $CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
+    - if: $CI_COMMIT_BRANCH =~ /^release-.*$/ || $CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/
       variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2,documentation" 
-
-    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "documentation"         
+        CI_TMPL_HELM_RELEASE_NAMES: "sgroups,sgroups-arm64,to-nft-arm64,to-nft,sgroups-migration,terraform-provider-sgroups-v2,documentation"       
 
 generate deploy:
   rules:
+    - if: $CI_COMMIT_BRANCH =~ /^release-docs-.*$/
+      variables:
+        CI_TMPL_HELM_RELEASE_NAMES: "documentation"
+
     - if: $CI_COMMIT_BRANCH =~ /^dev$/ || $CI_COMMIT_BRANCH =~ /^(feature|fix)-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "aba-control@common-job"
@@ -151,10 +154,6 @@ generate deploy:
     - if: $CI_COMMIT_BRANCH =~ /^release-.*$/
       variables:
         CI_TMPL_HELM_RELEASE_NAMES: "sgroups"
-
-    - if: $CI_COMMIT_BRANCH =~ /^feature-docs-.*$/
-      variables:
-        CI_TMPL_HELM_RELEASE_NAMES: "documentation"
 
     - if: "$CI_COMMIT_TAG =~ /^v([0-9]+)\\.([0-9]+)\\.([0-9]+)-?([a-zA-Z0-9\\.]*)\\+?([a-zA-Z0-9\\.]*)$/"
       variables:
