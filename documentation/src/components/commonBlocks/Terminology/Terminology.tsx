@@ -4,13 +4,13 @@ import { TTerminology } from '@site/src/customTypes/terminology'
 export const Terminology: FC<{data: TTerminology[]}> = ({data}) => {
     return (
         <>
-            {data.map((term, index) => (
+            {data.map(({name, comment, definition, link}, index) => (
                 <div key={index} className="text-justify">
-                    <b>{term.name}</b>
-                    {term.comment && <i>({term.comment})</i>}
+                    <b>{name}</b>
+                    {comment && <i>({comment})</i>}
                     {" - "}
-                    {term.definition}
-                    {term.link && <a href={term.link}> Подробнее...</a>}
+                    {definition}
+                    {link && <a href={link}> Подробнее...</a>}
                     <br /><br />
                 </div>
             ))}
