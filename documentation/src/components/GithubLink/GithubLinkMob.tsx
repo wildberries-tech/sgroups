@@ -1,21 +1,29 @@
-import React, { FC } from 'react'
-import { VERSION } from '@site/src/constants/githubFacts'
+import React, { FC, useState, useEffect } from 'react'
+import { getLatestTag } from '@site/src/api/getRepoInfo'
 
-export const GithubLinkMob: FC = () => (
-  <>
-    <a
-      className="menu__link header-github-link header-github-link-mob"
-      href="https://github.com/H-BF/sgroups"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="GitHub repository"
-    >
-      H-BF/sgroups
-    </a>
-    <ul className="github-facts github-facts-mob">
-      <li className="github-fact github-fact--version">{VERSION}</li>
-      {/* <li class="github-fact github-fact--stars">1</li> */}
-      {/* <li class="github-fact github-fact--forks">1</li> */}
-    </ul>
-  </>
-)
+export const GithubLinkMob: FC = () => {
+  const [tag, setTag] = useState<string>()
+
+  useEffect(() => {
+    getLatestTag()
+      .then(data => setTag(data))
+      .catch(_ => setTag(null))
+  }, [])
+
+  return (
+    <>
+      <a
+        className="menu__link header-github-link header-github-link-mob"
+        href="https://github.com/H-BF/sgroups"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub repository"
+      >
+        H-BF/sgroups
+      </a>
+      <ul className="github-facts github-facts-mob">
+        {tag && <li className="github-fact github-fact--version">{tag}</li>}
+      </ul>
+    </>
+  )
+}

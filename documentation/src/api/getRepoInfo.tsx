@@ -1,0 +1,28 @@
+import axios, { AxiosResponse } from 'axios'
+
+export const getLatestTag = (): Promise<string | null> => {
+  return axios
+    .get<{ name: string }[]>('https://api.github.com/repos/H-BF/sgroups/tags')
+    .then(({ data }) => {
+      return data[0].name
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
+
+export const getStarsAndForks = (): Promise<{ stars: number; forks: number } | null> => {
+  return axios
+    .get<{ stargazers_count: number; forks: number }>('https://api.github.com/repos/H-BF/sgroups')
+    .then(({ data }) => {
+      return {
+        stars: data.stargazers_count,
+        forks: data.forks,
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
