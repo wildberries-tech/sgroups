@@ -50,7 +50,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 <h4 className="custom-heading">Пример использования</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/sync' \
+curl '127.0.0.1:9007/v1/cidr-sg/rules' \
 --header 'Content-Type: application/json' \
 --data '{
     "sg": ["sg-example"]
@@ -99,31 +99,52 @@ curl '127.0.0.1:9007/v1/sync' \
       </tr>
       <tr>
         <td>$node.rules[].ports</td>
-        <td>array of objects</td>
+        <td>Object[]</td>
       </tr>
       <tr>
         <td>$node.rules[].ports[].d</td>
-        <td>string</td>
+        <td>String</td>
       </tr>
       <tr>
         <td>$node.rules[].ports[].s</td>
-        <td>string</td>
+        <td>String</td>
       </tr>
       <tr>
         <td>$node.rules[].trace</td>
-        <td>bool</td>
+        <td>Boolean</td>
       </tr>
       <tr>
         <td>$node.rules[].traffic</td>
-        <td>string</td>
+        <td>String</td>
       </tr>
       <tr>
         <td>$node.rules[].transport</td>
-        <td>string</td>
+        <td>String</td>
       </tr>
     </tbody>
   </table>
 </div>
+
+<h4 className="custom-heading">Пример ответа</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/cidr-sg/rules' \
+--header 'Content-Type: application/json' \
+--data '{
+    "rules": [{
+        "CIDR": "10.0.0.0/24",
+        "sg": "sg-example",
+        "logs": "true",
+        "ports": [{
+                "d": "10.0.0.0/24",
+                "s": ""
+            }],
+        "trace": "true",
+        "traffic": "ingress",
+        "transport": "TCP",
+    }]
+}'
+```
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 

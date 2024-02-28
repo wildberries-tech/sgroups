@@ -5,132 +5,112 @@ id: address-sg
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # GET /v1/\{address\}/sg
 
-## **Запрос**
+#### Входные параметры
 
-`GET /v1/{address}/sg`
+<ul>
+  <li>`\{address\}` - {DICTIONARY.cidr.short}</li>
+</ul>
 
-## **Ответ**
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>\{address\}</td>
+        <td>да</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      </tbody>
+  </table>
+</div>
 
-```json
-{
-  "logs": false,
-  "name": "sg-4",
-  "trace": false,
-  "networks": ["nw-5"],
-  "defaultAction": "DROP"
-}
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/10.150.0.224/sg' \
+--header 'Content-Type: application/json' \
+--data '{
+
+}'
 ```
 
-## **Входные параметры**
+<h4 className="custom-heading">Выходные параметры</h4>
+
+<ul>
+  <li>`$node.name` - {DICTIONARY.sg.short}</li>
+  <li>`$node.logs` - {DICTIONARY.log.short}</li>
+  <li>`$node.trace` - {DICTIONARY.trace.short}</li>
+  <li>`$node.networks` - {DICTIONARY.networkNames.short}</li>
+  <li>`$node.defaultAction` - {DICTIONARY.defaultAction.short}</li>
+</ul>
 
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Обязательность</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <th>название</th>
+        <th>тип данных</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
-        <td>\{address\}</td>
-        <td>string</td>
-        <td>да</td>
-        <td>IP или CIDR</td>
-        <td>10.150.0.224/32</td>
+        <td>$node.name</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.logs</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>$node.trace</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>$node.networks</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.defaultAction</td>
+        <td>String</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-## **Проверки**
+<h4 className="custom-heading">Пример ответа</h4>
 
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>Параметр</th>
-        <th>Условие</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-          <td>\{address\}</td>
-          <td>- необходимо указать значение в формате IP (10.150.0.224)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+```bash
+curl '127.0.0.1:9007/v1/10.150.0.224/sg' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "network-example",
+    "logs": "false",
+    "name": "false",
+    "network": ["network-example"],
+    "defaultAction": "DROP"
+}'
+```
 
-## **Выходные параметры**
-
-### **Положительный ответ**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>logs</td>
-        <td>bool</td>
-        <td>включено или выключено логирование (по умолчанию выключено)</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>1.1</td>
-        <td>name</td>
-        <td>string</td>
-        <td>уникальное имя security group</td>
-        <td>sg-0</td>
-      </tr>
-      <tr>
-        <td>1.2</td>
-        <td>trace</td>
-        <td>bool</td>
-        <td>включена или выключена трассировка(по умолчанию выключена)</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>1.3</td>
-        <td>networks</td>
-        <td>array of strings</td>
-        <td>массив уникальных имен сети</td>
-        <td>&quot;nw-0&quot;, &quot;nw-1&quot;</td>
-      </tr>
-      <tr>
-        <td>1.4</td>
-        <td>defaultAction</td>
-        <td>string</td>
-        <td></td>
-        <td>&quot;DROP&quot;/&quot;ACCEPT&quot;</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### **Ответ с ошибками**
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Codes data = {RESPOND_CODES.invalid_argument} />
 <Codes data = {RESPOND_CODES.not_found} />
 
-## **Описание интеграции**
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 

@@ -7,213 +7,143 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
-# POST v1/ie-sg-sg-icmp/rules
+# POST /v1/ie-sg-sg-icmp/rules
 
-## Запрос
-
-`POST v1/ie-sg-sg-icmp/rules`
+#### Входные параметры
 
 <ul>
-  <li className="text-justify">
-    если в теле запроса указано одно или более значений в обоих массивах Sg -> SgLocal, то получим ответ всех
-    существующих комбинаций правил IE-SG-SG-ICMP каждого указанного значения Sg с каждым указанным значением SgLocal
-    (value-to-value)
-  </li>
-  <li className="text-justify">
-    если в теле запроса один из массивов пустой а во втором указаны от одного и более значений, то получим ответ всех
-    существующих комбинаций правил IE-SG-SG-ICMP каждого указанного значения со всеми существующими (any-to-value,
-    value-to-any)
-  </li>
-  <li className="text-justify">
-    если в теле запроса указаны пустые массивы Sg -> SgLocal, то получим ответ всех существующих комбинаций правил
-    IE-SG-SG-ICMP (any-to-any)
-  </li>
-  <li className="text-justify">
-    если указано некорректное тело в запросе, то получим ответ всех существующих комбинаций правил IE-SG-SG-ICMP
-    (any-to-any)
-  </li>
+  <li>`Sg[]` - {DICTIONARY.sgroupSet.short}</li>
+  <li>`SgLocal[]` - {DICTIONARY.sgroupSet.short}</li>
 </ul>
 
-```json
-{
-  "Sg": ["sg-1"],
-  "SgLocal": ["sg-2"]
-}
-```
-
-## Ответ
-
-```json
-{
-  "rules": [
-    {
-      "Sg": "sg-1",
-      "SgLocal": "sg-2",
-      "logs": true,
-      "trace": true,
-      "traffic": "Ingress",
-      "ICMP": {
-        "IPv": "IPv4",
-        "Types": [0, 8]
-      }
-    }
-  ]
-}
-```
-
-## Входные параметры
-
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Обязательность</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
-        <td>Sg</td>
-        <td>String[]</td>
+        <td>Sg[]</td>
         <td>да</td>
-        <td>массив из имен источников SG</td>
-        <td>SG-11</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>SgLocal</td>
-        <td>String[]</td>
-        <td>да</td>
-        <td>массив из имен источников SG</td>
-        <td>SG-22</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## Проверки
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>Параметр</th>
-        <th>Условие</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Sg</td>
-        <td>
-          <Restrictions data={RESTRICTIONS.name} />
-        </td>
-      </tr>
-      <tr>
-        <td>SgLocal</td>
-        <td>
-          <Restrictions data={RESTRICTIONS.name} />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## Выходные параметры
-
-### Положительный ответ
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>rules</td>
-        <td>String[]</td>
+        <td>Object[]</td>
         <td></td>
-        <td>-</td>
       </tr>
       <tr>
-        <td>1.2</td>
-        <td>rules[].Sg</td>
+        <td>SgLocal[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+      </tr>
+      </tbody>
+  </table>
+</div>
+
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/ie-sg-sg-icmp/rules' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Sg": ["sg-example"],
+    "SgLocal": ["sg-example-2"]
+}'
+```
+
+<h4 className="custom-heading">Выходные параметры</h4>
+
+<ul>
+  <li>`$node.rules[]` - {DICTIONARY.rules.short}</li>
+  <li>`$node.rules[].Sg` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].SgLocal` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].logs` - {DICTIONARY.log.short}</li>
+  <li>`$node.rules[].trace` - {DICTIONARY.trace.short}</li>
+  <li>`$node.rules[].ICMP` - {DICTIONARY.apiIcmp.short}</li>
+  <li>`$node.rules[].ICMP.IPv` - {DICTIONARY.icmpV.short}</li>
+  <li>`$node.rules[].ICMP.Types[]` - {DICTIONARY.icmpTypes.short}</li>
+  <li>`$node.rules[].traffic` - {DICTIONARY.traffic.short}</li>
+</ul>
+
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>тип данных</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$node.rules[]</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].Sg</td>
         <td>String</td>
-        <td>название Security group</td>
-        <td>sg-0</td>
       </tr>
       <tr>
-        <td>1.3</td>
-        <td>rules[].SgLocal</td>
+        <td>$node.rules[].SgLocal</td>
         <td>String</td>
-        <td>название Security group</td>
-        <td>sg-0</td>
       </tr>
       <tr>
-        <td>1.4</td>
-        <td>rules[].logs</td>
+        <td>$node.rules[].logs</td>
         <td>Boolean</td>
-        <td>включено или выключено логирование (по умолчанию выключено)</td>
-        <td>true/false</td>
       </tr>
       <tr>
-        <td>1.5</td>
-        <td>rules[].trace</td>
+        <td>$node.rules[].trace</td>
         <td>Boolean</td>
-        <td>включена или выключена трассировка (по умолчанию выключена)</td>
-        <td>true/false</td>
       </tr>
       <tr>
-        <td>1.6</td>
-        <td>rules[].traffic</td>
-        <td>String</td>
-        <td>тип траффика (входящий/исходящий)</td>
-        <td>
-          <nobr>"Undef" | "Ingress" | "Egress"</nobr>
-        </td>
-      </tr>
-      <tr>
-        <td>1.7</td>
-        <td>rules[].ICMP</td>
+        <td>$node.rules[].ICMP</td>
         <td>Object</td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
-        <td>1.7.1</td>
-        <td>rules[].ICMP.IPv</td>
+        <td>$node.rules[].ICMP.IPv</td>
         <td>String</td>
-        <td>версия интернет-протокола</td>
-        <td>"IPv4" | "IPv6"</td>
       </tr>
       <tr>
-        <td>1.7.2</td>
-        <td>rules[].ICMP.Types[]</td>
-        <td>Integer[]</td>
-        <td>код типа ICMP</td>
-        <td>0, 8, 100</td>
+        <td>$node.rules[].ICMP.Types[]</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].traffic</td>
+        <td>String</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-### Ответ с ошибками
+<h4 className="custom-heading">Пример ответа</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/ie-sg-sg-icmp/rules' \
+--header 'Content-Type: application/json' \
+--data '{
+    "rules": [{
+        "Sg": "sg-example",
+        "SgLocal": "sg-example-2",
+        "logs": "true",
+        "trace": "true",
+        "traffic": "ingress",
+        "ICMP": {
+                "IPv": "IPv4",
+                "Types": [0, 8]
+            },
+    }]
+}'
+```
+
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Codes data = {RESPOND_CODES.not_found} />
 
-## Описание интеграции
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 

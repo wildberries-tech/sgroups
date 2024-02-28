@@ -5,205 +5,140 @@ id: rules
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # POST /v1/rules
 
-## **Запрос**
-
-`POST /v1/rules`
+#### Входные параметры
 
 <ul>
-  <li className="text-justify">
-    если в теле запроса указано одно или более значений в обоих массивах sgFrom -\> sgTo, то получим ответ всех
-    существующих комбинаций каждого указанного значения sgFrom с каждым указанным значением sgTo (value-to-value)
-  </li>
-  <li className="text-justify">
-    если в теле запроса один из массивов пустой а во втором указаны от одного и более значений, то получим ответ всех
-    существующих комбинаций каждого указанного значения со всеми существующими (any-to-value, value-to-any)
-  </li>
-  <li>
-    если в теле запроса указаны пустые массивы sgFrom -\> sgTo, то получим ответ всех существующих комбинаций
-    (any-to-any)
-  </li>
-  <li>если указано некорректное тело в запросе, то получим ответ всех существующих комбинаций (any-to-any)</li>
+  <li>`sgFrom[]` - {DICTIONARY.sgroupSet.short}</li>
+  <li>`sgTo[]` - {DICTIONARY.sgroupSet.short}</li>
 </ul>
 
-```json
-{
-  "sgFrom": ["sg-0"],
-  "sgTo": ["sg-1"]
-}
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sgFrom[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>sgTo[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+      </tr>
+      </tbody>
+  </table>
+</div>
+
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/rules' \
+--header 'Content-Type: application/json' \
+--data '{
+    "sgFrom": ["sg-example"],
+    "sgTo": ["sg-example-2"]
+}'
 ```
 
-## **Ответ**
+<h4 className="custom-heading">Выходные параметры</h4>
 
-```json
-{
-  "rules": [
-    {
-      "logs": false,
-      "sgTo": "sg-0",
-      "ports": [
-        {
-          "d": "5000",
-          "s": ""
-        }
-      ],
-      "sgFrom": "sg-1",
-      "transport": "TCP"
-    }
-  ]
-}
+<ul>
+  <li>`$node.rules[]` - {DICTIONARY.rules.short}</li>
+  <li>`$node.rules[].sgFrom` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].sgTo` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].logs` - {DICTIONARY.log.short}</li>
+  <li>`$node.rules[].ports` - {DICTIONARY.ports.short}</li>
+  <li>`$node.rules[].ports[].d` - {DICTIONARY.dstPorts.short}</li>
+  <li>`$node.rules[].ports[].s` - {DICTIONARY.srcPorts.short}</li>
+  <li>`$node.rules[].transport` - {DICTIONARY.transport.short}</li>
+</ul>
+
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>название</th>
+        <th>тип данных</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$node.rules[]</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].sgFrom</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].sgTo</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].logs</td>
+        <td>Boolean</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports.d</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].ports.s</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.rules[].transport</td>
+        <td>String</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h4 className="custom-heading">Пример ответа</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/rules' \
+--header 'Content-Type: application/json' \
+--data '{
+    "rules": [{
+        "sgFrom": "sg-example",
+        "sgTo": "sg-example-2",
+        "logs": "true",
+        "transport": "TCP",
+        "ports": [{
+                "d": "5000",
+                "s": ""
+            }],
+    }]
+}'
 ```
 
-## **Входные параметры**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Обязательность</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>sgFrom</td>
-        <td>array of strings</td>
-        <td>да</td>
-        <td>массив из уникальных имен SG (SF FROM)</td>
-        <td>sg-0</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>sgTo</td>
-        <td>array of strings</td>
-        <td>да</td>
-        <td>массив из уникальных имен SG (SF TO)</td>
-        <td>SG-11</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## **Проверки**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>Параметр</th>
-        <th>Условие</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>sgFrom</td>
-        <td>
-          \- длина значения не должна превышать 256 символов
-          <br />
-          \- значение должно начинаться и заканчиваться символами без пробелов
-        </td>
-      </tr>
-      <tr>
-        <td>sgTo</td>
-        <td>
-          \- длина значения не должна превышать 256 символов
-          <br />
-          \- значение должно начинаться и заканчиваться символами без пробелов
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## **Выходные параметры**
-
-### **Положительный ответ**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>rules</td>
-        <td>array of objects</td>
-        <td></td>
-        <td>\-</td>
-      </tr>
-      <tr>
-        <td>1.1</td>
-        <td>rules[].logs</td>
-        <td>bool</td>
-        <td>включено или выключено логирование (по умолчанию выключено)</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>1.2</td>
-        <td>rules[].sgTo</td>
-        <td>string</td>
-        <td>уникальное имя security group (sg to)</td>
-        <td>sg-0</td>
-      </tr>
-      <tr>
-        <td>1.3</td>
-        <td>rules[].ports</td>
-        <td>array of objects</td>
-        <td></td>
-        <td>\-</td>
-      </tr>
-      <tr>
-        <td>1.3.1</td>
-        <td>rules[].ports[].d</td>
-        <td>string</td>
-        <td>значения портов входящего трафика</td>
-        <td>&quot;7600-7700,7800&quot;</td>
-      </tr>
-      <tr>
-        <td>1.3.2</td>
-        <td>rules[].ports[].s</td>
-        <td>string</td>
-        <td>значения портов исходящего трафика</td>
-        <td>&quot;4446&quot;</td>
-      </tr>
-      <tr>
-        <td>1.4</td>
-        <td>rules[].sgFrom</td>
-        <td>string</td>
-        <td>уникальное имя security group (sg from)</td>
-        <td>sg-0</td>
-      </tr>
-      <tr>
-        <td>1.5</td>
-        <td>rules[].transport</td>
-        <td>string</td>
-        <td>метод передачи данных</td>
-        <td>TCP/UDP</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### **Ответ с ошибками**
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Codes data = {RESPOND_CODES.internal} />
 <Codes data = {RESPOND_CODES.not_found} />
 
-## **Описание интеграции**
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 

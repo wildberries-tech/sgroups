@@ -5,55 +5,51 @@ id: status
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
 # GET /v1/sync/status
 
-## **Запрос**
+<h4 className="custom-heading">Выходные параметры</h4>
 
-`GET /v1/sync/status`
-
-## **Ответ**
-
-```json
-{
-  "updatedAt": "2023-11-21T17:02:30.717786Z"
-}
-```
-
-## **Выходные параметры**
-
-### **Положительный ответ**
+<ul>
+  <li>`$node.updatedAt` - Дата последнего успешного изменения данных</li>
+</ul>
 
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <th>название</th>
+        <th>тип данных</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
-        <td>updatedAt</td>
-        <td>string</td>
-        <td>дата последнего успешного изменения</td>
-        <td>2023-11-21T17:02:30.717786Z</td>
+        <td>$node.updatedAt</td>
+        <td>String</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-### **Ответ с ошибками**
+<h4 className="custom-heading">Пример ответа</h4>
 
-Код ошибки 404
+```bash
+curl '127.0.0.1:9007/v1/sync/status' \
+--header 'Content-Type: application/json' \
+--data '{
+    "updatedAt": "2023-11-21T17:02:30.717786Z"
+}'
+```
+
+
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Codes data = {RESPOND_CODES.not_found} />
 
-## **Описание интеграции**
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 
