@@ -7,6 +7,7 @@ export const GithubLinkMob: FC = () => {
   useEffect(() => {
     getLatestTag()
       .then(data => setTag(data))
+      /* eslint-disable-next-line no-console */
       .catch(err => console.log(err))
   }, [])
 

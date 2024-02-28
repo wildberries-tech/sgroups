@@ -7,6 +7,7 @@ export const getLatestTag = (): Promise<string | null> => {
       return data[0].name
     })
     .catch(error => {
+      /* eslint-disable-next-line no-console */
       console.log(error)
       return null
     })
@@ -22,6 +23,7 @@ export const getStarsAndForks = (): Promise<{ stars: number; forks: number } | n
       }
     })
     .catch(error => {
+      /* eslint-disable-next-line no-console */
       console.log(error)
       return null
     })
