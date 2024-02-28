@@ -7,7 +7,7 @@ export const GithubLinkMob: FC = () => {
   useEffect(() => {
     getLatestTag()
       .then(data => setTag(data))
-      .catch(_ => setTag(null))
+      .catch(err => console.log(err))
   }, [])
 
   return (

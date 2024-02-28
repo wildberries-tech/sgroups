@@ -8,16 +8,16 @@ interface Props {
   delegate?: string
 }
 
-export const Fancybox: FC<PropsWithChildren<Props>> = props => {
+export const Fancybox: FC<PropsWithChildren<Props>> = ({ delegate, options, children }) => {
   const containerRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef.current
 
-    const delegate = props.delegate || '[data-fancybox]'
-    const options = props.options || {}
+    const delegateParsed = delegate || '[data-fancybox]'
+    const optionsParsed = options || {}
 
-    NativeFancybox.bind(container, delegate, options)
+    NativeFancybox.bind(container, delegateParsed, optionsParsed)
 
     return () => {
       NativeFancybox.unbind(container)
@@ -25,5 +25,5 @@ export const Fancybox: FC<PropsWithChildren<Props>> = props => {
     }
   })
 
-  return <div ref={containerRef}>{props.children}</div>
+  return <div ref={containerRef}>{children}</div>
 }

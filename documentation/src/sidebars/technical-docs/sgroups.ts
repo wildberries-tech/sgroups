@@ -7,7 +7,7 @@ export const sgroups = [
   {
     type: 'doc',
     label: 'Миграция',
-    id: 'tech-docs/sgroups/goose'
+    id: 'tech-docs/sgroups/goose',
   },
   {
     type: 'doc',

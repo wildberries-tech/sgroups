@@ -6,7 +6,7 @@ type SwaggerProps = {
   url: string
 }
 
-export default function Swagger({ url }: SwaggerProps): JSX.Element {
+export const Swagger = ({ url }: SwaggerProps): JSX.Element => {
   useEffect(() => {
     document.title = 'Swagger UI'
   }, [])
