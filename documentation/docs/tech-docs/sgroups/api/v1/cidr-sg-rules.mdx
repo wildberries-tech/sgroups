@@ -5,196 +5,131 @@ id: cidr-sg-rules
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # POST /v1/cidr-sg/rules
 
-## **Запрос**
+#### Входные параметры
 
-`POST /v1/cidr-sg/rules`
+<ul>
+  <li>`sg[]` - {DICTIONARY.sgroupSet.short}</li>
+</ul>
+
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sg[]</td>
+        <td>да</td>
+        <td>Object[]</td>
+        <td></td>
+      </tr>
+      </tbody>
+  </table>
+</div>
+
+<h4 className="custom-heading">Ограничения</h4>
 
 <ul>
   <li>
-    если в теле запроса указать одно или более sg - значений из имён источников Security Groups (sg), то получим ответ
-    по указанным cidr-sg правилам
+    `sg[]`:
+    <Restrictions data={RESTRICTIONS.name} />
   </li>
-  <li>если в теле запроса указать пустой массив sg, то получим ответ со всеми существующими cidr-sg правилами</li>
-  <li>если указано некорректное тело в запросе, то получим ответ со всеми существующими cidr-sg правилами</li>
 </ul>
 
-```json
-{
-  "sg": ["sg-0"]
-}
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/sync' \
+--header 'Content-Type: application/json' \
+--data '{
+    "sg": ["sg-example"]
+}'
 ```
 
-## **Ответ**
+<h4 className="custom-heading">Выходные параметры</h4>
 
-```json
-{
-  "rules": [
-    {
-      "CIDR": "10.10.0.8/30",
-      "SG": "sg-0",
-      "logs": true,
-      "ports": [
-        {
-          "d": "7800",
-          "s": "4446"
-        }
-      ],
-      "trace": true,
-      "traffic": "Ingress",
-      "transport": "TCP"
-    }
-  ]
-}
-```
-
-## **Входные параметры**
+<ul>
+  <li>`$node.rules[]` - {DICTIONARY.rules.short}</li>
+  <li>`$node.rules[].CIDR` - {DICTIONARY.cidr.short}</li>
+  <li>`$node.rules[].SG` - {DICTIONARY.sg.short}</li>
+  <li>`$node.rules[].logs` - {DICTIONARY.log.short}</li>
+  <li>`$node.rules[].trace` - {DICTIONARY.trace.short}</li>
+  <li>`$node.rules[].ports` - {DICTIONARY.ports.short}</li>
+  <li>`$node.rules[].ports[].d` - {DICTIONARY.dstPorts.short}</li>
+  <li>`$node.rules[].ports[].s` - {DICTIONARY.srcPorts.short}</li>
+  <li>`$node.rules[].transport` - {DICTIONARY.transport.short}</li>
+  <li>`$node.rules[].traffic` - {DICTIONARY.traffic.short}</li>
+</ul>
 
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Обязательность</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <th>название</th>
+        <th>тип данных</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
-        <td>sg</td>
-        <td>array of strings</td>
-        <td>да</td>
-        <td>массив из имен источников SG</td>
-        <td>sg-11</td>
+        <td>$node.rules[]</td>
+        <td>Object[]</td>
       </tr>
-    </tbody>
-  </table>
-</div>
-
-## **Проверки**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
       <tr>
-        <th>Параметр</th>
-        <th>Условие</th>
+        <td>$node.rules[].CIDR</td>
+        <td>String</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
-        <td>sg</td>
-        <td>
-          \- длина значения не должна превышать 256 символов
-          <br />
-          \- значение должно начинаться и заканчиваться символами без пробелов
-        </td>
+        <td>$node.rules[].sg</td>
+        <td>String</td>
       </tr>
-    </tbody>
-  </table>
-</div>
-
-## **Выходные параметры**
-
-### **Положительный ответ**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <td>$node.rules[].logs</td>
+        <td>Boolean</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
-        <td>1</td>
-        <td>rules</td>
+        <td>$node.rules[].ports</td>
         <td>array of objects</td>
-        <td></td>
-        <td>-</td>
       </tr>
       <tr>
-        <td>1.1</td>
-        <td>rules[].CIDR</td>
+        <td>$node.rules[].ports[].d</td>
         <td>string</td>
-        <td></td>
-        <td>10.10.0.8/30</td>
       </tr>
       <tr>
-        <td>1.2</td>
-        <td>rules[].sg</td>
+        <td>$node.rules[].ports[].s</td>
         <td>string</td>
-        <td>название Security group</td>
-        <td>sg-0</td>
       </tr>
       <tr>
-        <td>1.3</td>
-        <td>rules[].logs</td>
+        <td>$node.rules[].trace</td>
         <td>bool</td>
-        <td>включено или выключено логирование (по умолчанию выключено)</td>
-        <td>true/false</td>
       </tr>
       <tr>
-        <td>1.4</td>
-        <td>rules[].ports</td>
-        <td>array of objects</td>
-        <td></td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>1.4.1</td>
-        <td>rules[].ports[].d</td>
+        <td>$node.rules[].traffic</td>
         <td>string</td>
-        <td>значения портов входящего трафика</td>
-        <td>"7600-7700,7800"</td>
       </tr>
       <tr>
-        <td>1.4.2</td>
-        <td>rules[].ports[].s</td>
+        <td>$node.rules[].transport</td>
         <td>string</td>
-        <td>значения портов исходящего трафика</td>
-        <td>"4446"</td>
-      </tr>
-      <tr>
-        <td>1.5</td>
-        <td>rules[].trace</td>
-        <td>bool</td>
-        <td>включена или выключена трассировка (по умолчанию выключена)</td>
-        <td>true/false</td>
-      </tr>
-      <tr>
-        <td>1.6</td>
-        <td>rules[].traffic</td>
-        <td>string</td>
-        <td>тип траффика (входящий/исходящий)</td>
-        <td>"Undef" | "Ingress" | "Egress"</td>
-      </tr>
-      <tr>
-        <td>1.7</td>
-        <td>rules[].transport</td>
-        <td>string</td>
-        <td>метод передачи данных</td>
-        <td>"TCP" | "UDP"</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-### **Ответ с ошибками**
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
 <Codes data = {RESPOND_CODES.not_found} />
 
-## **Описание интеграции**
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 
