@@ -451,7 +451,7 @@ git checkout tags/v${VERSION}
 
 {' '}
 
-<div class="paragraph">
+<div className="paragraph">
   Перед выполнением ansible-playbook убедитесь, что текущая версия дистрибутива ОС имеет необходимый пакет
   linux-headers. Как пример, на Ubuntu/Debian, вы можете проверить это с помощью команды:
 </div>
@@ -493,7 +493,7 @@ ansible-playbook main.yaml
 #### Удаление
 
   <div className="text-justify">
-      Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`. 
+      Чтобы удалить определенные компоненты hbf-agent, установите переменную `<component>_enabled: false`.
       Если вы удаляете сам _hbf-agent_, все правила, созданные им в _nft_, будут автоматически удалены.
   </div>
 </TabItem>
@@ -509,7 +509,7 @@ ansible-playbook main.yaml
   параметров можно настроить через файл, а часть через переменные окружения.
 </div>
 
-<div class="scrollable-x">
+<div className="scrollable-x">
   <table>
     <caption>Параметры файла config-agent.yaml</caption>
     <thead>

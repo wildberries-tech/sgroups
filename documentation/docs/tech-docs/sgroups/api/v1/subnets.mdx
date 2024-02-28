@@ -5,7 +5,6 @@ id: subnets
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
-
 # GET /v1/sg/\{sgName\}/subnets
 
 ## **Запрос**
@@ -13,7 +12,6 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 `GET /v1/sg/{sgName}/subnets`
 
 ## **Ответ**
-
 
 ```json
 {
@@ -30,7 +28,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ## **Входные параметры**
 
-<div class="scrollable-x">
+<div className="scrollable-x">
   <table>
     <thead>
       <tr>
@@ -57,7 +55,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ## **Проверки**
 
-<div class="scrollable-x">
+<div className="scrollable-x">
   <table>
     <thead>
       <tr>
@@ -78,7 +76,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### **Положительный ответ**
 
-<div class="scrollable-x">
+<div className="scrollable-x">
   <table>
     <thead>
       <tr>
@@ -123,7 +121,6 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 </div>
 
 ### **Ответ с ошибками**
-
 
 {RESPOND_CODES.internal.grpcCode}
 {RESPOND_CODES.not_found.grpcCode}
