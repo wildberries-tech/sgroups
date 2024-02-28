@@ -45,8 +45,8 @@ table {
 
 .parent-div {
   display: flex;
-  overflow-x: auto;
   flex-flow: column;
+  overflow-x: auto;
 
   @media (min-width: 1024px) {
     flex-flow: row;
@@ -67,7 +67,7 @@ table {
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .scrollable-x {
@@ -76,8 +76,8 @@ table {
 
 .react-transform-component .docusaurus-mermaid-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .markdown li > p {

@@ -15,29 +15,29 @@ export const toNft = [
     items: [
       {
         type: 'doc',
-        label: "IPSet",
-        id: "tech-docs/to-nft/nftables/ipset"
+        label: 'IPSet',
+        id: 'tech-docs/to-nft/nftables/ipset',
       },
       {
         type: 'doc',
-        label: "Chains",
-        id: "tech-docs/to-nft/nftables/chains"
+        label: 'Chains',
+        id: 'tech-docs/to-nft/nftables/chains',
       },
       {
         type: 'doc',
-        label: "Verdict statment",
-        id: "tech-docs/to-nft/nftables/verdict-statement"
+        label: 'Verdict statment',
+        id: 'tech-docs/to-nft/nftables/verdict-statement',
       },
       {
         type: 'doc',
-        label: "Icmp-дескрипторы",
-        id: "tech-docs/to-nft/nftables/icmp-desciptions"
+        label: 'Icmp-дескрипторы',
+        id: 'tech-docs/to-nft/nftables/icmp-desciptions',
       },
       {
         type: 'doc',
-        label: "Config Base Rules",
-        id: "tech-docs/to-nft/nftables/config-base-rules"
-      }
-    ]
-  }
+        label: 'Config Base Rules',
+        id: 'tech-docs/to-nft/nftables/config-base-rules',
+      },
+    ],
+  },
 ]

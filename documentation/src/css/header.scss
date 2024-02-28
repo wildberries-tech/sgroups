@@ -57,8 +57,8 @@ body.header-not-at-top {
 }
 
 .header-github-link {
-  margin-left: 35px;
   position: relative;
+  margin-left: 35px;
 
   @media (min-width: 997px) {
     margin-left: auto;
@@ -95,26 +95,26 @@ html[data-theme='dark'] .header-github-link:before {
 
 .github-facts {
   display: flex;
-  font-size: 12px;
   gap: 0.4rem;
-  list-style-type: none;
-  margin: 0.1rem 0 0;
-  overflow: hidden;
-  padding: 0;
   width: 100%;
+  margin: 0.1rem 0 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 12px;
+  list-style-type: none;
 }
 
 .github-fact:before {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  vertical-align: text-top;
   background-color: currentcolor;
   content: '';
-  display: inline-block;
-  height: 12px;
   mask-position: center;
   mask-repeat: no-repeat;
   mask-size: contain;
-  vertical-align: text-top;
-  width: 12px;
-  margin-right: 4px;
 }
 
 .github-facts-mob {

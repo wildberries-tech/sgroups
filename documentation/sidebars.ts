@@ -44,7 +44,7 @@ const sidebars = {
       type: 'category',
       label: 'Terraform',
       collapsed: false,
-      items: terraform
+      items: terraform,
     },
     {
       type: 'category',
@@ -56,8 +56,8 @@ const sidebars = {
       type: 'doc',
       label: 'Требования',
       id: 'tech-docs/installation-system-requirements',
-    }
-  ]
+    },
+  ],
 }
 
 export default sidebars

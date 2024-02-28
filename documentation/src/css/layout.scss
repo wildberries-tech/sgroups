@@ -4,8 +4,8 @@
 
 .navbar__inner {
   @media (min-width: 1440px) {
-    margin: 0 auto;
     width: var(--ifm-custom-container-width-xl);
+    margin: 0 auto;
   }
 }
 

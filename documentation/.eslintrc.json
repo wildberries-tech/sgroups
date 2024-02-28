@@ -17,10 +17,11 @@
       "modules": true,
       "experimentalObjectRestSpread": true
     },
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json"],
+    "extraFileExtensions": [".mdx", ".md"]
   },
   "plugins": ["prettier", "react", "@typescript-eslint", "import"],
-  "ignorePatterns": ["build/**", "node_modules/**", "static/**"],
+  "ignorePatterns": ["build/**", "node_modules/**", "static/**", "src/theme/**"],
   "overrides": [
     {
       "files": ["pages/**/*"],
@@ -29,9 +30,30 @@
       }
     },
     {
+      "files": ["src/constants/**/*"],
+      "rules": {
+        "no-useless-escape": 0,
+        "react/jsx-key": 0
+      }
+    },
+    {
       "files": ["*.ts", "*.tsx"],
       "rules": {
         "@typescript-eslint/explicit-module-boundary-types": ["warn"]
+      }
+    },
+    {
+      "files": ["*.mdx" , "*.md"],
+      "extends": ["plugin:mdx/recommended"],
+      "rules": {
+        "jsx-a11y/control-has-associated-label": ["off"],
+        "react/self-closing-comp": ["off"],
+        "react/no-unescaped-entities": ["off"],
+        "prettier/prettier": ["off"],
+        "no-unused-expressions": ["off"],
+        "@typescript-eslint/no-unused-expressions": ["off"],
+        "no-undef": ["off"],
+        "no-irregular-whitespace": ["warn"]
       }
     }
   ],
@@ -39,6 +61,8 @@
     "quotes": ["off", "single"],
     "semi": ["error", "never"],
     "prefer-template": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/alt-text": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "jsx-a11y/anchor-is-valid": "off",
@@ -72,5 +96,8 @@
     "@typescript-eslint/no-unused-expressions": ["error"],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "settings": {
+    "mdx/code-blocks": true
   }
 }
