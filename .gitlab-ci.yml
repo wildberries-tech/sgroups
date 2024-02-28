@@ -2,3 +2,6 @@ include:
   - project: swarm/swarmops/devops/ci/ci-templates
     ref: main
     file: projects-ci/sgroups.yml
+
+variables:
+  CI_TMPL_HELM_CUSTOM_ABATHUR_VERSION: v1-0-20-04aceaef
