@@ -50,10 +50,6 @@ const sidebars = {
       type: 'category',
       label: 'Конфигурация  ресурсов',
       collapsed: false,
-      link: {
-        type: 'doc',
-        id: 'tech-docs/rule-configuration/main',
-      },
       items: ruleConfiguration,
     },
     {
