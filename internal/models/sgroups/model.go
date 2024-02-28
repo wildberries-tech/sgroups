@@ -83,6 +83,14 @@ type (
 		CIDR      net.IPNet
 	}
 
+	// SgSgRuleIdentity -
+	SgSgRuleIdentity struct {
+		Transport NetworkTransport
+		Traffic   Traffic
+		SgLocal   string
+		Sg        string
+	}
+
 	// SGRulePorts source and destination port ranges
 	SGRulePorts struct {
 		S PortRanges
@@ -100,6 +108,9 @@ type (
 
 	// CidrSgRule proto:CIDR:SG:[INGRESS|EGRESS] rule
 	CidrSgRule = ruleT[CidrSgRuleIdenity]
+
+	// SgSgRule proto:SG:SG:[INGRESS|EGRESS] rule
+	SgSgRule = ruleT[SgSgRuleIdentity]
 
 	// SyncStatus succeeded sync-op status
 	SyncStatus struct {
@@ -149,12 +160,31 @@ type (
 		SgFrom string
 		SgTo   string
 	}
+
+	// IESgSgIcmpRule <IN|E>GRESS:SG-SG:ICMP rule
+	IESgSgIcmpRule struct {
+		Traffic Traffic
+		SgLocal string
+		Sg      string
+		Icmp    ICMP
+		Logs    bool
+		Trace   bool
+	}
+
+	// IESgSgIcmpRuleID <IN|E>GRESS:SG-SG:ICMP rule ID
+	IESgSgIcmpRuleID struct {
+		Traffic Traffic
+		IPv     uint8
+		SgLocal string
+		Sg      string
+	}
 )
 
 var (
 	_ ruleID[SGRuleIdentity]    = (*SGRuleIdentity)(nil)
 	_ ruleID[FQDNRuleIdentity]  = (*FQDNRuleIdentity)(nil)
 	_ ruleID[CidrSgRuleIdenity] = (*CidrSgRuleIdenity)(nil)
+	_ ruleID[SgSgRuleIdentity]  = (*SgSgRuleIdentity)(nil)
 )
 
 // PortRangeFactory ...
@@ -429,6 +459,37 @@ func (o SgSgIcmpRuleID) String() string {
 	return fmt.Sprintf("sg(%s)sg(%s)icmp%v", o.SgFrom, o.SgTo, o.IPv)
 }
 
+// IsEq -
+func (r IESgSgIcmpRule) IsEq(other IESgSgIcmpRule) bool {
+	return r.Traffic == other.Traffic &&
+		r.SgLocal == other.SgLocal &&
+		r.Sg == other.Sg &&
+		r.Icmp.IPv == other.Icmp.IPv &&
+		r.Icmp.Types.Eq(&other.Icmp.Types) &&
+		r.Logs == other.Logs &&
+		r.Trace == other.Trace
+}
+
+// ID -
+func (o IESgSgIcmpRule) ID() IESgSgIcmpRuleID {
+	return IESgSgIcmpRuleID{
+		Traffic: o.Traffic,
+		IPv:     o.Icmp.IPv,
+		SgLocal: o.SgLocal,
+		Sg:      o.Sg,
+	}
+}
+
+// IdentityHash -
+func (o IESgSgIcmpRuleID) IdentityHash() string {
+	return o.String()
+}
+
+// String -
+func (o IESgSgIcmpRuleID) String() string {
+	return fmt.Sprintf("icmp%v:sg-local(%s)sg(%s)%s", o.IPv, o.SgLocal, o.Sg, o.Traffic)
+}
+
 // String -
 func (o CidrSgRuleIdenity) String() string {
 	return fmt.Sprintf("%s:cidr(%s)sg(%s)%s",
@@ -455,4 +516,20 @@ func (o CidrSgRuleIdenity) Cmp(other CidrSgRuleIdenity) int {
 // IsEq -
 func (o CidrSgRuleIdenity) IsEq(other CidrSgRuleIdenity) bool {
 	return o.String() == other.String()
+}
+
+// IdentityHash implements ruleID.
+func (o SgSgRuleIdentity) IdentityHash() string {
+	return o.String()
+}
+
+// IsEq implements ruleID.
+func (o SgSgRuleIdentity) IsEq(other SgSgRuleIdentity) bool {
+	return o.String() == other.String()
+}
+
+// String implements ruleID.
+func (o SgSgRuleIdentity) String() string {
+	return fmt.Sprintf("%s:sg-local(%s)sg(%s)%s",
+		o.Transport, o.SgLocal, o.Sg, o.Traffic)
 }

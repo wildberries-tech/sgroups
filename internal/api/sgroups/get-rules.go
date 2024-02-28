@@ -128,12 +128,59 @@ func sgSgIcmpRule2proto(src model.SgSgIcmpRule) (*sg.SgSgIcmpRule, error) {
 	return &ret, nil
 }
 
+func ieSgSgIcmpRule2proto(src model.IESgSgIcmpRule) (*sg.IESgSgIcmpRule, error) {
+	ret := &sg.IESgSgIcmpRule{
+		Sg:      src.Sg,
+		SgLocal: src.SgLocal,
+		Logs:    src.Logs,
+		Trace:   src.Trace,
+		ICMP:    new(common.ICMP),
+	}
+	var e error
+	if ret.Traffic, e = traffic2proto(src.Traffic); e != nil {
+		return nil, e
+	}
+	switch src.Icmp.IPv {
+	case model.IPv4:
+		ret.ICMP.IPv = common.IpAddrFamily_IPv4
+	case model.IPv6:
+		ret.ICMP.IPv = common.IpAddrFamily_IPv6
+	default:
+		return nil, errors.Errorf("got unsupported IPv(%v)", src.Icmp.IPv)
+	}
+	src.Icmp.Types.Iterate(func(t uint8) bool {
+		ret.ICMP.Types = append(ret.ICMP.Types, uint32(t))
+		return true
+	})
+	return ret, nil
+}
+
 func cidrSgRule2proto(src model.CidrSgRule) (*sg.CidrSgRule, error) {
 	ret := &sg.CidrSgRule{
 		Logs:  src.Logs,
 		Trace: src.Trace,
 		SG:    src.ID.SG,
 		CIDR:  src.ID.CIDR.String(),
+	}
+	var e error
+	if ret.Traffic, e = traffic2proto(src.ID.Traffic); e != nil {
+		return nil, e
+	}
+	if ret.Transport, e = netTranport2proto(src.ID.Transport); e != nil {
+		return nil, e
+	}
+	if ret.Ports, e = sgAccPorts2proto(src.Ports); e != nil {
+		return nil, e
+	}
+	return ret, nil
+}
+
+func sgSgRule2proto(src model.SgSgRule) (*sg.SgSgRule, error) {
+	ret := &sg.SgSgRule{
+		Sg:      src.ID.Sg,
+		SgLocal: src.ID.SgLocal,
+		Logs:    src.Logs,
+		Trace:   src.Trace,
 	}
 	var e error
 	if ret.Traffic, e = traffic2proto(src.ID.Traffic); e != nil {

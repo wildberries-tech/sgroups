@@ -382,6 +382,93 @@ func (rd *pgDbReader) ListCidrSgRules(ctx context.Context, consume func(model.Ci
 	})
 }
 
+func (rd *pgDbReader) argsForRulesWithSgLocalAndSg(scope Scope) ([]any, error) {
+	var badScope bool
+	var sgLocals []string
+	var sgs []string
+	args := []any{pgx.QueryExecModeDescribeExec, nil, nil}
+	switch sc := scope.(type) {
+	case scopedAnd:
+		for _, x := range []any{sc.L, sc.R} {
+			switch a := x.(type) {
+			case scopedSGLocal:
+				for s := range a {
+					sgLocals = append(sgLocals, s)
+				}
+			case scopedSG:
+				for s := range a {
+					sgs = append(sgs, s)
+				}
+			case noScope:
+			default:
+				badScope = true
+			}
+		}
+	default:
+		badScope = true
+	}
+	if badScope {
+		return nil, errors.WithMessagef(ErrUnexpectedScope, "%#v", scope)
+	}
+	if sgLocals != nil {
+		args[1] = sgLocals
+	}
+	if sgs != nil {
+		args[2] = sgs
+	}
+	return args, nil
+}
+
+// ListSgSgRules impl Reader
+func (rd *pgDbReader) ListSgSgRules(ctx context.Context, consume func(model.SgSgRule) error, scope Scope) error { //nolint:dupl
+	const (
+		qry = "select proto, sg_local, sg, traffic, ports, logs, trace from sgroups.list_ie_sg_sg_rules($1, $2)"
+	)
+	args, err := rd.argsForRulesWithSgLocalAndSg(scope)
+	if err != nil {
+		return err
+	}
+	return rd.doIt(ctx, func(c *pgx.Conn) error {
+		rows, e := c.Query(ctx, qry, args...)
+		if e != nil {
+			return e
+		}
+		scanner := pgx.RowToStructByName[pg.SgSgRule]
+		return pgxIterateRowsAndClose(rows, scanner, func(rule pg.SgSgRule) error {
+			m, e1 := rule.ToModel()
+			if e1 != nil {
+				return e1
+			}
+			return consume(m)
+		})
+	})
+}
+
+// ListIESgSgIcmpRules impl Reader interface
+func (rd *pgDbReader) ListIESgSgIcmpRules(ctx context.Context, consume func(rule model.IESgSgIcmpRule) error, scope Scope) error {
+	const (
+		qry = "select ip_v, types, sg_local, sg, traffic, logs, trace from sgroups.list_ie_sg_sg_icmp_rules($1, $2)"
+	)
+	args, err := rd.argsForRulesWithSgLocalAndSg(scope)
+	if err != nil {
+		return err
+	}
+	return rd.doIt(ctx, func(c *pgx.Conn) error {
+		rows, e := c.Query(ctx, qry, args...)
+		if e != nil {
+			return e
+		}
+		scanner := pgx.RowToStructByName[pg.IESgSgIcmpRule]
+		return pgxIterateRowsAndClose(rows, scanner, func(rule pg.IESgSgIcmpRule) error {
+			m, e1 := rule.ToModel()
+			if e1 != nil {
+				return e1
+			}
+			return consume(m)
+		})
+	})
+}
+
 // GetSyncStatus impl Reader interface
 func (rd *pgDbReader) GetSyncStatus(ctx context.Context) (*model.SyncStatus, error) {
 	const api = "PG/GetSyncStatus"
