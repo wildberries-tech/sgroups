@@ -1,3 +1,4 @@
 [submodule "deploy"]
 	path = deploy
 	url = git@gitlab-internal.wildberries.ru:swarm/swarm/sgroups-deploy
+	branch = main
