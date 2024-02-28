@@ -4,6 +4,7 @@ id: status
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # GET /v1/sync/status
 
@@ -50,17 +51,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 Код ошибки 404
 
-{RESPOND_CODES.not_found.grpcCode}
-
-- Ошибка в запросе
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## **Описание интеграции**
 

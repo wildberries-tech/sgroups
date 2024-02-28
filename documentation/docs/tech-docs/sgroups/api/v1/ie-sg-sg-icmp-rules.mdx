@@ -6,6 +6,7 @@ import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # POST v1/ie-sg-sg-icmp/rules
 
@@ -210,33 +211,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### Ответ с ошибками
 
-{RESPOND_CODES.not_found.grpcCode}
-
-Код ошибки 400
-
-- Если Sg или SgLocal были указаны некорректно:
-  \- ошибка, если значения были указаны не как массив, а как одно значение
-  \- ошибка, если значение Sg или SgLocal не соответствует формату названия security group (длина значения не должна превышать 256 символов, значения должно начинаться и заканчиваться символами без пробелов, значение должно быть уникальным)
-
-```json
-{
-  "code": 3,
-  "details": [],
-  "message": "proto: syntax error (line __): unexpected token \"string\""
-}
-```
-
-Код ошибки 404
-
-- Опечатка в имени метода
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## Описание интеграции
 

@@ -3,6 +3,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 #### Входные параметры
 
@@ -113,9 +114,8 @@ curl '127.0.0.1:9007/v1/sync' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-{RESPOND_CODES.invalid_argument.grpcCode}
-
-{RESPOND_CODES.not_found.grpcCode}
+<Codes data = {RESPOND_CODES.invalid_argument} />
+<Codes data = {RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 

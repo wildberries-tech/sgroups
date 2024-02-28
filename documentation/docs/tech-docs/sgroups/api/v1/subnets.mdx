@@ -4,6 +4,7 @@ id: subnets
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # GET /v1/sg/\{sgName\}/subnets
 
@@ -122,30 +123,8 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### **Ответ с ошибками**
 
-{RESPOND_CODES.internal.grpcCode}
-{RESPOND_CODES.not_found.grpcCode}
-
-Код ошибки 404
-
-- Указано неверное значение \{sgName\}
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "SG 'string' is not found"
-}
-```
-
-- Ошибка в запросе
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.internal} />
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## **Описание интеграции**
 

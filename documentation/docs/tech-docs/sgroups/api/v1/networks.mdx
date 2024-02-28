@@ -4,6 +4,7 @@ id: networks
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # POST /v1/list/networks
 
@@ -141,32 +142,8 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### **Ответ с ошибками**
 
-{RESPOND_CODES.internal.grpcCode}
-{RESPOND_CODES.not_found.grpcCode}
-
-Код ошибки 400
-
-- Указано некорректное значение существующего параметра
-
-  ```json
-  {
-    "code": 3,
-    "details": [],
-    "message": "proto: syntax error (line __): unexpected token \"string\""
-  }
-  ```
-
-Код ошибки 404
-
-- Ошибка в запросе
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.internal} />
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## **Описание интеграции**
 

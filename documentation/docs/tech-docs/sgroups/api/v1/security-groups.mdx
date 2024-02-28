@@ -4,6 +4,7 @@ id: security-groups
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # POST /v1/list/security-groups
 
@@ -155,28 +156,7 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### **Ответ с ошибками**
 
-{RESPOND_CODES.not_found.grpcCode}
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>Код</th>
-        <th>Описание</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>400</td>
-        <td>Указано некорректное значение существующего параметра</td>
-      </tr>
-      <tr>
-        <td>404</td>
-        <td>Ошибка в запросе</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## **Описание интеграции**
 

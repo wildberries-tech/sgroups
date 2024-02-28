@@ -4,6 +4,7 @@ id: address-sg
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 # GET /v1/\{address\}/sg
 
@@ -126,42 +127,8 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 ### **Ответ с ошибками**
 
-{RESPOND_CODES.invalid_argument.grpcCode}
-{RESPOND_CODES.not_found.grpcCode}
-
-Код ошибки 400
-
-- Указано значение не является ни IP ни CIDR
-
-```json
-{
-  "code": 3,
-  "details": [],
-  "message": "invalid request: no address is provided"
-}
-```
-
-- Указано значение в формате CIDR (10.10.0.8/30)
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
-
-Код ошибки 400
-
-- Ошибка в запросе
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.invalid_argument} />
+<Codes data = {RESPOND_CODES.not_found} />
 
 ## **Описание интеграции**
 

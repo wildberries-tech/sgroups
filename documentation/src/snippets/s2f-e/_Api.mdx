@@ -5,6 +5,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
 #### Входные параметры
 
@@ -229,57 +230,8 @@ import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-{RESPOND_CODES.invalid_argument.grpcCode}
-{RESPOND_CODES.not_found.grpcCode}
-
-<details>
-    <summary>Ошибка в запросе</summary>
-
-    ```json
-    {
-        "code": 5,
-        "details":  [],
-        "message": "Not Found"
-    }
-    ```
-
-</details>
-<details>
-    <summary>Нет такого значения имени SG</summary>
-
-    ```json
-    {
-        "code": 13,
-        "details":  [],
-        "message": "ERROR: related SG(sg-no-exist) is not exist (SQLSTATE P0001)"
-    }
-    ```
-
-</details>
-<details>
-    <summary>Добавление несуществующего SG к правилу</summary>
-
-    ```json
-    {
-        "code": 13,
-        "details":  [],
-        "message": "ERROR: unable bind Net(nw-nonexist)-->SG(sg-with-nonexist-nw) cause such Net does not exist (SQLSTATE P0001)"
-    }
-    ```
-
-</details>
-<details>
-    <summary>Пересечение значений source портов</summary>
-
-    ```json
-    {
-        "code": 13,
-        "details":  [],
-        "message": "ERROR: new row for relation \"tbl_sg_rule\" violates check constraint \"S_ports_dont_intersect\" (SQLSTATE 23514)"
-    }
-    ```
-
-</details>
+<Codes data = {RESPOND_CODES.invalid_argument} />
+<Codes data = {RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
