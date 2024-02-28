@@ -9,12 +9,14 @@ export const GithubLink: FC = () => {
   useEffect(() => {
     getLatestTag()
       .then(data => setTag(data))
+      /* eslint-disable-next-line no-console */
       .catch(err => console.log(err))
     getStarsAndForks()
       .then(({ stars, forks }) => {
         setStars(stars)
         setForks(forks)
       })
+      /* eslint-disable-next-line no-console */
       .catch(err => console.log(err))
   }, [])
 

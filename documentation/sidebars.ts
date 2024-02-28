@@ -1,3 +1,4 @@
+/* eslint-disable import/no-default-export */
 import { toNft } from './src/sidebars/technical-docs/to-nft'
 import { sgroups } from './src/sidebars/technical-docs/sgroups'
 import { terraform } from './src/sidebars/technical-docs/terraform'
