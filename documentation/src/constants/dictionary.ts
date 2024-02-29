@@ -137,6 +137,16 @@ export const DICTIONARY: TDictionary = {
     full: '',
   },
 
+  nw: {
+    short: 'Имя подсети',
+    full: '',
+  },
+
+  networkNames: {
+    short: 'Массив/Список имен подсетей',
+    full: '',
+  },
+
   cidr: {
     short: 'Подсеть типа IP.',
     full: '',
@@ -149,6 +159,11 @@ export const DICTIONARY: TDictionary = {
 
   terraformRuleName: {
     short: 'Уникальное имя создаваемого ресурса.',
+    full: '',
+  },
+
+  defaultAction: {
+    short: 'Действие по умолчанию.',
     full: '',
   },
 }

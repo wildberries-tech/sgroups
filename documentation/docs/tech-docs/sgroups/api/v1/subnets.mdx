@@ -4,150 +4,109 @@ id: subnets
 
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
+import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
+import { DICTIONARY } from '@site/src/constants/dictionary.ts'
+import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
+import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # GET /v1/sg/\{sgName\}/subnets
 
-## **Запрос**
+#### Входные параметры
 
-`GET /v1/sg/{sgName}/subnets`
-
-## **Ответ**
-
-```json
-{
-  "networks": [
-    {
-      "name": "nw-2",
-      "network": {
-        "CIDR": "10.150.0.222/32"
-      }
-    }
-  ]
-}
-```
-
-## **Входные параметры**
+<ul>
+  <li>`\{sgName\}` - {DICTIONARY.sg.short}</li>
+</ul>
 
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Обязательность</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
+        <th rowSpan="2">название</th>
+        <th rowSpan="2">обязательность</th>
+        <th rowSpan="2">тип данных</th>
+        <th rowSpan="2">Значение по умолчанию</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
         <td>\{sgName\}</td>
-        <td>string</td>
         <td>да</td>
-        <td>уникальное имя sg</td>
-        <td>SG-11</td>
+        <td>String</td>
+        <td></td>
       </tr>
-    </tbody>
+      </tbody>
   </table>
 </div>
 
-## **Проверки**
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
+--header 'Content-Type: application/json' \
+--data '{
+
+}'
+```
+
+<h4 className="custom-heading">Выходные параметры</h4>
+
+<ul>
+  <li>`$node.networks[]` - {DICTIONARY.networkNames.short}</li>
+  <li>`$node.networks[].name` - {DICTIONARY.nw.short}</li>
+  <li>`$node.networks[].network` - </li>
+  <li>`$node.networks[].network.CIDR` - {DICTIONARY.cidr.short}</li>
+</ul>
 
 <div className="scrollable-x">
   <table>
     <thead>
       <tr>
-        <th>Параметр</th>
-        <th>Условие</th>
+        <th>название</th>
+        <th>тип данных</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>\{sgName\}</td>
-        <td>\- длина значения не должна превышать 256 символов<br />\- значение должно начинаться и заканчиваться символами без пробелов</td>
+        <td>$node.networks[]</td>
+        <td>Object[]</td>
+      </tr>
+      <tr>
+        <td>$node.networks[].name</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>$node.networks[].network</td>
+        <td>Object</td>
+      </tr>
+      <tr>
+        <td>$node.networks[].network.CIDR</td>
+        <td>String</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-## **Выходные параметры**
+<h4 className="custom-heading">Пример ответа</h4>
 
-### **Положительный ответ**
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Параметр</th>
-        <th>Тип данных</th>
-        <th>Описание</th>
-        <th>Варианты значений</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>networks</td>
-        <td>array of objects</td>
-        <td></td>
-        <td>\-</td>
-      </tr>
-      <tr>
-        <td>1.1</td>
-        <td>networks[].name</td>
-        <td>string</td>
-        <td>уникальное имя сети</td>
-        <td>nw-1</td>
-      </tr>
-      <tr>
-        <td>1.2</td>
-        <td>networks[].network</td>
-        <td>object</td>
-        <td></td>
-        <td>\-</td>
-      </tr>
-      <tr>
-        <td>1.3</td>
-        <td>networks[].network.CIDR</td>
-        <td>string</td>
-        <td></td>
-        <td>10.150.0.220/32</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### **Ответ с ошибками**
-
-{RESPOND_CODES.internal.grpcCode}
-{RESPOND_CODES.not_found.grpcCode}
-
-Код ошибки 404
-
-- Указано неверное значение \{sgName\}
-
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "SG 'string' is not found"
-}
+```bash
+curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
+--header 'Content-Type: application/json' \
+--data '{
+    "networks": [{
+        "name": "network-example",
+        "network": {
+                "CIDR": "10.150.0.222/32"
+            },
+    }]
+}'
 ```
 
-- Ошибка в запросе
+<h4 className="custom-heading">Возможные ошибки API</h4>
 
-```json
-{
-  "code": 5,
-  "details": [],
-  "message": "Not Found"
-}
-```
+<Codes data = {RESPOND_CODES.internal} />
+<Codes data = {RESPOND_CODES.not_found} />
 
-## **Описание интеграции**
+<h4 className="custom-heading">Диаграмма последовательности</h4>
 
 <FancyboxDiagram>
 
