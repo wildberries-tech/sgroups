@@ -267,6 +267,69 @@ import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
                     ```
             </div>
         </div>
+
+        <h4 className="custom-heading">Выходные параметры</h4>
+
+        <div className="scrollable-x">
+          <table>
+            <thead>
+              <tr>
+                <th>название</th>
+                <th>тип данных</th>
+                <th>описание</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>-</td>
+                <td>Object</td>
+                <td>в случае успеха возвращается пустое тело</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 className="custom-heading">Возможные ошибки API</h4>
+
+        <Codes data = {RESPOND_CODES.invalid_argument} />
+        <Codes data = {RESPOND_CODES.not_found} />
+
+        <h4 className="custom-heading">Диаграмма последовательности</h4>
+
+        <FancyboxDiagram>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить IE-CIDR-SG правило
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Нет такого значения имени SG
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о IE-CIDR-SG в БД
+
+        db-->>server: Ответ с успешно добавленным новым IE-CIDR-SG правилом
+        server-->>user: Успешно добавленное новое IE-CIDR-SG правило
+        ```
+
+        </FancyboxDiagram>
     </TabItem>
     <TabItem value="udp">
         <div className="parent-div">
@@ -323,6 +386,69 @@ import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
                     ```
             </div>
         </div>
+
+        <h4 className="custom-heading">Выходные параметры</h4>
+
+        <div className="scrollable-x">
+          <table>
+            <thead>
+              <tr>
+                <th>название</th>
+                <th>тип данных</th>
+                <th>описание</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>-</td>
+                <td>Object</td>
+                <td>в случае успеха возвращается пустое тело</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 className="custom-heading">Возможные ошибки API</h4>
+
+        <Codes data = {RESPOND_CODES.invalid_argument} />
+        <Codes data = {RESPOND_CODES.not_found} />
+
+        <h4 className="custom-heading">Диаграмма последовательности</h4>
+
+        <FancyboxDiagram>
+
+        ```mermaid
+        sequenceDiagram
+        participant user as User
+        participant server as Server
+        participant db as Database
+
+        user->>server: Добавить IE-CIDR-SG правило
+
+        alt Ошибка в запросе
+            server-->>user: Показать ошибку в запросе
+        end
+
+        server->>db: Отправить запрос
+        db->>db: Проверка входящего запроса
+
+        alt Нет такого значения имени SG
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        alt Пересечение значений source портов
+            db-->>server: Ответ с ошибкой
+            server-->>user: Показать ошибку в запросе
+        end
+
+        db->>db: Сохранить данные о IE-CIDR-SG в БД
+
+        db-->>server: Ответ с успешно добавленным новым IE-CIDR-SG правилом
+        server-->>user: Успешно добавленное новое IE-CIDR-SG правило
+        ```
+
+        </FancyboxDiagram>
     </TabItem>
     <TabItem value="icmp">
         <div className="parent-div">
@@ -377,82 +503,30 @@ import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
                 ```
             </div>
         </div>
-    </TabItem>
-</Tabs>
 
-<h4 className="custom-heading">Выходные параметры</h4>
+        <h4 className="custom-heading">Выходные параметры</h4>
 
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>название</th>
-        <th>тип данных</th>
-        <th>описание</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>-</td>
-        <td>Object</td>
-        <td>в случае успеха возвращается пустое тело</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+        <div className="scrollable-x">
+          <table>
+            <thead>
+              <tr>
+                <th>название</th>
+                <th>тип данных</th>
+                <th>описание</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>-</td>
+                <td>Object</td>
+                <td>в случае успеха возвращается пустое тело</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-<h4 className="custom-heading">Возможные ошибки API</h4>
+        <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Tabs
-    defaltValue='tcp-udp'
-    values={[
-        { label: "TCP/UDP", value: "tcp-udp"},
-        { label: "ICMP", value: "icmp" }
-    ]}
->
-    <TabItem value="tcp-udp">
-        <Codes data = {RESPOND_CODES.invalid_argument} />
-        <Codes data = {RESPOND_CODES.not_found} />
-
-        <h4 className="custom-heading">Диаграмма последовательности</h4>
-
-        <FancyboxDiagram>
-
-        ```mermaid
-        sequenceDiagram
-        participant user as User
-        participant server as Server
-        participant db as Database
-
-        user->>server: Добавить IE-CIDR-SG правило
-
-        alt Ошибка в запросе
-            server-->>user: Показать ошибку в запросе
-        end
-
-        server->>db: Отправить запрос
-        db->>db: Проверка входящего запроса
-
-        alt Нет такого значения имени SG
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        alt Пересечение значений source портов
-            db-->>server: Ответ с ошибкой
-            server-->>user: Показать ошибку в запросе
-        end
-
-        db->>db: Сохранить данные о IE-CIDR-SG в БД
-
-        db-->>server: Ответ с успешно добавленным новым IE-CIDR-SG правилом
-        server-->>user: Успешно добавленное новое IE-CIDR-SG правило
-        ```
-
-        </FancyboxDiagram>
-    </TabItem>
-
-    <TabItem value="icmp">
         <Codes data = {RESPOND_CODES.invalid_argument} />
         <Codes data = {RESPOND_CODES.not_found} />
 
@@ -498,5 +572,4 @@ import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 
         </FancyboxDiagram>
     </TabItem>
-
 </Tabs>
