@@ -25,7 +25,7 @@
     "@fancyapps/ui": "5.0.33",
     "@mdx-js/react": "3.0.1",
     "astroturf": "1.2.0",
-    "axios": "1.4.0",
+    "axios": "^1.6.7",
     "clsx": "2.1.0",
     "prism-react-renderer": "2.3.1",
     "react": "18.2.0",
