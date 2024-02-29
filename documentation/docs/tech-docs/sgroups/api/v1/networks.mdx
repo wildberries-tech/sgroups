@@ -11,6 +11,12 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
 # POST /v1/list/networks
 
+## **Описание**
+
+<ul>
+  <li>Этот метод отображает список подсетей и их IP, в соответствии с указанным списком имен подсетей.</li>
+</ul>
+
 #### Входные параметры
 
 <ul>
@@ -52,7 +58,7 @@ curl '127.0.0.1:9007/v1/list/networks' \
 <ul>
   <li>`$node.networks[]` - {DICTIONARY.rules.short}</li>
   <li>`$node.networks[].name` - {DICTIONARY.nw.short}</li>
-  <li>`$node.networks[].network` - </li>
+  <li>`$node.networks[].network` - {DICTIONARY.networkObject.short}</li>
   <li>`$node.networks[].network.CIDR` - {DICTIONARY.networks.short}</li>
 </ul>
 

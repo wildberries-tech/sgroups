@@ -147,6 +147,11 @@ export const DICTIONARY: TDictionary = {
     full: '',
   },
 
+  networkObject: {
+    short: 'Структура, содержащая описание сети',
+    full: '',
+  },
+
   cidr: {
     short: 'Подсеть типа IP.',
     full: '',
