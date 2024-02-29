@@ -7,50 +7,8 @@ import { FancyboxImage } from '@site/src/components/commonBlocks/FancyboxImage'
 # Мониторинг
 
 <div className="paragraph">
-  Информация о состоянии агента на различных узлах основывается по метрикам из [данной панели
-  Grafana](https://grafana.wildberries.ru/d/fc958a44-ddb5-494e-9260-b3cc53a04ed9/hbf-server?orgId=1&from=now-6h&to=now).
-  На ней также настроены уведомления, связанные с недоступностью или некорректной работой агента. Уведомления приходят в
-  закрытый канал в Rocket.chat (#HBF_ALERTS). Таблица ниже описывает возможные для агента уведомления и причины их
-  возникновения.
+  Информация о состоянии сервера основывается на метриках. В таблице ниже предоставлены доступные метрики и их описания.
 </div>
-
-<div className="scrollable-x">
-  <table>
-    <thead>
-      <tr>
-        <th>Уведомление</th>
-        <th>Причина уведомления</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Статус health-check равен&nbsp;0</td>
-        <td> Метрика `healthcheck` возвращает значение 0 или по данной метрике отсутствуют значения</td>
-      </tr>
-      <tr>
-        <td>Сервер перестал отдавать логи</td>
-        <td>
-          Выполнение запроса `source=.ds-logstash-datastream-k8s-swarm AND data_stream.namespace:"swarm" AND
-          kubernetes.cluster:"k8s.prod-dl" AND kubernetes.container_name:"sgrouops"` отдает значение ниже 1. Иными
-          словами сервер перестал что-либо писать в stdout
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-## **Метрики**
-
-<div className="paragraph">
-  Метрики по умолчанию доступны через порт **9650**. Для активации метрик следует установить параметр "metrics.enable" в
-  конфигурационном файле в значение `true` (по умолчанию файл конфигурации находится в
-  */opt/swarm/etc/sgroups/config.yaml*). Для проверки доступности метрик рекомендуется выполнить команду `curl
-  0.0.0.0:9650/metrics`.
-</div>
-
-<FancyboxImage src="/swarm_doc/img/sgroups.monitoring.metrics.png" />
-
-**Описание метрик**
 
 <div>
   <span className="green">
@@ -78,6 +36,11 @@ import { FancyboxImage } from '@site/src/components/commonBlocks/FancyboxImage'
         <td>go_gc_duration_seconds_count</td>
         <td>counter</td>
         <td>Сводка длительности пауз циклов сборки мусора</td>
+      </tr>
+      <tr>
+        <td>go_gc_duration_seconds_sum</td>
+        <td>counter</td>
+        <td>Сумма длительности паузы циклов сборки мусора</td>
       </tr>
       <tr>
         <td>go_goroutines</td>
@@ -260,7 +223,12 @@ import { FancyboxImage } from '@site/src/components/commonBlocks/FancyboxImage'
           <b>promhttp_metric_handler_requests_in_flight</b>
         </td>
         <td>counter</td>
-        <td>Общее количество выявленных запросов по коду состояния HTTP</td>
+        <td>Количество обрабатываемых запросов в моменте на ручке /metrics</td>
+      </tr>
+      <tr>
+        <td>promhttp_metric_handler_requests_total</td>
+        <td>counter</td>
+        <td>Котичество запросов на ручку /metrics</td>
       </tr>
       <tr>
         <td className="green">
@@ -268,6 +236,36 @@ import { FancyboxImage } from '@site/src/components/commonBlocks/FancyboxImage'
         </td>
         <td>gauge</td>
         <td>Количество подключенных на данный момент агентов</td>
+      </tr>
+      <tr>
+        <td>server_grpc_response_time_sum</td>
+        <td>histogram</td>
+        <td>Суммарная гистограмма времени ответа по всем методам</td>
+      </tr>
+      <tr>
+        <td>server_grpc_response_time_count</td>
+        <td>histogram</td>
+        <td>Гистограмма времени ответа по каждому методу</td>
+      </tr>
+      <tr>
+        <td>server_grpc_response_time_bucket</td>
+        <td>histogram</td>
+        <td>Гистограмма времени ответа</td>
+      </tr>
+      <tr>
+        <td>server_grpc_methods_started</td>
+        <td>counter</td>
+        <td>Количество заходов в метод</td>
+      </tr>
+      <tr>
+        <td>server_grpc_methods_finished</td>
+        <td>counter</td>
+        <td>Количество выходов из метод</td>
+      </tr>
+      <tr>
+        <td>server_grpc_messages</td>
+        <td>counter</td>
+        <td>Количество полученных и отправленных сообщений</td>
       </tr>
     </tbody>
   </table>

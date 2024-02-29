@@ -110,7 +110,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td>items.$ruleName.ports[].d</td>
         <td>нет</td>
         <td>String</td>
-        <td>null</td>
+        <td>""</td>
         <td className="green center">✔</td>
         <td className="green center">✔</td>
         <td className="green center"></td>
@@ -119,7 +119,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td>items.$ruleName.ports[].s</td>
         <td>нет</td>
         <td>String</td>
-        <td>null</td>
+        <td>""</td>
         <td className="green center">✔</td>
         <td className="green center">✔</td>
         <td className="green center"></td>
@@ -215,7 +215,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg_local(sg-local-example)sg(sg-example)ingress" = {
+                    "tcp:sg-local(sg-local-example)sg(sg-example)ingress" = {
                         traffic     = "ingress"
                         transport   = "tcp"
                         sg          = "sg-example"
@@ -240,7 +240,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "tcp:sg_local(sg-local-example)sg(sg-example)egress" = {
+                    "tcp:sg-local(sg-local-example)sg(sg-example)egress" = {
                         traffic     = "egress"
                         transport   = "tcp"
                         sg          = "sg-example"
@@ -270,7 +270,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg_local(sg-local-example)sg(sg-example)ingress" = {
+                    "udp:sg-local(sg-local-example)sg(sg-example)ingress" = {
                         traffic     = "ingress"
                         transport   = "udp"
                         sg          = "sg-example"
@@ -293,7 +293,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_ie_rules" "rules" {
                     items = {
-                    "udp:sg_local(sg-local-example)sg(sg-example)egress" = {
+                    "udp:sg-local(sg-local-example)sg(sg-example)egress" = {
                         traffic     = "egress"
                         transport   = "udp"
                         sg          = "sg-example"
@@ -318,9 +318,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 <h4 className="center">Ingress</h4>
 
                 ```hcl
-                resource "sgroups_icmp_rules" "rules" {
+                resource "sgroups_ie_icmp_rules" "rules" {
                     items = {
-                    "icmp4:sg_local(sg-example-local)sg(sg-example)ingress" = {
+                    "icmp4:sg-local(sg-example-local)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -329,7 +329,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = ingress
                     }
-                    "icmp6:sg_local(sg-example-local)sg(sg-example)ingress" = {
+                    "icmp6:sg-local(sg-example-local)sg(sg-example)ingress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -342,7 +342,6 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 }
                 ```
 
-
             </div>
             <div className="child-block">
                 <h4 className="center">Egress</h4>
@@ -351,7 +350,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 ```hcl
                 resource "sgroups_icmp_rules" "rules" {
                     items = {
-                    "icmp4:sg_local(sg-example-local)sg(sg-example)egress" = {
+                    "icmp4:sg-local(sg-example-local)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
@@ -360,7 +359,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                         type    = [0,8]
                         traffic = egress
                     }
-                    "icmp6:sg_local(sg-example-local)sg(sg-example)egress" = {
+                    "icmp6:sg-local(sg-example-local)sg(sg-example)egress" = {
                         logs    = true
                         trace   = true
                         sg_local = sg-example-local
