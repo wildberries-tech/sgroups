@@ -11,7 +11,7 @@ export const ruleConfiguration = [
   },
   {
     type: 'doc',
-    label: 'Sgroup to Sgroup (deprecated)',
+    label: 'Sgroup to Sgroup',
     id: 'tech-docs/rule-configuration/s2s',
   },
   {
@@ -30,3 +30,5 @@ export const ruleConfiguration = [
     id: 'tech-docs/rule-configuration/s2f-e',
   },
 ]
+
+

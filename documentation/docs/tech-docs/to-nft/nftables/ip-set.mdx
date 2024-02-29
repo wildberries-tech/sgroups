@@ -4,6 +4,8 @@ id: ipset
 
 # IPSet
 
+## Описание
+
 <div className="paragraph">
   IPSet представляет собой структуру данных, позволяющую хранить и организовывать множество элементов для использования
   в правилах nftables. Он используется для обработки больших списков элементов с минимальными затратами на ресурсы. В
@@ -63,8 +65,20 @@ id: ipset
   </table>
 </div>
 
+## Шаблон
+
 ```hcl
-set NetIPv4-${NAME} {
+set ${IPSet_Name} {
+    type ${type}
+    flags ${flags}
+    elements ${elements}
+}
+```
+
+## Пример использования
+
+```hcl
+set NetIPv4-sg-local-example {
     type ipv4_addr
     flags constant,interval
     elements = { 10.168.24.0/23 }
