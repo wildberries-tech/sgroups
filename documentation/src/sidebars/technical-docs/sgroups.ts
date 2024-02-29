@@ -75,8 +75,18 @@ export const sgroups = [
       },
       {
         type: 'doc',
+        label: 'POST /v1/cidr-sg-icmp/rules',
+        id: 'tech-docs/sgroups/api/v1/cidr-sg-icmp-rules',
+      },
+      {
+        type: 'doc',
         label: 'POST v1/ie-sg-sg/rules',
         id: 'tech-docs/sgroups/api/v1/ie-sg-sg-rules',
+      },
+      {
+        type: 'doc',
+        label: 'POST v1/ie-sg-sg-icmp/rules',
+        id: 'tech-docs/sgroups/api/v1/ie-sg-sg-icmp-rules',
       },
       {
         type: 'doc',
