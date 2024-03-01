@@ -1,0 +1,43 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 4rem);
+  background: url('/img/background.jpg');
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  top: 4rem;
+  left: 0;
+}
+
+.text {
+  position: absolute;
+  bottom: 100px;
+  left: 50px;
+  max-width: 550px;
+  text-align: justify;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+}
+
+.button {
+  background-color: #dd2e57;
+  border-width: 0;
+  color: #fff;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 0.1rem;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  padding: 0.625em 2em;
+  transition:
+    color 125ms,
+    background-color 125ms,
+    border-color 125ms;
+  min-height: 50px;
+}
+
+.button:hover {
+  background-color: #526cfe;
+  color: #fff;
+}

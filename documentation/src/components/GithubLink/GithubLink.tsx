@@ -43,8 +43,8 @@ export const GithubLink: FC = () => {
       </svg>
       <ul className="github-facts">
         {tag && <li className="github-fact github-fact--version">{tag}</li>}
-        {stars && <li className="github-fact github-fact--stars">{stars}</li>}
-        {forks && <li className="github-fact github-fact--forks">{forks}</li>}
+        {stars !== null && <li className="github-fact github-fact--stars">{stars}</li>}
+        {forks !== null && <li className="github-fact github-fact--forks">{forks}</li>}
       </ul>
     </a>
   )
