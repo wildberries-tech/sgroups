@@ -104,6 +104,19 @@ HBF-Server поддерживает PostgreSQL версии 14.8
         </td>
       </tr>
       <tr>
+        <td>[tbl_cidr_sg_icmp_rule](#tbl_cidr_sg_icmp_rule)</td>
+        <td className="text-justify">
+          таблица tbl_cidr_sg_icmp_rule хранит информацию CIDR-SG правил для входящего и исходящего траффика с сетевым
+          протоколом ICMP, бесклассовой междоменной маршрутизацией (CIDR)
+        </td>
+        <td>
+          <ul>
+            <li>[Отобразить список CIRD-SG правил для входящего и исходящего траффика](./api/v1/cidr-sg-icmp-rules.mdx)</li>
+            <li>[Внести изменения в БД](./api/v1/sync.mdx)</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
         <td>[tbl_fqdn_rule](#tbl_fqdn_rule)</td>
         <td className="text-justify">
           таблица tbl_fqdn_rule хранит информацию SG-to-FQDN правил с сетевым транспортным протоколом и диапазоном
@@ -710,6 +723,132 @@ HBF-Server поддерживает PostgreSQL версии 14.8
         <td>
           <ul>
             <li>proto</li>
+            <li>cidr</li>
+            <li>sg</li>
+            <li>traffic</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### tbl_cidr_sg_icmp_rule
+
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>Поле</th>
+        <th>Тип</th>
+        <th>Null</th>
+        <th>Ключ</th>
+        <th>По умолчанию</th>
+        <th>Дополнительно</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>id</td>
+        <td>int(8)</td>
+        <td></td>
+        <td>PRI</td>
+        <td></td>
+        <td>auto_increment</td>
+      </tr>
+      <tr>
+        <td>cidr</td>
+        <td>cidr</td>
+        <td></td>
+        <td>ALT</td>
+        <td></td>
+        <td className="text-justify">
+          значение cidr (диапазон ip адресов) в рамках одного правила (ip_v, sg, traffic) не должны пересекаться
+        </td>
+      </tr>
+      <tr>
+        <td>sg</td>
+        <td>int(8)</td>
+        <td></td>
+        <td>FK/ALT</td>
+        <td></td>
+        <td>внешний ключ к таблице tbl_sg.id</td>
+      </tr>
+      <tr>
+        <td>traffic</td>
+        <td>traffic</td>
+        <td></td>
+        <td>ALT</td>
+        <td></td>
+        <td>
+          <ul>
+            <li>ingress</li>
+            <li>egress</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>ip_v</td>
+        <td>ip_family</td>
+        <td></td>
+        <td>ALT</td>
+        <td></td>
+        <td>
+          одно из двух значений:
+          <ul>
+            <li>IPv6</li>
+            <li>IPv4</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>types</td>
+        <td>icmp_types</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          массив из smallint[] кодов типа ICMP
+        </td>
+      </tr>
+      <tr>
+        <td>logs</td>
+        <td>bool</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>trace</td>
+        <td>bool</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Ключи
+
+<div className="scrollable-x">
+  <table>
+    <thead>
+      <tr>
+        <th>Имя ключа</th>
+        <th>Тип</th>
+        <th>Поля</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alternative key</td>
+        <td>Compound Key</td>
+        <td>
+          <ul>
+            <li>ip_v</li>
             <li>cidr</li>
             <li>sg</li>
             <li>traffic</li>

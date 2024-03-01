@@ -11,11 +11,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # GET /v1/sg/\{sgName\}/subnets
 
-#### Описание
-
-<ul>
-  <li>Этот метод отображает список подсетей по указанной Security Group.</li>
-</ul>
+<div className="text-justify">
+  Этот метод отображает список подсетей по указанной Security Group.
+</div>
 
 <div className="text-justify">
   Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_network).
@@ -53,9 +51,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 ```bash
 curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
 --header 'Content-Type: application/json' \
---data '{
 
-}'
 ```
 
 <h4 className="custom-heading">Выходные параметры</h4>
@@ -99,9 +95,7 @@ curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
---header 'Content-Type: application/json' \
---data '{
+'{
     "networks": [{
         "name": "network-example",
         "network": {

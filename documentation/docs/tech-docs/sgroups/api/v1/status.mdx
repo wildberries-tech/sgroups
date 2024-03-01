@@ -11,15 +11,23 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
 # GET /v1/sync/status
 
-#### Описание
-
-<ul>
-  <li>Этот метод отображает дату последнего успешного изменения данных.</li>
-</ul>
+<div className="text-justify">
+  Этот метод отображает дату последнего успешного изменения данных.
+</div>
 
 <div className="text-justify">
   Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_sync_status).
 </div>
+
+#### Входные параметры
+
+<h4 className="custom-heading">Пример использования</h4>
+
+```bash
+curl '127.0.0.1:9007/v1/sync/status' \
+--header 'Content-Type: application/json' \
+
+```
 
 <h4 className="custom-heading">Выходные параметры</h4>
 
@@ -47,9 +55,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/sync/status' \
---header 'Content-Type: application/json' \
---data '{
+'{
     "updatedAt": "2023-11-21T17:02:30.717786Z"
 }'
 ```
