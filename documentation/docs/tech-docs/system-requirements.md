@@ -15,6 +15,6 @@ id: installation-system-requirements
 
 `go version >= 1.19`
 
-`postgresql`
+`postgresql >= 14.8`
 
 ---

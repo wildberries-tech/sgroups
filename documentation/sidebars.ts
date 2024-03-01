@@ -30,6 +30,11 @@ const sidebars = {
       id: 'tech-docs/components',
     },
     {
+      type: 'doc',
+      label: 'Требования',
+      id: 'tech-docs/installation-system-requirements',
+    },
+    {
       type: 'category',
       label: 'HBF-агент',
       collapsed: false,
@@ -52,12 +57,7 @@ const sidebars = {
       label: 'Конфигурация  ресурсов',
       collapsed: false,
       items: ruleConfiguration,
-    },
-    {
-      type: 'doc',
-      label: 'Требования',
-      id: 'tech-docs/installation-system-requirements',
-    },
+    }
   ],
 }
 

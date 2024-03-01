@@ -86,13 +86,9 @@ export const RESTRICTIONS: TRestrictions = {
     'Значения должны соответствовать поддерживаемым протоколам.',
   ],
 
-  itemsRuleName_nw: [
-    "Имя ключа должно совпадать с значением из поля name."
-  ],
+  itemsRuleName_nw: ['Имя ключа должно совпадать с значением из поля name.'],
 
-  itemsRuleName_sg: [
-    "Имя ключа должно совпадать с значением из поля name."
-  ],
+  itemsRuleName_sg: ['Имя ключа должно совпадать с значением из поля name.'],
 
   itemsRuleName_s2s: [
     <>

@@ -8,48 +8,48 @@ export const TERMINOLOGY: TTerminology[] = [
         для фильтрации ingress/Egress правилами для сетевого трафика. Security group работает на уровне инстансов,
         контролируя трафик на основе правил, определенных в нем. Каждое правило содержит исходные и целевые IP-адреса/диапазоны,
         протокол и порт. Если трафик соответствует любому из определенных правил, он будет разрешен или запрещен в зависимости от настроек Security group.`,
-    link: 'http://google.com',
   },
   {
-    name: 'Fully Qualified Domain Name',
-    comment: `FQDN - "полностью определенное имя домена" или "полное имя домена"`,
+    name: 'FQDN',
+    comment: `Fully Qualified Domain Name`,
     definition:
       'имя домена, не имеющее неоднозначностей в определении. Включается в себя имена всех родительских доменов иерархии DNS.',
-    link: 'http://google.com',
   },
   {
-    name: 'Internet Control Message Protocol',
-    comment: 'ICMP - протокол межсетевых управляющих сообщений',
+    name: 'ICMP',
+    comment: 'Internet Control Message Protocol',
     definition: `сетевой протокол, входящий в стек протоколов TCP/IP. В основном используется для передачи данных сообщений об ошибках
         и других исключительных ситуациях, возникших при передаче данных, например, запрашивая услуга недоступна или хост, или маршрутизатор
         не отвечают. Так же на ICMP возлагают некоторые сервисные функции.`,
   },
   {
     name: 'Ingress',
-    definition: 'трафик исходящий из инстанса в HBF правил описывающее разрешающее правило для входящего трафика инстанса.',
+    definition:
+      'трафик исходящий из инстанса в HBF правил описывающее разрешающее правило для входящего трафика инстанса.',
   },
   {
     name: 'Egress',
-    definition: 'трафик исходящий из инстанса в HBF правил описывающее разрешающее правило для исходящего трафика инстанса.',
+    definition:
+      'трафик исходящий из инстанса в HBF правил описывающее разрешающее правило для исходящего трафика инстанса.',
   },
   {
     name: 'CIDR',
-    comment: 'Бесклассовая междоменная маршрутизаци',
+    comment: 'Classless Inter-Domain Routing',
     definition: 'это подсеть которая включает в себя диапазон IP адресов.',
   },
   {
-    name: 'Неймспейс',
-    comment: 'namespace',
+    name: 'Namespace',
+    comment: 'пространство имен',
     definition: 'пространство имен.',
   },
   {
-    name: 'Сеть',
-    comment: 'netspace',
+    name: 'Netspace',
+    comment: 'сеть',
     definition: 'сетевое пространство имен.',
   },
   {
-    name: 'Подсеть',
-    comment: 'subnet',
+    name: 'Subnet',
+    comment: 'подсеть',
     definition: 'часть сети с присвоенным адресом CIDR',
   },
   {
@@ -69,14 +69,13 @@ export const TERMINOLOGY: TTerminology[] = [
         фигурной скобкой. Каждое имя сопровождается двоеточием, пары ключ/значение разделяются запятой.`,
   },
   {
-    name: 'hook',
-    definition: 'TODO'
+    name: 'Hook',
+    definition: `система отслеживания соединений, NAT-движок, инфраструктура логирования и пользовательские очереди остаются без изменений. 
+      Новым является только фреймворк классификации пакетов.`,
+    link: 'https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks',
   },
   {
-    name: 'hook priority',
-    definition: 'TODO'
+    name: 'Resource',
+    definition: 'TODO',
   },
-  {
-    name: 'resource',
-    definition: 'TODO'
-  }]
+]
