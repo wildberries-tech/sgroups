@@ -125,9 +125,7 @@ curl '127.0.0.1:9007/v1/rules' \
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/rules' \
---header 'Content-Type: application/json' \
---data '{
+{
     "rules": [{
         "sgFrom": "sg-example",
         "sgTo": "sg-example-2",
@@ -138,7 +136,7 @@ curl '127.0.0.1:9007/v1/rules' \
                 "s": ""
             }],
     }]
-}'
+}
 ```
 
 <h4 className="custom-heading">Возможные ошибки API</h4>

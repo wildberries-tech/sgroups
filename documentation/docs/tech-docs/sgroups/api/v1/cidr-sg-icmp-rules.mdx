@@ -131,9 +131,7 @@ curl '127.0.0.1:9007/v1/cidr-sg-icmp/rules' \
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/cidr-sg-icmp/rules' \
---header 'Content-Type: application/json' \
---data '{
+{
     "rules": [{
         "CIDR": "10.0.0.0/24",
         "sg": "sg-example",
@@ -145,7 +143,7 @@ curl '127.0.0.1:9007/v1/cidr-sg-icmp/rules' \
         "trace": "true",
         "traffic": "ingress",
     }]
-}'
+}
 ```
 
 <h4 className="custom-heading">Возможные ошибки API</h4>

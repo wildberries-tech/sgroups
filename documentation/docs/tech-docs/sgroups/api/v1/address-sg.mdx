@@ -50,7 +50,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 ```bash
 curl '127.0.0.1:9007/v1/10.150.0.224/sg' \
---header 'Content-Type: application/json' \
+--header 'Content-Type: application/json'
 
 ```
 
@@ -100,13 +100,13 @@ curl '127.0.0.1:9007/v1/10.150.0.224/sg' \
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-'{
+{
     "name": "network-example",
     "logs": "false",
     "name": "false",
     "network": ["network-example"],
     "defaultAction": "DROP"
-}'
+}
 ```
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
