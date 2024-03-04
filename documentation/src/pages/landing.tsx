@@ -1,7 +1,7 @@
 /* eslint-disable import/no-default-export */
 import React, { FC } from 'react'
 import Layout from '@theme/Layout'
-import { Header, LandingFeatures } from '@site/src/components/molecules'
+import { Header, LandingFeatures } from '@site/src/components/Landing/molecules'
 import styles from './index.module.css'
 
 const LandingPage: FC = () => {
