@@ -25,7 +25,7 @@ export const toNft = [
       },
       {
         type: 'doc',
-        label: 'Verdict statment',
+        label: 'Verdict statement',
         id: 'tech-docs/to-nft/nftables/verdict-statement',
       },
       {
@@ -37,6 +37,11 @@ export const toNft = [
         type: 'doc',
         label: 'Config Base Rules',
         id: 'tech-docs/to-nft/nftables/config-base-rules',
+      },
+      {
+        type: 'doc',
+        label: 'Приоритет правил',
+        id: 'tech-docs/to-nft/nftables/rules-priority',
       },
     ],
   },

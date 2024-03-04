@@ -96,16 +96,14 @@ curl '127.0.0.1:9007/v1/list/networks' \
 <h4 className="custom-heading">Пример ответа</h4>
 
 ```bash
-curl '127.0.0.1:9007/v1/list/networks' \
---header 'Content-Type: application/json' \
---data '{
+{
     "networks": [{
         "network": "network-example",
         "ICMP": {
                 "CIDR": "10.150.0.220/32"
             },
     }]
-}'
+}
 ```
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
