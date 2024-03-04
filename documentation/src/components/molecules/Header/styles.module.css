@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: calc(100vh - 4rem);
+  height: calc(100vh - var(--ifm-navbar-height));
   background: url('/img/background.jpg');
   background-size: cover;
   background-position: center center;
@@ -12,11 +12,27 @@
 .text {
   position: absolute;
   bottom: 100px;
-  left: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
   max-width: 550px;
   text-align: justify;
   background: rgba(0, 0, 0, 0.7);
   padding: 15px;
+}
+
+@media (min-width: 997px) {
+  .text {
+    margin-left: 0;
+    left: 50px;
+  }
+}
+
+@media (min-width: 1700px) {
+  .text {
+    left: calc((100vw - var(--ifm-custom-container-width-xl)) / 2);
+  }
 }
 
 .button {

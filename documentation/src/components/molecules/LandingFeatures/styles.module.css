@@ -1,0 +1,9 @@
+.container {
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

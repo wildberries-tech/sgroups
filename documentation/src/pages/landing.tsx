@@ -1,13 +1,16 @@
 /* eslint-disable import/no-default-export */
 import React, { FC } from 'react'
 import Layout from '@theme/Layout'
-import { Header } from '@site/src/components/molecules'
+import { Header, LandingFeatures } from '@site/src/components/molecules'
+import styles from './index.module.css'
 
 const LandingPage: FC = () => {
   return (
     <Layout title="SGroups" description="SGroups">
       <Header />
-      <div style={{ minHeight: '90vh' }} />
+      <div className={styles.container}>
+        <LandingFeatures />
+      </div>
     </Layout>
   )
 }
