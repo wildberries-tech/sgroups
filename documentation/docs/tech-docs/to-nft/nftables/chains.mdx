@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem'
   </thead>
   <tbody>
     <tr>
-      <td>FW-IN-INPUT</td>
+      <td>FW-INGRESS-INPUT</td>
       <td>Ingress</td>
       <td className="text-justify">
         <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и
@@ -33,14 +33,14 @@ import TabItem from '@theme/TabItem'
       </td>
     </tr>
     <tr>
-      <td>FW-IN-INPUT-sgName</td>
+      <td>FW-INGRESS-INPUT-$sgName</td>
       <td>Ingress</td>
       <td className="text-justify">
         <i>Вторая</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
       </td>
     </tr>
     <tr>
-      <td>FW-OUT-POSTROUTING</td>
+      <td>FW-EGRESS-POSTROUTING</td>
       <td>Egress</td>
       <td className="text-justify">
         <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) и
@@ -60,29 +60,29 @@ import TabItem from '@theme/TabItem'
     </tr> */}
     <tr>
       <td>
-        <nobr>FW-OUT-POSTROUTING-$sgName</nobr>
+        <nobr>FW-EGRESS-POSTROUTING-$sgName</nobr>
       </td>
       <td>Egress</td>
       <td className="text-justify">
-        <i>Третья</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
+        <i>Вторая</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
       </td>
     </tr>
   </tbody>
 </table>
 
 <Tabs
-    defaultValue="fw-in-input"
+    defaultValue="fw-ingress-input"
     values= {[
-        { label: "FW-IN-INPUT", value: "fw-in-input" },
-        { label: "FW-OUT-POSTROUTING", value: "fw-out-postrouting" },
+        { label: "FW-INGRESS-INPUT", value: "fw-ingress-input" },
+        { label: "FW-EGRESS-POSTROUTING", value: "fw-egress-postrouting" },
         {/* { label: "FW-OUT-POSTROUTING (DPI)", value: "fw-out-postrouting-dpi" } */}
     ]}
 >
 
-    <TabItem value="fw-in-input">
+    <TabItem value="fw-ingress-input">
         #### Описание
         <div  className="text-justify">
-          Правило перехода в цепочку `FW-IN-INPUT-sgName` с проверкой что трафик является входящим и предназначен для указанной Security Group.
+          Правило перехода в цепочку `FW-INGRESS-INPUT-sgName` с проверкой что трафик является входящим и предназначен для указанной Security Group.
         </div>
 
         #### Параметры
@@ -152,7 +152,7 @@ import TabItem from '@theme/TabItem'
         #### Шаблон
 
         ```hcl
-        chain FW-IN-INPUT{
+        chain FW-INGRESS-INPUT{
             type filter $Hook $HookPriority; policy accept;
             # **********
             $RuleType $DstSgroup $Counter $Verdict FW-IN-$sgName
@@ -164,7 +164,7 @@ import TabItem from '@theme/TabItem'
         #### Пример использования
 
         ```hcl
-        chain FW-IN-INPUT{
+        chain FW-INGRESS-INPUT{
             type filter hook input priority 0; policy accept;
             # **********
             ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
@@ -176,7 +176,7 @@ import TabItem from '@theme/TabItem'
         ```hcl
         table inet main-1705582480 {
 
-            chain FW-IN-INPUT {
+            chain FW-INGRESS-INPUT {
                 type filter hook input priority filter; policy accept;
                 # ******
                 ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto FW-IN-INPUT-no-routed
@@ -184,13 +184,13 @@ import TabItem from '@theme/TabItem'
                 counter packets 0 bytes 0 drop
             }
 
-            chain FW-IN-INPUT-no-routed {
+            chain FW-INGRESS-INPUT-no-routed {
                 ct state established,related counter packets 0 bytes 0 accept
                 # ******
                 counter packets 0 bytes 0 accept
             }
 
-            chain FW-IN-INPUT-exampleSG {
+            chain FW-INGRESS-INPUT-exampleSG {
                 ct state established,related counter packets 0 bytes 0 accept
                 # ******
                 counter packets 0 bytes 0 accept
@@ -199,11 +199,11 @@ import TabItem from '@theme/TabItem'
         }
         ```
     </TabItem>
-    <TabItem value="fw-out-postrouting">
+    <TabItem value="fw-egress-postrouting">
         #### Описание
 
         <div  className="text-justify">
-          Правило перехода в цепочку `FW-OUT-POSTROUTING-$sgName` с проверкой что трафик является исходящим и предназначен для 
+          Правило перехода в цепочку `FW-EGRESS-POSTROUTING-$sgName` с проверкой что трафик является исходящим и предназначен для
           указанной Security Group.
         </div>
 
@@ -274,7 +274,7 @@ import TabItem from '@theme/TabItem'
         #### Шаблон
 
         ```hcl
-        chain FW-OUT-POSTROUTING {
+        chain FW-EGRESS-POSTROUTING {
             type filter $Hook $HookPriority; policy accept;
             # **********
             $RuleType $SrcSgroup $Counter $Verdict FW-OUT-POSTROUTING-$sgName
@@ -286,7 +286,7 @@ import TabItem from '@theme/TabItem'
         #### Пример использования
 
         ```hcl
-        chain FW-OUT-POSTROUTING {
+        chain FW-EGRESS-POSTROUTING {
             type filter hook postrouting priority 300; policy accept;
             # **********
             ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
@@ -298,7 +298,7 @@ import TabItem from '@theme/TabItem'
         ```hcl
           table inet main-1705582480 {
 
-          chain FW-OUT-POSTROUTING {
+          chain FW-EGRESS-POSTROUTING {
               type filter hook postrouting priority 300; policy accept;
               # **********
               ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
@@ -306,13 +306,13 @@ import TabItem from '@theme/TabItem'
               counter packets 0 bytes 0 drop
           }
 
-          chain FW-OUT-POSTROUTING-no-routed {
+          chain FW-EGRESS-POSTROUTING-no-routed {
               ct state established,related counter packets 0 bytes 0 accept
               # ******
               counter packets 0 bytes 0 accept
           }
 
-          chain FW-OUT-POSTROUTING-exampleSG {
+          chain FW-EGRESS-POSTROUTING-exampleSG {
               ct state established,related counter packets 0 bytes 0 accept
               # ******
               counter packets 0 bytes 0 accept
