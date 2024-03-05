@@ -5,8 +5,6 @@ id: networks
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
 # POST /v1/list/networks
@@ -42,7 +40,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
         <td>Object[]</td>
         <td></td>
       </tr>
-      </tbody>
+    </tbody>
   </table>
 </div>
 
@@ -55,6 +53,7 @@ curl '127.0.0.1:9007/v1/list/networks' \
     "neteworkNames": ["network-example"]
 }'
 ```
+
 <h4 className="custom-heading">Выходные параметры</h4>
 
 <ul>
@@ -108,8 +107,8 @@ curl '127.0.0.1:9007/v1/list/networks' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Codes data = {RESPOND_CODES.internal} />
-<Codes data = {RESPOND_CODES.not_found} />
+<Codes data={RESPOND_CODES.internal} />
+<Codes data={RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 

@@ -6,14 +6,10 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # GET /v1/sg/\{sgName\}/subnets
 
-<div className="text-justify">
-  Этот метод отображает список подсетей по указанной Security Group.
-</div>
+<div className="text-justify">Этот метод отображает список подсетей по указанной Security Group.</div>
 
 <div className="text-justify">
   Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_network).
@@ -22,7 +18,9 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 #### Входные параметры
 
 <ul>
-  <li>`{sgName}` - {DICTIONARY.sg.short}</li>
+  <li>
+    `{sgName}` - {DICTIONARY.sg.short}
+  </li>
 </ul>
 
 <div className="scrollable-x">
@@ -106,8 +104,8 @@ curl '127.0.0.1:9007/v1/sg/sg-example/subnets' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Codes data = {RESPOND_CODES.internal} />
-<Codes data = {RESPOND_CODES.not_found} />
+<Codes data={RESPOND_CODES.internal} />
+<Codes data={RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
