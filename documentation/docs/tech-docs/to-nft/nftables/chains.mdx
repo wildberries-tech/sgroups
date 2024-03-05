@@ -99,6 +99,21 @@ import TabItem from '@theme/TabItem'
               </thead>
               <tbody>
                   <tr>
+                    <td>$Trace</td>
+                    <td>`nftrace set`</td>
+                    <td>
+                      <ul>
+                        <li>
+                          <b>1</b> - трассировка включена
+                        </li>
+                        <li>
+                          <b>0</b> - трассировка выключена
+                        </li>
+                      </ul>
+                  </td>
+                  <td>Трассировка</td>
+                  </tr>
+                  <tr>
                     <td>$RuleType</td>
                     <td>`ip`</td>
                     <td></td>
@@ -155,7 +170,7 @@ import TabItem from '@theme/TabItem'
         chain FW-INGRESS-INPUT{
             type filter $Hook $HookPriority; policy accept;
             # **********
-            $RuleType $DstSgroup $Counter $Verdict FW-IN-$sgName
+            $Trace $RuleType $DstSgroup $Counter $Verdict FW-IN-$sgName
             # **********
             $Counter drop
         }
@@ -167,7 +182,7 @@ import TabItem from '@theme/TabItem'
         chain FW-INGRESS-INPUT{
             type filter hook input priority 0; policy accept;
             # **********
-            ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
+            nftrace set 1 ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
             # **********
             counter packets 0 bytes 0 drop
         }
@@ -179,8 +194,8 @@ import TabItem from '@theme/TabItem'
             chain FW-INGRESS-INPUT {
                 type filter hook input priority filter; policy accept;
                 # ******
-                ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto FW-IN-INPUT-no-routed
-                ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
+                nftrace set 1 ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto FW-IN-INPUT-no-routed
+                nftrace set 1 ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
                 counter packets 0 bytes 0 drop
             }
 
@@ -220,6 +235,21 @@ import TabItem from '@theme/TabItem'
                   </tr>
               </thead>
               <tbody>
+                  <tr>
+                    <td>$Trace</td>
+                    <td>`nftrace set`</td>
+                    <td>
+                      <ul>
+                        <li>
+                          <b>1</b> - трассировка включена
+                        </li>
+                        <li>
+                          <b>0</b> - трассировка выключена
+                        </li>
+                      </ul>
+                  </td>
+                  <td>Трассировка</td>
+                  </tr>
                   <tr>
                     <td>$RuleType</td>
                     <td>`ip`</td>
@@ -277,7 +307,7 @@ import TabItem from '@theme/TabItem'
         chain FW-EGRESS-POSTROUTING {
             type filter $Hook $HookPriority; policy accept;
             # **********
-            $RuleType $SrcSgroup $Counter $Verdict FW-OUT-POSTROUTING-$sgName
+            $Trace $RuleType $SrcSgroup $Counter $Verdict FW-OUT-POSTROUTING-$sgName
             # **********
             $Counter drop
         }
@@ -289,7 +319,7 @@ import TabItem from '@theme/TabItem'
         chain FW-EGRESS-POSTROUTING {
             type filter hook postrouting priority 300; policy accept;
             # **********
-            ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
+            nftrace set 1 ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
             # **********
             counter packets 0 bytes 0 drop
         }
@@ -301,8 +331,8 @@ import TabItem from '@theme/TabItem'
           chain FW-EGRESS-POSTROUTING {
               type filter hook postrouting priority 300; policy accept;
               # **********
-              ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
-              ip saddr @NetIPv4-no-routed counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-no-routed
+              nftrace set 1 ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
+              nftrace set 1 ip saddr @NetIPv4-no-routed counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-no-routed
               counter packets 0 bytes 0 drop
           }
 
