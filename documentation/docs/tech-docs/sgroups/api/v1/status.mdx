@@ -5,15 +5,10 @@ id: status
 import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagram'
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
-import { DICTIONARY } from '@site/src/constants/dictionary.ts'
 
 # GET /v1/sync/status
 
-<div className="text-justify">
-  Этот метод отображает дату последнего успешного изменения данных.
-</div>
+<div className="text-justify">Этот метод отображает дату последнего успешного изменения данных.</div>
 
 <div className="text-justify">
   Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_sync_status).
@@ -59,10 +54,9 @@ curl '127.0.0.1:9007/v1/sync/status' \
 }
 ```
 
-
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Codes data = {RESPOND_CODES.not_found} />
+<Codes data={RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 

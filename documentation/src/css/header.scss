@@ -1,60 +1,54 @@
-// .navbar {
-//   transition: height 0.1s ease-out;
-// }
+/* .navbar {
+  transition: height 0.1s ease-out;transition
+}
 
-// @media (min-width: 997px) {
-//   .navbar__brand {
-//     margin-top: -3rem;
-//     margin-left: 10px;
-//     transition: all 0.1s ease-out;
-//   }
+@media (min-width: 997px) {
+  .navbar__brand {margin-left
+    transition: all 0.1s ease-out;transition
+  }
 
-//   .navbar__items--right {
-//     margin-top: -3rem;
-//     transition: all 0.1s ease-out;
-//   }
+  .navbar__items--right {margin-top
+    transition: all 0.1s ease-out;transition
+  }
 
-//   .navbar__title {
-//     font-size: 24px;
-//     transition: all 0.1s ease-out;
-//   }
+  .navbar__title {font-size
+    transition: all 0.1s ease-out;transition
+  }
 
-//   .navbar__item {
-//     margin-top: 3.25rem;
-//     transition: all 0.1s ease-out;
+  .navbar__item {margin-top
+    transition: all 0.1s ease-out;transition
 
-//     &:nth-child(3) {
-//       margin-left: -160px;
-//     }
-//   }
-// }
+    &:nth-child(3) {
+      margin-left: -160px;margin-left
+    }
+  }
+}
 
-// :root:has(body.header-not-at-top) {
-//   --ifm-navbar-height: 3.25rem;
-// }
+:root:has(body.header-not-at-top) {
+  --ifm-navbar-height: 3.25rem;--ifm-navbar-height
+}
 
-// body.header-not-at-top {
-//   .navbar__brand {
-//     margin-top: initial;
-//     margin-left: initial;
-//   }
+body.header-not-at-top {
+  .navbar__brand {margin-top
+    margin-left: initial;margin-left
+  }
 
-//   .navbar__items--right {
-//     margin-top: initial;
-//   }
+  .navbar__items--right {
+    margin-top: initial;margin-top
+  }
 
-//   .navbar__title {
-//     font-size: 16px;
-//   }
+  .navbar__title {
+    font-size: 16px;font-size
+  }
 
-//   .navbar__item {
-//     margin-top: initial;
+  .navbar__item {
+    margin-top: initial;margin-top
 
-//     &:nth-child(3) {
-//       margin-left: initial;
-//     }
-//   }
-// }
+    &:nth-child(3) {
+      margin-left: initial;margin-left
+    }
+  }
+} */
 
 .header-github-link {
   position: relative;
@@ -133,12 +127,12 @@ html[data-theme='dark'] .header-github-link:before {
   mask-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg>');
 }
 
-// body.header-not-at-top {
-//   .github-facts {
-//     display: none;
-//   }
+/* body.header-not-at-top {
+  .github-facts {
+    display: none;displaydisplay
+  }
 
-//   .github-facts-mob {
-//     display: flex;
-//   }
-// }
+  .github-facts-mob {
+    display: flex;displaydisplay
+  }
+} */
