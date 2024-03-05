@@ -192,8 +192,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg-local-example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -218,8 +218,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg-local-example
                 rules:
                     ingress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -240,8 +240,8 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg-local-example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
@@ -266,17 +266,21 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg-local-example
                 rules:
                     ingress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
                           icmpIPv4:
                             - description: "example"
-                              type: [0, 8]
+                              type:
+                                - 0
+                                - 8
                           icmpIPv6:
                             - description: "example"
-                              type: [0, 8]
+                              type:
+                                - 0
+                                - 8
                 ```
             </div>
             <div className="child-block">
@@ -287,17 +291,21 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 name: sg-local-example
                 rules:
                     egress:
-                        - sgroupSet:
-                            - sg_example
+                      - sgroupSet:
+                          - sg_example
                         logs:  true
                         trace: true
                         access:
                           icmpIPv4:
                             - description: "example"
-                              type: [0, 8]
+                              type:
+                                - 0
+                                - 8
                           icmpIPv6:
                             - description: "example"
-                              type: [0, 8]
+                              type:
+                                - 0
+                                - 8
                 ```
             </div>
         </div>

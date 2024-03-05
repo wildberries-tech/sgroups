@@ -271,16 +271,20 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         rules:
             ingress:
               - cidrSet:
-                    - "10.0.0.0/8"
+                  - "10.0.0.0/8"
                 logs: true
                 trace: true
                 access:
                   icmpIPv4:
                     - description: "example"
-                      type: [0, 8]
+                      type:
+                        - 0
+                        - 8
                   icmpIPv6:
                     - description: "example"
-                      type: [0, 8]
+                      type:
+                        - 0
+                        - 8
           ```
 
       </div>
@@ -298,10 +302,14 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
                 access:
                   icmpIPv4:
                     - description: "example"
-                      type: [0, 8]
+                      type:
+                        - 0
+                        - 8
                   icmpIPv6:
                     - description: "example"
-                      type: [0, 8]
+                      type:
+                        - 0
+                        - 8
           ```
       </div>
     </div>
