@@ -67,8 +67,7 @@ base-rules:
 ## Шаблон
 
 ```
-chain FW-OUT {
-    # **********
+chain FW-EGRESS-POSTROUTING {
     ${RuleType} ${DstCIDR} ${Verdict}
     # **********
 }
@@ -77,8 +76,7 @@ chain FW-OUT {
 ## Пример использования
 
 ```
-chain FW-OUT {
-    # **********
+chain FW-EGRESS-POSTROUTING {
     ip daddr { 1.1.1.1, 2.2.2.2} accept
     # **********
 }
