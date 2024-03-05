@@ -40,7 +40,7 @@ id: config-base-rules
           </tr>
           <tr>
               <td>$\{Verdict\}</td>
-              <td>`Accept`</td>
+              <td>`accept`</td>
               <td>
                   <div>Не параметризированный</div>
                   <br />
@@ -67,7 +67,7 @@ base-rules:
 ## Шаблон
 
 ```
-chain FW-EGRESS-POSTROUTING {
+chain EGRESS-POSTROUTING {
     ${RuleType} ${DstCIDR} ${Verdict}
     # **********
 }
@@ -76,7 +76,7 @@ chain FW-EGRESS-POSTROUTING {
 ## Пример использования
 
 ```
-chain FW-EGRESS-POSTROUTING {
+chain EGRESS-POSTROUTING {
     ip daddr { 1.1.1.1, 2.2.2.2} accept
     # **********
 }

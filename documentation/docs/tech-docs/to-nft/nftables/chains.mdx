@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem'
   </thead>
   <tbody>
     <tr>
-      <td>FW-INGRESS-INPUT</td>
+      <td>INGRESS-INPUT</td>
       <td>Ingress</td>
       <td className="text-justify">
         <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (input) и
@@ -33,14 +33,14 @@ import TabItem from '@theme/TabItem'
       </td>
     </tr>
     <tr>
-      <td>FW-INGRESS-INPUT-$sgName</td>
+      <td>INGRESS-INPUT-$sgName</td>
       <td>Ingress</td>
       <td className="text-justify">
         <i>Вторая</i> цепочка содержит наборы правил, относящиеся только к конкретной Security Group.
       </td>
     </tr>
     <tr>
-      <td>FW-EGRESS-POSTROUTING</td>
+      <td>EGRESS-POSTROUTING</td>
       <td>Egress</td>
       <td className="text-justify">
         <i>Первая</i> цепочка является точкой входа для пакетов из сетевого стека, в ней указывается хук (postrouting) и
@@ -60,7 +60,7 @@ import TabItem from '@theme/TabItem'
     </tr> */}
     <tr>
       <td>
-        <nobr>FW-EGRESS-POSTROUTING-$sgName</nobr>
+        <nobr>EGRESS-POSTROUTING-$sgName</nobr>
       </td>
       <td>Egress</td>
       <td className="text-justify">
@@ -71,18 +71,18 @@ import TabItem from '@theme/TabItem'
 </table>
 
 <Tabs
-    defaultValue="fw-ingress-input"
+    defaultValue="ingress-input"
     values= {[
-        { label: "FW-INGRESS-INPUT", value: "fw-ingress-input" },
-        { label: "FW-EGRESS-POSTROUTING", value: "fw-egress-postrouting" },
+        { label: "INGRESS-INPUT", value: "ingress-input" },
+        { label: "EGRESS-POSTROUTING", value: "egress-postrouting" },
         {/* { label: "FW-OUT-POSTROUTING (DPI)", value: "fw-out-postrouting-dpi" } */}
     ]}
 >
 
-    <TabItem value="fw-ingress-input">
+    <TabItem value="ingress-input">
         #### Описание
         <div  className="text-justify">
-          Правило перехода в цепочку `FW-INGRESS-INPUT-sgName` с проверкой что трафик является входящим и предназначен для указанной Security Group.
+          Правило перехода в цепочку `INGRESS-INPUT-sgName` с проверкой что трафик является входящим и предназначен для указанной Security Group.
         </div>
 
         #### Параметры
@@ -98,22 +98,7 @@ import TabItem from '@theme/TabItem'
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                    <td>$Trace</td>
-                    <td>`nftrace set`</td>
-                    <td>
-                      <ul>
-                        <li>
-                          <b>1</b> - трассировка включена
-                        </li>
-                        <li>
-                          <b>0</b> - трассировка выключена
-                        </li>
-                      </ul>
-                  </td>
-                  <td>Трассировка</td>
-                  </tr>
-                  <tr>
+                    <tr>
                     <td>$RuleType</td>
                     <td>`ip`</td>
                     <td></td>
@@ -138,7 +123,19 @@ import TabItem from '@theme/TabItem'
                     <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
                   </tr>
                   <tr>
+                    <td>$PolicyVerdict</td>
+                    <td>`policy`</td>
+                    <td>`drop`</td>
+                    <td>
+                      <div className="text-justify">
+                          <i>Policy $Verdict устанавливается для цепочек с целью установки базового правила, которое будет применено к пакету если установленное правило не удовлетворили условия. По умолчанию drop. </i>
+                      </div>
+                      <i>Подробнее: [Verdict statement](./verdict-statement.mdx)</i>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>$Verdict</td>
+                    <td></td>
                     <td>`goto`</td>
                     <td>
                       <div className="text-justify">
@@ -146,7 +143,6 @@ import TabItem from '@theme/TabItem'
                       </div>
                       <i>Подробнее: [Verdict statement](./verdict-statement.mdx)</i>
                     </td>
-                    <td>Вердикт политики по пакетам данных</td>
                   </tr>
                   <tr>
                     <td>$Hook</td>
@@ -167,45 +163,45 @@ import TabItem from '@theme/TabItem'
         #### Шаблон
 
         ```hcl
-        chain FW-INGRESS-INPUT{
-            type filter $Hook $HookPriority; policy accept;
+        chain INGRESS-INPUT {
+            type filter $Hook $HookPriority; $PolicyVerdict;
             # **********
-            $Trace $RuleType $DstSgroup $Counter $Verdict FW-IN-$sgName
+            $RuleType $DstSgroup $Counter $Verdict INGRESS-INPUT-$sgName
             # **********
-            $Counter drop
+            $Counter
         }
         ```
 
         #### Пример использования
 
         ```hcl
-        chain FW-INGRESS-INPUT{
-            type filter hook input priority 0; policy accept;
+        chain INGRESS-INPUT {
+            type filter hook input priority 0; policy drop;
             # **********
-            nftrace set 1 ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
+            ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto INGRESS-INPUT-exampleSG
             # **********
-            counter packets 0 bytes 0 drop
+            counter packets 0 bytes 0
         }
         ```
 
         ```hcl
         table inet main-1705582480 {
 
-            chain FW-INGRESS-INPUT {
-                type filter hook input priority filter; policy accept;
+            chain INGRESS-INPUT {
+                type filter hook input priority filter; policy drop;
                 # ******
-                nftrace set 1 ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto FW-IN-INPUT-no-routed
-                nftrace set 1 ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto FW-IN-INPUT-exampleSG
-                counter packets 0 bytes 0 drop
+                ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto INGRESS-INPUT-no-routed
+                ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto INGRESS-INPUT-exampleSG
+                counter packets 0 bytes 0
             }
 
-            chain FW-INGRESS-INPUT-no-routed {
+            chain INGRESS-INPUT-no-routed {
                 ct state established,related counter packets 0 bytes 0 accept
                 # ******
                 counter packets 0 bytes 0 accept
             }
 
-            chain FW-INGRESS-INPUT-exampleSG {
+            chain INGRESS-INPUT-exampleSG {
                 ct state established,related counter packets 0 bytes 0 accept
                 # ******
                 counter packets 0 bytes 0 accept
@@ -214,11 +210,11 @@ import TabItem from '@theme/TabItem'
         }
         ```
     </TabItem>
-    <TabItem value="fw-egress-postrouting">
+    <TabItem value="egress-postrouting">
         #### Описание
 
         <div  className="text-justify">
-          Правило перехода в цепочку `FW-EGRESS-POSTROUTING-$sgName` с проверкой что трафик является исходящим и предназначен для
+          Правило перехода в цепочку `EGRESS-POSTROUTING-$sgName` с проверкой что трафик является исходящим и предназначен для
           указанной Security Group.
         </div>
 
@@ -236,19 +232,15 @@ import TabItem from '@theme/TabItem'
               </thead>
               <tbody>
                   <tr>
-                    <td>$Trace</td>
-                    <td>`nftrace set`</td>
+                    <td>$BaseRules</td>
+                    <td></td>
+                    <td></td>
                     <td>
-                      <ul>
-                        <li>
-                          <b>1</b> - трассировка включена
-                        </li>
-                        <li>
-                          <b>0</b> - трассировка выключена
-                        </li>
-                      </ul>
+                      <div className="text-justify">
+                          <i>Base Rules - набор правил, которые прописываются статично из конфиграционнного файла агента для того что бы всегда был доступ до высококритичных сервисов таких как HBF и DNS.</i>
+                      </div>
+                      <i>Подробнее: [Config Base Rules](./config-base-rules.mdx)</i>
                   </td>
-                  <td>Трассировка</td>
                   </tr>
                   <tr>
                     <td>$RuleType</td>
@@ -275,7 +267,19 @@ import TabItem from '@theme/TabItem'
                     <td>Счетчик, учитывает количество пройденных пакетов с количеством байтов переданной информации в рамках указанной цепочки правил</td>
                   </tr>
                   <tr>
+                    <td>$PolicyVerdict</td>
+                    <td>`policy`</td>
+                    <td>`drop`</td>
+                    <td>
+                      <div className="text-justify">
+                          <i>Policy $Verdict устанавливается для цепочек с целью установки базового правила, которое будет применено к пакету если установленное правило не удовлетворили условия. По умолчанию drop. </i>
+                      </div>
+                      <i>Подробнее: [Verdict statement](./verdict-statement.mdx)</i>
+                    </td>
+                  </tr>
+                  <tr>
                       <td>$Verdict</td>
+                      <td></td>
                       <td>`goto`</td>
                       <td>
                         <div className="text-justify">
@@ -283,7 +287,6 @@ import TabItem from '@theme/TabItem'
                         </div>
                         <i>Подробнее: [Verdict statement](./verdict-statement.mdx)</i>
                       </td>
-                      <td>Вердикт политики по пакетам данных</td>
                   </tr>
                   <tr>
                       <td>$Hook</td>
@@ -304,45 +307,48 @@ import TabItem from '@theme/TabItem'
         #### Шаблон
 
         ```hcl
-        chain FW-EGRESS-POSTROUTING {
-            type filter $Hook $HookPriority; policy accept;
+        chain EGRESS-POSTROUTING {
+            type filter $Hook $HookPriority; $PolicyVerdict;
+            $BaseRules
             # **********
-            $Trace $RuleType $SrcSgroup $Counter $Verdict FW-OUT-POSTROUTING-$sgName
+            $RuleType $SrcSgroup $Counter $Verdict EGRESS-POSTROUTING-$sgName
             # **********
-            $Counter drop
+            $Counter
         }
         ```
 
         #### Пример использования
 
         ```hcl
-        chain FW-EGRESS-POSTROUTING {
-            type filter hook postrouting priority 300; policy accept;
+        chain EGRESS-POSTROUTING {
+            type filter hook postrouting priority 300; policy drop;
+            ip daddr { 1.1.1.1, 2.2.2.2} accept
             # **********
-            nftrace set 1 ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
+            ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto EGRESS-POSTROUTING-exampleSG
             # **********
-            counter packets 0 bytes 0 drop
+            counter packets 0 bytes 0
         }
         ```
 
         ```hcl
           table inet main-1705582480 {
 
-          chain FW-EGRESS-POSTROUTING {
-              type filter hook postrouting priority 300; policy accept;
+          chain EGRESS-POSTROUTING {
+              type filter hook postrouting priority 300; policy drop;
+              ip daddr { 1.1.1.1, 2.2.2.2} accept
               # **********
-              nftrace set 1 ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-exampleSG
-              nftrace set 1 ip saddr @NetIPv4-no-routed counter packets 0 bytes 0 goto FW-OUT-POSTROUTING-no-routed
-              counter packets 0 bytes 0 drop
+              ip saddr @NetIPv4-exampleSG counter packets 0 bytes 0 goto EGRESS-POSTROUTING-exampleSG
+              ip saddr @NetIPv4-no-routed counter packets 0 bytes 0 goto EGRESS-POSTROUTING-no-routed
+              counter packets 0 bytes 0
           }
 
-          chain FW-EGRESS-POSTROUTING-no-routed {
+          chain EGRESS-POSTROUTING-no-routed {
               ct state established,related counter packets 0 bytes 0 accept
               # ******
               counter packets 0 bytes 0 accept
           }
 
-          chain FW-EGRESS-POSTROUTING-exampleSG {
+          chain EGRESS-POSTROUTING-exampleSG {
               ct state established,related counter packets 0 bytes 0 accept
               # ******
               counter packets 0 bytes 0 accept

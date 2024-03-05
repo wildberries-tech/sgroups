@@ -138,7 +138,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
       </tr>
       <tr>
         <td>$NftRuleVerdict</td>
-        <td>`Accept`</td>
+        <td>`accept`</td>
         <td>
           <div className="text-justify">
             <i>
@@ -178,7 +178,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sgName {
+                chain INGRESS-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -188,7 +188,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sg-local-example {
+                chain INGRESS-INPUT-sg-local-example {
                     # **********
                     nftrace set 1 ip saddr @NetIPv4-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr @NetIPv6-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -200,7 +200,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sgName {
+                chain EGRESS-POSTROUTING-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -210,7 +210,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sg-local-example {
+                chain EGRESS-POSTROUTING-sg-local-example {
                     # **********
                     nftrace set 1 ip daddr @NetIPv4-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr @NetIPv6-sg-example tcp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -232,7 +232,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sgName {
+                chain INGRESS-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $SrcSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -242,7 +242,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sg-local-example {
+                chain INGRESS-INPUT-sg-local-example {
                     # **********
                     nftrace set 1 ip saddr @NetIPv4-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr @NetIPv6-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -254,7 +254,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sgName {
+                chain EGRESS-POSTROUTING-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $SrcPorts $DstPorts $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -264,7 +264,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sg-local-example {
+                chain EGRESS-POSTROUTING-sg-local-example {
                     # **********
                     nftrace set 1 ip daddr @NetIPv4-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr @NetIPv6-sg-example udp dport { 80, 443 } sport { 64231 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -286,7 +286,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sgName {
+                chain INGRESS-INPUT-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -296,7 +296,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-INGRESS-INPUT-sg-local-example {
+                chain INGRESS-INPUT-sg-local-example {
                     # **********
                     nftrace set 1 ip saddr @NetIPv4-sg-example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip saddr @NetIPv6-sg-example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
@@ -308,7 +308,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Шаблон
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sgName {
+                chain EGRESS-POSTROUTING-sgName {
                     # **********
                     $Trace $NftRuleType $DstSgroup $Transport $IcmpTypeList $NftCounter $Log $NftRuleVerdict
                     # **********
@@ -318,7 +318,7 @@ import { DICTIONARY } from '@site/src/constants/dictionary.ts'
                 #### Пример использования
 
                 ```hcl
-                chain FW-EGRESS-POSTROUTING-sg-local-example {
+                chain EGRESS-POSTROUTING-sg-local-example {
                     # **********
                     nftrace set 1 ip daddr @NetIPv4-sg-example icmp   type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
                     nftrace set 1 ip daddr @NetIPv6-sg-example icmpv6 type { 0, 8 } counter packets 0 bytes 0 log level debug flags ip options accept
