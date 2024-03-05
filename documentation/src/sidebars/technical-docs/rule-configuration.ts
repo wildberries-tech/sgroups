@@ -30,5 +30,3 @@ export const ruleConfiguration = [
     id: 'tech-docs/rule-configuration/s2f-e',
   },
 ]
-
-

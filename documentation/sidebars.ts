@@ -57,7 +57,7 @@ const sidebars = {
       label: 'Конфигурация  ресурсов',
       collapsed: false,
       items: ruleConfiguration,
-    }
+    },
   ],
 }
 

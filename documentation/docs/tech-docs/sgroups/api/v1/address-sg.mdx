@@ -6,23 +6,22 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # GET /v1/\{address\}/sg
 
-<div className="text-justify">
-  Этот метод отображает Security Group по IP или CIDR входящей в нее подсети.
-</div>
+<div className="text-justify">Этот метод отображает Security Group по IP или CIDR входящей в нее подсети.</div>
 
 <div className="text-justify">
-  Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_network) и [здесь](../../database.mdx#tbl_sg).
+  Более подробно по организации БД можно посмотреть [здесь](../../database.mdx#tbl_network) и
+  [здесь](../../database.mdx#tbl_sg).
 </div>
 
 #### Входные параметры
 
 <ul>
-  <li>`{address}` - {DICTIONARY.cidr.short}</li>
+  <li>
+    `{address}` - {DICTIONARY.cidr.short}
+  </li>
 </ul>
 
 <div className="scrollable-x">
@@ -110,8 +109,8 @@ curl '127.0.0.1:9007/v1/10.150.0.224/sg' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Codes data = {RESPOND_CODES.invalid_argument} />
-<Codes data = {RESPOND_CODES.not_found} />
+<Codes data={RESPOND_CODES.invalid_argument} />
+<Codes data={RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 

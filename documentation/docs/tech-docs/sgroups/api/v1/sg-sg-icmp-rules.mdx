@@ -6,13 +6,12 @@ import { FancyboxDiagram } from '@site/src/components/commonBlocks/FancyboxDiagr
 import { RESPOND_CODES } from '@site/src/constants/errorCodes.tsx'
 import Codes from '@site/src/components/commonBlocks/Codes/_Codes.mdx'
 import { DICTIONARY } from '@site/src/constants/dictionary.ts'
-import { Restrictions } from '@site/src/components/commonBlocks/Restrictions'
-import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
 
 # POST /v1/sg-sg-icmp/rules
 
 <div className="text-justify">
-  Этот метод отображает список Security Group to Security Group правил, в соответствии с указанным списком Security Groups.
+  Этот метод отображает список Security Group to Security Group правил, в соответствии с указанным списком Security
+  Groups.
 </div>
 
 <div className="text-justify">
@@ -49,7 +48,7 @@ import { RESTRICTIONS } from '@site/src/constants/restrictions.tsx'
         <td>Object[]</td>
         <td></td>
       </tr>
-      </tbody>
+    </tbody>
   </table>
 </div>
 
@@ -141,8 +140,8 @@ curl '127.0.0.1:9007/v1/sg-sg-icmp/rules' \
 
 <h4 className="custom-heading">Возможные ошибки API</h4>
 
-<Codes data = {RESPOND_CODES.internal} />
-<Codes data = {RESPOND_CODES.not_found} />
+<Codes data={RESPOND_CODES.internal} />
+<Codes data={RESPOND_CODES.not_found} />
 
 <h4 className="custom-heading">Диаграмма последовательности</h4>
 
