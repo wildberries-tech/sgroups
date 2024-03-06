@@ -1,15 +1,13 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from 'prism-react-renderer'
+import type { Config } from '@docusaurus/types'
+import type * as Preset from '@docusaurus/preset-classic'
 
 const config: Config = {
   title: 'Swarm',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'http://swarm-ingress-controller.swarm.svc.k8s.prod-dl',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
+  url: 'http://localhost',
   baseUrl: '/swarm_doc/',
 
   onBrokenLinks: 'throw',
@@ -24,7 +22,7 @@ const config: Config = {
   },
 
   markdown: {
-    mermaid: true
+    mermaid: true,
   },
 
   presets: [
@@ -33,23 +31,50 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/'
+          routeBasePath: '/',
         },
         blog: false,
-        pages: false,
+        pages: {
+          path: 'src/pages',
+          routeBasePath: '',
+          include: ['**/*.{js,jsx,ts,tsx,md,mdx}'],
+          exclude: ['**/_*.{js,jsx,ts,tsx,md,mdx}', '**/_*/**', '**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**'],
+          mdxPageComponent: '@theme/MDXPage',
+          remarkPlugins: [],
+          rehypePlugins: [],
+          beforeDefaultRemarkPlugins: [],
+          beforeDefaultRehypePlugins: [],
+        },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: './src/css/custom.scss',
         },
       } satisfies Preset.Options,
     ],
   ],
 
-  themes: [
-    '@docusaurus/theme-mermaid'
+  plugins: [require.resolve('./plugins/webpack'), 'docusaurus-plugin-astroturf'],
+
+  themes: ['@docusaurus/theme-mermaid'],
+
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap',
+      type: 'text/css',
+      crossOrigin: 'anonymous',
+    },
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap',
+      type: 'text/css',
+      crossOrigin: 'anonymous',
+    },
   ],
 
   themeConfig: {
     navbar: {
+      logo: {
+        src: 'img/logo.jpg',
+      },
+      title: 'SGroups',
       items: [
         {
           type: 'docSidebar',
@@ -59,11 +84,15 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'settingsSidebar',
+          sidebarId: 'techDocs',
           position: 'left',
-          label: 'Настройки'
-        }
+          label: 'Техническая документация',
+        },
       ],
+    },
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true,
     },
     footer: {
       style: 'dark',
@@ -72,9 +101,16 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'hcl']
+      additionalLanguages: ['bash', 'hcl', 'json', 'docker'],
     },
   } satisfies Preset.ThemeConfig,
-};
 
-export default config;
+  scripts: [
+    {
+      src: '/swarm_doc/js/observer.js',
+      async: false,
+    },
+  ],
+}
+
+export default config
