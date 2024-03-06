@@ -27,10 +27,17 @@ type SyncerOfSg2FqdnRules = syncObj[sgm.FQDNRule, sgm.FQDNRuleIdentity]
 // SyncerOfSgIcmpRules -
 type SyncerOfSgIcmpRules = syncObj[sgm.SgIcmpRule, sgm.SgIcmpRuleID]
 
-// SyncerOfSgIcmpRules -
+// SyncerOfSgSgIcmpRules -
 type SyncerOfSgSgIcmpRules = syncObj[sgm.SgSgIcmpRule, sgm.SgSgIcmpRuleID]
 
+// SyncerOfIESgSgIcmpRules -
+type SyncerOfIESgSgIcmpRules = syncObj[sgm.IESgSgIcmpRule, sgm.IESgSgIcmpRuleID]
+
+// SyncerOfCidrSgRules -
 type SyncerOfCidrSgRules = syncObj[sgm.CidrSgRule, sgm.CidrSgRuleIdenity]
+
+// SyncerOfSgSgRules -
+type SyncerOfSgSgRules = syncObj[sgm.SgSgRule, sgm.SgSgRuleIdentity]
 
 type syncObj[T any, tFlt any] struct {
 	C   *pgx.Conn
@@ -119,13 +126,39 @@ func (o *syncObj[T, tFlt]) construct() {
 			syncField{Name: "logs", PgTy: "bool", Notnull: true},
 			syncField{Name: "trace", PgTy: "bool", Notnull: true},
 		)
-	case *sgm.CidrSgRule:
+	case *sgm.IESgSgIcmpRule:
+		o.mutatorFn = "sgroups.sync_ie_sg_sg_icmp_rule"
+		o.tableDst = syncTable{
+			Name: "sgroups.vu_ie_sg_sg_icmp_rule",
+		}.WithFields(
+			syncField{Name: "ip_v", PgTy: "sgroups.ip_family", Notnull: true, Pk: true},
+			syncField{Name: "types", PgTy: "sgroups.icmp_types", Notnull: true},
+			syncField{Name: "sg_local", PgTy: "sgroups.cname", Notnull: true, Pk: true},
+			syncField{Name: "sg", PgTy: "sgroups.cname", Notnull: true, Pk: true},
+			syncField{Name: "traffic", PgTy: "sgroups.traffic", Notnull: true, Pk: true},
+			syncField{Name: "logs", PgTy: "bool", Notnull: true},
+			syncField{Name: "trace", PgTy: "bool", Notnull: true},
+		)
+	case *sgm.CidrSgRule: //nolint:dupl
 		o.mutatorFn = "sgroups.sync_cidr_sg_rule"
 		o.tableDst = syncTable{
 			Name: "sgroups.vu_cidr_sg_rule",
 		}.WithFields(
 			syncField{Name: "proto", PgTy: "sgroups.proto", Notnull: true, Pk: true},
 			syncField{Name: "cidr", PgTy: "cidr", Notnull: true, Pk: true},
+			syncField{Name: "sg", PgTy: "sgroups.cname", Notnull: true, Pk: true},
+			syncField{Name: "traffic", PgTy: "sgroups.traffic", Notnull: true, Pk: true},
+			syncField{Name: "ports", PgTy: "sgroups.sg_rule_ports[]"},
+			syncField{Name: "logs", PgTy: "bool", Notnull: true},
+			syncField{Name: "trace", PgTy: "bool", Notnull: true},
+		)
+	case *sgm.SgSgRule: //nolint:dupl
+		o.mutatorFn = "sgroups.sync_ie_sg_sg_rule"
+		o.tableDst = syncTable{
+			Name: "sgroups.vu_ie_sg_sg_rule",
+		}.WithFields(
+			syncField{Name: "proto", PgTy: "sgroups.proto", Notnull: true, Pk: true},
+			syncField{Name: "sg_local", PgTy: "sgroups.cname", Notnull: true, Pk: true},
 			syncField{Name: "sg", PgTy: "sgroups.cname", Notnull: true, Pk: true},
 			syncField{Name: "traffic", PgTy: "sgroups.traffic", Notnull: true, Pk: true},
 			syncField{Name: "ports", PgTy: "sgroups.sg_rule_ports[]"},
@@ -167,7 +200,7 @@ func (o *syncObj[T, tFlt]) enureDataTable(ctx context.Context) error {
 }
 
 // AddToFilter -
-func (o *syncObj[T, tFlt]) AddToFilter(ctx context.Context, data ...tFlt) error {
+func (o *syncObj[T, tFlt]) AddToFilter(ctx context.Context, data ...tFlt) error { //nolint:gocyclo
 	o.ensureConstructed.Do(o.construct)
 	var raw RawRowsData
 	if err := o.enureFilterTable(ctx); err != nil {
@@ -201,6 +234,16 @@ func (o *syncObj[T, tFlt]) AddToFilter(ctx context.Context, data ...tFlt) error 
 				return e
 			}
 			raw = append(raw, []any{ipv, v.SgFrom, v.SgTo})
+		case sgm.IESgSgIcmpRuleID:
+			ipv, e := ipFamilyFromModel(v.IPv)
+			if e != nil {
+				return e
+			}
+			var t Traffic
+			if err := t.FromModel(v.Traffic); err != nil {
+				return err
+			}
+			raw = append(raw, []any{ipv, v.SgLocal, v.Sg, t})
 		case sgm.CidrSgRuleIdenity:
 			var p Proto
 			var t Traffic
@@ -211,6 +254,16 @@ func (o *syncObj[T, tFlt]) AddToFilter(ctx context.Context, data ...tFlt) error 
 				return err
 			}
 			raw = append(raw, []any{p, v.CIDR, v.SG, t})
+		case sgm.SgSgRuleIdentity:
+			var p Proto
+			var t Traffic
+			if err := p.FromModel(v.Transport); err != nil {
+				return err
+			}
+			if err := t.FromModel(v.Traffic); err != nil {
+				return err
+			}
+			raw = append(raw, []any{p, v.SgLocal, v.Sg, t})
 		default:
 			panic("UB")
 		}
@@ -219,7 +272,7 @@ func (o *syncObj[T, tFlt]) AddToFilter(ctx context.Context, data ...tFlt) error 
 }
 
 // AddData -
-func (o *syncObj[T, tFlt]) AddData(ctx context.Context, data ...T) error {
+func (o *syncObj[T, tFlt]) AddData(ctx context.Context, data ...T) error { //nolint:gocyclo
 	o.ensureConstructed.Do(o.construct)
 	if err := o.enureDataTable(ctx); err != nil {
 		return err
@@ -257,12 +310,24 @@ func (o *syncObj[T, tFlt]) AddData(ctx context.Context, data ...T) error {
 				return err
 			}
 			raw = append(raw, []any{x.IPv, x.SgFrom, x.SgTo, x.Tytes, x.Logs, x.Trace})
+		case sgm.IESgSgIcmpRule:
+			var x IESgSgIcmpRule
+			if err := x.FromModel(v); err != nil {
+				return err
+			}
+			raw = append(raw, []any{x.IPv, x.Tytes, x.SgLocal, x.Sg, x.Traffic, x.Logs, x.Trace})
 		case sgm.CidrSgRule:
 			var x CidrSgRule
 			if err := x.FromModel(v); err != nil {
 				return err
 			}
 			raw = append(raw, []any{x.Proto, x.CIDR, x.SG, x.Traffic, x.Ports, x.Logs, x.Trace})
+		case sgm.SgSgRule:
+			var x SgSgRule
+			if err := x.FromModel(v); err != nil {
+				return err
+			}
+			raw = append(raw, []any{x.Proto, x.SgLocal, x.Sg, x.Traffic, x.Ports, x.Logs, x.Trace})
 		default:
 			panic("UB")
 		}

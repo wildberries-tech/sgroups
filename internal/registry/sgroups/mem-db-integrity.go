@@ -175,6 +175,7 @@ func IntegrityChecker4Networks2() IntegrityChecker { //nolint:gocyclo
 }
 */
 
+// IntegrityChecker4Networks -
 func IntegrityChecker4Networks() IntegrityChecker { //nolint:gocyclo
 	const api = "Integrity-of-Networks"
 
@@ -393,5 +394,76 @@ func IntegrityChecker4CidrSgRules() IntegrityChecker { //nolint:gocyclo
 		}
 		err := detectCidrsIntersections(objs)
 		return errors.WithMessage(err, api)
+	}
+}
+
+// IntegrityChecker4SgSgRules - checks existence of referred SGs
+func IntegrityChecker4SgSgRules() IntegrityChecker {
+	const api = "Integrity-of-SgSgRules"
+
+	return func(reader MemDbReader) error {
+		it, e := reader.Get(TblSgSgRules, indexID)
+		if isInvalidTableErr(e) {
+			return nil
+		}
+		if e != nil {
+			return errors.WithMessage(e, api)
+		}
+		for x := it.Next(); x != nil; x = it.Next() { // validate SG refs
+			rule := x.(*model.SgSgRule)
+			sg, e1 := reader.First(TblSecGroups, indexID, rule.ID.SgLocal)
+			if e1 != nil {
+				return errors.WithMessagef(e1, "%s: find ref to SgLocal '%s'", api, rule.ID.SgLocal)
+			}
+			if sg == nil {
+				return errors.Errorf("%s: not found ref to SgLocal '%s'", api, rule.ID.SgLocal)
+			}
+
+			sg, e1 = reader.First(TblSecGroups, indexID, rule.ID.Sg)
+			if e1 != nil {
+				return errors.WithMessagef(e1, "%s: find ref to Sg '%s'", api, rule.ID.Sg)
+			}
+			if sg == nil {
+				return errors.Errorf("%s: not found ref to Sg '%s'", api, rule.ID.Sg)
+			}
+		}
+		return nil
+	}
+}
+
+// IntegrityChecker4IESgSgIcmpRules - checks existence of referred SGs
+func IntegrityChecker4IESgSgIcmpRules() IntegrityChecker {
+	const api = "Integrity-of-IESgSgIcmpRules"
+
+	return func(reader MemDbReader) error {
+		it, e := reader.Get(TblIESgSgIcmpRules, indexID)
+		if isInvalidTableErr(e) {
+			return nil
+		}
+		if e != nil {
+			return errors.WithMessage(e, api)
+		}
+		for x := it.Next(); x != nil; x = it.Next() { // validate SG refs
+			rule := x.(*model.IESgSgIcmpRule)
+			id := rule.ID()
+			sgLocal := id.SgLocal
+			secGroup, e1 := reader.First(TblSecGroups, indexID, sgLocal)
+			if e1 != nil {
+				return errors.WithMessagef(e1, "%s: find ref to SgLocal '%s'", api, sgLocal)
+			}
+			if secGroup == nil {
+				return errors.Errorf("%s: not found ref to SgLocal '%s'", api, sgLocal)
+			}
+
+			sg := id.Sg
+			secGroup, e1 = reader.First(TblSecGroups, indexID, sg)
+			if e1 != nil {
+				return errors.WithMessagef(e1, "%s: find ref to Sg '%s'", api, sg)
+			}
+			if secGroup == nil {
+				return errors.Errorf("%s: not found ref to Sg '%s'", api, sg)
+			}
+		}
+		return nil
 	}
 }

@@ -16,13 +16,15 @@ import (
 type (
 	// LocalData are used by agent to build Host Based Firewall rules
 	LocalData struct {
-		LocalSGs      SGs
-		SG2SGRules    SG2SGRules
-		SG2FQDNRules  SG2FQDNRules
-		SgIcmpRules   SgIcmpRules
-		SgSgIcmpRules SgSgIcmpRules
-		CidrSgRules   CidrSgRules
-		Networks      SGsNetworks
+		LocalSGs        SGs
+		SG2SGRules      SG2SGRules
+		SG2FQDNRules    SG2FQDNRules
+		SgIcmpRules     SgIcmpRules
+		SgSgIcmpRules   SgSgIcmpRules
+		SgIeSgIcmpRules SgIeSgIcmpRules
+		CidrSgRules     CidrSgRules
+		SgIeSgRules     SgIeSgRules
+		Networks        SGsNetworks
 
 		ResolvedFQDN *ResolvedFQDN
 		SyncStatus   model.SyncStatus
@@ -35,12 +37,53 @@ type (
 	}
 )
 
-// IsEq checks wether this object is equal the other one
-func (ld *LocalData) IsEq(other LocalData) bool {
-	eq := ld.LocalSGs.IsEq(other.LocalSGs)
-	if eq {
-		eq = ld.SG2SGRules.IsEq(other.SG2SGRules)
+func (ld *LocalData) allUsedSGs() []SgName {
+	var d dict.HSet[SgName]
+	ld.SG2SGRules.Rules.Iterate(func(k model.SGRuleIdentity, _ *model.SGRule) bool {
+		d.PutMany(k.SgFrom, k.SgTo)
+		return true
+	})
+	for _, r := range ld.SG2FQDNRules.Rules {
+		d.Insert(r.ID.SgFrom)
 	}
+	ld.SgIcmpRules.Rules.Iterate(func(k model.SgIcmpRuleID, _ *model.SgIcmpRule) bool {
+		d.Insert(k.Sg)
+		return true
+	})
+	ld.SgSgIcmpRules.Rules.Iterate(func(k model.SgSgIcmpRuleID, _ *model.SgSgIcmpRule) bool {
+		d.PutMany(k.SgFrom, k.SgTo)
+		return true
+	})
+	ld.SgIeSgIcmpRules.Rules.Iterate(func(k model.IESgSgIcmpRuleID, _ *model.IESgSgIcmpRule) bool {
+		d.PutMany(k.Sg, k.SgLocal)
+		return true
+	})
+	ld.CidrSgRules.Rules.Iterate(func(k model.CidrSgRuleIdenity, _ *model.CidrSgRule) bool {
+		d.Insert(k.SG)
+		return true
+	})
+	ld.SgIeSgRules.Rules.Iterate(func(k model.SgSgRuleIdentity, _ *model.SgSgRule) bool {
+		d.PutMany(k.Sg, k.SgLocal)
+		return true
+	})
+	return d.Values()
+}
+
+func (ld *LocalData) nonLocalSGs() []SgName {
+	all := ld.allUsedSGs()
+	ret := all[:0]
+	for _, s := range all {
+		if ld.LocalSGs.At(s) == nil {
+			ret = append(ret, s)
+		}
+	}
+	return ret
+}
+
+// IsEq checks wether this object is equal the other one
+// here we compare only rules and networks
+func (ld *LocalData) IsEq(other LocalData) bool {
+	eq := ld.SG2SGRules.IsEq(other.SG2SGRules)
 	if eq {
 		eq = ld.SG2FQDNRules.IsEq(other.SG2FQDNRules)
 	}
@@ -51,7 +94,13 @@ func (ld *LocalData) IsEq(other LocalData) bool {
 		eq = ld.SgSgIcmpRules.IsEq(other.SgSgIcmpRules)
 	}
 	if eq {
+		eq = ld.SgIeSgIcmpRules.IsEq(other.SgIeSgIcmpRules)
+	}
+	if eq {
 		eq = ld.CidrSgRules.IsEq(other.CidrSgRules)
+	}
+	if eq {
+		eq = ld.SgIeSgRules.IsEq(other.SgIeSgRules)
 	}
 	if eq {
 		eq = ld.Networks.IsEq(other.Networks)
@@ -91,6 +140,11 @@ func (loader *LocalDataLoader) Load(ctx context.Context, client SGClient, ncnf h
 		return res, err
 	}
 
+	log.Debugw("loading netwirks from local SG(s)...")
+	if err = res.Networks.Load(ctx, client, res.LocalSGs); err != nil {
+		return res, err
+	}
+
 	log.Debugw("loading SG-SG rules...")
 	if err = res.SG2SGRules.Load(ctx, client, res.LocalSGs); err != nil {
 		return res, err
@@ -106,6 +160,11 @@ func (loader *LocalDataLoader) Load(ctx context.Context, client SGClient, ncnf h
 		return res, err
 	}
 
+	log.Debugw("loading SG-SG-INGRESS/EGRESS-ICMP rules...")
+	if err = res.SgIeSgIcmpRules.Load(ctx, client, res.LocalSGs); err != nil {
+		return res, err
+	}
+
 	log.Debugw("loading SG-FQDN rules...")
 	if err = res.SG2FQDNRules.Load(ctx, client, res.LocalSGs); err != nil {
 		return res, err
@@ -116,19 +175,15 @@ func (loader *LocalDataLoader) Load(ctx context.Context, client SGClient, ncnf h
 		return res, err
 	}
 
-	var allSgNames []string
-	{
-		var set dict.HSet[string]
-		set.PutMany(res.LocalSGs.Keys()...)
-		set.PutMany(res.SG2SGRules.SGs.Keys()...)
-		set.PutMany(res.SG2FQDNRules.SGs.Keys()...)
-		set.PutMany(res.SgIcmpRules.SGs.Keys()...)
-		set.PutMany(res.SgSgIcmpRules.SGs.Keys()...)
-		set.PutMany(res.CidrSgRules.SGs.Keys()...)
-		allSgNames = set.Values()
+	log.Debugw("loading SG-INGRESS/EGRESS-SG rules...")
+	if err = res.SgIeSgRules.Load(ctx, client, res.LocalSGs); err != nil {
+		return res, err
 	}
-	log.Debugw("loading networks...")
-	err = res.Networks.LoadFromSGNames(ctx, client, allSgNames)
+
+	if nonLocalSgs := res.nonLocalSGs(); len(nonLocalSgs) > 0 {
+		log.Debugf("loading networks from non local SG(s) %s...", nonLocalSgs)
+		err = res.Networks.LoadFromSGNames(ctx, client, nonLocalSgs)
+	}
 
 	return res, err
 }
