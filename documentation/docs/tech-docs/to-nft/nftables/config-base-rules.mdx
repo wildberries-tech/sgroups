@@ -25,6 +25,14 @@ id: config-base-rules
       </thead>
       <tbody>
           <tr>
+              <td>$\{SrcCIDR\}</td>
+              <td>
+                  <nobr>`saddr {CIDR}`</nobr>
+              </td>
+              <td>Массив подсетей</td>
+              <td>Список сетей в которые разрешаем трафик</td>
+          </tr>
+          <tr>
               <td>$\{DstCIDR\}</td>
               <td>
                   <nobr>`daddr {CIDR}`</nobr>
@@ -71,6 +79,11 @@ chain EGRESS-POSTROUTING {
     ${RuleType} ${DstCIDR} ${Verdict}
     # **********
 }
+
+chain INGRESS-INPUT {
+    ${RuleType} ${SrcCIDR} ${Verdict}
+    # **********
+}
 ```
 
 ## Пример использования
@@ -78,6 +91,11 @@ chain EGRESS-POSTROUTING {
 ```
 chain EGRESS-POSTROUTING {
     ip daddr { 1.1.1.1, 2.2.2.2} accept
+    # **********
+}
+
+chain INGRESS-INPUT {
+    ip saddr { 1.1.1.1, 2.2.2.2} accept
     # **********
 }
 ```

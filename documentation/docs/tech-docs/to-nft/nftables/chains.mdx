@@ -98,7 +98,18 @@ import TabItem from '@theme/TabItem'
                   </tr>
               </thead>
               <tbody>
-                    <tr>
+                  <tr>
+                    <td>$BaseRules</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <div className="text-justify">
+                          <i>Base Rules - набор правил, которые прописываются статично из конфиграционнного файла агента для того что бы всегда был доступ до высококритичных сервисов таких как HBF и DNS.</i>
+                      </div>
+                      <i>Подробнее: [Config Base Rules](./config-base-rules.mdx)</i>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>$RuleType</td>
                     <td>`ip`</td>
                     <td></td>
@@ -165,6 +176,7 @@ import TabItem from '@theme/TabItem'
         ```hcl
         chain INGRESS-INPUT {
             type filter $Hook $HookPriority; $PolicyVerdict;
+            $BaseRules
             # **********
             $RuleType $DstSgroup $Counter $Verdict INGRESS-INPUT-$sgName
             # **********
@@ -177,6 +189,7 @@ import TabItem from '@theme/TabItem'
         ```hcl
         chain INGRESS-INPUT {
             type filter hook input priority 0; policy drop;
+            ip saddr { 1.1.1.1, 2.2.2.2} accept
             # **********
             ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto INGRESS-INPUT-exampleSG
             # **********
@@ -189,6 +202,7 @@ import TabItem from '@theme/TabItem'
 
             chain INGRESS-INPUT {
                 type filter hook input priority filter; policy drop;
+                ip saddr { 1.1.1.1, 2.2.2.2} accept
                 # ******
                 ip daddr @NetIPv4-no-routed counter packets   0 bytes 0 goto INGRESS-INPUT-no-routed
                 ip daddr @NetIPv4-exampleSG counter packets   0 bytes 0 goto INGRESS-INPUT-exampleSG
@@ -240,7 +254,7 @@ import TabItem from '@theme/TabItem'
                           <i>Base Rules - набор правил, которые прописываются статично из конфиграционнного файла агента для того что бы всегда был доступ до высококритичных сервисов таких как HBF и DNS.</i>
                       </div>
                       <i>Подробнее: [Config Base Rules](./config-base-rules.mdx)</i>
-                  </td>
+                    </td>
                   </tr>
                   <tr>
                     <td>$RuleType</td>
