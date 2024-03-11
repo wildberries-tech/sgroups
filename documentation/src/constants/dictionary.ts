@@ -157,6 +157,11 @@ export const DICTIONARY: TDictionary = {
     full: '',
   },
 
+  srcDstCidr: {
+    short: 'CIDR, с которой устанавливаются правила взаимодействия.',
+    full: '',
+  },
+
   terraformItems: {
     short: 'Список ресурсов создаваемые terraform ресурсом.',
     full: '',

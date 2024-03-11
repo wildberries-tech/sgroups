@@ -2,6 +2,9 @@
 id: ipset
 ---
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 # IPSet
 
 ## Описание
@@ -77,10 +80,31 @@ set ${IPSet_Name} {
 
 ## Пример использования
 
-```hcl
-set NetIPv4-sg-local-example {
-    type ipv4_addr
-    flags constant,interval
-    elements = { 10.168.24.0/23 }
-}
-```
+<Tabs
+    defaltValue = 'sg'
+    values = {[
+        { label: "Security Group", value: "sg" },
+        { label: "FQDN", value: "fqdn" },
+    ]}
+>
+    <TabItem value='sg'>
+      ```hcl
+      set NetIPv4-sg-local-example {
+          type ipv4_addr
+          flags constant,interval
+          elements = { 10.168.24.0/23 }
+      }
+      ```
+    </TabItem>
+
+    <TabItem value='fqdn'>
+      ```hcl
+      set NetIPv4-fqdn-example.com {
+          type ipv4_addr
+          flags interval
+          elements = { 10.10.24.0 }
+      }
+      ```
+    </TabItem>
+
+</Tabs>
