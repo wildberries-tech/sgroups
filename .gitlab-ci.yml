@@ -4,4 +4,4 @@ include:
     file: projects-ci/sgroups.yml
 
 variables:
-  CI_TMPL_HELM_CUSTOM_ABATHUR_VERSION: v1-0-22-5454909b
+  CI_TMPL_HELM_CUSTOM_ABATHUR_VERSION: v1-0-23-8ec98c13
