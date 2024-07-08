@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package common;
+option go_package = "github.com/wildberries-tech/sgroups/v2/pkg/api/common;common";
+
+import "google/protobuf/descriptor.proto";
+
+//Networks: represents network types
+message Networks {
+  //NetIP: represents IP-Network type (L3)
+  message NetIP { 
+    //Transport: represents net transport (L4)
+    enum Transport {      
+      TCP = 0;
+      UDP = 1;
+    }
+    //PortRange: port [from - to] range 
+    message PortRange {
+      //range left bound
+      uint32 from = 1;
+      //range right bound 
+      uint32 to = 2;
+    }
+    //CIDR: IP range
+    string CIDR = 1;
+  }
+}
+
+// IP Anddress family
+enum IpAddrFamily {
+  _ = 0;
+  IPv4 = 1; //IPv4
+  IPv6 = 2; //IPv6
+}
+
+// IP/ICMP protocol
+message ICMP {
+  IpAddrFamily IPv = 1;
+  repeated uint32 Types  = 2; // ICMP message types
+}
+
+
+// Ingress / Egress traffic dir
+enum Traffic {
+  Undef = 0; // undefined tfaffic direction
+  Ingress = 1; // Ingress 
+  Egress = 2; // Egress
+}
+
